@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="6751" systemVersion="14D113c" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
+    <entity name="Comment" representedClassName="" syncable="YES">
+        <attribute name="approvedBy" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="author" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="bannedBy" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="body" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="bodyHTML" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="distinguishedStatus" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="edited" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="gilded" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="linkAuthor" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="parentID" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="scoreHidden" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="totalReports" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <relationship name="link" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Link" inverseName="comments" inverseEntity="Link" syncable="YES"/>
+        <relationship name="replies" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Comment" inverseName="replies" inverseEntity="Comment" syncable="YES"/>
+    </entity>
+    <entity name="Link" representedClassName="Link" syncable="YES">
+        <attribute name="approvedBy" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="author" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="authorFlairClass" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="authorFlairText" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="bannedBy" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="distinguished" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="domain" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="downs" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="downvoted" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="edited" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="gilded" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="hidden" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="identifier" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="isImageLink" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="linkFlairClass" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="linkFlairText" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="nsfw" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="permalink" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="saved" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="score" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="selfPost" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="selfText" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="selfTextHTML" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="stickied" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="subredditName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="thumbnailURL" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="totalComments" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="totalReports" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="ups" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="upvoted" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="upvoteRatio" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="url" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="visited" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="voted" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <relationship name="comments" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Comment" inverseName="link" inverseEntity="Comment" syncable="YES"/>
+        <relationship name="media" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Media" inverseName="link" inverseEntity="Media" syncable="YES"/>
+        <relationship name="subreddit" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Subreddit" inverseName="links" inverseEntity="Subreddit" syncable="YES"/>
+    </entity>
+    <entity name="Media" representedClassName="Media" syncable="YES">
+        <attribute name="authorName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="authorURL" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="height" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="providerDescription" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="providerTitle" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="providerURL" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="thumbnailHeight" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="thumbnailURL" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="thumbnailWidth" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="type" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="width" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <relationship name="link" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Link" inverseName="media" inverseEntity="Link" syncable="YES"/>
+    </entity>
+    <entity name="Message" representedClassName="Message" syncable="YES">
+        <attribute name="author" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="commentReply" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="created" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="firstMessage" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="firstMessageFullName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="identifier" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="messageBody" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="messageBodyHTML" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="recipient" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="subject" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="type" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="unread" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <relationship name="replies" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Message" inverseName="replies" inverseEntity="Message" syncable="YES"/>
+    </entity>
+    <entity name="MultiReddit" representedClassName="MultiReddit" syncable="YES">
+        <attribute name="bodyHTML" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="bodyMarkdown" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="created" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="editable" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="path" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="visibility" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <relationship name="subreddits" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Subreddit" inverseName="multiReddit" inverseEntity="Subreddit" syncable="YES"/>
+    </entity>
+    <entity name="Subreddit" representedClassName="Subreddit" syncable="YES">
+        <attribute name="acceptedSubmissionsType" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="accountsActive" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="banned" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="commentScoreHiddenDuration" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="commentSpamFilterStrength" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="contributor" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="headerImageURL" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="headerTitle" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="identifier" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="linkSpamFilterStrength" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="moderator" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="modifiedDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="over18" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="publicDescription" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="selfPostSpamFilterStrength" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="submitLinkPostLabel" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="submitText" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="submitTextHTML" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="submitTextPostLabel" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="subredditDescription" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="subredditDescriptionHTML" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="subredditType" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="subscriber" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="totalSubscribers" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="trafficPagePubliclyAccessible" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="url" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="links" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Link" inverseName="subreddit" inverseEntity="Link" syncable="YES"/>
+        <relationship name="multiReddit" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MultiReddit" inverseName="subreddits" inverseEntity="MultiReddit" syncable="YES"/>
+    </entity>
+    <entity name="User" representedClassName="User" syncable="YES">
+        <attribute name="commentKarma" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="created" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="friend" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="gold" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="hasMail" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="hasModeratorMail" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="hasVerifiedEmailAddress" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="linkKarma" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="mod" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="modHash" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="over18" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="username" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="Comment" positionX="45" positionY="189" width="128" height="253"/>
+        <element name="Link" positionX="-18" positionY="162" width="128" height="615"/>
+        <element name="Media" positionX="0" positionY="171" width="128" height="223"/>
+        <element name="Message" positionX="18" positionY="180" width="128" height="240"/>
+        <element name="MultiReddit" positionX="0" positionY="135" width="128" height="163"/>
+        <element name="Subreddit" positionX="-63" positionY="-18" width="128" height="495"/>
+        <element name="User" positionX="-36" positionY="153" width="128" height="223"/>
+    </elements>
+</model>
