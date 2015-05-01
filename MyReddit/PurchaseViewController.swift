@@ -67,10 +67,10 @@ class PurchaseViewController: UIViewController, BDGIAPDelegate {
     }
     
     func dismissVC() {
-        
+        self.hud.hide(true)
     }
     
     func presentVC(viewController: UIViewController!) {
-        
+        self.hud.hide(true)
     }
 }

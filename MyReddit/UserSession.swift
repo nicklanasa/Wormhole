@@ -12,6 +12,7 @@ let _sharedUserSession = UserSession()
 
 class UserSession {
     
+    typealias PaginationCompletion = (pagination: RKPagination?, results: [AnyObject]?, error: NSError?) -> ()
     typealias ErrorCompletion = (error: NSError?) -> ()
     
     init() {
@@ -30,6 +31,10 @@ class UserSession {
     
     var currentUser: User?
     
+    func logout() {
+        RKClient.sharedClient().signOut()
+    }
+    
     func loginWithUsername(username: String, password: String, completion: ErrorCompletion) {
         RKClient.sharedClient().signInWithUsername(username, password: password) { (error) -> Void in
             if error != nil {
@@ -45,6 +50,55 @@ class UserSession {
                     completion(error: error)
                 })
             }
+        }
+    }
+    
+    func overview(pagination: RKPagination?, completion: PaginationCompletion) {
+        var user = RKClient.sharedClient().currentUser
+        RKClient.sharedClient().contentForUser(user, category: .Overview, pagination: pagination) { (results, pagination, error) -> Void in
+            completion(pagination: pagination, results: results, error: error)
+        }
+    }
+    
+    func comments(pagination: RKPagination?, completion: PaginationCompletion) {
+        var user = RKClient.sharedClient().currentUser
+        RKClient.sharedClient().contentForUser(user, category: .Comments, pagination: pagination) { (results, pagination, error) -> Void in
+            completion(pagination: pagination, results: results, error: error)
+        }
+    }
+    
+    func liked(pagination: RKPagination?, completion: PaginationCompletion) {
+        var user = RKClient.sharedClient().currentUser
+        RKClient.sharedClient().contentForUser(user, category: .Liked, pagination: pagination) { (results, pagination, error) -> Void in
+            completion(pagination: pagination, results: results, error: error)
+        }
+    }
+    
+    func disliked(pagination: RKPagination?, completion: PaginationCompletion) {
+        var user = RKClient.sharedClient().currentUser
+        RKClient.sharedClient().contentForUser(user, category: .Disliked, pagination: pagination) { (results, pagination, error) -> Void in
+            completion(pagination: pagination, results: results, error: error)
+        }
+    }
+    
+    func submitted(pagination: RKPagination?, completion: PaginationCompletion) {
+        var user = RKClient.sharedClient().currentUser
+        RKClient.sharedClient().contentForUser(user, category: .Submissions, pagination: pagination) { (results, pagination, error) -> Void in
+            completion(pagination: pagination, results: results, error: error)
+        }
+    }
+    
+    func saved(pagination: RKPagination?, completion: PaginationCompletion) {
+        var user = RKClient.sharedClient().currentUser
+        RKClient.sharedClient().contentForUser(user, category: .Saved, pagination: pagination) { (results, pagination, error) -> Void in
+            completion(pagination: pagination, results: results, error: error)
+        }
+    }
+    
+    func hidden(pagination: RKPagination?, completion: PaginationCompletion) {
+        var user = RKClient.sharedClient().currentUser
+        RKClient.sharedClient().contentForUser(user, category: .Hidden, pagination: pagination) { (results, pagination, error) -> Void in
+            completion(pagination: pagination, results: results, error: error)
         }
     }
 }

@@ -24,6 +24,7 @@ extension User {
             self.friend = rkUser.friend
             self.mod = rkUser.mod
             self.over18 = rkUser.over18
+            self.created = rkUser.created
         }
     }
 }
