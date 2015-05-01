@@ -20,6 +20,15 @@ class TitleCell: PostCell {
         didSet {
             self.titleLabel.text = link.title
             self.scoreLabel.text = link.score.description
+            
+            if self.link.upvoted() {
+                self.scoreLabel.textColor = MyRedditUpvoteColor
+            } else if self.link.downvoted() {
+                self.scoreLabel.textColor = MyRedditDownvoteColor
+            } else {
+                self.scoreLabel.textColor = UIColor.lightGrayColor()
+            }
+            
             self.commentsLabel.text = link.totalComments.description
             self.subredditLabel.text = "/r/\(link.subreddit)"
             

@@ -26,6 +26,14 @@ class PostImageCell: PostCell {
                 self.postImageView.sd_setImageWithURL(thumbnailURL)
             }
             
+            if self.link.upvoted() {
+                self.scoreLabel.textColor = MyRedditUpvoteColor
+            } else if self.link.downvoted() {
+                self.scoreLabel.textColor = MyRedditDownvoteColor
+            } else {
+                self.scoreLabel.textColor = UIColor.lightGrayColor()
+            }
+            
             self.titleLabel.text = link.title
             self.scoreLabel.text = link.score.description
             self.commentsLabel.text = link.totalComments.description

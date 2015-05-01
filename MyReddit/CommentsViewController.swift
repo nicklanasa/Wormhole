@@ -23,6 +23,14 @@ class CommentsViewController: UITableViewController, CommentCellDelegate, JZSwip
         }
     }
     
+    var hud: MBProgressHUD! {
+        didSet {
+            hud.labelFont = MyRedditSelfTextFont
+            hud.mode = .Indeterminate
+            hud.labelText = "Loading"
+        }
+    }
+    
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
     }
@@ -30,15 +38,19 @@ class CommentsViewController: UITableViewController, CommentCellDelegate, JZSwip
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.syncComments()
+        
+        self.navigationItem.title =  !self.forComment ? "\(self.link.author) | \(self.link.totalComments) comments" : "\(self.comment.author) | \(self.comment.replies.count) replies"
+        
+        self.tableView.rowHeight = UITableViewAutomaticDimension
+    }
+    
+    func syncComments() {
         if !self.forComment {
             RedditSession.sharedSession.fetchComments(nil, link: self.link) { (pagination, results, error) -> () in
                 self.comments = results
             }
         }
-        
-        self.navigationItem.title =  !self.forComment ? "\(self.link.author) | \(self.link.totalComments) comments" : "\(self.comment.author) | \(self.comment.replies.count) replies"
-        
-        self.tableView.rowHeight = UITableViewAutomaticDimension
     }
     
     override func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
@@ -80,8 +92,8 @@ class CommentsViewController: UITableViewController, CommentCellDelegate, JZSwip
         
         cell.delegate = self
         
-        cell.imageSet = SwipeCellImageSetMake(UIImage(named: "UpWhite"), UIImage(named: "UpWhite"), UIImage(named: "DownWhite"), UIImage(named: "DownWhite"))
-        cell.colorSet = SwipeCellColorSetMake(MyRedditUpvoteColor, MyRedditUpvoteColor, MyRedditDownvoteColor, MyRedditDownvoteColor)
+        cell.imageSet = SwipeCellImageSetMake(UIImage(named: "DownWhite"), UIImage(named: "DownWhite"), UIImage(named: "UpWhite"), UIImage(named: "UpWhite"))
+        cell.colorSet = SwipeCellColorSetMake(MyRedditDownvoteColor, MyRedditDownvoteColor, MyRedditUpvoteColor, MyRedditUpvoteColor)
         
         cell.commentDelegate = self
         
@@ -153,6 +165,61 @@ class CommentsViewController: UITableViewController, CommentCellDelegate, JZSwip
     func swipeCell(cell: JZSwipeCell!, triggeredSwipeWithType swipeType: JZSwipeType) {
         if swipeType.value != JZSwipeTypeNone.value {
             cell.reset()
+            if NSUserDefaults.standardUserDefaults().objectForKey("purchased") == nil {
+                self.performSegueWithIdentifier("PurchaseSegue", sender: self)
+            } else {
+                
+                self.hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
+                
+                if let indexPath = self.tableView.indexPathForCell(cell) {
+                    
+                    var votedable: RKVotable?
+                    
+                    if self.forComment {
+                        votedable = self.comment.replies?[indexPath.row] as? RKComment
+                    } else {
+                        if indexPath.row == 0 {
+                            votedable = self.link
+                        } else {
+                            votedable = self.comments?[indexPath.row - 1] as? RKComment
+                        }
+                    }
+                    
+                    if let object = votedable {
+                        if swipeType.value == JZSwipeTypeShortRight.value || swipeType.value == JZSwipeTypeLongRight.value {
+                            // Downvote
+                            RedditSession.sharedSession.downvote(object, completion: { (error) -> () in
+                                self.hud.hide(true)
+                                
+                                if error != nil {
+                                    UIAlertView(title: "Error!",
+                                        message: "Unable to downvote! Please try again!",
+                                        delegate: self,
+                                        cancelButtonTitle: "Ok").show()
+                                } else {
+                                    self.tableView.reloadData()
+                                }
+                            })
+                        } else if swipeType.value == JZSwipeTypeShortLeft.value || swipeType.value == JZSwipeTypeLongLeft.value {
+                            // Upvote
+                            RedditSession.sharedSession.upvote(object, completion: { (error) -> () in
+                                self.hud.hide(true)
+                                
+                                if error != nil {
+                                    UIAlertView(title: "Error!",
+                                        message: "Unable to upvote! Please try again!",
+                                        delegate: self,
+                                        cancelButtonTitle: "Ok").show()
+                                } else {
+                                    self.tableView.reloadData()
+                                }
+                            })
+                        } else {
+                            self.hud.hide(true)
+                        }
+                    }
+                }
+            }
         }
     }
     

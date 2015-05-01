@@ -49,6 +49,14 @@ JZSwipeCellDelegate {
         }
     }
     
+    var hud: MBProgressHUD! {
+        didSet {
+            hud.labelFont = MyRedditSelfTextFont
+            hud.mode = .Indeterminate
+            hud.labelText = "Loading"
+        }
+    }
+    
     @IBOutlet weak var filterViewBottomConstraint: NSLayoutConstraint!
     
     var links = Array<AnyObject>() {
@@ -79,6 +87,8 @@ JZSwipeCellDelegate {
                             }
                         })
                     }
+                } else {
+                    self.displayHeader(false)
                 }
             }
         }
@@ -257,8 +267,8 @@ JZSwipeCellDelegate {
             cell.link = link
         }
         
-        cell.imageSet = SwipeCellImageSetMake(UIImage(named: "UpWhite"), UIImage(named: "UpWhite"), UIImage(named: "DownWhite"), UIImage(named: "DownWhite"))
-        cell.colorSet = SwipeCellColorSetMake(MyRedditUpvoteColor, MyRedditDownvoteColor, MyRedditDownvoteColor, MyRedditUpvoteColor)
+        cell.imageSet = SwipeCellImageSetMake(UIImage(named: "DownWhite"), UIImage(named: "DownWhite"), UIImage(named: "UpWhite"), UIImage(named: "UpWhite"))
+        cell.colorSet = SwipeCellColorSetMake(MyRedditDownvoteColor, MyRedditDownvoteColor, MyRedditUpvoteColor, MyRedditUpvoteColor)
         
         cell.delegate = self
         
@@ -309,13 +319,41 @@ JZSwipeCellDelegate {
             if NSUserDefaults.standardUserDefaults().objectForKey("purchased") == nil {
                 self.performSegueWithIdentifier("PurchaseSegue", sender: self)
             } else {
-                if swipeType.value == JZSwipeTypeShortRight.value {
-                    // Upvote
-                    
-                    
-                    
-                } else if swipeType.value == JZSwipeTypeShortLeft.value {
-                    // Downvote
+                
+                self.hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
+                
+                if let indexPath = self.tableView.indexPathForCell(cell) {
+                    if let link = self.links[indexPath.row] as? RKLink {
+                        if swipeType.value == JZSwipeTypeShortLeft.value {
+                            // Upvote
+                            RedditSession.sharedSession.upvote(link, completion: { (error) -> () in
+                                self.hud.hide(true)
+                                
+                                if error != nil {
+                                    UIAlertView(title: "Error!",
+                                        message: "Unable to upvote! Please try again!",
+                                        delegate: self,
+                                        cancelButtonTitle: "Ok").show()
+                                } else {
+                                    self.syncLinks(self.currentCategory)
+                                }
+                            })
+                        } else if swipeType.value == JZSwipeTypeShortRight.value {
+                            // Downvote
+                            RedditSession.sharedSession.downvote(link, completion: { (error) -> () in
+                                self.hud.hide(true)
+                                
+                                if error != nil {
+                                    UIAlertView(title: "Error!",
+                                        message: "Unable to downvote! Please try again!",
+                                        delegate: self,
+                                        cancelButtonTitle: "Ok").show()
+                                } else {
+                                    self.syncLinks(self.currentCategory)
+                                }
+                            })
+                        }
+                    }
                 }
             }
         }

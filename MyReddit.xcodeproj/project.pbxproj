@@ -168,6 +168,53 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		CE10072E1AF2FDDE000ED144 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				CE3588211AC346D800294684 /* SubredditCell.swift */,
+				01F965521AC4F4B500DE0CD6 /* MessageCell.swift */,
+				CE046ED01AC4247500DF59B4 /* PostCell.swift */,
+				CE046EC81AC3521100DF59B4 /* PostImageCell.swift */,
+				01332D871AC37F4B0054E05C /* TitleCell.swift */,
+				CEC59EAF1AF2628800D0D62B /* EmailCell.swift */,
+				CEC59EB11AF2629100D0D62B /* PasswordCell.swift */,
+				015E0D5C1AEF2B4000299B29 /* CommentCell.swift */,
+				CEF4E25F1AF2B508001CFB69 /* JZSwipeCell+Reset.swift */,
+			);
+			name = Cells;
+			sourceTree = "<group>";
+		};
+		CE10072F1AF2FDE8000ED144 /* Subreddits */ = {
+			isa = PBXGroup;
+			children = (
+				018E40211AC38A060055384D /* LinkViewController.swift */,
+				CEB866131AF05DDF00BE850F /* SubredditsPageViewController.swift */,
+				CE35881F1AC30DEE00294684 /* SubredditViewController.swift */,
+				01D6646D1AC33C6600BE56EA /* SubredditsViewController.swift */,
+			);
+			name = Subreddits;
+			sourceTree = "<group>";
+		};
+		CE1007301AF2FDF6000ED144 /* Library */ = {
+			isa = PBXGroup;
+			children = (
+				CE4B9E9A1AE1957200018742 /* UIImage+ImageEffects.h */,
+				CE4B9E9B1AE1957200018742 /* UIImage+ImageEffects.m */,
+				CEC5DE731AF2A66F002012DC /* GHContextMenuView.h */,
+				CEC5DE741AF2A66F002012DC /* GHContextMenuView.m */,
+			);
+			name = Library;
+			sourceTree = "<group>";
+		};
+		CE1007311AF2FE1A000ED144 /* Comments */ = {
+			isa = PBXGroup;
+			children = (
+				015E0D5A1AEF27BB00299B29 /* CommentsViewController.swift */,
+				CEC59EAB1AF1B0B600D0D62B /* AddCommentViewController.swift */,
+			);
+			name = Comments;
+			sourceTree = "<group>";
+		};
 		CE712ED21AC2F1A10042B071 = {
 			isa = PBXGroup;
 			children = (
@@ -191,38 +238,23 @@
 		CE712EDD1AC2F1A20042B071 /* MyReddit */ = {
 			isa = PBXGroup;
 			children = (
-				CEC5DE731AF2A66F002012DC /* GHContextMenuView.h */,
-				CEC5DE741AF2A66F002012DC /* GHContextMenuView.m */,
-				CE0862151AF27DE300F00AAB /* MyReddit.entitlements */,
-				CE4B9E9A1AE1957200018742 /* UIImage+ImageEffects.h */,
-				CE4B9E9B1AE1957200018742 /* UIImage+ImageEffects.m */,
-				CE4B9E961AE1858C00018742 /* NavBarController.swift */,
-				CE3588191AC305B200294684 /* MyReddit-Bridging-Header.h */,
-				CE712EE91AC2F1A20042B071 /* Images.xcassets */,
 				CE712EE01AC2F1A20042B071 /* AppDelegate.swift */,
-				018E40211AC38A060055384D /* LinkViewController.swift */,
+				CE3588191AC305B200294684 /* MyReddit-Bridging-Header.h */,
+				CE712EE61AC2F1A20042B071 /* Main.storyboard */,
+				CE712EEB1AC2F1A20042B071 /* LaunchScreen.xib */,
+				CE0862151AF27DE300F00AAB /* MyReddit.entitlements */,
+				CE712EE91AC2F1A20042B071 /* Images.xcassets */,
+				CE4B9E961AE1858C00018742 /* NavBarController.swift */,
+				CE10072E1AF2FDDE000ED144 /* Cells */,
+				CE10072F1AF2FDE8000ED144 /* Subreddits */,
+				CE1007311AF2FE1A000ED144 /* Comments */,
 				01F9654C1AC4F12000DE0CD6 /* MessagesViewController.swift */,
 				018E40231AC392700055384D /* LoginViewController.swift */,
-				CE3588211AC346D800294684 /* SubredditCell.swift */,
-				01F965521AC4F4B500DE0CD6 /* MessageCell.swift */,
-				CEF4E25F1AF2B508001CFB69 /* JZSwipeCell+Reset.swift */,
-				CE046ED01AC4247500DF59B4 /* PostCell.swift */,
-				CEB866131AF05DDF00BE850F /* SubredditsPageViewController.swift */,
-				CE35881F1AC30DEE00294684 /* SubredditViewController.swift */,
 				CEC59EAD1AF25AFF00D0D62B /* PurchaseViewController.swift */,
-				CE046EC81AC3521100DF59B4 /* PostImageCell.swift */,
-				01332D871AC37F4B0054E05C /* TitleCell.swift */,
 				CEAC71BC1AF14856006DC831 /* LoadMoreHeader.swift */,
 				CEB866111AF01FC200BE850F /* WebViewController.swift */,
-				015E0D5A1AEF27BB00299B29 /* CommentsViewController.swift */,
-				CEC59EAB1AF1B0B600D0D62B /* AddCommentViewController.swift */,
-				01D6646D1AC33C6600BE56EA /* SubredditsViewController.swift */,
-				CE712EE61AC2F1A20042B071 /* Main.storyboard */,
-				CEC59EAF1AF2628800D0D62B /* EmailCell.swift */,
-				CEC59EB11AF2629100D0D62B /* PasswordCell.swift */,
-				015E0D5C1AEF2B4000299B29 /* CommentCell.swift */,
-				CE712EEB1AC2F1A20042B071 /* LaunchScreen.xib */,
 				CE712F171AC302EE0042B071 /* Data */,
+				CE1007301AF2FDF6000ED144 /* Library */,
 				CE712EDE1AC2F1A20042B071 /* Supporting Files */,
 			);
 			path = MyReddit;

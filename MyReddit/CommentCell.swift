@@ -31,6 +31,10 @@ class CommentCell: JZSwipeCell, UITextViewDelegate {
         self.repliesLabel.backgroundColor = UIColor.groupTableViewBackgroundColor()
         
         self.commentTextView.delegate = self
+        
+        UIView.animateWithDuration(0.1, animations: { () -> Void in
+            self.contentView.layoutIfNeeded()
+        })
     }
     
     var link: RKLink! {
@@ -66,11 +70,19 @@ class CommentCell: JZSwipeCell, UITextViewDelegate {
             infoString.addAttributes(attrs, range: NSMakeRange(0, count(link.author)))
             
             self.infoLabel.attributedText = infoString
-            
+            self.scoreLabel.text = link.score.description
             self.repliesLabel.hidden = true
             
             repliesLabelHeightConstraint.constant = 0.0
             self.contentView.layoutIfNeeded()
+            
+            if self.link.upvoted() {
+                self.scoreLabel.textColor = MyRedditUpvoteColor
+            } else if self.link.downvoted() {
+                self.scoreLabel.textColor = MyRedditDownvoteColor
+            } else {
+                self.scoreLabel.textColor = UIColor.lightGrayColor()
+            }
         }
     }
     
@@ -97,6 +109,16 @@ class CommentCell: JZSwipeCell, UITextViewDelegate {
             
             self.infoLabel.attributedText = infoString
             
+            self.scoreLabel.text = comment.score.description
+            
+            if self.comment.upvoted() {
+                self.scoreLabel.textColor = MyRedditUpvoteColor
+            } else if self.comment.downvoted() {
+                self.scoreLabel.textColor = MyRedditDownvoteColor
+            } else {
+                self.scoreLabel.textColor = UIColor.lightGrayColor()
+            }
+            
             if comment.replies.count > 0 {
                 
                 var lastReply = comment.replies[comment.replies.count - 1] as! RKComment
@@ -111,14 +133,17 @@ class CommentCell: JZSwipeCell, UITextViewDelegate {
             } else {
                 self.repliesLabel.hidden = true
                 
-                repliesLabelHeightConstraint.constant = 0.0
-                self.contentView.layoutIfNeeded()
+                UIView.animateWithDuration(0.1, animations: { () -> Void in
+                    self.repliesLabelHeightConstraint.constant = 0.0
+                    self.contentView.layoutIfNeeded()
+                })
             }
         }
     }
     
     @IBOutlet weak var repliesLabel: UILabel!
     @IBOutlet weak var infoLabel: UILabel!
+    @IBOutlet weak var scoreLabel: UILabel!
     
     @IBOutlet weak var repliesLabelHeightConstraint: NSLayoutConstraint!
     

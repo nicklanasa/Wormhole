@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>AB51463E-DD9D-4C77-A873-B80EF5DFA8F4</string>
+	<key>IDESourceControlProjectName</key>
+	<string>MyReddit</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>7FE5023EE80BFBAA8DBE99AE2DA8B2ABF413E10C</key>
+		<string>bitbucket.org:nytekproductions/myreddit2015.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>MyReddit.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>7FE5023EE80BFBAA8DBE99AE2DA8B2ABF413E10C</key>
+		<string>..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>bitbucket.org:nytekproductions/myreddit2015.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>7FE5023EE80BFBAA8DBE99AE2DA8B2ABF413E10C</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>7FE5023EE80BFBAA8DBE99AE2DA8B2ABF413E10C</string>
+			<key>IDESourceControlWCCName</key>
+			<string>MyReddit</string>
+		</dict>
+	</array>
+</dict>
+</plist>

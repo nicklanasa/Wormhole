@@ -75,5 +75,33 @@ class RedditSession {
         })
     }
     
+    func upvote(object: RKVotable, completion: ErrorCompletion) {
+        if object.voted() {
+            self.revokeVote(object, completion: { (error) -> () in
+                completion(error: error)
+            })
+        } else {
+            RKClient.sharedClient().upvote(object, completion: { (error) -> Void in
+                completion(error: error)
+            })
+        }
+    }
     
+    func downvote(object: RKVotable, completion: ErrorCompletion) {
+        if object.voted() {
+            self.revokeVote(object, completion: { (error) -> () in
+                completion(error: error)
+            })
+        } else {
+            RKClient.sharedClient().downvote(object, completion: { (error) -> Void in
+                completion(error: error)
+            })
+        }
+    }
+    
+    func revokeVote(object: RKVotable, completion: ErrorCompletion) {
+        RKClient.sharedClient().revokeVote(object, completion: { (error) -> Void in
+            completion(error: error)
+        })
+    }
 }
