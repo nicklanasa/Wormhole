@@ -114,7 +114,7 @@ class Datastore {
             if let subreddits = results {
                 for subreddit in subreddits as! [RKSubreddit] {
                     var request = NSFetchRequest(entityName: "Subreddit")
-                    let predicate = NSPredicate(format: "identifier = %@", subreddit.identifier)
+                    let predicate = NSPredicate(format: "identifier = %@", subreddit.fullName)
                     request.fetchLimit = 1
                     request.predicate = predicate
                     
@@ -155,6 +155,45 @@ class Datastore {
                 completion(error: error)
             })
         }
+    }
+    
+    func addSubreddit(subscriber: Bool, subredditData: [String : AnyObject], completion: (results: [Subreddit], error: NSErrorPointer) -> ()) {
+        var request = NSFetchRequest(entityName: "Subreddit")
+        
+        var addedSubreddits: [Subreddit] = []
+        
+        if let fullName = subredditData["id"] as? String {
+            let predicate = NSPredicate(format: "identifier = %@", fullName)
+            request.fetchLimit = 1
+            request.predicate = predicate
+            
+            var error: NSError? = nil
+            let results = self.workerContext.executeFetchRequest(request, error: &error)
+            
+            var managedSubreddit: Subreddit
+            if results?.count > 0 {
+                managedSubreddit = results?[0] as! Subreddit
+            } else {
+                managedSubreddit = NSEntityDescription.insertNewObjectForEntityForName("Subreddit",
+                    inManagedObjectContext: self.workerContext) as! Subreddit
+            }
+            
+            managedSubreddit.parseSubreddit(subredditData)
+            
+            addedSubreddits.append(managedSubreddit)
+        }
+        
+        self.saveDatastoreWithCompletion({ (error) -> () in
+            completion(results: addedSubreddits, error: error)
+        })
+    }
+    
+    func subscribeToSubreddit(subreddit: Subreddit, completion: (error: NSErrorPointer) -> ()) {
+        subreddit.subscriber = NSNumber(bool: true)
+        
+        self.saveDatastoreWithCompletion({ (error) -> () in
+            completion(error: error)
+        })
     }
     
     func addMessages(results: [AnyObject]?, completion: (results: [Message], error: NSError?) -> ()) {

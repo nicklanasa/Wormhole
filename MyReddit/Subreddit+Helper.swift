@@ -12,7 +12,7 @@ extension Subreddit {
     func parseSubreddit(subreddit: AnyObject) {
         if let rkSubreddit = subreddit as? RKSubreddit {
             
-            self.identifier = rkSubreddit.identifier
+            self.identifier = rkSubreddit.fullName
             
             self.accountsActive = rkSubreddit.accountsActive
 
@@ -90,6 +90,32 @@ extension Subreddit {
             
             if let identifier = link.subredditFullName {
                 self.identifier = identifier
+            }
+        }
+        
+        if let subredditData = subreddit as? [String : AnyObject] {
+            if let name = subreddit["display_name"] as? String {
+                self.name = name
+            }
+            
+            if let subredditDescription = subreddit["description"] as? String {
+                self.subredditDescription = subredditDescription
+            }
+            
+            if let over18 = subreddit["over18"] as? NSNumber {
+                self.over18 = over18
+            }
+            
+            if let subscribers = subreddit["subscribers"] as? NSNumber {
+                self.totalSubscribers = subscribers
+            }
+            
+            if let headerIMG = subreddit["header_img"] as? String {
+                self.headerImageURL = headerIMG
+            }
+            
+            if let fullName = subreddit["id"] as? String {
+                self.identifier = fullName
             }
         }
     }

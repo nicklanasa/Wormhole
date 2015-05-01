@@ -3,6 +3,7 @@
 //
 
 #import "RedditKit.h"
+#import "RKCompletionBlocks.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "SWTableViewCell.h"
 #import "UIImage+ImageEffects.h"

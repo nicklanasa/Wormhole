@@ -39,6 +39,8 @@
 		CE4B9E971AE1858C00018742 /* NavBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4B9E961AE1858C00018742 /* NavBarController.swift */; };
 		CE4B9E9C1AE1957200018742 /* UIImage+ImageEffects.m in Sources */ = {isa = PBXBuildFile; fileRef = CE4B9E9B1AE1957200018742 /* UIImage+ImageEffects.m */; };
 		CE538FAA1AF3B02E008050B6 /* UserContentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE538FA91AF3B02E008050B6 /* UserContentViewController.swift */; };
+		CE538FAC1AF3E850008050B6 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE538FAB1AF3E850008050B6 /* SearchViewController.swift */; };
+		CE538FAE1AF3F19B008050B6 /* RKClient+Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE538FAD1AF3F19B008050B6 /* RKClient+Search.swift */; };
 		CE712EE11AC2F1A20042B071 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE712EE01AC2F1A20042B071 /* AppDelegate.swift */; };
 		CE712EE81AC2F1A20042B071 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE712EE61AC2F1A20042B071 /* Main.storyboard */; };
 		CE712EEA1AC2F1A20042B071 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CE712EE91AC2F1A20042B071 /* Images.xcassets */; };
@@ -109,6 +111,8 @@
 		CE4B9E9A1AE1957200018742 /* UIImage+ImageEffects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+ImageEffects.h"; sourceTree = "<group>"; };
 		CE4B9E9B1AE1957200018742 /* UIImage+ImageEffects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+ImageEffects.m"; sourceTree = "<group>"; };
 		CE538FA91AF3B02E008050B6 /* UserContentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserContentViewController.swift; sourceTree = "<group>"; };
+		CE538FAB1AF3E850008050B6 /* SearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
+		CE538FAD1AF3F19B008050B6 /* RKClient+Search.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "RKClient+Search.swift"; sourceTree = "<group>"; };
 		CE712EDB1AC2F1A20042B071 /* MyReddit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyReddit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE712EDF1AC2F1A20042B071 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CE712EE01AC2F1A20042B071 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -199,6 +203,7 @@
 				CEB866131AF05DDF00BE850F /* SubredditsPageViewController.swift */,
 				CE35881F1AC30DEE00294684 /* SubredditViewController.swift */,
 				01D6646D1AC33C6600BE56EA /* SubredditsViewController.swift */,
+				CE538FAB1AF3E850008050B6 /* SearchViewController.swift */,
 			);
 			name = Subreddits;
 			sourceTree = "<group>";
@@ -324,6 +329,7 @@
 				CE046ECE1AC421EF00DF59B4 /* Int+Helpers.swift */,
 				CE046ED21AC4336500DF59B4 /* String+Helpers.swift */,
 				01F965561AC4FB9200DE0CD6 /* Message+Helpers.swift */,
+				CE538FAD1AF3F19B008050B6 /* RKClient+Search.swift */,
 			);
 			name = Data;
 			sourceTree = "<group>";
@@ -501,12 +507,14 @@
 				CE712F271AC304610042B071 /* Comment.swift in Sources */,
 				CE3588201AC30DEE00294684 /* SubredditViewController.swift in Sources */,
 				01F965531AC4F4B500DE0CD6 /* MessageCell.swift in Sources */,
+				CE538FAE1AF3F19B008050B6 /* RKClient+Search.swift in Sources */,
 				018E40221AC38A060055384D /* LinkViewController.swift in Sources */,
 				CE35881E1AC305E700294684 /* RedditSession.swift in Sources */,
 				01F965571AC4FB9200DE0CD6 /* Message+Helpers.swift in Sources */,
 				01D6646A1AC337BC00BE56EA /* Subreddit+Helper.swift in Sources */,
 				01D6646E1AC33C6600BE56EA /* SubredditsViewController.swift in Sources */,
 				CEB866141AF05DDF00BE850F /* SubredditsPageViewController.swift in Sources */,
+				CE538FAC1AF3E850008050B6 /* SearchViewController.swift in Sources */,
 				CEC59EAC1AF1B0B600D0D62B /* AddCommentViewController.swift in Sources */,
 				CE046ED11AC4247500DF59B4 /* PostCell.swift in Sources */,
 				018E40261AC395D30055384D /* UserSession.swift in Sources */,
@@ -664,8 +672,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = MyReddit/MyReddit.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				INFOPLIST_FILE = MyReddit/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

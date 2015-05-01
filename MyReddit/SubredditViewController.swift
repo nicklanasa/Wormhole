@@ -28,7 +28,8 @@ LoadMoreHeaderDelegate,
 UIGestureRecognizerDelegate,
 GHContextOverlayViewDataSource,
 GHContextOverlayViewDelegate,
-JZSwipeCellDelegate {
+JZSwipeCellDelegate,
+SearchViewControllerDelegate {
     
     var subreddit: Subreddit!
     var front = true
@@ -39,6 +40,7 @@ JZSwipeCellDelegate {
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet var headerImage: UIImageView!
+    @IBOutlet weak var subscribeButton: UIBarButtonItem!
     
     @IBOutlet weak var filterView: UIView! {
         didSet {
@@ -118,7 +120,7 @@ JZSwipeCellDelegate {
                 
                 self.filterViewCloseButtonPressed(sender)
                 
-                self.syncLinks(self.currentCategory)
+                self.syncLinks()
             }
         }
     }
@@ -143,17 +145,31 @@ JZSwipeCellDelegate {
         })
     }
     
+    @IBAction func subscribeButtonTapped(sender: AnyObject) {
+        if self.subreddit.subscriber.boolValue {
+            RedditSession.sharedSession.unsubscribe(subreddit, completion: { (error) -> () in
+                if error != nil {
+                    UIAlertView(title: "Error!", message: "Unable to unsubscribe to Subreddit. Please make sure you are connected to the internets.", delegate: self, cancelButtonTitle: "Ok").show()
+                } else {
+                    DataManager.manager.datastore.mainQueueContext.deleteObject(self.subreddit)
+                    self.front = true
+                    self.currentCategory = nil
+                    self.syncLinks()
+                }
+            })
+        } else {
+            RedditSession.sharedSession.subscribe(self.subreddit, completion: { (error) -> () in
+                if error != nil {
+                    UIAlertView(title: "Error!", message: "Unable to subscribe to Subreddit. Please make sure you are connected to the internets.", delegate: self, cancelButtonTitle: "Ok").show()
+                } else {
+                    self.updateSubscribeButton()
+                }
+            })
+        }
+    }
+    
     override func viewDidLoad() {
-        var title = front ? "Front" : "/r/\(subreddit.name)"
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: title, style: .Plain, target: self, action: nil)
-        self.navigationController?.navigationBarHidden = false
-        
-        self.navigationItem.title = ""
-        
-        self.navigationItem.leftBarButtonItem!.setTitleTextAttributes([NSForegroundColorAttributeName: UIColor.blackColor(),
-            NSFontAttributeName: MyRedditTitleBigFont],
-            forState: UIControlState.Normal)
-        self.syncLinks(self.currentCategory)
+        self.syncLinks()
         
         self.contextMenu = GHContextMenuView()
         self.contextMenu.delegate = self
@@ -161,6 +177,24 @@ JZSwipeCellDelegate {
         
         var long = UILongPressGestureRecognizer(target: self.contextMenu, action: "longPressDetected:")
         self.view.gestureRecognizers = [long]
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        self.updateSubscribeButton()
+    }
+    
+    private func updateSubscribeButton() {
+        if front {
+            self.subscribeButton.title = ""
+        } else {
+            if self.subreddit.subscriber.boolValue {
+                self.subscribeButton.title = "Unsubscribe"
+                self.subscribeButton.tintColor = MyRedditDownvoteColor
+            } else {
+                self.subscribeButton.title = "Subscribe"
+                self.subscribeButton.tintColor = MyRedditUpvoteColor
+            }
+        }
     }
     
     func imageForItemAtIndex(index: Int) -> UIImage! {
@@ -194,7 +228,18 @@ JZSwipeCellDelegate {
         }
     }
     
-    private func syncLinks(category: RKSubredditCategory?) {
+    private func syncLinks() {
+        
+        var title = front ? "Front" : "/r/\(subreddit.name)"
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: title, style: .Plain, target: self, action: nil)
+        self.navigationController?.navigationBarHidden = false
+        
+        self.navigationItem.title = ""
+        
+        self.navigationItem.leftBarButtonItem!.setTitleTextAttributes([
+            NSFontAttributeName: MyRedditTitleBigFont],
+            forState: UIControlState.Normal)
+        
         self.tableView.reloadData()
         if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forItem: 0, inSection: 1)) as? LoadMoreHeader {
             cell.startAnimating()
@@ -299,6 +344,12 @@ JZSwipeCellDelegate {
                     controller.link = link
                 }
             }
+        } else if segue.identifier == "SearchSegue" {
+            if let nav = segue.destinationViewController as? UINavigationController {
+                if let controller = nav.viewControllers[0] as? SearchViewController {
+                    controller.delegate = self
+                }
+            }
         } else {
             if let link = sender as? RKLink {
                 if let controller = segue.destinationViewController as? CommentsViewController {
@@ -321,7 +372,7 @@ JZSwipeCellDelegate {
             } else {
                 self.tableView.reloadData()
             }
-        }        
+        }
     }
     
     func swipeCell(cell: JZSwipeCell!, triggeredSwipeWithType swipeType: JZSwipeType) {
@@ -346,7 +397,7 @@ JZSwipeCellDelegate {
                                         delegate: self,
                                         cancelButtonTitle: "Ok").show()
                                 } else {
-                                    self.syncLinks(self.currentCategory)
+                                    self.syncLinks()
                                 }
                             })
                         } else if swipeType.value == JZSwipeTypeShortRight.value {
@@ -360,7 +411,7 @@ JZSwipeCellDelegate {
                                         delegate: self,
                                         cancelButtonTitle: "Ok").show()
                                 } else {
-                                    self.syncLinks(self.currentCategory)
+                                    self.syncLinks()
                                 }
                             })
                         }
@@ -372,5 +423,17 @@ JZSwipeCellDelegate {
     
     func swipeCell(cell: JZSwipeCell!, swipeTypeChangedFrom from: JZSwipeType, to: JZSwipeType) {
         
+    }
+    
+    func searchViewController(controller: SearchViewController, didTapSubreddit subreddit: Subreddit) {
+        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            self.front = false
+            self.links = Array<AnyObject>()
+            self.subreddit = subreddit
+            self.updateSubscribeButton()
+            self.currentCategory = nil
+            self.pagination = nil
+            self.syncLinks()
+        })
     }
 }
