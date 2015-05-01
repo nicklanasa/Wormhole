@@ -53,51 +53,9 @@ class UserSession {
         }
     }
     
-    func overview(pagination: RKPagination?, completion: PaginationCompletion) {
+    func userContent(category: RKUserContentCategory, pagination: RKPagination?, completion: PaginationCompletion) {
         var user = RKClient.sharedClient().currentUser
-        RKClient.sharedClient().contentForUser(user, category: .Overview, pagination: pagination) { (results, pagination, error) -> Void in
-            completion(pagination: pagination, results: results, error: error)
-        }
-    }
-    
-    func comments(pagination: RKPagination?, completion: PaginationCompletion) {
-        var user = RKClient.sharedClient().currentUser
-        RKClient.sharedClient().contentForUser(user, category: .Comments, pagination: pagination) { (results, pagination, error) -> Void in
-            completion(pagination: pagination, results: results, error: error)
-        }
-    }
-    
-    func liked(pagination: RKPagination?, completion: PaginationCompletion) {
-        var user = RKClient.sharedClient().currentUser
-        RKClient.sharedClient().contentForUser(user, category: .Liked, pagination: pagination) { (results, pagination, error) -> Void in
-            completion(pagination: pagination, results: results, error: error)
-        }
-    }
-    
-    func disliked(pagination: RKPagination?, completion: PaginationCompletion) {
-        var user = RKClient.sharedClient().currentUser
-        RKClient.sharedClient().contentForUser(user, category: .Disliked, pagination: pagination) { (results, pagination, error) -> Void in
-            completion(pagination: pagination, results: results, error: error)
-        }
-    }
-    
-    func submitted(pagination: RKPagination?, completion: PaginationCompletion) {
-        var user = RKClient.sharedClient().currentUser
-        RKClient.sharedClient().contentForUser(user, category: .Submissions, pagination: pagination) { (results, pagination, error) -> Void in
-            completion(pagination: pagination, results: results, error: error)
-        }
-    }
-    
-    func saved(pagination: RKPagination?, completion: PaginationCompletion) {
-        var user = RKClient.sharedClient().currentUser
-        RKClient.sharedClient().contentForUser(user, category: .Saved, pagination: pagination) { (results, pagination, error) -> Void in
-            completion(pagination: pagination, results: results, error: error)
-        }
-    }
-    
-    func hidden(pagination: RKPagination?, completion: PaginationCompletion) {
-        var user = RKClient.sharedClient().currentUser
-        RKClient.sharedClient().contentForUser(user, category: .Hidden, pagination: pagination) { (results, pagination, error) -> Void in
+        RKClient.sharedClient().contentForUser(user, category: category, pagination: pagination) { (results, pagination, error) -> Void in
             completion(pagination: pagination, results: results, error: error)
         }
     }

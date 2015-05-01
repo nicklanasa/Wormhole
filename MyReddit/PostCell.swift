@@ -11,4 +11,11 @@ import UIKit
 
 class PostCell: JZSwipeCell {
     var link: RKLink!
+    var linkComment: RKComment!
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        self.imageSet = SwipeCellImageSetMake(UIImage(named: "Down"), UIImage(named: "Down"), UIImage(named: "Up"), UIImage(named: "Up"))
+        self.colorSet = SwipeCellColorSetMake(MyRedditDownvoteColor, MyRedditDownvoteColor, MyRedditUpvoteColor, MyRedditUpvoteColor)
+    }
 }

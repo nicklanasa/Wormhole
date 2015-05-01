@@ -75,6 +75,12 @@ class RedditSession {
         })
     }
     
+    func fetchLinkWithComment(comment: RKComment, completion: PaginationCompletion) {
+        RKClient.sharedClient().linkWithFullName(comment.linkID, completion: { (link, error) -> Void in
+            completion(pagination: nil, results: [link], error: error)
+        })
+    }
+    
     func upvote(object: RKVotable, completion: ErrorCompletion) {
         if object.voted() {
             self.revokeVote(object, completion: { (error) -> () in

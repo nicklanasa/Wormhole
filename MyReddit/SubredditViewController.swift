@@ -198,28 +198,35 @@ JZSwipeCellDelegate {
         self.tableView.reloadData()
         if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forItem: 0, inSection: 1)) as? LoadMoreHeader {
             cell.startAnimating()
-            if front {
-                DataManager.manager.syncFrontPageLinks(self.pagination, category: category, completion: { (pagination, results, error) -> () in
-                    self.pagination = pagination
-                    if let moreLinks = results {
-                        self.links.extend(moreLinks)
-                    }
-                    
-                    cell.stopAnimating()
-                })
-            } else {
-                DataManager.manager.syncLinksSubreddit(self.subreddit, category: category, pagination: self.pagination, completion: { (pagination, results, error) -> () in
-                    self.pagination = pagination
-                    if let moreLinks = results {
-                        self.links.extend(moreLinks)
-                    }
-                    
-                    cell.stopAnimating()
-                })
-            }
+            
+            self.fetchLinks({ () -> () in
+                cell.stopAnimating()
+            })
         }
 
         self.navigationItem.rightBarButtonItem?.enabled = true
+    }
+    
+    private func fetchLinks(completion: () -> ()) {
+        if front {
+            DataManager.manager.syncFrontPageLinks(self.pagination, category: self.currentCategory, completion: { (pagination, results, error) -> () in
+                self.pagination = pagination
+                if let moreLinks = results {
+                    self.links.extend(moreLinks)
+                }
+                
+                completion()
+            })
+        } else {
+            DataManager.manager.syncLinksSubreddit(self.subreddit, category: self.currentCategory, pagination: self.pagination, completion: { (pagination, results, error) -> () in
+                self.pagination = pagination
+                if let moreLinks = results {
+                    self.links.extend(moreLinks)
+                }
+                
+                completion()
+            })
+        }
     }
 
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -253,7 +260,7 @@ JZSwipeCellDelegate {
         var cell = tableView.dequeueReusableCellWithIdentifier("PostImageCell") as! PostCell
         
         if let link = self.links[indexPath.row] as? RKLink {
-            if link.isImageLink() || link.media != nil {
+            if link.isImageLink() || link.media != nil || link.domain == "imgur.com" {
                 cell = tableView.dequeueReusableCellWithIdentifier("PostImageCell") as! PostImageCell
                 
                 if indexPath.row == 0 {
@@ -266,10 +273,7 @@ JZSwipeCellDelegate {
             
             cell.link = link
         }
-        
-        cell.imageSet = SwipeCellImageSetMake(UIImage(named: "DownWhite"), UIImage(named: "DownWhite"), UIImage(named: "UpWhite"), UIImage(named: "UpWhite"))
-        cell.colorSet = SwipeCellColorSetMake(MyRedditDownvoteColor, MyRedditDownvoteColor, MyRedditUpvoteColor, MyRedditUpvoteColor)
-        
+
         cell.delegate = self
         
         return cell
@@ -309,8 +313,15 @@ JZSwipeCellDelegate {
             button.hidden = true
             header.activityIndicator.hidden = false
             header.activityIndicator.startAnimating()
-            self.syncLinks(self.currentCategory)
-        }
+            
+            if self.pagination != nil {
+                self.fetchLinks({ () -> () in
+                    
+                })
+            } else {
+                self.tableView.reloadData()
+            }
+        }        
     }
     
     func swipeCell(cell: JZSwipeCell!, triggeredSwipeWithType swipeType: JZSwipeType) {

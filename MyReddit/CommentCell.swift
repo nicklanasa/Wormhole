@@ -27,6 +27,9 @@ class CommentCell: JZSwipeCell, UITextViewDelegate {
         
         super.awakeFromNib()
         
+        self.imageSet = SwipeCellImageSetMake(UIImage(named: "Down"), UIImage(named: "Down"), UIImage(named: "Up"), UIImage(named: "Up"))
+        self.colorSet = SwipeCellColorSetMake(MyRedditDownvoteColor, MyRedditDownvoteColor, MyRedditUpvoteColor, MyRedditUpvoteColor)
+        
         self.repliesLabel.layer.cornerRadius = 2
         self.repliesLabel.backgroundColor = UIColor.groupTableViewBackgroundColor()
         

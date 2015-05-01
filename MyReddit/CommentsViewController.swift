@@ -92,9 +92,6 @@ class CommentsViewController: UITableViewController, CommentCellDelegate, JZSwip
         
         cell.delegate = self
         
-        cell.imageSet = SwipeCellImageSetMake(UIImage(named: "DownWhite"), UIImage(named: "DownWhite"), UIImage(named: "UpWhite"), UIImage(named: "UpWhite"))
-        cell.colorSet = SwipeCellColorSetMake(MyRedditDownvoteColor, MyRedditDownvoteColor, MyRedditUpvoteColor, MyRedditUpvoteColor)
-        
         cell.commentDelegate = self
         
         return cell

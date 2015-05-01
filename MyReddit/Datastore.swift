@@ -141,6 +141,22 @@ class Datastore {
         }
     }
     
+    func removeAllSubreddits(completion: (error: NSErrorPointer) -> ()) {
+        self.workerContext.performBlock { () -> Void in
+            var request = NSFetchRequest(entityName: "Subreddit")
+            var error: NSError? = nil
+            let results = self.workerContext.executeFetchRequest(request, error: &error)
+            
+            for subreddit in results as! [Subreddit] {
+                self.workerContext.deleteObject(subreddit)
+            }
+            
+            self.saveDatastoreWithCompletion({ (error) -> () in
+                completion(error: error)
+            })
+        }
+    }
+    
     func addMessages(results: [AnyObject]?, completion: (results: [Message], error: NSError?) -> ()) {
         self.workerContext.performBlock { () -> Void in
             

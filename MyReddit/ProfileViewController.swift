@@ -13,7 +13,7 @@ class ProfileViewController: UIViewController, UITableViewDataSource, UITableVie
     
     @IBOutlet weak var tableView: UITableView!
     
-    var userTitles = ["Overview", "Comments", "Submitted", "Liked", "Disliked", "Hidden", "Saved"]
+    var userTitles = ["Overview", "Comments", "Submitted", "Gilded", "Liked", "Disliked", "Hidden", "Saved"]
     var karmaTitles = ["Link Karma", "Comment Karma"]
     var profileTitles = ["Username", "Created"]
     
@@ -23,7 +23,10 @@ class ProfileViewController: UIViewController, UITableViewDataSource, UITableVie
     
     @IBAction func logoutButtonTapped(sender: AnyObject) {
         UserSession.sharedSession.logout()
-        self.cancelButtonTapped(sender)
+        
+        DataManager.manager.datastore.removeAllSubreddits { (error) -> () in
+            self.cancelButtonTapped(sender)
+        }
     }
     
     override func viewDidLoad() {
@@ -40,7 +43,7 @@ class ProfileViewController: UIViewController, UITableViewDataSource, UITableVie
         if section == 0 || section == 1 {
             return 2
         } else {
-            return 7
+            return 8
         }
     }
     
@@ -81,5 +84,23 @@ class ProfileViewController: UIViewController, UITableViewDataSource, UITableVie
         }
         
         return cell
+    }
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        self.tableView.deselectRowAtIndexPath(indexPath, animated: true)
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "UserContentSegue" {
+            if let controller = segue.destinationViewController as? UserContentViewController {
+                if let cell = sender as? UITableViewCell {
+                    
+                    var indexPath: NSIndexPath = self.tableView.indexPathForCell(cell)!
+                    var category = RKUserContentCategory(rawValue: UInt(indexPath.row+1))
+                    controller.category = category
+                    controller.categoryTitle = self.userTitles[indexPath.row] as String
+                }
+            }
+        }
     }
 }

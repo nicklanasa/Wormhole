@@ -23,6 +23,8 @@ class LinkViewController: UIViewController {
         self.webView.backgroundColor = UIColor.whiteColor()
         self.webView.hidden = false
         self.navigationItem.title =  self.link.title
+        
+        self.updateVoteButtons()
     }
     
     private func updateVoteButtons() {
@@ -55,14 +57,22 @@ class LinkViewController: UIViewController {
     }
     
     @IBAction func downvoteButtonTapped(sender: AnyObject) {
-        RedditSession.sharedSession.downvote(self.link, completion: { (error) -> () in
-            self.updateVoteButtons()
-        })
+        if NSUserDefaults.standardUserDefaults().objectForKey("purchased") == nil {
+            self.performSegueWithIdentifier("PurchaseSegue", sender: self)
+        } else {
+            RedditSession.sharedSession.downvote(self.link, completion: { (error) -> () in
+                self.updateVoteButtons()
+            })
+        }
     }
     
     @IBAction func upvoteButtonTapped(sender: AnyObject) {
-        RedditSession.sharedSession.upvote(self.link, completion: { (error) -> () in
-            self.updateVoteButtons()
-        })
+        if NSUserDefaults.standardUserDefaults().objectForKey("purchased") == nil {
+            self.performSegueWithIdentifier("PurchaseSegue", sender: self)
+        } else {
+            RedditSession.sharedSession.upvote(self.link, completion: { (error) -> () in
+                self.updateVoteButtons()
+            })
+        }
     }
 }

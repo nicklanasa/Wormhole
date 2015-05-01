@@ -16,6 +16,10 @@ class TitleCell: PostCell {
     @IBOutlet weak var postInfoLabel: UILabel!
     @IBOutlet weak var subredditLabel: UILabel!
     
+    override func awakeFromNib() {
+        super.awakeFromNib()
+    }
+    
     override var link: RKLink! {
         didSet {
             self.titleLabel.text = link.title
@@ -40,4 +44,30 @@ class TitleCell: PostCell {
         }
     }
     
+    override var linkComment: RKComment! {
+        didSet {
+            self.titleLabel.text = linkComment.body
+            self.scoreLabel.text = linkComment.score.description
+            
+            if self.linkComment.upvoted() {
+                self.scoreLabel.textColor = MyRedditUpvoteColor
+            } else if self.linkComment.downvoted() {
+                self.scoreLabel.textColor = MyRedditDownvoteColor
+            } else {
+                self.scoreLabel.textColor = UIColor.lightGrayColor()
+            }
+            
+            self.commentsLabel.text = linkComment.replies?.count.description
+            self.subredditLabel.text = "/r/\(linkComment.subreddit)"
+            
+            var replies = linkComment.replies?.count == 1 ? "reply" : "replies"
+            
+            var infoString = NSMutableAttributedString(string: "\(linkComment.author) - \(linkComment.created.timeAgo()) - \(linkComment.replies?.count) \(replies)")
+
+            var attrs = [NSForegroundColorAttributeName : UIColor.blackColor()]
+            infoString.addAttributes(attrs, range: NSMakeRange(0, count(linkComment.author)))
+            
+            self.postInfoLabel.attributedText = infoString
+        }
+    }
 }
