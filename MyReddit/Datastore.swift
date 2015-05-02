@@ -196,6 +196,14 @@ class Datastore {
         })
     }
     
+    func unsubscribeToSubreddit(subreddit: Subreddit, completion: (error: NSErrorPointer) -> ()) {
+        subreddit.subscriber = NSNumber(bool: false)
+        
+        self.saveDatastoreWithCompletion({ (error) -> () in
+            completion(error: error)
+        })
+    }
+    
     func addMessages(results: [AnyObject]?, completion: (results: [Message], error: NSError?) -> ()) {
         self.workerContext.performBlock { () -> Void in
             

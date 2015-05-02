@@ -12,6 +12,28 @@ import CoreData
 
 class SubredditsViewController: UIViewController, UITableViewDataSource, NSFetchedResultsControllerDelegate {
     
+    var subreddits = Array<AnyObject>() {
+        didSet {
+            self.subreddits.sort({ (first, second) -> Bool in
+                if let subreddit1 = first as? RKSubreddit {
+                    if let subreddit2 = second as? RKSubreddit {
+                        return subreddit1.name.caseInsensitiveCompare(subreddit2.name) == .OrderedAscending
+                    }
+                }
+                
+                return false
+            })
+            
+            self.tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: .None)
+            
+            let subredditsData = NSKeyedArchiver.archivedDataWithRootObject(self.subreddits)
+            
+            NSUserDefaults.standardUserDefaults().setObject(subredditsData, forKey: "subreddits")
+        }
+    }
+    
+    var syncSubreddits = Array<AnyObject>()
+    
     @IBOutlet weak var tableView: UITableView!
 
     @IBAction func cancelButtonTapped(sender: AnyObject) {
@@ -37,124 +59,52 @@ class SubredditsViewController: UIViewController, UITableViewDataSource, NSFetch
         }
     }
     
-    lazy var subredditsController: NSFetchedResultsController = {
-        let controller = DataManager.manager.datastore.subredditsController(nil,
-            sortKey: "name",
-            ascending: true,
-            sectionNameKeyPath: nil)
-        controller.delegate = self
-        return controller
-    }()
-    
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        
+        if let subredditsData = NSUserDefaults.standardUserDefaults().objectForKey("subreddits") as? NSData {
+            if let subreddits = NSKeyedUnarchiver.unarchiveObjectWithData(subredditsData) as? [RKSubreddit] {
+                self.subreddits = subreddits
+            }
+        }
+        
         self.fetchSubreddits()
     }
     
     func fetchSubreddits() {
-        
-        if UserSession.sharedSession.isSignedIn {
-            self.subredditsController.fetchRequest.predicate = NSPredicate(format: "subscriber = %@", NSNumber(bool: true))
-        } else {
-            self.subredditsController.fetchRequest.predicate = nil
-        }
-        
-        var error: NSError?
-        if self.subredditsController.performFetch(&error) {
-            self.syncSubreddits(nil)
-            
-            self.tableView.reloadData()
-        }
+       self.syncSubreddits(nil)
     }
     
     func syncSubreddits(pagination: RKPagination?) {
+        
         if UserSession.sharedSession.isSignedIn {
-            DataManager.manager.syncSubcribedSubreddits(pagination, completion: { (pagination, results, error) -> () in
-                if pagination != nil {
-                    self.syncSubreddits(pagination)
-                } else {
-                    self.tableView.reloadData()
+            RedditSession.sharedSession.fetchSubscribedSubreddits(pagination, category: .Subscriber, completion: { (pagination, results, error) -> () in
+                if let subreddits = results {
+                    self.syncSubreddits.extend(subreddits)
+                    if pagination != nil {
+                        self.syncSubreddits(pagination)
+                    } else {
+                        self.subreddits = self.syncSubreddits
+                    }
                 }
             })
         } else {
-            DataManager.manager.syncPopularSubreddits(pagination, completion: { (pagination, results, error) -> () in
-                self.tableView.reloadData()
+            RedditSession.sharedSession.fetchPopularSubreddits(pagination, completion: { (pagination, results, error) -> () in
+                if let subreddits = results {
+                    self.subreddits = subreddits
+                }
             })
         }
     }
     
     // MARK: Sectors NSFetchedResultsControllerDelegate
     
-    func controllerWillChangeContent(controller: NSFetchedResultsController)
-    {
-        self.tableView.beginUpdates()
-    }
-    
-    func controller(controller: NSFetchedResultsController,
-        didChangeObject anObject: AnyObject,
-        atIndexPath indexPath: NSIndexPath?,
-        forChangeType type: NSFetchedResultsChangeType,
-        newIndexPath: NSIndexPath?)
-    {
-        var tableView = self.tableView
-        var indexPaths:[NSIndexPath] = [NSIndexPath]()
-        switch type {
-            
-        case .Insert:
-            indexPaths.append(newIndexPath!)
-            tableView.insertRowsAtIndexPaths(indexPaths, withRowAnimation: .Fade)
-            
-        case .Delete:
-            indexPaths.append(indexPath!)
-            tableView.deleteRowsAtIndexPaths(indexPaths, withRowAnimation: .Fade)
-            
-        case .Update:
-            indexPaths.append(indexPath!)
-            tableView.reloadRowsAtIndexPaths(indexPaths, withRowAnimation: .None)
-            
-        case .Move:
-            indexPaths.append(indexPath!)
-            tableView.deleteRowsAtIndexPaths(indexPaths, withRowAnimation: .Fade)
-            indexPaths.removeAtIndex(0)
-            indexPaths.append(newIndexPath!)
-            tableView.insertRowsAtIndexPaths(indexPaths, withRowAnimation: .Fade)
-        }
-    }
-    
-    func controller(controller: NSFetchedResultsController,
-        didChangeSection sectionInfo: NSFetchedResultsSectionInfo,
-        atIndex sectionIndex: Int,
-        forChangeType type: NSFetchedResultsChangeType)
-    {
-        switch type {
-            
-        case .Insert:
-            self.tableView.insertSections(NSIndexSet(index: sectionIndex),
-                withRowAnimation: .Fade)
-            
-        case .Delete:
-            self.tableView.deleteSections(NSIndexSet(index: sectionIndex),
-                withRowAnimation: .Fade)
-            
-        case .Update, .Move: println("Move or delete called in didChangeSection")
-        }
-    }
-    
-    func controllerDidChangeContent(controller: NSFetchedResultsController)
-    {
-        self.tableView.endUpdates()
-    }
-    
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if let numberOfRowsInSection = self.subredditsController.sections?[section].numberOfObjects {
-            return numberOfRowsInSection + 1
-        } else {
-            return 0
-        }
+        return self.subreddits.count + 1
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return self.subredditsController.sections?.count ?? 0
+        return 1
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -163,21 +113,12 @@ class SubredditsViewController: UIViewController, UITableViewDataSource, NSFetch
         if indexPath.row == 0 {
             return tableView.dequeueReusableCellWithIdentifier("FrontCell") as! UITableViewCell
         } else {
-            var modifiedIndexPath = NSIndexPath(forRow: indexPath.row - 1, inSection: 0)
-            let subreddit = self.subredditsController.objectAtIndexPath(modifiedIndexPath) as! Subreddit
-            
-            cell.subreddit = subreddit
+            if let subreddit = self.subreddits[indexPath.row - 1] as? RKSubreddit {
+                cell.rkSubreddit = subreddit
+            }
         }
         
         return cell
-    }
-    
-    func tableView(tableView: UITableView, sectionForSectionIndexTitle title: String, atIndex index: Int) -> Int {
-        return self.subredditsController.sectionForSectionIndexTitle(title, atIndex: index)
-    }
-    
-    func sectionIndexTitlesForTableView(tableView: UITableView) -> [AnyObject]! {
-        return self.subredditsController.sectionIndexTitles
     }
     
     func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
@@ -189,21 +130,16 @@ class SubredditsViewController: UIViewController, UITableViewDataSource, NSFetch
     
     func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if editingStyle == .Delete {
-            var modifiedIndexPath = NSIndexPath(forRow: indexPath.row - 1, inSection: 0)
-            var subreddit = self.subredditsController.objectAtIndexPath(modifiedIndexPath) as! Subreddit
-            RedditSession.sharedSession.unsubscribe(subreddit, completion: { (error) -> () in
-                if error != nil {
-                    UIAlertView(title: "Error!", message: "Unable to unsubscribe to Subreddit! Please make sure you're connected to the internets.", delegate: self, cancelButtonTitle: "Ok").show()
-                } else {
-                    
-                    subreddit = self.subredditsController.objectAtIndexPath(indexPath) as! Subreddit
-                    DataManager.manager.datastore.mainQueueContext.deleteObject(subreddit)
-                    
-                    DataManager.manager.datastore.saveDatastoreWithCompletion({ (error) -> () in
-                        self.subredditsController.performFetch(nil)
-                    })
-                }
-            })
+            if let subreddit = self.subreddits[indexPath.row - 1] as? RKSubreddit {
+                RedditSession.sharedSession.unsubscribe(subreddit, completion: { (error) -> () in
+                    if error != nil {
+                        UIAlertView(title: "Error!", message: "Unable to unsubscribe to Subreddit! Please make sure you're connected to the internets.", delegate: self, cancelButtonTitle: "Ok").show()
+                    } else {
+                        self.subreddits.removeAtIndex(indexPath.row-1)
+                        self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+                    }
+                })
+            }
         }
     }
     
@@ -253,8 +189,7 @@ class SubredditsViewController: UIViewController, UITableViewDataSource, NSFetch
                         var indexPath: NSIndexPath = self.tableView.indexPathForCell(cell)!
                         
                         if indexPath.row != 0 {
-                            indexPath = NSIndexPath(forRow: indexPath.row - 1, inSection: 0)
-                            if let subreddit = self.subredditsController.objectAtIndexPath(indexPath) as? Subreddit {
+                            if let subreddit = self.subreddits[indexPath.row - 1] as? RKSubreddit {
                                 subredditViewController.subreddit = subreddit
                                 subredditViewController.front = false
                             }

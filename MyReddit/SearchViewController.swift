@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 protocol SearchViewControllerDelegate {
-    func searchViewController(controller: SearchViewController, didTapSubreddit subreddit: Subreddit)
+    func searchViewController(controller: SearchViewController, didTapSubreddit subreddit: RKSubreddit)
 }
 
 class SearchViewController: UIViewController,
@@ -27,7 +27,7 @@ UISearchBarDelegate {
     
     @IBOutlet weak var segmentationControl: UISegmentedControl!
     
-    var subreddits: Array<AnyObject>? {
+    var subreddits = Array<AnyObject>() {
         didSet {
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
                 self.tableView.reloadData()
@@ -40,9 +40,9 @@ UISearchBarDelegate {
         controller.searchResultsUpdater = self
         controller.dimsBackgroundDuringPresentation = false
         controller.searchBar.delegate = self
-        controller.searchBar.searchBarStyle = .Minimal
         controller.hidesNavigationBarDuringPresentation = false
         controller.searchBar.sizeToFit()
+        controller.searchBar.searchBarStyle = .Minimal
         controller.searchBar.returnKeyType = .Done
         controller.searchBar.placeholder = "Enter subreddit name..."
         return controller
@@ -50,7 +50,7 @@ UISearchBarDelegate {
     
     func updateSearchResultsForSearchController(searchController: UISearchController) {
         
-        self.subreddits = nil
+        self.subreddits = Array<AnyObject>()
         self.tableView.reloadData()
         
         if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forItem: 0, inSection: 1)) as? LoadMoreHeader {
@@ -58,7 +58,7 @@ UISearchBarDelegate {
             
             if count(searchController.searchBar.text) == 0 {
                 self.isFiltering = false
-                self.subreddits = nil
+                self.subreddits = Array<AnyObject>()
                 
                 cell.stopAnimating()
             } else {
@@ -67,7 +67,9 @@ UISearchBarDelegate {
                 if self.segmentationControl.selectedSegmentIndex == 1 {
                     RedditSession.sharedSession.searchForSubredditByName(searchController.searchBar.text, pagination: nil, completion: { (pagination, results, error) -> () in
                         if error == nil {
-                            self.subreddits = results
+                            if let subreddits = results {
+                                self.subreddits = subreddits
+                            }
                         }
                         
                         cell.stopAnimating()
@@ -79,11 +81,15 @@ UISearchBarDelegate {
         }
     }
     
+    func searchBarSearchButtonClicked(searchBar: UISearchBar) {
+        
+    }
+    
     func searchBarCancelButtonClicked(searchBar: UISearchBar) {
         self.isFiltering = false
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewDidAppear(animated: Bool) {
         self.tableView.tableHeaderView = self.searchController.searchBar
         self.searchController.searchBar.becomeFirstResponder()
     }
@@ -96,7 +102,14 @@ UISearchBarDelegate {
         if section == 1 {
             return 1
         }
-        return self.subreddits?.count ?? 0
+        
+        if self.subreddits.count > 0 {
+            if let searchedSubreddits = self.subreddits[0] as? Array<RKSubreddit> {
+                return searchedSubreddits.count
+            }
+        }
+        
+        return self.subreddits.count ?? 0
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -112,8 +125,8 @@ UISearchBarDelegate {
         
         var cell = tableView.dequeueReusableCellWithIdentifier("SubredditCell") as! SubredditCell
         
-        if let subreddit = self.subreddits?[indexPath.row] as? [String:AnyObject] {
-            cell.subredditData = subreddit
+        if let subreddit = self.subreddits[0][indexPath.row] as? RKSubreddit {
+            cell.rkSubreddit = subreddit
         }
         
         return cell
@@ -122,19 +135,18 @@ UISearchBarDelegate {
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if self.segmentationControl.selectedSegmentIndex == 1 {
             
-            if let subreddit = self.subreddits?[indexPath.row] as? [String:AnyObject] {
+            if let subreddit = self.subreddits[0][indexPath.row] as? RKSubreddit {
                 self.searchController.active = false
                 self.dismissViewControllerAnimated(true, completion: { () -> Void in
-                    DataManager.manager.datastore.addSubreddit(false, subredditData: subreddit,
-                        completion: { (results, error) -> () in
-                        if let savedSubreddit = results.first {
-                            self.delegate?.searchViewController(self, didTapSubreddit: savedSubreddit)
-                        }
-                    })
+                    self.delegate?.searchViewController(self, didTapSubreddit: subreddit)
                 })
             }
         } else {
             
         }
+    }
+    
+    func scrollViewDidScroll(scrollView: UIScrollView) {
+        self.searchController.searchBar.resignFirstResponder()
     }
 }

@@ -34,7 +34,7 @@ class RedditSession {
         }
     }
     
-    func fetchPostsForSubreddit(subreddit: Subreddit, category: RKSubredditCategory?, pagination: RKPagination?, completion: PaginationCompletion) {
+    func fetchPostsForSubreddit(subreddit: RKSubreddit, category: RKSubredditCategory?, pagination: RKPagination?, completion: PaginationCompletion) {
         if let filterCategory = category {
             RKClient.sharedClient().linksInSubredditWithName(subreddit.name,
                 category: filterCategory,
@@ -111,23 +111,27 @@ class RedditSession {
         })
     }
     
-    func subscribe(subreddit: Subreddit, completion: ErrorCompletion) {
-        RKClient.sharedClient().subscribeToSubredditWithFullName(subreddit.identifier, completion: { (error) -> Void in
-            DataManager.manager.datastore.subscribeToSubreddit(subreddit, completion: { (error) -> () in
-                completion(error: nil)
-            })
+    func subscribe(subreddit: RKSubreddit, completion: ErrorCompletion) {
+        RKClient.sharedClient().subscribeToSubredditWithFullName(subreddit.fullName, completion: { (error) -> Void in
+            completion(error: error)
         })
     }
     
-    func unsubscribe(subreddit: Subreddit, completion: ErrorCompletion) {
-        RKClient.sharedClient().unsubscribeFromSubredditWithFullName(subreddit.identifier, completion: { (error) -> Void in
+    func unsubscribe(subreddit: RKSubreddit, completion: ErrorCompletion) {
+        RKClient.sharedClient().unsubscribeFromSubredditWithFullName(subreddit.fullName, completion: { (error) -> Void in
             completion(error: error)
         })
     }
     
     func searchForSubredditByName(name: String, pagination: RKPagination?, completion: PaginationCompletion) {
-        RKClient.sharedClient().searchForSubreddit(name, completion: { (results, error) -> () in
-            completion(pagination: nil, results: results, error: error)
+        RKClient.sharedClient().searchForSubredditsByName(name, pagination: pagination) { (subreddit, pagination, error) -> Void in
+            completion(pagination: pagination, results: [subreddit], error: error)
+        }
+    }
+    
+    func subredditWithSubredditName(name: String, completion: PaginationCompletion) {
+        RKClient.sharedClient().subredditWithName(name, completion: { (subreddit, error) -> Void in
+            completion(pagination: nil, results: [subreddit], error: error)
         })
     }
 }

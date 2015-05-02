@@ -31,7 +31,7 @@ GHContextOverlayViewDelegate,
 JZSwipeCellDelegate,
 SearchViewControllerDelegate {
     
-    var subreddit: Subreddit!
+    var subreddit: RKSubreddit!
     var front = true
     var pagination: RKPagination?
     var pageIndex: Int!
@@ -146,26 +146,39 @@ SearchViewControllerDelegate {
     }
     
     @IBAction func subscribeButtonTapped(sender: AnyObject) {
-        if self.subreddit.subscriber.boolValue {
-            RedditSession.sharedSession.unsubscribe(subreddit, completion: { (error) -> () in
-                if error != nil {
-                    UIAlertView(title: "Error!", message: "Unable to unsubscribe to Subreddit. Please make sure you are connected to the internets.", delegate: self, cancelButtonTitle: "Ok").show()
-                } else {
-                    DataManager.manager.datastore.mainQueueContext.deleteObject(self.subreddit)
-                    self.front = true
-                    self.currentCategory = nil
-                    self.syncLinks()
-                }
-            })
-        } else {
-            RedditSession.sharedSession.subscribe(self.subreddit, completion: { (error) -> () in
-                if error != nil {
-                    UIAlertView(title: "Error!", message: "Unable to subscribe to Subreddit. Please make sure you are connected to the internets.", delegate: self, cancelButtonTitle: "Ok").show()
-                } else {
-                    self.updateSubscribeButton()
-                }
-            })
-        }
+        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            if self.subreddit.subscriber.boolValue {
+                RedditSession.sharedSession.unsubscribe(self.subreddit, completion: { (error) -> () in
+                    print(error)
+                    if error != nil {
+                        UIAlertView(title: "Error!", message: "Unable to unsubscribe to Subreddit. Please make sure you are connected to the internets.", delegate: self, cancelButtonTitle: "Ok").show()
+                    } else {
+                        self.links = Array<AnyObject>()
+                        self.pagination = nil
+                        self.front = true
+                        self.currentCategory = nil
+                        self.syncLinks()
+                        self.updateSubscribeButton()
+                    }
+                })
+            } else {
+                RedditSession.sharedSession.subscribe(self.subreddit, completion: { (error) -> () in
+                    print(error)
+                    if error != nil {
+                        UIAlertView(title: "Error!", message: "Unable to subscribe to Subreddit. Please make sure you are connected to the internets.", delegate: self, cancelButtonTitle: "Ok").show()
+                    } else {
+                        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                            RedditSession.sharedSession.subredditWithSubredditName(self.subreddit.name, completion: { (pagination, results, error) -> () in
+                                if let subreddit = results?.first as? RKSubreddit {
+                                    self.subreddit = subreddit
+                                    self.updateSubscribeButton()
+                                }
+                            })
+                        })
+                    }
+                })
+            }
+        })
     }
     
     override func viewDidLoad() {
@@ -254,7 +267,7 @@ SearchViewControllerDelegate {
     
     private func fetchLinks(completion: () -> ()) {
         if front {
-            DataManager.manager.syncFrontPageLinks(self.pagination, category: self.currentCategory, completion: { (pagination, results, error) -> () in
+            RedditSession.sharedSession.fetchFrontPagePosts(self.pagination, category: self.currentCategory, completion: { (pagination, results, error) -> () in
                 self.pagination = pagination
                 if let moreLinks = results {
                     self.links.extend(moreLinks)
@@ -263,7 +276,7 @@ SearchViewControllerDelegate {
                 completion()
             })
         } else {
-            DataManager.manager.syncLinksSubreddit(self.subreddit, category: self.currentCategory, pagination: self.pagination, completion: { (pagination, results, error) -> () in
+            RedditSession.sharedSession.fetchPostsForSubreddit(self.subreddit, category: self.currentCategory, pagination: self.pagination, completion: { (pagination, results, error) -> () in
                 self.pagination = pagination
                 if let moreLinks = results {
                     self.links.extend(moreLinks)
@@ -425,11 +438,11 @@ SearchViewControllerDelegate {
         
     }
     
-    func searchViewController(controller: SearchViewController, didTapSubreddit subreddit: Subreddit) {
+    func searchViewController(controller: SearchViewController, didTapSubreddit subreddit: RKSubreddit) {
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
             self.front = false
-            self.links = Array<AnyObject>()
             self.subreddit = subreddit
+            self.links = Array<AnyObject>()
             self.updateSubscribeButton()
             self.currentCategory = nil
             self.pagination = nil

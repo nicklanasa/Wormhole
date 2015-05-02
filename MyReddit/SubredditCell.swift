@@ -36,7 +36,7 @@ class SubredditCell: UITableViewCell {
     
     var rkSubreddit: RKSubreddit! {
         didSet {
-            self.nameLabel.text = rkSubreddit.name
+            self.nameLabel.text = rkSubreddit.name.capitalizedString
             
             self.subscribersLabel.hidden = true
             

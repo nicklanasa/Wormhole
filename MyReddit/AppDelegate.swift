@@ -33,7 +33,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UISwitch.appearance().onTintColor = MyRedditColor
         UITabBar.appearance().translucent = false
         UINavigationBar.appearance().tintColor = UIColor.blackColor()
-        
+        UISearchBar.appearance().backgroundColor = UIColor.whiteColor()
         UIToolbar.appearance().tintColor = UIColor.blackColor()
         
         UIBarButtonItem.appearance().setBackButtonTitlePositionAdjustment(UIOffset(horizontal: -9999, vertical: 0), forBarMetrics: .Default)

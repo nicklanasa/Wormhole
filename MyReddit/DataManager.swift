@@ -28,29 +28,13 @@ class DataManager {
         datastore = Datastore(storeName: "MyReddit")
     }
     
-    func syncPopularSubreddits(pagination: RKPagination?, completion: PaginationCompletion) {
-        RedditSession.sharedSession.fetchPopularSubreddits(pagination, completion: { (pagination, results, error) -> () in
-            self.datastore.addSubreddits(results, completion: { (results, error) -> () in
-                completion(pagination: pagination, results: results, error: error)
-            })
-        })
-    }
-    
-    func syncSubcribedSubreddits(pagination: RKPagination?, completion: PaginationCompletion) {
-        RedditSession.sharedSession.fetchSubscribedSubreddits(pagination, category: .Subscriber) { (pagination, results, error) -> () in
-            self.datastore.addSubreddits(results, completion: { (results, error) -> () in
-                completion(pagination: pagination, results: results, error: error)
-            })
-        }
-    }
-    
     func syncFrontPageLinks(pagination: RKPagination?, category: RKSubredditCategory?, completion: PaginationCompletion) {
         RedditSession.sharedSession.fetchFrontPagePosts(pagination, category: category) { (pagination, results, error) -> () in
             completion(pagination: pagination, results: results, error: nil)
         }
     }
     
-    func syncLinksSubreddit(subreddit: Subreddit, category: RKSubredditCategory?, pagination: RKPagination?, completion: PaginationCompletion) {
+    func syncLinksSubreddit(subreddit: RKSubreddit, category: RKSubredditCategory?, pagination: RKPagination?, completion: PaginationCompletion) {
         RedditSession.sharedSession.fetchPostsForSubreddit(subreddit, category: category, pagination: pagination) { (pagination, results, error) -> () in
             completion(pagination: pagination, results: results, error: nil)
         }
