@@ -35,10 +35,38 @@ class SubredditsViewController: UIViewController, UITableViewDataSource, NSFetch
     var syncSubreddits = Array<AnyObject>()
     
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var nightModeButton: UIBarButtonItem!
 
     @IBAction func cancelButtonTapped(sender: AnyObject) {
         self.modalTransitionStyle = .CrossDissolve
         self.dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    @IBAction func toggleNightMode(sender: AnyObject) {
+        if let nightMode = NSUserDefaults.standardUserDefaults().objectForKey("nightMode") as? Bool {
+            NSUserDefaults.standardUserDefaults().setObject(nil, forKey: "nightMode")
+            
+            UIView.animateWithDuration(0.3, animations: { () -> Void in
+                UserSession.sharedSession.dayMode()
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    self.tableView.reloadData()
+                })
+            })
+            
+            self.nightModeButton.image = UIImage(named: "Day")
+        } else {
+            NSUserDefaults.standardUserDefaults().setObject(true, forKey: "nightMode")
+            
+            UIView.animateWithDuration(0.3, animations: { () -> Void in
+                UserSession.sharedSession.nightMode()
+                
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    self.tableView.reloadData()
+                })
+            })
+            
+            self.nightModeButton.image = UIImage(named: "Night")
+        }
     }
     
     @IBAction func editButtonTApped(sender: AnyObject) {
@@ -61,6 +89,8 @@ class SubredditsViewController: UIViewController, UITableViewDataSource, NSFetch
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        
+        self.syncSubreddits = Array<AnyObject>()
         
         if let subredditsData = NSUserDefaults.standardUserDefaults().objectForKey("subreddits") as? NSData {
             if let subreddits = NSKeyedUnarchiver.unarchiveObjectWithData(subredditsData) as? [RKSubreddit] {
@@ -111,7 +141,9 @@ class SubredditsViewController: UIViewController, UITableViewDataSource, NSFetch
         var cell = tableView.dequeueReusableCellWithIdentifier("SubredditCell") as! SubredditCell
         
         if indexPath.row == 0 {
-            return tableView.dequeueReusableCellWithIdentifier("FrontCell") as! UITableViewCell
+            var cell = tableView.dequeueReusableCellWithIdentifier("FrontCell") as! UITableViewCell
+            cell.textLabel?.textColor = MyRedditLabelColor
+            return cell
         } else {
             if let subreddit = self.subreddits[indexPath.row - 1] as? RKSubreddit {
                 cell.rkSubreddit = subreddit

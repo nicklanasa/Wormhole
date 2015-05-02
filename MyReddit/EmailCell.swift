@@ -19,6 +19,9 @@ class EmailCell: UITableViewCell, UITextFieldDelegate {
     
     override func awakeFromNib() {
         self.usernameTextField.delegate = self
+        
+        self.usernameLabel.textColor = MyRedditLabelColor
+        self.usernameTextField.textColor = MyRedditLabelColor
     }
     
     @IBOutlet weak var usernameLabel: UILabel!

@@ -33,12 +33,12 @@ class CommentsViewController: UITableViewController, CommentCellDelegate, JZSwip
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
+        
+        self.syncComments()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        self.syncComments()
         
         self.navigationItem.title =  !self.forComment ? "\(self.link.author) | \(self.link.totalComments) comments" : "\(self.comment.author) | \(self.comment.replies.count) replies"
         
@@ -136,6 +136,16 @@ class CommentsViewController: UITableViewController, CommentCellDelegate, JZSwip
                     }
                     
                     controller.forComment = true
+                }
+            }
+        } else if segue.identifier == "AddCommentSegue" {
+            if let nav = segue.destinationViewController as? UINavigationController {
+                if let controller = nav.viewControllers[0] as? AddCommentViewController {
+                    if self.forComment {
+                        controller.comment = self.comment
+                    } else {
+                        controller.link = self.link
+                    }
                 }
             }
         } else {

@@ -134,4 +134,18 @@ class RedditSession {
             completion(pagination: nil, results: [subreddit], error: error)
         })
     }
+    
+    func submitComment(commentText: String, link: RKLink?, comment: RKComment?, completion: ErrorCompletion) {
+        if let commentLink = link {
+            RKClient.sharedClient().submitComment(commentText, onLink: commentLink, completion: { (error) -> Void in
+                completion(error: error)
+            })
+        } else if let replyComment = comment {
+            RKClient.sharedClient().submitComment(commentText, asReplyToComment: replyComment, completion: { (error) -> Void in
+                completion(error: error)
+            })
+        } else {
+            completion(error: nil)
+        }
+    }
 }

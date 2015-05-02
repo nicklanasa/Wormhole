@@ -147,36 +147,38 @@ SearchViewControllerDelegate {
     
     @IBAction func subscribeButtonTapped(sender: AnyObject) {
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
-            if self.subreddit.subscriber.boolValue {
-                RedditSession.sharedSession.unsubscribe(self.subreddit, completion: { (error) -> () in
-                    print(error)
-                    if error != nil {
-                        UIAlertView(title: "Error!", message: "Unable to unsubscribe to Subreddit. Please make sure you are connected to the internets.", delegate: self, cancelButtonTitle: "Ok").show()
-                    } else {
-                        self.links = Array<AnyObject>()
-                        self.pagination = nil
-                        self.front = true
-                        self.currentCategory = nil
-                        self.syncLinks()
-                        self.updateSubscribeButton()
-                    }
-                })
-            } else {
-                RedditSession.sharedSession.subscribe(self.subreddit, completion: { (error) -> () in
-                    print(error)
-                    if error != nil {
-                        UIAlertView(title: "Error!", message: "Unable to subscribe to Subreddit. Please make sure you are connected to the internets.", delegate: self, cancelButtonTitle: "Ok").show()
-                    } else {
-                        dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                            RedditSession.sharedSession.subredditWithSubredditName(self.subreddit.name, completion: { (pagination, results, error) -> () in
-                                if let subreddit = results?.first as? RKSubreddit {
-                                    self.subreddit = subreddit
-                                    self.updateSubscribeButton()
-                                }
+            if self.subscribeButton.title != "" {
+                if self.subreddit.subscriber.boolValue {
+                    RedditSession.sharedSession.unsubscribe(self.subreddit, completion: { (error) -> () in
+                        print(error)
+                        if error != nil {
+                            UIAlertView(title: "Error!", message: "Unable to unsubscribe to Subreddit. Please make sure you are connected to the internets.", delegate: self, cancelButtonTitle: "Ok").show()
+                        } else {
+                            self.links = Array<AnyObject>()
+                            self.pagination = nil
+                            self.front = true
+                            self.currentCategory = nil
+                            self.syncLinks()
+                            self.updateSubscribeButton()
+                        }
+                    })
+                } else {
+                    RedditSession.sharedSession.subscribe(self.subreddit, completion: { (error) -> () in
+                        print(error)
+                        if error != nil {
+                            UIAlertView(title: "Error!", message: "Unable to subscribe to Subreddit. Please make sure you are connected to the internets.", delegate: self, cancelButtonTitle: "Ok").show()
+                        } else {
+                            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                                RedditSession.sharedSession.subredditWithSubredditName(self.subreddit.name, completion: { (pagination, results, error) -> () in
+                                    if let subreddit = results?.first as? RKSubreddit {
+                                        self.subreddit = subreddit
+                                        self.updateSubscribeButton()
+                                    }
+                                })
                             })
-                        })
-                    }
-                })
+                        }
+                    })
+                }
             }
         })
     }

@@ -17,6 +17,7 @@ class PostImageCell: PostCell {
     @IBOutlet weak var commentsLabel: UILabel!
     @IBOutlet weak var postInfoLabel: UILabel!
     @IBOutlet weak var subredditLabel: UILabel!
+    @IBOutlet weak var stickyLabel: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -56,10 +57,16 @@ class PostImageCell: PostCell {
             self.subredditLabel.text = "/r/\(link.subreddit)"
            
             var infoString = NSMutableAttributedString(string:"\(link.domain) | \(link.author)")
-            var attrs = [NSForegroundColorAttributeName : UIColor.blackColor()]
+            var attrs = [NSForegroundColorAttributeName : MyRedditLabelColor]
             infoString.addAttributes(attrs, range: NSMakeRange(0, count(link.domain)))
             
             self.postInfoLabel.attributedText = infoString
+            
+            if self.link.stickied {
+                self.stickyLabel.hidden = false
+            } else {
+                self.stickyLabel.hidden = true
+            }
         }
     }
     

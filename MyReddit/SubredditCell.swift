@@ -14,6 +14,10 @@ class SubredditCell: UITableViewCell {
     @IBOutlet weak var subscribersLabel: UILabel!
     @IBOutlet weak var nsfwLabel: UILabel!
     @IBOutlet weak var subredditImageView: UIImageView!
+    
+    override func awakeFromNib() {
+        self.nameLabel.textColor = MyRedditLabelColor
+    }
 
     var subreddit: Subreddit! {
         didSet {

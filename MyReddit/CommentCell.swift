@@ -57,7 +57,7 @@ class CommentCell: JZSwipeCell, UITextViewDelegate {
             parser.linkFontName = MyRedditCommentTextBoldFont.familyName
             
             var parsedString = NSMutableAttributedString(attributedString: parser.attributedStringFromMarkdownString("\(link.title)\(selfText)"))
-            var titleAttr = [NSForegroundColorAttributeName : UIColor.blackColor()]
+            var titleAttr = [NSForegroundColorAttributeName : MyRedditLabelColor]
             var selfTextAttr = [NSForegroundColorAttributeName : UIColor.darkGrayColor()]
             parsedString.addAttributes(selfTextAttr, range: NSMakeRange(0, count(parsedString.string)))
             parsedString.addAttributes(titleAttr, range: NSMakeRange(0, count(link.title)))
@@ -69,7 +69,7 @@ class CommentCell: JZSwipeCell, UITextViewDelegate {
             var replies = link.totalComments == 1 ? "reply" : "replies"
             
             var infoString = NSMutableAttributedString(string: "\(link.author) - \(timeAgo) - \(link.totalComments) \(replies)")
-            var attrs = [NSForegroundColorAttributeName : UIColor.blackColor()]
+            var attrs = [NSForegroundColorAttributeName : MyRedditLabelColor]
             infoString.addAttributes(attrs, range: NSMakeRange(0, count(link.author)))
             
             self.infoLabel.attributedText = infoString
@@ -107,7 +107,7 @@ class CommentCell: JZSwipeCell, UITextViewDelegate {
             var timeAgo = comment.created.timeAgo()
             
             var infoString = NSMutableAttributedString(string: "\(comment.author) - \(timeAgo)")
-            var attrs = [NSForegroundColorAttributeName : UIColor.blackColor()]
+            var attrs = [NSForegroundColorAttributeName : MyRedditLabelColor]
             infoString.addAttributes(attrs, range: NSMakeRange(0, count(comment.author)))
             
             self.infoLabel.attributedText = infoString
@@ -128,7 +128,7 @@ class CommentCell: JZSwipeCell, UITextViewDelegate {
                 
                 var replies = comment.replies.count == 1 ? "reply" : "replies"
                 var repliesString = NSMutableAttributedString(string: "   \(lastReply.author) replied | \(comment.replies.count) \(replies)")
-                var attrs = [NSForegroundColorAttributeName : UIColor.blackColor()]
+                var attrs = [NSForegroundColorAttributeName : MyRedditLabelColor]
                 repliesString.addAttributes(attrs, range: NSMakeRange(0, count(lastReply.author) + 3))
                 
                 self.repliesLabel.attributedText = repliesString

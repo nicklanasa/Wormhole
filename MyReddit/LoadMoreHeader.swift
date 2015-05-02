@@ -19,6 +19,10 @@ class LoadMoreHeader: UITableViewCell {
     
     var delegate: LoadMoreHeaderDelegate?
     
+    override func awakeFromNib() {
+        self.loadMoreButton.titleLabel?.textColor = MyRedditLabelColor
+    }
+    
     @IBAction func loadMoreButttonTapped(sender: AnyObject) {
         self.delegate?.loadMoreHeader(self, didTapButton: sender)
     }

@@ -20,6 +20,9 @@ class PasswordCell: UITableViewCell, UITextFieldDelegate {
     
     override func awakeFromNib() {
         self.passwordTextField.delegate = self
+        
+        self.passwordTextField.textColor = MyRedditLabelColor
+        self.passwordLabel.textColor = MyRedditLabelColor
     }
     
     @IBOutlet weak var passwordLabel: UILabel!

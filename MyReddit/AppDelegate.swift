@@ -19,6 +19,8 @@ let MyRedditCommentTextBoldFont = UIFont(name: "AvenirNext-Medium", size: 14)!
 let MyRedditCommentTextItalicFont = UIFont(name: "AvenirNext-Italic", size: 14)!
 let MyRedditTitleBigFont = UIFont(name: "AvenirNext-Medium", size: 23)!
 
+var MyRedditLabelColor = UIColor.blackColor()
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
@@ -26,17 +28,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         
-        UITabBarItem.appearance().setTitleTextAttributes([NSFontAttributeName: MyRedditFont], forState: UIControlState.Normal)
-        UIBarButtonItem.appearance().setTitleTextAttributes([
-            NSFontAttributeName: MyRedditTitleFont],
-            forState: UIControlState.Normal)
-        UISwitch.appearance().onTintColor = MyRedditColor
-        UITabBar.appearance().translucent = false
-        UINavigationBar.appearance().tintColor = UIColor.blackColor()
-        UISearchBar.appearance().backgroundColor = UIColor.whiteColor()
-        UIToolbar.appearance().tintColor = UIColor.blackColor()
-        
-        UIBarButtonItem.appearance().setBackButtonTitlePositionAdjustment(UIOffset(horizontal: -9999, vertical: 0), forBarMetrics: .Default)
+        UserSession.sharedSession.dayMode()
         
         if let username = NSUserDefaults.standardUserDefaults().objectForKey("username") as? String {
             if let password = NSUserDefaults.standardUserDefaults().objectForKey("password") as? String {
