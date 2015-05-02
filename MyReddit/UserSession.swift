@@ -39,6 +39,9 @@ class UserSession {
     }
     
     func loginWithUsername(username: String, password: String, completion: ErrorCompletion) {
+        
+        self.logout()
+        
         RKClient.sharedClient().signInWithUsername(username, password: password) { (error) -> Void in
             if error != nil {
                 completion(error: error)
@@ -102,7 +105,7 @@ class UserSession {
         
         UITabBarItem.appearance().setTitleTextAttributes([NSFontAttributeName: MyRedditFont], forState: UIControlState.Normal)
         UIBarButtonItem.appearance().setTitleTextAttributes([
-            NSFontAttributeName: MyRedditTitleFont, NSForegroundColorAttributeName : MyRedditLabelColor],
+            NSFontAttributeName: MyRedditTitleFont],
             forState: UIControlState.Normal)
         
         UISwitch.appearance().onTintColor = MyRedditColor

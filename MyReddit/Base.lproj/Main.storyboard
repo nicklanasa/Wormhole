@@ -2519,7 +2519,7 @@
             </objects>
             <point key="canvasLocation" x="2396" y="-2031"/>
         </scene>
-        <!--Accounts View Controller-->
+        <!--Accounts-->
         <scene sceneID="FWh-Ho-pAc">
             <objects>
                 <viewController id="a2h-mb-3Wm" customClass="AccountsViewController" customModule="MyReddit" customModuleProvider="target" sceneMemberID="viewController">
@@ -2606,7 +2606,7 @@
                             <constraint firstItem="VSC-eV-ovC" firstAttribute="top" secondItem="mjp-MP-giA" secondAttribute="bottom" id="tc8-fN-9Ro"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="Dx2-oh-pnr"/>
+                    <navigationItem key="navigationItem" title="Accounts" id="Dx2-oh-pnr"/>
                     <connections>
                         <outlet property="tableView" destination="mjp-MP-giA" id="z4u-3E-KQ0"/>
                         <outlet property="view" destination="dTD-27-b20" id="H5J-eX-RKg"/>
@@ -2692,12 +2692,12 @@
         <image name="Up" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="O8K-LF-8mj"/>
-        <segue reference="DlP-4C-Gw2"/>
-        <segue reference="s4Y-Y8-M2P"/>
-        <segue reference="ovW-r7-Crm"/>
         <segue reference="kaq-Nv-BbA"/>
+        <segue reference="DlP-4C-Gw2"/>
+        <segue reference="ovW-r7-Crm"/>
+        <segue reference="s4Y-Y8-M2P"/>
         <segue reference="SWo-82-5L3"/>
-        <segue reference="FGX-NO-dra"/>
+        <segue reference="zMo-OM-Z5J"/>
+        <segue reference="O8K-LF-8mj"/>
     </inferredMetricsTieBreakers>
 </document>
