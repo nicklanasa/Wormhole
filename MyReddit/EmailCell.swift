@@ -17,6 +17,12 @@ class EmailCell: UITableViewCell, UITextFieldDelegate {
     
     var delegate: EmailCellDelegate?
     
+    var user: User! {
+        didSet {
+            self.usernameTextField.text = user.username
+        }
+    }
+    
     override func awakeFromNib() {
         self.usernameTextField.delegate = self
         

@@ -18,6 +18,12 @@ class PasswordCell: UITableViewCell, UITextFieldDelegate {
     
     var delegate: PasswordCellDelegate?
     
+    var user: User! {
+        didSet {
+            self.passwordTextField.text = user.password
+        }
+    }
+    
     override func awakeFromNib() {
         self.passwordTextField.delegate = self
         

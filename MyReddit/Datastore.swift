@@ -240,7 +240,7 @@ class Datastore {
     
     // MARK: User
     
-    func addUser(user: AnyObject?, completion: (user: User, error: NSError?) -> ()) {
+    func addUser(user: AnyObject?, password: String, completion: (user: User, error: NSError?) -> ()) {
         self.workerContext.performBlock { () -> Void in
             
             var addedUser: User!
@@ -262,7 +262,7 @@ class Datastore {
                         inManagedObjectContext: self.workerContext) as! User
                 }
                 
-                managedUser.parseUser(redditUser)
+                managedUser.parseUser(redditUser, password: password)
                 
                 addedUser = managedUser
             }
@@ -272,6 +272,22 @@ class Datastore {
             })
             
         }
+    }
+    
+    func usersController(sortKey: NSString, ascending: Bool, sectionNameKeyPath: String?) -> NSFetchedResultsController {
+        var request = NSFetchRequest()
+        request.entity = NSEntityDescription.entityForName("User",
+            inManagedObjectContext: self.mainQueueContext)
+        
+        var sort = NSSortDescriptor(key: sortKey as String, ascending: ascending)
+        request.sortDescriptors = [sort]
+        
+        var controller = NSFetchedResultsController(fetchRequest: request,
+            managedObjectContext: self.mainQueueContext,
+            sectionNameKeyPath: sectionNameKeyPath,
+            cacheName: nil)
+        
+        return controller
     }
     
     func messagesController(predicate: NSPredicate?, sortKey: NSString, ascending: Bool, sectionNameKeyPath: String?) -> NSFetchedResultsController {

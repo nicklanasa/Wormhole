@@ -22,9 +22,7 @@ class LoginViewController: UIViewController, UITableViewDataSource, UITableViewD
         }
     }
     
-    override func viewDidLoad() {
-        
-    }
+    var user: User?
 
     @IBAction func loginButtonPressed(sender: AnyObject) {
         DataManager.manager.datastore.removeAllSubreddits { (error) -> () in
@@ -69,10 +67,20 @@ class LoginViewController: UIViewController, UITableViewDataSource, UITableViewD
         if indexPath.row == 0 {
             var cell = tableView.dequeueReusableCellWithIdentifier("EmailCell") as! EmailCell
             cell.delegate = self
+            
+            if let currentUser = self.user {
+                cell.user = currentUser
+            }
+            
             return cell
         } else {
             var cell = tableView.dequeueReusableCellWithIdentifier("PasswordCell") as! PasswordCell
             cell.delegate = self
+            
+            if let currentUser = self.user {
+                cell.user = currentUser
+            }
+            
             return cell
         }
     }

@@ -9,7 +9,7 @@
 import Foundation
 
 extension User {
-    func parseUser(user: AnyObject) {
+    func parseUser(user: AnyObject, password: String) {
         if let rkUser = user as? RKUser {
             if let username = rkUser.username {
                 self.username = username
@@ -25,6 +25,8 @@ extension User {
             self.mod = rkUser.mod
             self.over18 = rkUser.over18
             self.created = rkUser.created
+            
+            self.password = password
         }
     }
 }

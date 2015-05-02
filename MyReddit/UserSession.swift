@@ -32,6 +32,9 @@ class UserSession {
     var currentUser: User?
     
     func logout() {
+        self.currentUser = nil
+        NSUserDefaults.standardUserDefaults().setObject(nil, forKey: "password")
+        NSUserDefaults.standardUserDefaults().setObject(nil, forKey: "username")
         RKClient.sharedClient().signOut()
     }
     
@@ -41,7 +44,7 @@ class UserSession {
                 completion(error: error)
             } else {
                 var redditUser = RKClient.sharedClient().currentUser
-                DataManager.manager.datastore.addUser(redditUser, completion: { (user, error) -> () in
+                DataManager.manager.datastore.addUser(redditUser, password: password, completion: { (user, error) -> () in
                     self.currentUser = user
                     
                     NSUserDefaults.standardUserDefaults().setObject(password, forKey: "password")

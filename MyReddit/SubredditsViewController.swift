@@ -204,11 +204,7 @@ class SubredditsViewController: UIViewController, UITableViewDataSource, NSFetch
 //            }
 //        }
         
-        if UserSession.sharedSession.isSignedIn {
-            self.performSegueWithIdentifier("ProfileSegue", sender: self)
-        } else {
-            self.performSegueWithIdentifier("LoginSegue", sender: self)
-        }
+        self.performSegueWithIdentifier("AccountsSegue", sender: self)
 
     }
     
