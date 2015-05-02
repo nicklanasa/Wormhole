@@ -2404,10 +2404,10 @@
             </objects>
             <point key="canvasLocation" x="1496" y="-1313"/>
         </scene>
-        <!--Navigation Controller-->
+        <!--Nav Bar Controller-->
         <scene sceneID="dve-v0-0pQ">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Wuv-iQ-z1V" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Wuv-iQ-z1V" customClass="NavBarController" customModule="MyReddit" customModuleProvider="target" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="x7D-8d-zT7">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
