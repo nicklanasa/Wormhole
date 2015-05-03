@@ -115,14 +115,14 @@ class SettingsManager {
         }
     }
     
-    func updateValueForTexteSetting(setting: TextSizeSetting, value: NSNumber) {
+    func updateValueForTextSizeSetting(setting: TextSizeSetting) {
         switch setting {
         case .Small:
-            NSUserDefaults.standardUserDefaults().setObject(value, forKey: "TextSize")
+            NSUserDefaults.standardUserDefaults().setObject("Small", forKey: "TextSize")
         case .Medium:
-            NSUserDefaults.standardUserDefaults().setObject(value, forKey: "TextSize")
+            NSUserDefaults.standardUserDefaults().setObject("Medium", forKey: "TextSize")
         case .Large:
-            NSUserDefaults.standardUserDefaults().setObject(value, forKey: "TextSize")
+            NSUserDefaults.standardUserDefaults().setObject("Large", forKey: "TextSize")
         default: break
             
         }

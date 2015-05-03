@@ -27,14 +27,19 @@ class SettingsTableViewController: UITableViewController, BDGIAPDelegate {
     }
     
     override func viewDidLoad() {
-        var currentTextSize = SettingsManager.defaultManager.defaultTextSize
-        
-        self.showFlairSwitch.on = SettingsManager.defaultManager.valueForSetting(.Flair)
-        self.showNSFWSwitch.on = SettingsManager.defaultManager.valueForSetting(.NSFW)
-        self.showSubredditLogosSwitch.on = true
-        self.nightModeSwitch.on = SettingsManager.defaultManager.valueForSetting(.NightMode)
-        self.infiniteScrollingSwitch.on = SettingsManager.defaultManager.valueForSetting(.InfiniteScrolling)
-        self.textSizeLabel.text = SettingsManager.defaultManager.valueForTextSizeSetting(currentTextSize)
+        self.updateTable()
+    }
+    
+    private func updateTable() {
+        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            var currentTextSize = SettingsManager.defaultManager.defaultTextSize
+            self.showFlairSwitch.on = SettingsManager.defaultManager.valueForSetting(.Flair)
+            self.showNSFWSwitch.on = SettingsManager.defaultManager.valueForSetting(.NSFW)
+            self.showSubredditLogosSwitch.on = SettingsManager.defaultManager.valueForSetting(.SubredditLogos)
+            self.nightModeSwitch.on = SettingsManager.defaultManager.valueForSetting(.NightMode)
+            self.infiniteScrollingSwitch.on = SettingsManager.defaultManager.valueForSetting(.InfiniteScrolling)
+            self.textSizeLabel.text = SettingsManager.defaultManager.valueForTextSizeSetting(currentTextSize)
+        })
     }
     
     @IBAction func nightModeValueChanged(sender: AnyObject) {
@@ -58,14 +63,37 @@ class SettingsTableViewController: UITableViewController, BDGIAPDelegate {
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
         if indexPath.section == 1 {
             if indexPath.row == 1 {
                 // Text Size
+                var alert = UIAlertController(title: "Text Size",
+                    message: "Please select the text size. This will change the text size for both comments and posts.",
+                    preferredStyle: .ActionSheet)
+                
+                alert.addAction(UIAlertAction(title: "Small", style: .Default, handler: { (action) -> Void in
+                    SettingsManager.defaultManager.updateValueForTextSizeSetting(.Small)
+                    self.updateTable()
+                }))
+                
+                alert.addAction(UIAlertAction(title: "Medium", style: .Default, handler: { (action) -> Void in
+                    SettingsManager.defaultManager.updateValueForTextSizeSetting(.Medium)
+                    self.updateTable()
+                }))
+                
+                alert.addAction(UIAlertAction(title: "Large", style: .Default, handler: { (action) -> Void in
+                    SettingsManager.defaultManager.updateValueForTextSizeSetting(.Large)
+                    self.updateTable()
+                }))
+                
+                alert.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
+                
+                self.presentViewController(alert, animated: true, completion: nil)
             }
         } else if indexPath.section == 2 {
             switch indexPath.row {
             case 0:
-                RedditSession.sharedSession.subredditWithSubredditName("myreddit", completion: { (pagination, results, error) -> () in
+                RedditSession.sharedSession.subredditWithSubredditName("myreddit_app", completion: { (pagination, results, error) -> () in
                     if error != nil {
                         UIAlertView(title: "Error!",
                             message: "Unable to find that subreddit! Please check your internet connection.",
@@ -99,33 +127,46 @@ class SettingsTableViewController: UITableViewController, BDGIAPDelegate {
         } else if indexPath.section == 3 {
             switch indexPath.row {
             case 0:
-                var url = NSURL(string: "https://twitter.com/Nytekproduction")
-                self.performSegueWithIdentifier("WebViewSegue", sender: url)
+                var url = NSURL(string: "twitter://user?screen_name=Nytekproduction")
+                UIApplication.sharedApplication().openURL(url!)
             case 1:
-                var url = NSURL(string: "https://twitter.com/nicklanasa")
-                self.performSegueWithIdentifier("WebViewSegue", sender: url)
+                var url = NSURL(string: "twitter://user?screen_name=nicklanasa")
+                UIApplication.sharedApplication().openURL(url!)
             case 2:
-                var url = NSURL(string: "https://twitter.com/3lovethemapples")
-                self.performSegueWithIdentifier("WebViewSegue", sender: url)
+                var url = NSURL(string: "twitter://user?screen_name=3lovethemapples")
+                UIApplication.sharedApplication().openURL(url!)
             default: return
             }
-        } else if indexPath.section == 3 {
+        } else if indexPath.section == 4 {
             UIApplication.sharedApplication().openURL(NSURL(string: "itms://itunes.apple.com/us/app/apple-store/id951709415?mt=8")!)
         }
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "WebViewSegue" {
-            if let controller = segue.destinationViewController as? WebViewController {
-                if let requestURL = sender as? NSURL {
-                    controller.url = requestURL
+            if let nav = segue.destinationViewController as? UINavigationController {
+                if let controller = nav.viewControllers[0] as? WebViewController {
+                    if let requestURL = sender as? NSURL {
+                        controller.url = requestURL
+                    }
+                }
+            }
+        } else if segue.identifier == "MyRedditSubredditSegue" {
+            if let nav = segue.destinationViewController as? NavBarController {
+                if let controller = nav.viewControllers[0] as? SubredditViewController {
+                    if let subreddit = sender as? RKSubreddit {
+                        controller.subreddit = subreddit
+                        controller.front = false
+                    }
                 }
             }
         }
     }
     
     func didFailIAP() {
-        self.hud.hide(true)
+        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            self.hud.hide(true)
+        })
         UIAlertView(title: "Error!",
             message: "Unable to purchase! Please make sure you have an internet connection.",
             delegate: self,
@@ -133,11 +174,15 @@ class SettingsTableViewController: UITableViewController, BDGIAPDelegate {
     }
     
     func didEndIAS() {
-        self.hud.hide(true)
+        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            self.hud.hide(true)
+        })
     }
     
     func didFailIAS() {
-        self.hud.hide(true)
+        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            self.hud.hide(true)
+        })
         UIAlertView(title: "Error!",
             message: "Unable to purchase! Please make sure you have an internet connection.",
             delegate: self,
@@ -145,20 +190,24 @@ class SettingsTableViewController: UITableViewController, BDGIAPDelegate {
     }
     
     func didCancelIAP() {
-        self.hud.hide(true)
+        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            self.hud.hide(true)
+        })
     }
     
     func didPurchaseIAP() {
-        self.hud.hide(true)
+        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            self.hud.hide(true)
+        })
         NSUserDefaults.standardUserDefaults().setObject(true, forKey: "purchased")
-        UIAlertView(title: "Success!",
-            message: "Purchase restored!",
-            delegate: self,
-            cancelButtonTitle: "Ok").show()
     }
     
     func didRestoreIAP(productID: String!) {
+        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            self.hud.hide(true)
+        })
         NSUserDefaults.standardUserDefaults().setObject(true, forKey: "purchased")
+        
         UIAlertView(title: "Success!",
             message: "Purchase restored!",
             delegate: self,
@@ -166,10 +215,14 @@ class SettingsTableViewController: UITableViewController, BDGIAPDelegate {
     }
     
     func dismissVC() {
-        self.hud.hide(true)
+        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            self.hud.hide(true)
+        })
     }
     
     func presentVC(viewController: UIViewController!) {
-        self.hud.hide(true)
+        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            self.hud.hide(true)
+        })
     }
 }

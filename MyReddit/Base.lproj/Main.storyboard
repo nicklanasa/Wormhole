@@ -1031,7 +1031,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BRW-wG-3Pw" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-928" y="-1193"/>
+            <point key="canvasLocation" x="-1008" y="-1141"/>
         </scene>
         <!--Messages ViewController-->
         <scene sceneID="ieU-a7-RXs">
@@ -2511,6 +2511,9 @@
                                                 <constraint firstItem="8hC-QT-XoL" firstAttribute="leading" secondItem="93f-MW-xbr" secondAttribute="leadingMargin" constant="10" id="iT4-8X-dTh"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="BuP-V6-G2K" kind="presentation" identifier="WebViewSegue" modalTransitionStyle="crossDissolve" id="q6K-ip-lpO"/>
+                                        </connections>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="mbg-AU-7yY">
                                         <autoresizingMask key="autoresizingMask"/>
@@ -2579,6 +2582,9 @@
                                                 <constraint firstItem="nt4-I4-UqR" firstAttribute="top" secondItem="bzU-2m-93M" secondAttribute="topMargin" constant="3" id="y1S-xY-CEb"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="Wuv-iQ-z1V" kind="presentation" identifier="MyRedditSubredditSegue" modalTransitionStyle="crossDissolve" id="7YE-ws-eyS"/>
+                                        </connections>
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
@@ -2589,7 +2595,7 @@
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Bis-Gr-TOr" id="o9V-lV-r6g">
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="go to /r/myreddit" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1BA-yp-1qz">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="go to /r/myreddit_app" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1BA-yp-1qz">
                                                     <rect key="frame" x="18" y="11" width="361" height="22"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="361" id="hPG-aH-u6d"/>
@@ -2798,7 +2804,6 @@
                         <outlet property="showNSFWSwitch" destination="oJK-sx-N85" id="fXX-LM-JiO"/>
                         <outlet property="showSubredditLogosSwitch" destination="ozS-tK-90o" id="rmi-6Y-P0a"/>
                         <outlet property="textSizeLabel" destination="Kaj-QC-ywh" id="bsK-Wh-nyJ"/>
-                        <segue destination="qj1-J1-q7z" kind="show" identifier="WebViewSegue" id="Cfm-Sk-UVV"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4Eq-Je-PQ9" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -2826,7 +2831,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XPy-XM-XpC" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1740" y="-1193"/>
+            <point key="canvasLocation" x="-1820" y="-1141"/>
         </scene>
         <!--Nav Bar Controller-->
         <scene sceneID="dve-v0-0pQ">
@@ -3115,12 +3120,12 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="MsL-gN-mnM"/>
-        <segue reference="cxw-0o-NAI"/>
+        <segue reference="7YE-ws-eyS"/>
+        <segue reference="q6K-ip-lpO"/>
         <segue reference="s4Y-Y8-M2P"/>
-        <segue reference="xsL-ln-a3I"/>
         <segue reference="tJz-SN-XxH"/>
-        <segue reference="JpN-14-C8g"/>
         <segue reference="SWo-82-5L3"/>
+        <segue reference="kaq-Nv-BbA"/>
         <segue reference="psA-tl-Zoj"/>
     </inferredMetricsTieBreakers>
 </document>
