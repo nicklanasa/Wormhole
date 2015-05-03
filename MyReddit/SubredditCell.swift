@@ -50,10 +50,12 @@ class SubredditCell: UITableViewCell {
                 self.nsfwLabel.hidden = false
             }
             
-            if let headerURL = rkSubreddit.headerImageURL {
-                self.subredditImageView.sd_setImageWithURL(headerURL, placeholderImage: UIImage(named: "Reddit"))
-            } else {
-                self.subredditImageView.image = UIImage(named: "Reddit")
+            if !SettingsManager.defaultManager.valueForSetting(.SubredditLogos) {
+                if let headerURL = rkSubreddit.headerImageURL {
+                    self.subredditImageView.sd_setImageWithURL(headerURL, placeholderImage: UIImage(named: "Reddit"))
+                } else {
+                    self.subredditImageView.image = UIImage(named: "Reddit")
+                }
             }
         }
     }

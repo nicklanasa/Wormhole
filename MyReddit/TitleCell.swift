@@ -45,17 +45,14 @@ class TitleCell: PostCell {
                 }
             }
             
-            var infoString = NSMutableAttributedString(string: "\(link.domain) | \(link.author)")
+            var infoString = NSMutableAttributedString(string: "\(link.domain) | \(link.author)\(showFlair)")
             var attrs = [NSForegroundColorAttributeName : MyRedditLabelColor]
             infoString.addAttributes(attrs, range: NSMakeRange(0, count(link.domain)))
-            
-            var flairAttrs = [NSForegroundColorAttributeName : MyRedditColor]
-            infoString.addAttributes(flairAttrs, range: NSMakeRange(infoString.length - count(showFlair) + 1, count(showFlair)))
             
             self.postInfoLabel.attributedText = infoString
             
             if self.link.stickied {
-                self.stickyLabel.hidden = false
+                self.stickyLabel.hidden = true
             } else {
                 self.stickyLabel.hidden = true
             }

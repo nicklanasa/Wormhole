@@ -63,6 +63,18 @@ SearchViewControllerDelegate {
     
     var links = Array<AnyObject>() {
         didSet {
+            
+            if !SettingsManager.defaultManager.valueForSetting(.NSFW) {
+                self.links.filter({ (obj) -> Bool in
+                    if let link = obj as? RKLink {
+                        return !link.NSFW
+                    }
+                    
+                    return true
+                })
+            }
+            
+            
             if self.links.count == 25 || self.links.count == 0 {
                 self.tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: .Fade)
             } else {
@@ -81,7 +93,9 @@ SearchViewControllerDelegate {
                     if let absoluteString = post.URL.absoluteString {
                         var stringURL = absoluteString + ".jpg"
                         var imageURL = NSURL(string: stringURL)
-                        self.headerImage.sd_setImageWithURL(imageURL, placeholderImage: UIImage(), completed: { (image, error, cacheType, url) -> Void in
+                        self.headerImage.sd_setImageWithURL(imageURL,
+                            placeholderImage: UIImage(),
+                            completed: { (image, error, cacheType, url) -> Void in
                             if error != nil {
                                 self.displayHeader(false)
                             } else {
@@ -269,7 +283,8 @@ SearchViewControllerDelegate {
     
     private func fetchLinks(completion: () -> ()) {
         if front {
-            RedditSession.sharedSession.fetchFrontPagePosts(self.pagination, category: self.currentCategory, completion: { (pagination, results, error) -> () in
+            RedditSession.sharedSession.fetchFrontPagePosts(self.pagination,
+                category: self.currentCategory, completion: { (pagination, results, error) -> () in
                 self.pagination = pagination
                 if let moreLinks = results {
                     self.links.extend(moreLinks)
@@ -278,7 +293,8 @@ SearchViewControllerDelegate {
                 completion()
             })
         } else {
-            RedditSession.sharedSession.fetchPostsForSubreddit(self.subreddit, category: self.currentCategory, pagination: self.pagination, completion: { (pagination, results, error) -> () in
+            RedditSession.sharedSession.fetchPostsForSubreddit(self.subreddit,
+                category: self.currentCategory, pagination: self.pagination, completion: { (pagination, results, error) -> () in
                 self.pagination = pagination
                 if let moreLinks = results {
                     self.links.extend(moreLinks)
@@ -347,6 +363,18 @@ SearchViewControllerDelegate {
                     self.performSegueWithIdentifier("CommentsSegue", sender: link)
                 } else {
                     self.performSegueWithIdentifier("SubredditLink", sender: link)
+                }
+            }
+        }
+    }
+    
+    func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+        if indexPath.section == 0 {
+            if indexPath.row == self.links.count - 1 {
+                if SettingsManager.defaultManager.valueForSetting(.InfiniteScrolling) {
+                    self.fetchLinks({ () -> () in
+                        
+                    })
                 }
             }
         }
