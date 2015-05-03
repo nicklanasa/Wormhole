@@ -216,20 +216,38 @@ SearchViewControllerDelegate {
         if self.links.count > 0 {
             self.tableView.reloadData()
         }
+        
+        self.filterView.backgroundColor = MyRedditDarkBackgroundColor
+        
+        for subView in self.filterView.subviews {
+            if let button = subView as? UIButton {
+                if button.tag == 1 {
+                    if SettingsManager.defaultManager.valueForSetting(.NightMode) {
+                        button.setBackgroundImage(UIImage(named: "CancelWhite"), forState: .Normal)
+                    } else {
+                        button.setBackgroundImage(UIImage(named: "Cancel"), forState: .Normal)
+                    }
+                } else {
+                    button.setTitleColor(MyRedditLabelColor, forState: .Normal)
+                }
+            }
+        }
     }
     
     private func updateSubscribeButton() {
-        if front {
-            self.subscribeButton.title = ""
-        } else {
-            if self.subreddit.subscriber.boolValue {
-                self.subscribeButton.title = "Unsubscribe"
-                self.subscribeButton.tintColor = MyRedditDownvoteColor
+        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            if self.front {
+                self.subscribeButton.title = ""
             } else {
-                self.subscribeButton.title = "Subscribe"
-                self.subscribeButton.tintColor = MyRedditUpvoteColor
+                if self.subreddit.subscriber.boolValue {
+                    self.subscribeButton.title = "Unsubscribe"
+                    self.subscribeButton.setTitleTextAttributes([NSForegroundColorAttributeName: MyRedditDownvoteColor], forState: .Normal)
+                } else {
+                    self.subscribeButton.title = "Subscribe"
+                    self.subscribeButton.setTitleTextAttributes([NSForegroundColorAttributeName: MyRedditUpvoteColor], forState: .Normal)
+                }
             }
-        }
+        })
     }
     
     func imageForItemAtIndex(index: Int) -> UIImage! {

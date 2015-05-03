@@ -27,6 +27,8 @@ class AccountsViewController: UIViewController, UITableViewDelegate, UITableView
         if self.usersController.performFetch(&error) {
             self.tableView.reloadData()
         }
+        
+        self.tableView.backgroundColor = MyRedditDarkBackgroundColor
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {

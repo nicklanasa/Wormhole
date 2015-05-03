@@ -20,6 +20,8 @@ let MyRedditCommentTextItalicFont = UIFont(name: "AvenirNext-Italic", size: 14)!
 let MyRedditTitleBigFont = UIFont(name: "AvenirNext-Medium", size: 23)!
 
 var MyRedditLabelColor = UIColor.blackColor()
+var MyRedditBackgroundColor = UIColor.whiteColor()
+var MyRedditDarkBackgroundColor = UIColor.groupTableViewBackgroundColor()
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -28,7 +30,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         
-        UserSession.sharedSession.dayMode()
+        if SettingsManager.defaultManager.valueForSetting(.NightMode) {
+            UserSession.sharedSession.nightMode()
+        } else {
+            UserSession.sharedSession.dayMode()
+        }
         
         if let username = NSUserDefaults.standardUserDefaults().objectForKey("username") as? String {
             if let password = NSUserDefaults.standardUserDefaults().objectForKey("password") as? String {

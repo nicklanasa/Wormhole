@@ -31,7 +31,7 @@ class CommentCell: JZSwipeCell, UITextViewDelegate {
         self.colorSet = SwipeCellColorSetMake(MyRedditDownvoteColor, MyRedditDownvoteColor, MyRedditUpvoteColor, MyRedditUpvoteColor)
         
         self.repliesLabel.layer.cornerRadius = 2
-        self.repliesLabel.backgroundColor = UIColor.groupTableViewBackgroundColor()
+        self.repliesLabel.backgroundColor = MyRedditDarkBackgroundColor
         
         self.commentTextView.delegate = self
         
@@ -89,6 +89,11 @@ class CommentCell: JZSwipeCell, UITextViewDelegate {
             
             self.commentTextView.font = UIFont(name: self.commentTextView.font.fontName,
                 size: SettingsManager.defaultManager.titleFontSizeForDefaultTextSize)
+            
+            self.commentTextView.backgroundColor = MyRedditBackgroundColor
+            self.commentTextView.textColor = MyRedditLabelColor
+            self.contentView.backgroundColor = MyRedditBackgroundColor
+            self.repliesLabel.backgroundColor = MyRedditDarkBackgroundColor
         }
     }
     
@@ -147,6 +152,10 @@ class CommentCell: JZSwipeCell, UITextViewDelegate {
             
             self.commentTextView.font = UIFont(name: self.commentTextView.font.fontName,
                 size: SettingsManager.defaultManager.titleFontSizeForDefaultTextSize)
+            self.commentTextView.backgroundColor = MyRedditBackgroundColor
+            self.commentTextView.textColor = MyRedditLabelColor
+            self.contentView.backgroundColor = MyRedditBackgroundColor
+            self.repliesLabel.backgroundColor = MyRedditDarkBackgroundColor
         }
     }
     

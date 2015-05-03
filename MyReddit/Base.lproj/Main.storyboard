@@ -320,7 +320,7 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mfz-8L-JTh">
                                 <rect key="frame" x="0.0" y="700" width="600" height="300"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xAl-kC-lbJ">
+                                    <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xAl-kC-lbJ">
                                         <rect key="frame" x="549" y="13" width="30" height="26"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="30" id="hLE-Vu-Gug"/>
@@ -834,6 +834,9 @@
                     <toolbarItems/>
                     <navigationItem key="navigationItem" title="Unlock Everything" id="b68-ie-zfd"/>
                     <connections>
+                        <outlet property="purchaseButton" destination="CwJ-2M-ggV" id="RJH-SB-vhj"/>
+                        <outlet property="purchaseLabel" destination="7EO-1f-duY" id="Ore-Oh-7cz"/>
+                        <outlet property="restoreButton" destination="tt5-PV-XLa" id="X40-YC-GD0"/>
                         <segue destination="QDb-Kc-Q7i" kind="presentation" identifier="LoginSegue" modalTransitionStyle="crossDissolve" id="fLo-75-wzd"/>
                     </connections>
                 </viewController>
@@ -934,7 +937,7 @@
                                             <segue destination="Wuv-iQ-z1V" kind="presentation" identifier="SubredditPosts" modalTransitionStyle="crossDissolve" id="cxw-0o-NAI"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="FrontCell" rowHeight="55" id="5kl-Dv-IDE">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="FrontCell" rowHeight="55" id="5kl-Dv-IDE" customClass="FrontCell" customModule="MyReddit" customModuleProvider="target">
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="5kl-Dv-IDE" id="7Oo-3e-SIs">
                                             <autoresizingMask key="autoresizingMask"/>
@@ -965,6 +968,8 @@
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <connections>
+                                            <outlet property="frontLabel" destination="Uki-4J-lxY" id="wJ7-6m-mOv"/>
+                                            <outlet property="starImageView" destination="MSx-eA-CK8" id="Tnb-4b-aqA"/>
                                             <segue destination="Wuv-iQ-z1V" kind="presentation" identifier="SubredditPosts" modalTransitionStyle="crossDissolve" id="DlP-4C-Gw2"/>
                                         </connections>
                                     </tableViewCell>
@@ -2640,7 +2645,7 @@
                         <sections>
                             <tableViewSection id="t2s-hd-vRa">
                                 <cells>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="upY-42-zCz">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="upY-42-zCz" customClass="UserInfoCell" customModule="MyReddit" customModuleProvider="target">
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="upY-42-zCz" id="prB-P1-J4s">
                                             <autoresizingMask key="autoresizingMask"/>
@@ -2661,6 +2666,7 @@
                                                     </connections>
                                                 </switch>
                                             </subviews>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                             <constraints>
                                                 <constraint firstItem="HSC-z0-dSR" firstAttribute="trailing" secondItem="prB-P1-J4s" secondAttribute="trailingMargin" constant="-3" id="KZo-VR-l36"/>
                                                 <constraint firstItem="cEQ-dp-uss" firstAttribute="leading" secondItem="prB-P1-J4s" secondAttribute="leadingMargin" constant="10" id="QTG-Wm-Nao"/>
@@ -2668,8 +2674,12 @@
                                                 <constraint firstItem="cEQ-dp-uss" firstAttribute="top" secondItem="prB-P1-J4s" secondAttribute="topMargin" constant="3" id="xez-7Y-XUV"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <connections>
+                                            <outlet property="titleLabel" destination="cEQ-dp-uss" id="lUf-O7-2Qd"/>
+                                        </connections>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="c4X-6y-LjI">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="c4X-6y-LjI" customClass="UserInfoCell" customModule="MyReddit" customModuleProvider="target">
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="c4X-6y-LjI" id="jvZ-wg-kIu">
                                             <autoresizingMask key="autoresizingMask"/>
@@ -2697,8 +2707,12 @@
                                                 <constraint firstItem="oJK-sx-N85" firstAttribute="centerY" secondItem="jvZ-wg-kIu" secondAttribute="centerY" id="p4o-ot-k7y"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <connections>
+                                            <outlet property="titleLabel" destination="I01-cK-CYO" id="X4Z-xE-Za7"/>
+                                        </connections>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="QmW-dV-7d1">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="QmW-dV-7d1" customClass="UserInfoCell" customModule="MyReddit" customModuleProvider="target">
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="QmW-dV-7d1" id="YYc-j6-tNu">
                                             <autoresizingMask key="autoresizingMask"/>
@@ -2726,12 +2740,16 @@
                                                 <constraint firstItem="9k6-f6-OxO" firstAttribute="top" secondItem="YYc-j6-tNu" secondAttribute="topMargin" constant="3" id="oAA-gn-7h8"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <connections>
+                                            <outlet property="titleLabel" destination="9k6-f6-OxO" id="5fm-3y-Bkx"/>
+                                        </connections>
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
                             <tableViewSection id="Azh-hF-SNs">
                                 <cells>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="2tW-DD-fVf">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="2tW-DD-fVf" customClass="UserInfoCell" customModule="MyReddit" customModuleProvider="target">
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="2tW-DD-fVf" id="93f-MW-xbr">
                                             <autoresizingMask key="autoresizingMask"/>
@@ -2759,11 +2777,13 @@
                                                 <constraint firstItem="8hC-QT-XoL" firstAttribute="leading" secondItem="93f-MW-xbr" secondAttribute="leadingMargin" constant="10" id="iT4-8X-dTh"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <connections>
+                                            <outlet property="titleLabel" destination="8hC-QT-XoL" id="Yas-oT-t7c"/>
                                             <segue destination="BuP-V6-G2K" kind="presentation" identifier="WebViewSegue" modalTransitionStyle="crossDissolve" id="q6K-ip-lpO"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="mbg-AU-7yY">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="mbg-AU-7yY" customClass="UserInfoCell" customModule="MyReddit" customModuleProvider="target">
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="mbg-AU-7yY" id="7pN-8y-olW">
                                             <autoresizingMask key="autoresizingMask"/>
@@ -2801,8 +2821,12 @@
                                                 <constraint firstItem="Kaj-QC-ywh" firstAttribute="centerY" secondItem="7pN-8y-olW" secondAttribute="centerY" id="pIG-tJ-bAG"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <connections>
+                                            <outlet property="titleLabel" destination="Aji-uk-Hlo" id="xvQ-g2-Xy2"/>
+                                        </connections>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="nbj-Ea-5Cf">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="nbj-Ea-5Cf" customClass="UserInfoCell" customModule="MyReddit" customModuleProvider="target">
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="nbj-Ea-5Cf" id="bzU-2m-93M">
                                             <autoresizingMask key="autoresizingMask"/>
@@ -2830,7 +2854,9 @@
                                                 <constraint firstItem="nt4-I4-UqR" firstAttribute="top" secondItem="bzU-2m-93M" secondAttribute="topMargin" constant="3" id="y1S-xY-CEb"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <connections>
+                                            <outlet property="titleLabel" destination="nt4-I4-UqR" id="KI1-aS-3dg"/>
                                             <segue destination="Wuv-iQ-z1V" kind="presentation" identifier="MyRedditSubredditSegue" modalTransitionStyle="crossDissolve" id="7YE-ws-eyS"/>
                                         </connections>
                                     </tableViewCell>
@@ -2838,7 +2864,7 @@
                             </tableViewSection>
                             <tableViewSection id="j9r-pV-54K">
                                 <cells>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="Bis-Gr-TOr">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="Bis-Gr-TOr" customClass="UserInfoCell" customModule="MyReddit" customModuleProvider="target">
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Bis-Gr-TOr" id="o9V-lV-r6g">
                                             <autoresizingMask key="autoresizingMask"/>
@@ -2858,8 +2884,12 @@
                                                 <constraint firstItem="1BA-yp-1qz" firstAttribute="top" secondItem="o9V-lV-r6g" secondAttribute="topMargin" constant="3" id="u1D-5a-1k9"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <connections>
+                                            <outlet property="titleLabel" destination="1BA-yp-1qz" id="0v6-c5-cxm"/>
+                                        </connections>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="fKF-VS-hJF">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="fKF-VS-hJF" customClass="UserInfoCell" customModule="MyReddit" customModuleProvider="target">
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="fKF-VS-hJF" id="nOf-k3-OBa">
                                             <autoresizingMask key="autoresizingMask"/>
@@ -2879,8 +2909,12 @@
                                                 <constraint firstItem="HuQ-MQ-7IM" firstAttribute="leading" secondItem="nOf-k3-OBa" secondAttribute="leadingMargin" constant="10" id="XQh-pN-e1b"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <connections>
+                                            <outlet property="titleLabel" destination="HuQ-MQ-7IM" id="sog-bj-wQH"/>
+                                        </connections>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="twe-Rs-mcc">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="twe-Rs-mcc" customClass="UserInfoCell" customModule="MyReddit" customModuleProvider="target">
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="twe-Rs-mcc" id="l05-gL-kXE">
                                             <autoresizingMask key="autoresizingMask"/>
@@ -2900,8 +2934,12 @@
                                                 <constraint firstItem="Gwl-jv-Fv0" firstAttribute="leading" secondItem="l05-gL-kXE" secondAttribute="leadingMargin" constant="10" id="q2S-FN-ETY"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <connections>
+                                            <outlet property="titleLabel" destination="Gwl-jv-Fv0" id="crb-lV-u72"/>
+                                        </connections>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="nVn-BA-Ug3">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="nVn-BA-Ug3" customClass="UserInfoCell" customModule="MyReddit" customModuleProvider="target">
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="nVn-BA-Ug3" id="KLf-Jf-v7n">
                                             <autoresizingMask key="autoresizingMask"/>
@@ -2921,8 +2959,12 @@
                                                 <constraint firstItem="eE4-Tx-NRc" firstAttribute="top" secondItem="KLf-Jf-v7n" secondAttribute="topMargin" constant="3" id="cIx-QO-sRz"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <connections>
+                                            <outlet property="titleLabel" destination="eE4-Tx-NRc" id="QBL-9e-dIa"/>
+                                        </connections>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="sDi-eD-WOi">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="sDi-eD-WOi" customClass="UserInfoCell" customModule="MyReddit" customModuleProvider="target">
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="sDi-eD-WOi" id="yfZ-lc-Tyy">
                                             <autoresizingMask key="autoresizingMask"/>
@@ -2942,12 +2984,16 @@
                                                 <constraint firstItem="oC2-o2-WNi" firstAttribute="top" secondItem="yfZ-lc-Tyy" secondAttribute="topMargin" constant="3" id="Ojb-uW-uab"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <connections>
+                                            <outlet property="titleLabel" destination="oC2-o2-WNi" id="rGc-dP-4j9"/>
+                                        </connections>
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
                             <tableViewSection headerTitle="Creators" id="COZ-zW-OQs">
                                 <cells>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="Z0X-gH-QdM">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="Z0X-gH-QdM" customClass="UserInfoCell" customModule="MyReddit" customModuleProvider="target">
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Z0X-gH-QdM" id="Vjn-kQ-K6E">
                                             <autoresizingMask key="autoresizingMask"/>
@@ -2967,8 +3013,12 @@
                                                 <constraint firstItem="CNA-9q-JT5" firstAttribute="leading" secondItem="Vjn-kQ-K6E" secondAttribute="leadingMargin" constant="10" id="rrJ-lJ-SCg"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <connections>
+                                            <outlet property="titleLabel" destination="CNA-9q-JT5" id="zcF-ZN-M3I"/>
+                                        </connections>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="zMV-Nw-cEI">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="zMV-Nw-cEI" customClass="UserInfoCell" customModule="MyReddit" customModuleProvider="target">
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="zMV-Nw-cEI" id="U5A-UJ-e0a">
                                             <autoresizingMask key="autoresizingMask"/>
@@ -2988,8 +3038,12 @@
                                                 <constraint firstItem="M19-0u-YvZ" firstAttribute="leading" secondItem="U5A-UJ-e0a" secondAttribute="leadingMargin" constant="10" id="g9d-1O-cEW"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <connections>
+                                            <outlet property="titleLabel" destination="M19-0u-YvZ" id="O1H-JQ-myI"/>
+                                        </connections>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="Zfo-MK-a7C">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="Zfo-MK-a7C" customClass="UserInfoCell" customModule="MyReddit" customModuleProvider="target">
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Zfo-MK-a7C" id="d2h-Y2-Qxx">
                                             <autoresizingMask key="autoresizingMask"/>
@@ -3009,12 +3063,16 @@
                                                 <constraint firstItem="oko-qd-Gli" firstAttribute="top" secondItem="d2h-Y2-Qxx" secondAttribute="topMargin" constant="3" id="svk-iS-unH"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <connections>
+                                            <outlet property="titleLabel" destination="oko-qd-Gli" id="2ke-cx-C8Y"/>
+                                        </connections>
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
                             <tableViewSection headerTitle="Other Apps" id="ce0-Df-ofw">
                                 <cells>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="tJZ-lD-bgb">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="tJZ-lD-bgb" customClass="UserInfoCell" customModule="MyReddit" customModuleProvider="target">
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="tJZ-lD-bgb" id="uw7-ib-9Ux">
                                             <autoresizingMask key="autoresizingMask"/>
@@ -3034,6 +3092,10 @@
                                                 <constraint firstItem="Uar-oA-dfC" firstAttribute="top" secondItem="uw7-ib-9Ux" secondAttribute="topMargin" constant="3" id="ngF-Zl-jwv"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <connections>
+                                            <outlet property="titleLabel" destination="Uar-oA-dfC" id="ctP-Jw-suf"/>
+                                        </connections>
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
@@ -3046,11 +3108,26 @@
                     <toolbarItems/>
                     <nil key="simulatedBottomBarMetrics"/>
                     <connections>
+                        <outlet property="goToMyRedditCell" destination="Bis-Gr-TOr" id="crV-HR-BXE"/>
+                        <outlet property="hideSubredditLogosCell" destination="QmW-dV-7d1" id="AWQ-2Z-Wta"/>
+                        <outlet property="infinitePostScrollingCell" destination="nbj-Ea-5Cf" id="Xlr-NV-cON"/>
                         <outlet property="infiniteScrollingSwitch" destination="bfn-l9-ME0" id="gt6-IX-Wwo"/>
+                        <outlet property="likeUsOnFacebookCell" destination="twe-Rs-mcc" id="Veo-MK-Fyq"/>
+                        <outlet property="nickolasLanasaCreatorCell" destination="zMV-Nw-cEI" id="ELC-4o-JJR"/>
+                        <outlet property="nightModeCell" destination="2tW-DD-fVf" id="Oej-hv-1rW"/>
                         <outlet property="nightModeSwitch" destination="TdV-fm-hNc" id="GRy-tT-R4j"/>
+                        <outlet property="nytekProductionsCreatorCell" destination="Z0X-gH-QdM" id="BDi-jY-dUJ"/>
+                        <outlet property="otherAppMuzCell" destination="tJZ-lD-bgb" id="qsU-8p-Weo"/>
+                        <outlet property="rateThisAppCell" destination="fKF-VS-hJF" id="Tbv-U6-gvc"/>
+                        <outlet property="restorePurchaseCell" destination="sDi-eD-WOi" id="sBc-UE-Nnt"/>
+                        <outlet property="samanthaLanasaCreatorCell" destination="Zfo-MK-a7C" id="RSY-5W-0jS"/>
+                        <outlet property="shareAppCell" destination="nVn-BA-Ug3" id="Gtw-pj-e0R"/>
+                        <outlet property="showFlairCell" destination="upY-42-zCz" id="F0w-yk-MDd"/>
                         <outlet property="showFlairSwitch" destination="HSC-z0-dSR" id="nCN-IG-4SW"/>
+                        <outlet property="showNSFWCell" destination="c4X-6y-LjI" id="Ao1-wx-XNl"/>
                         <outlet property="showNSFWSwitch" destination="oJK-sx-N85" id="fXX-LM-JiO"/>
                         <outlet property="showSubredditLogosSwitch" destination="ozS-tK-90o" id="rmi-6Y-P0a"/>
+                        <outlet property="textSizeCell" destination="mbg-AU-7yY" id="xOh-vZ-Tqc"/>
                         <outlet property="textSizeLabel" destination="Kaj-QC-ywh" id="bsK-Wh-nyJ"/>
                     </connections>
                 </tableViewController>
@@ -3367,13 +3444,13 @@
         <image name="Up" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="MsL-gN-mnM"/>
-        <segue reference="7YE-ws-eyS"/>
+        <segue reference="O8K-LF-8mj"/>
+        <segue reference="cxw-0o-NAI"/>
         <segue reference="FH5-lg-p4i"/>
-        <segue reference="fLo-75-wzd"/>
-        <segue reference="aPe-Za-FV1"/>
-        <segue reference="USc-4p-Rgd"/>
-        <segue reference="Na3-yg-xfC"/>
+        <segue reference="ovW-r7-Crm"/>
+        <segue reference="s4Y-Y8-M2P"/>
+        <segue reference="SWo-82-5L3"/>
+        <segue reference="q6K-ip-lpO"/>
         <segue reference="psA-tl-Zoj"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -78,6 +78,9 @@ class PostImageCell: PostCell {
             
             self.titleLabel.font = UIFont(name: self.titleLabel.font.fontName,
                 size: SettingsManager.defaultManager.titleFontSizeForDefaultTextSize)
+            
+            self.titleLabel.textColor = MyRedditLabelColor
+            self.contentView.backgroundColor = MyRedditBackgroundColor
         }
     }
     

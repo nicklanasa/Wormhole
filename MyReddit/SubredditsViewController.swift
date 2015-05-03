@@ -99,6 +99,10 @@ class SubredditsViewController: UIViewController, UITableViewDataSource, NSFetch
         }
         
         self.fetchSubreddits()
+        
+        for item in self.toolbarItems as! [UIBarButtonItem] {
+            item.tintColor = MyRedditLabelColor
+        }
     }
     
     func fetchSubreddits() {
@@ -141,8 +145,15 @@ class SubredditsViewController: UIViewController, UITableViewDataSource, NSFetch
         var cell = tableView.dequeueReusableCellWithIdentifier("SubredditCell") as! SubredditCell
         
         if indexPath.row == 0 {
-            var cell = tableView.dequeueReusableCellWithIdentifier("FrontCell") as! UITableViewCell
-            cell.textLabel?.textColor = MyRedditLabelColor
+            var cell = tableView.dequeueReusableCellWithIdentifier("FrontCell") as! FrontCell
+            cell.frontLabel.textColor = MyRedditLabelColor
+            
+            if SettingsManager.defaultManager.valueForSetting(.NightMode) {
+                cell.starImageView.image = UIImage(named: "starWhite")
+            } else {
+                cell.starImageView.image = UIImage(named: "star")
+            }
+            
             return cell
         } else {
             if let subreddit = self.subreddits[indexPath.row - 1] as? RKSubreddit {

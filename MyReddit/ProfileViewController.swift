@@ -33,6 +33,8 @@ class ProfileViewController: UIViewController, UITableViewDataSource, UITableVie
         if let user = UserSession.sharedSession.currentUser {
             self.navigationItem.title = user.username
         }
+        
+        self.tableView.backgroundColor = MyRedditDarkBackgroundColor
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {

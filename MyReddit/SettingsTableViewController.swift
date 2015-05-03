@@ -18,6 +18,22 @@ class SettingsTableViewController: UITableViewController, BDGIAPDelegate {
     @IBOutlet weak var infiniteScrollingSwitch: UISwitch!
     @IBOutlet weak var textSizeLabel: UILabel!
     
+    @IBOutlet weak var showFlairCell: UserInfoCell!
+    @IBOutlet weak var showNSFWCell: UserInfoCell!
+    @IBOutlet weak var hideSubredditLogosCell: UserInfoCell!
+    @IBOutlet weak var nightModeCell: UserInfoCell!
+    @IBOutlet weak var textSizeCell: UserInfoCell!
+    @IBOutlet weak var infinitePostScrollingCell: UserInfoCell!
+    @IBOutlet weak var goToMyRedditCell: UserInfoCell!
+    @IBOutlet weak var rateThisAppCell: UserInfoCell!
+    @IBOutlet weak var likeUsOnFacebookCell: UserInfoCell!
+    @IBOutlet weak var shareAppCell: UserInfoCell!
+    @IBOutlet weak var restorePurchaseCell: UserInfoCell!
+    @IBOutlet weak var nytekProductionsCreatorCell: UserInfoCell!
+    @IBOutlet weak var nickolasLanasaCreatorCell: UserInfoCell!
+    @IBOutlet weak var samanthaLanasaCreatorCell: UserInfoCell!
+    @IBOutlet weak var otherAppMuzCell: UserInfoCell!
+    
     var hud: MBProgressHUD! {
         didSet {
             hud.labelFont = MyRedditSelfTextFont
@@ -39,11 +55,55 @@ class SettingsTableViewController: UITableViewController, BDGIAPDelegate {
             self.nightModeSwitch.on = SettingsManager.defaultManager.valueForSetting(.NightMode)
             self.infiniteScrollingSwitch.on = SettingsManager.defaultManager.valueForSetting(.InfiniteScrolling)
             self.textSizeLabel.text = SettingsManager.defaultManager.valueForTextSizeSetting(currentTextSize)
+            
+            self.showFlairCell.backgroundColor = MyRedditBackgroundColor
+            self.showFlairCell.titleLabel.textColor = MyRedditLabelColor
+            self.showNSFWCell.titleLabel.textColor = MyRedditLabelColor
+            self.showNSFWCell.backgroundColor = MyRedditBackgroundColor
+            self.hideSubredditLogosCell.titleLabel.textColor = MyRedditLabelColor
+            self.hideSubredditLogosCell.backgroundColor = MyRedditBackgroundColor
+            self.nightModeCell.titleLabel.textColor = MyRedditLabelColor
+            self.nightModeCell.backgroundColor = MyRedditBackgroundColor
+            self.textSizeCell.titleLabel.textColor = MyRedditLabelColor
+            self.textSizeCell.backgroundColor = MyRedditBackgroundColor
+            self.infinitePostScrollingCell.titleLabel.textColor = MyRedditLabelColor
+            self.infinitePostScrollingCell.backgroundColor = MyRedditBackgroundColor
+            self.goToMyRedditCell.titleLabel.textColor = MyRedditLabelColor
+            self.goToMyRedditCell.backgroundColor = MyRedditBackgroundColor
+            self.rateThisAppCell.titleLabel.textColor = MyRedditLabelColor
+            self.rateThisAppCell.backgroundColor = MyRedditBackgroundColor
+            self.likeUsOnFacebookCell.titleLabel.textColor = MyRedditLabelColor
+            self.likeUsOnFacebookCell.backgroundColor = MyRedditBackgroundColor
+            self.shareAppCell.titleLabel.textColor = MyRedditLabelColor
+            self.shareAppCell.backgroundColor = MyRedditBackgroundColor
+            self.restorePurchaseCell.titleLabel.textColor = MyRedditLabelColor
+            self.restorePurchaseCell.backgroundColor = MyRedditBackgroundColor
+            self.nytekProductionsCreatorCell.titleLabel.textColor = MyRedditLabelColor
+            self.nytekProductionsCreatorCell.backgroundColor = MyRedditBackgroundColor
+            self.nickolasLanasaCreatorCell.titleLabel.textColor = MyRedditLabelColor
+            self.nickolasLanasaCreatorCell.backgroundColor = MyRedditBackgroundColor
+            self.samanthaLanasaCreatorCell.titleLabel.textColor = MyRedditLabelColor
+            self.samanthaLanasaCreatorCell.backgroundColor = MyRedditBackgroundColor
+            self.otherAppMuzCell.titleLabel.textColor = MyRedditLabelColor
+            self.otherAppMuzCell.backgroundColor = MyRedditBackgroundColor
+            
+            self.tableView.backgroundColor = MyRedditBackgroundColor
+            self.navigationController?.navigationBar.barTintColor = MyRedditBackgroundColor
+            self.navigationController?.navigationBar.tintColor = MyRedditLabelColor
+            self.navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName : MyRedditLabelColor]
         })
     }
     
     @IBAction func nightModeValueChanged(sender: AnyObject) {
         SettingsManager.defaultManager.updateValueForSetting(.NightMode, value: self.nightModeSwitch.on)
+        
+        if SettingsManager.defaultManager.valueForSetting(.NightMode) {
+            UserSession.sharedSession.nightMode()
+        } else {
+            UserSession.sharedSession.dayMode()
+        }
+        
+        self.updateTable()
     }
     
     @IBAction func showSubredditLogosValueChanged(sender: AnyObject) {

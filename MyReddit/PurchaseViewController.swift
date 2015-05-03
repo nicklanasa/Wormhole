@@ -18,7 +18,18 @@ class PurchaseViewController: UIViewController, BDGIAPDelegate {
             hud.labelText = "Loading"
         }
     }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        self.view.backgroundColor = MyRedditDarkBackgroundColor
+        self.restoreButton.setTitleColor(MyRedditLabelColor, forState: .Normal)
+    }
 
+    @IBOutlet weak var purchaseButton: UIButton!
+    @IBOutlet weak var restoreButton: UIButton!
+    @IBOutlet weak var purchaseLabel: UILabel!
+    
     @IBAction func restoreButtonTapped(sender: AnyObject) {
         self.hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
         BDGInAppPurchase.sharedBDGInAppPurchase().delegate = self

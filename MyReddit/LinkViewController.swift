@@ -30,13 +30,13 @@ class LinkViewController: UIViewController {
     private func updateVoteButtons() {
         if self.link.upvoted() {
             self.upvoteButton.tintColor = MyRedditUpvoteColor
-            self.downvoteButton.tintColor = UIColor.blackColor()
+            self.downvoteButton.tintColor = MyRedditLabelColor
         } else if self.link.downvoted() {
-            self.upvoteButton.tintColor = UIColor.blackColor()
+            self.upvoteButton.tintColor = MyRedditLabelColor
             self.downvoteButton.tintColor = MyRedditDownvoteColor
         } else {
-            self.upvoteButton.tintColor = UIColor.blackColor()
-            self.downvoteButton.tintColor = UIColor.blackColor()
+            self.upvoteButton.tintColor = MyRedditLabelColor
+            self.downvoteButton.tintColor = MyRedditLabelColor
         }
     }
     

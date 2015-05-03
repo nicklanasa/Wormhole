@@ -55,6 +55,10 @@ class LoginViewController: UIViewController, UITableViewDataSource, UITableViewD
         }
     }
     
+    override func viewDidAppear(animated: Bool) {
+        self.tableView.backgroundColor = MyRedditDarkBackgroundColor
+    }
+    
     @IBAction func cancelButtonPressed(sender: AnyObject) {
         self.dismissViewControllerAnimated(true, completion: nil)
     }

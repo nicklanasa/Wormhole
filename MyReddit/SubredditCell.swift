@@ -57,6 +57,8 @@ class SubredditCell: UITableViewCell {
                     self.subredditImageView.image = UIImage(named: "Reddit")
                 }
             }
+            
+            self.nameLabel.textColor = MyRedditLabelColor
         }
     }
     
