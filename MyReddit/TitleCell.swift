@@ -37,9 +37,20 @@ class TitleCell: PostCell {
             self.commentsLabel.text = link.totalComments.description
             self.subredditLabel.text = "/r/\(link.subreddit)"
             
+            var showFlair = ""
+            
+            if SettingsManager.defaultManager.valueForSetting(.Flair) {
+                if let flairString = link.linkFlairText {
+                    showFlair = " | \(flairString)"
+                }
+            }
+            
             var infoString = NSMutableAttributedString(string: "\(link.domain) | \(link.author)")
             var attrs = [NSForegroundColorAttributeName : MyRedditLabelColor]
             infoString.addAttributes(attrs, range: NSMakeRange(0, count(link.domain)))
+            
+            var flairAttrs = [NSForegroundColorAttributeName : MyRedditColor]
+            infoString.addAttributes(flairAttrs, range: NSMakeRange(infoString.length - count(showFlair) + 1, count(showFlair)))
             
             self.postInfoLabel.attributedText = infoString
             
