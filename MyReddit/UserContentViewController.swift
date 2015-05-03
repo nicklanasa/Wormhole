@@ -103,7 +103,7 @@ class UserContentViewController: UIViewController, UITableViewDelegate, UITableV
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         self.tableView.deselectRowAtIndexPath(indexPath, animated: true)
-        if indexPath.section == 2 {
+        if indexPath.section == 0 {
             if let link = self.content[indexPath.row] as? RKLink {
                 if link.selfPost {
                     self.performSegueWithIdentifier("CommentsSegue", sender: link)
