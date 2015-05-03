@@ -320,7 +320,7 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mfz-8L-JTh">
                                 <rect key="frame" x="0.0" y="700" width="600" height="300"/>
                                 <subviews>
-                                    <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xAl-kC-lbJ">
+                                    <button opaque="NO" tag="99" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xAl-kC-lbJ">
                                         <rect key="frame" x="549" y="13" width="30" height="26"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="30" id="hLE-Vu-Gug"/>

@@ -48,6 +48,7 @@ SearchViewControllerDelegate {
             filterView.layer.shadowOffset = CGSize(width: 10, height: 15)
             filterView.layer.shadowOpacity = 0.8
             filterView.layer.shadowRadius = 30
+            filterView.layer.masksToBounds = true
         }
     }
     
@@ -221,7 +222,7 @@ SearchViewControllerDelegate {
         
         for subView in self.filterView.subviews {
             if let button = subView as? UIButton {
-                if button.tag == 1 {
+                if button.tag == 99 {
                     if SettingsManager.defaultManager.valueForSetting(.NightMode) {
                         button.setBackgroundImage(UIImage(named: "CancelWhite"), forState: .Normal)
                     } else {
@@ -230,6 +231,8 @@ SearchViewControllerDelegate {
                 } else {
                     button.setTitleColor(MyRedditLabelColor, forState: .Normal)
                 }
+            } else if let label = subView as? UILabel {
+                label.textColor = MyRedditLabelColor
             }
         }
     }
