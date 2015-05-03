@@ -198,6 +198,7 @@ SearchViewControllerDelegate {
     }
     
     override func viewDidLoad() {
+        super.viewDidLoad()
         self.syncLinks()
         
         self.contextMenu = GHContextMenuView()
@@ -209,9 +210,12 @@ SearchViewControllerDelegate {
     }
     
     override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
         self.updateSubscribeButton()
         
-        self.tableView.reloadData()
+        if self.links.count > 0 {
+            self.tableView.reloadData()
+        }
     }
     
     private func updateSubscribeButton() {
@@ -256,6 +260,14 @@ SearchViewControllerDelegate {
             f.origin.y = yOffset
             f.size.height =  -yOffset
             self.headerImage.frame = f
+            
+            if yOffset <= -400 {
+                self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0)
+                self.headerImage.removeFromSuperview()
+                self.links = Array<AnyObject>()
+                self.pagination = nil
+                self.syncLinks()
+            }
         }
     }
     

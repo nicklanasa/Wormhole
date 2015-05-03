@@ -124,7 +124,6 @@ class UserSession {
         UIBarButtonItem.appearance().setBackButtonTitlePositionAdjustment(UIOffset(horizontal: -9999, vertical: 0), forBarMetrics: .Default)
         UIBarButtonItem.appearance().tintColor = MyRedditLabelColor
         //UIView.appearance().backgroundColor = UIColor.whiteColor()
-        UITableView.appearance().backgroundColor = UIColor.groupTableViewBackgroundColor()
         UITableViewCell.appearance().backgroundColor = UIColor.whiteColor()
     }
 }
