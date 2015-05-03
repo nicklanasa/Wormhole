@@ -34,6 +34,18 @@ class RedditSession {
         }
     }
     
+    func fetchPostsForMultiReddit(multiReddit: RKMultireddit, category: RKSubredditCategory?, pagination: RKPagination?, completion: PaginationCompletion) {
+        if let filterCategory = category {
+            RKClient.sharedClient().linksInMultireddit(multiReddit, category: filterCategory, pagination: pagination, completion: { (results, pagination, error) -> Void in
+                completion(pagination: pagination, results: results, error: error)
+            })
+        } else {
+            RKClient.sharedClient().linksInMultireddit(multiReddit, pagination: pagination, completion: { (results, pagination, error) -> Void in
+                completion(pagination: pagination, results: results, error: error)
+            })
+        }
+    }
+    
     func fetchPostsForSubreddit(subreddit: RKSubreddit, category: RKSubredditCategory?, pagination: RKPagination?, completion: PaginationCompletion) {
         if let filterCategory = category {
             RKClient.sharedClient().linksInSubredditWithName(subreddit.name,
@@ -63,8 +75,14 @@ class RedditSession {
         })
     }
     
-    func fetchMessages(pagination: RKPagination?, category: RKMessageCategory, completion: PaginationCompletion) {
-        RKClient.sharedClient().messagesInCategory(category, pagination: pagination, markRead: false) { (results, pagination, error) -> Void in
+    func fetchMultiReddits(completion: PaginationCompletion) {
+        RKClient.sharedClient().multiredditsWithCompletion { (mutliReddts, error) -> Void in
+            completion(pagination: nil, results: mutliReddts, error: error)
+        }
+    }
+    
+    func fetchMessages(pagination: RKPagination?, category: RKMessageCategory, read: Bool, completion: PaginationCompletion) {
+        RKClient.sharedClient().messagesInCategory(category, pagination: pagination, markRead: read) { (results, pagination, error) -> Void in
             completion(pagination: pagination, results: results, error: error)
         }
     }
@@ -119,6 +137,12 @@ class RedditSession {
     
     func unsubscribe(subreddit: RKSubreddit, completion: ErrorCompletion) {
         RKClient.sharedClient().unsubscribeFromSubredditWithFullName(subreddit.fullName, completion: { (error) -> Void in
+            completion(error: error)
+        })
+    }
+    
+    func deleteMultiReddit(multiReddit: RKMultireddit, completion: ErrorCompletion) {
+        RKClient.sharedClient().deleteMultireddit(multiReddit, completion: { (error) -> Void in
             completion(error: error)
         })
     }

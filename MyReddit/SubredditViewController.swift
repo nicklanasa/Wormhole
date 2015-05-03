@@ -32,6 +32,7 @@ JZSwipeCellDelegate,
 SearchViewControllerDelegate {
     
     var subreddit: RKSubreddit!
+    var multiReddit: RKMultireddit!
     var front = true
     var pagination: RKPagination?
     var pageIndex: Int!
@@ -238,19 +239,25 @@ SearchViewControllerDelegate {
     }
     
     private func updateSubscribeButton() {
-        dispatch_async(dispatch_get_main_queue(), { () -> Void in
-            if self.front {
-                self.subscribeButton.title = ""
-            } else {
-                if self.subreddit.subscriber.boolValue {
-                    self.subscribeButton.title = "Unsubscribe"
-                    self.subscribeButton.setTitleTextAttributes([NSForegroundColorAttributeName: MyRedditDownvoteColor], forState: .Normal)
+        if self.multiReddit == nil {
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                if self.front {
+                    self.subscribeButton.title = ""
                 } else {
-                    self.subscribeButton.title = "Subscribe"
-                    self.subscribeButton.setTitleTextAttributes([NSForegroundColorAttributeName: MyRedditUpvoteColor], forState: .Normal)
+                    if self.subreddit.subscriber.boolValue {
+                        self.subscribeButton.title = "Unsubscribe"
+                        self.subscribeButton.setTitleTextAttributes([NSForegroundColorAttributeName: MyRedditDownvoteColor], forState: .Normal)
+                    } else {
+                        self.subscribeButton.title = "Subscribe"
+                        self.subscribeButton.setTitleTextAttributes([NSForegroundColorAttributeName: MyRedditUpvoteColor], forState: .Normal)
+                    }
                 }
-            }
-        })
+            })
+        } else {
+            self.subscribeButton.title = ""
+            self.subscribeButton.action = nil
+            self.subscribeButton.target = self
+        }
     }
     
     func imageForItemAtIndex(index: Int) -> UIImage! {
@@ -294,7 +301,14 @@ SearchViewControllerDelegate {
     
     private func syncLinks() {
         
-        var title = front ? "Front" : "/r/\(subreddit.name)"
+        var title: String!
+        
+        if let multiReddit = self.multiReddit {
+            title = multiReddit.name
+        } else {
+            title = front ? "Front" : "/r/\(subreddit.name)"
+        }
+        
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: title, style: .Plain, target: self, action: nil)
         self.navigationController?.navigationBarHidden = false
         
@@ -328,15 +342,26 @@ SearchViewControllerDelegate {
                 completion()
             })
         } else {
-            RedditSession.sharedSession.fetchPostsForSubreddit(self.subreddit,
-                category: self.currentCategory, pagination: self.pagination, completion: { (pagination, results, error) -> () in
-                self.pagination = pagination
-                if let moreLinks = results {
-                    self.links.extend(moreLinks)
-                }
-                
-                completion()
-            })
+            if let subreddit = self.subreddit {
+                RedditSession.sharedSession.fetchPostsForSubreddit(self.subreddit,
+                    category: self.currentCategory, pagination: self.pagination, completion: { (pagination, results, error) -> () in
+                        self.pagination = pagination
+                        if let moreLinks = results {
+                            self.links.extend(moreLinks)
+                        }
+                        
+                        completion()
+                })
+            } else {
+                RedditSession.sharedSession.fetchPostsForMultiReddit(self.multiReddit, category: self.currentCategory, pagination: self.pagination, completion: { (pagination, results, error) -> () in
+                    self.pagination = pagination
+                    if let moreLinks = results {
+                        self.links.extend(moreLinks)
+                    }
+                    
+                    completion()
+                })
+            }
         }
     }
 

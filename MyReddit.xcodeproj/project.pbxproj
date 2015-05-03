@@ -56,6 +56,7 @@
 		CE769F271AF5A6CB00031657 /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE769F261AF5A6CB00031657 /* SettingsTableViewController.swift */; };
 		CE769F291AF5A8BA00031657 /* SettingsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE769F281AF5A8BA00031657 /* SettingsManager.swift */; };
 		CE769F2B1AF6A17000031657 /* FrontCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE769F2A1AF6A17000031657 /* FrontCell.swift */; };
+		CE769F2D1AF6BCC300031657 /* InboxesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE769F2C1AF6BCC300031657 /* InboxesTableViewController.swift */; };
 		CEAC71BD1AF14856006DC831 /* LoadMoreHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEAC71BC1AF14856006DC831 /* LoadMoreHeader.swift */; };
 		CEB866121AF01FC200BE850F /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB866111AF01FC200BE850F /* WebViewController.swift */; };
 		CEB866141AF05DDF00BE850F /* SubredditsPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB866131AF05DDF00BE850F /* SubredditsPageViewController.swift */; };
@@ -136,6 +137,7 @@
 		CE769F261AF5A6CB00031657 /* SettingsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsTableViewController.swift; sourceTree = "<group>"; };
 		CE769F281AF5A8BA00031657 /* SettingsManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsManager.swift; sourceTree = "<group>"; };
 		CE769F2A1AF6A17000031657 /* FrontCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FrontCell.swift; sourceTree = "<group>"; };
+		CE769F2C1AF6BCC300031657 /* InboxesTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InboxesTableViewController.swift; sourceTree = "<group>"; };
 		CEAC71BC1AF14856006DC831 /* LoadMoreHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadMoreHeader.swift; sourceTree = "<group>"; };
 		CEB866111AF01FC200BE850F /* WebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
 		CEB866131AF05DDF00BE850F /* SubredditsPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubredditsPageViewController.swift; sourceTree = "<group>"; };
@@ -245,6 +247,7 @@
 				0195D6BD1AF31CE1004FA3EC /* ProfileViewController.swift */,
 				CE538FA91AF3B02E008050B6 /* UserContentViewController.swift */,
 				01E39F421AF5271200C544EA /* AccountsViewController.swift */,
+				CE769F2C1AF6BCC300031657 /* InboxesTableViewController.swift */,
 			);
 			name = User;
 			sourceTree = "<group>";
@@ -523,6 +526,7 @@
 				CE538FAE1AF3F19B008050B6 /* RKClient+Search.swift in Sources */,
 				018E40221AC38A060055384D /* LinkViewController.swift in Sources */,
 				CE35881E1AC305E700294684 /* RedditSession.swift in Sources */,
+				CE769F2D1AF6BCC300031657 /* InboxesTableViewController.swift in Sources */,
 				01F965571AC4FB9200DE0CD6 /* Message+Helpers.swift in Sources */,
 				01D6646A1AC337BC00BE56EA /* Subreddit+Helper.swift in Sources */,
 				01D6646E1AC33C6600BE56EA /* SubredditsViewController.swift in Sources */,

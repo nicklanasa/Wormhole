@@ -24,7 +24,7 @@ class SubredditsViewController: UIViewController, UITableViewDataSource, NSFetch
                 return false
             })
             
-            self.tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: .None)
+            self.tableView.reloadSections(NSIndexSet(index: 1), withRowAnimation: .None)
             
             let subredditsData = NSKeyedArchiver.archivedDataWithRootObject(self.subreddits)
             
@@ -32,7 +32,28 @@ class SubredditsViewController: UIViewController, UITableViewDataSource, NSFetch
         }
     }
     
+    var multiSubreddits = Array<AnyObject>() {
+        didSet {
+            self.multiSubreddits.sort({ (first, second) -> Bool in
+                if let subreddit1 = first as? RKMultireddit {
+                    if let subreddit2 = second as? RKMultireddit {
+                        return subreddit1.name.caseInsensitiveCompare(subreddit2.name) == .OrderedAscending
+                    }
+                }
+                
+                return false
+            })
+            
+            self.tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: .None)
+            
+            let subredditsData = NSKeyedArchiver.archivedDataWithRootObject(self.multiSubreddits)
+            
+            NSUserDefaults.standardUserDefaults().setObject(subredditsData, forKey: "multiSubreddits")
+        }
+    }
+    
     var syncSubreddits = Array<AnyObject>()
+    var syncMultiSubreddits = Array<AnyObject>()
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var nightModeButton: UIBarButtonItem!
@@ -91,10 +112,17 @@ class SubredditsViewController: UIViewController, UITableViewDataSource, NSFetch
         super.viewWillAppear(animated)
         
         self.syncSubreddits = Array<AnyObject>()
+        self.syncMultiSubreddits = Array<AnyObject>()
         
         if let subredditsData = NSUserDefaults.standardUserDefaults().objectForKey("subreddits") as? NSData {
             if let subreddits = NSKeyedUnarchiver.unarchiveObjectWithData(subredditsData) as? [RKSubreddit] {
                 self.subreddits = subreddits
+            }
+        }
+        
+        if let subredditsData = NSUserDefaults.standardUserDefaults().objectForKey("multiSubreddits") as? NSData {
+            if let subreddits = NSKeyedUnarchiver.unarchiveObjectWithData(subredditsData) as? [RKSubreddit] {
+                self.multiSubreddits = subreddits
             }
         }
         
@@ -106,7 +134,7 @@ class SubredditsViewController: UIViewController, UITableViewDataSource, NSFetch
     }
     
     func fetchSubreddits() {
-       self.syncSubreddits(nil)
+        self.syncSubreddits(nil)
     }
     
     func syncSubreddits(pagination: RKPagination?) {
@@ -129,59 +157,90 @@ class SubredditsViewController: UIViewController, UITableViewDataSource, NSFetch
                 }
             })
         }
+        
+        if UserSession.sharedSession.isSignedIn {
+            RedditSession.sharedSession.fetchMultiReddits({ (pagination, results, error) -> () in
+                if let subreddits = results {
+                    self.multiSubreddits = subreddits
+                }
+            })
+        }
     }
     
     // MARK: Sectors NSFetchedResultsControllerDelegate
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if section == 0 {
+            return self.multiSubreddits.count
+        }
         return self.subreddits.count + 1
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 1
+        return 2
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var cell = tableView.dequeueReusableCellWithIdentifier("SubredditCell") as! SubredditCell
         
-        if indexPath.row == 0 {
-            var cell = tableView.dequeueReusableCellWithIdentifier("FrontCell") as! FrontCell
-            cell.frontLabel.textColor = MyRedditLabelColor
-            
-            if SettingsManager.defaultManager.valueForSetting(.NightMode) {
-                cell.starImageView.image = UIImage(named: "starWhite")
-            } else {
-                cell.starImageView.image = UIImage(named: "star")
+        if indexPath.section == 0 {
+            if let subreddit = self.multiSubreddits[indexPath.row] as? RKMultireddit {
+                cell.rkMultiSubreddit = subreddit
             }
-            
-            return cell
         } else {
-            if let subreddit = self.subreddits[indexPath.row - 1] as? RKSubreddit {
-                cell.rkSubreddit = subreddit
+            if indexPath.row == 0 {
+                var cell = tableView.dequeueReusableCellWithIdentifier("FrontCell") as! FrontCell
+                cell.frontLabel.textColor = MyRedditLabelColor
+                
+                if SettingsManager.defaultManager.valueForSetting(.NightMode) {
+                    cell.starImageView.image = UIImage(named: "starWhite")
+                } else {
+                    cell.starImageView.image = UIImage(named: "Star")
+                }
+                
+                return cell
+            } else {
+                if let subreddit = self.subreddits[indexPath.row - 1] as? RKSubreddit {
+                    cell.rkSubreddit = subreddit
+                }
             }
         }
-        
+
         return cell
     }
     
     func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        if indexPath.row == 0 {
-            return false
+        if indexPath.section == 1 {
+            if indexPath.row == 0 {
+                return false
+            }
         }
+        
         return true
     }
     
     func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if editingStyle == .Delete {
-            if let subreddit = self.subreddits[indexPath.row - 1] as? RKSubreddit {
-                RedditSession.sharedSession.unsubscribe(subreddit, completion: { (error) -> () in
-                    if error != nil {
-                        UIAlertView(title: "Error!", message: "Unable to unsubscribe to Subreddit! Please make sure you're connected to the internets.", delegate: self, cancelButtonTitle: "Ok").show()
-                    } else {
-                        self.subreddits.removeAtIndex(indexPath.row-1)
-                        self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-                    }
-                })
+            if indexPath.section == 0 {
+                if let multiReddit = self.multiSubreddits[indexPath.row] as? RKMultireddit {
+                    RedditSession.sharedSession.deleteMultiReddit(multiReddit, completion: { (error) -> () in
+                        if error != nil {
+                            UIAlertView(title: "Error!", message: "Unable to delete MultiReddit! Please make sure you're connected to the internets.", delegate: self, cancelButtonTitle: "Ok").show()
+                        } else {
+                            self.multiSubreddits.removeAtIndex(indexPath.row)
+                        }
+                    })
+                }
+            } else {
+                if let subreddit = self.subreddits[indexPath.row - 1] as? RKSubreddit {
+                    RedditSession.sharedSession.unsubscribe(subreddit, completion: { (error) -> () in
+                        if error != nil {
+                            UIAlertView(title: "Error!", message: "Unable to unsubscribe to Subreddit! Please make sure you're connected to the internets.", delegate: self, cancelButtonTitle: "Ok").show()
+                        } else {
+                            self.subreddits.removeAtIndex(indexPath.row-1)
+                        }
+                    })
+                }
             }
         }
     }
@@ -194,6 +253,18 @@ class SubredditsViewController: UIViewController, UITableViewDataSource, NSFetch
         })
         
         return [deleteAction]
+    }
+    
+    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        if section == 0 {
+            return "MultiReddits"
+        }
+        
+        if UserSession.sharedSession.isSignedIn {
+            return "Subscribed"
+        } else {
+            return "Popular"
+        }
     }
     
     @IBAction func messagesButtonTapped(sender: AnyObject) {
@@ -227,10 +298,17 @@ class SubredditsViewController: UIViewController, UITableViewDataSource, NSFetch
                         
                         var indexPath: NSIndexPath = self.tableView.indexPathForCell(cell)!
                         
-                        if indexPath.row != 0 {
-                            if let subreddit = self.subreddits[indexPath.row - 1] as? RKSubreddit {
-                                subredditViewController.subreddit = subreddit
+                        if indexPath.section == 0 {
+                            if let subreddit = self.multiSubreddits[indexPath.row] as? RKMultireddit {
+                                subredditViewController.multiReddit = subreddit
                                 subredditViewController.front = false
+                            }
+                        } else {
+                            if indexPath.row != 0 {
+                                if let subreddit = self.subreddits[indexPath.row - 1] as? RKSubreddit {
+                                    subredditViewController.subreddit = subreddit
+                                    subredditViewController.front = false
+                                }
                             }
                         }
                     }

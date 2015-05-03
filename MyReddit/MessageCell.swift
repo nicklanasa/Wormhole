@@ -19,7 +19,7 @@ class MessageCell: UITableViewCell {
         
     }
     
-    var message: Message! {
+    var message: RKMessage! {
         didSet {
             
             if !message.unread.boolValue {
@@ -40,6 +40,8 @@ class MessageCell: UITableViewCell {
             infoString.addAttributes(attrs, range: NSMakeRange(0, count(message.created.description)))
             
             self.infoLabel.attributedText = infoString
+            
+            self.titleLabel.textColor = MyRedditLabelColor
         }
     }
 }

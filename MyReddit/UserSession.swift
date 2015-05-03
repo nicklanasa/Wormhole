@@ -121,6 +121,8 @@ class UserSession {
         
         UISwitch.appearance().onTintColor = MyRedditColor
         
+        UINavigationBar.appearance().tintColor = MyRedditLabelColor
+        UINavigationBar.appearance().backgroundColor = MyRedditBackgroundColor
         UINavigationBar.appearance().barTintColor = MyRedditBackgroundColor
         
         UISearchBar.appearance().backgroundColor = MyRedditBackgroundColor
@@ -133,6 +135,8 @@ class UserSession {
         UIBarButtonItem.appearance().setBackButtonTitlePositionAdjustment(UIOffset(horizontal: -9999, vertical: 0), forBarMetrics: .Default)
         UIBarButtonItem.appearance().tintColor = MyRedditLabelColor
         
+        UITableView.appearance().backgroundColor = MyRedditDarkBackgroundColor
+        UITableView.appearance().separatorColor = MyRedditDarkBackgroundColor
         UITableView.appearance().separatorColor = UIColor.lightGrayColor()
         UITableView.appearance().backgroundView = nil
         UITableView.appearance().sectionIndexBackgroundColor = UIColor.clearColor()

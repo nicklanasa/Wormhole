@@ -59,6 +59,24 @@ class SubredditCell: UITableViewCell {
             }
             
             self.nameLabel.textColor = MyRedditLabelColor
+            
+            self.subredditImageView.backgroundColor = MyRedditDarkBackgroundColor
+        }
+    }
+    
+    var rkMultiSubreddit: RKMultireddit! {
+        didSet {
+            self.nameLabel.text = rkMultiSubreddit.name.capitalizedString
+            
+            self.subscribersLabel.hidden = true
+            
+            self.nsfwLabel.hidden = true
+
+            self.nameLabel.textColor = MyRedditLabelColor
+            
+            self.subredditImageView.backgroundColor = MyRedditDarkBackgroundColor
+            
+            self.subredditImageView.image = UIImage(named: "Reddit")
         }
     }
     

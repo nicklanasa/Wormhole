@@ -43,12 +43,4 @@ class DataManager {
     func syncLinksMultireddit(multiSubreddit: MultiReddit, category: RKSubredditCategory?, pagination: RKPagination?, completion: PaginationCompletion) {
         
     }
-    
-    func syncMessages(pagination: RKPagination?, category: RKMessageCategory, completion: PaginationCompletionError) {
-        RedditSession.sharedSession.fetchMessages(pagination, category: category) { (pagination, results, error) -> () in
-            self.datastore.addMessages(results, completion: { (results, error) -> () in
-                completion(pagination: pagination, results: results, error: error)
-            })
-        }
-    }
 }

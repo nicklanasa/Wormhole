@@ -12,50 +12,41 @@ import CoreData
 
 class MessagesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, NSFetchedResultsControllerDelegate {
     
-    @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var segmentationControl: UISegmentedControl!
+    var category: RKMessageCategory!
+    var pagination: RKPagination?
     
-    @IBAction func segmentationControlValueChanged(sender: AnyObject) {
-        self.fetchMessages()
+    var messages: Array<AnyObject>? {
+        didSet {
+            self.tableView.reloadData()
+        }
     }
     
-    lazy var messagesController: NSFetchedResultsController = {
-        
-        let controller = DataManager.manager.datastore.messagesController(nil,
-            sortKey: "created",
-            ascending: false,
-            sectionNameKeyPath: nil)
-        controller.delegate = self
-        return controller
-    }()
+    @IBOutlet weak var tableView: UITableView!
     
     override func viewDidAppear(animated: Bool) {
         self.fetchMessages()
+        self.tableView.rowHeight = UITableViewAutomaticDimension
     }
     
     private func fetchMessages() {
-        var error: NSError?
         
-        var category: RKMessageCategory!
-        var predicate = NSPredicate(format: "type = %d", RKMessageType.Received.rawValue)
-        
-        if self.segmentationControl.selectedSegmentIndex == 0 {
-            category = .Messages
-        } else {
-            category = .Sent
-            predicate = NSPredicate(format: "type = %d", RKMessageType.Sent.rawValue)
+        if let messageCategory = self.category {
+            switch messageCategory {
+            case .CommentReplies: self.navigationItem.title = "Comment Replies"
+            case .Messages: self.navigationItem.title = "Messages"
+            case .Moderator: self.navigationItem.title = "Moderator"
+            case .PostReplies: self.navigationItem.title = "Post Replies"
+            case .Sent: self.navigationItem.title = "Sent"
+            case .Unread: self.navigationItem.title = "Unread"
+            case .UsernameMentions: self.navigationItem.title = "Mentions"
+            default: self.navigationItem.title = "Inbox"
+            }
         }
         
-        self.messagesController.fetchRequest.predicate = predicate
         
-        if self.messagesController.performFetch(&error) {
-            self.tableView.reloadData()
-            
-            if let user = UserSession.sharedSession.currentUser {
-                DataManager.manager.syncMessages(nil, category: category, completion: { (pagination, results, error) -> () in
-                    
-                })
-            }
+        RedditSession.sharedSession.fetchMessages(self.pagination, category: self.category, read: true) { (pagination, results, error) -> () in
+            self.pagination = pagination
+            self.messages = results
         }
     }
     
@@ -63,88 +54,21 @@ class MessagesViewController: UIViewController, UITableViewDataSource, UITableVi
         self.dismissViewControllerAnimated(true, completion: nil)
     }
     
-    // MARK: Sectors NSFetchedResultsControllerDelegate
-    
-    func controllerWillChangeContent(controller: NSFetchedResultsController)
-    {
-        self.tableView.beginUpdates()
-    }
-    
-    func controller(controller: NSFetchedResultsController,
-        didChangeObject anObject: AnyObject,
-        atIndexPath indexPath: NSIndexPath?,
-        forChangeType type: NSFetchedResultsChangeType,
-        newIndexPath: NSIndexPath?)
-    {
-        var tableView = self.tableView
-        var indexPaths:[NSIndexPath] = [NSIndexPath]()
-        switch type {
-            
-        case .Insert:
-            indexPaths.append(newIndexPath!)
-            tableView.insertRowsAtIndexPaths(indexPaths, withRowAnimation: .Fade)
-            
-        case .Delete:
-            indexPaths.append(indexPath!)
-            tableView.deleteRowsAtIndexPaths(indexPaths, withRowAnimation: .Fade)
-            
-        case .Update:
-            indexPaths.append(indexPath!)
-            tableView.reloadRowsAtIndexPaths(indexPaths, withRowAnimation: .Fade)
-            
-        case .Move:
-            indexPaths.append(indexPath!)
-            tableView.deleteRowsAtIndexPaths(indexPaths, withRowAnimation: .Fade)
-            indexPaths.removeAtIndex(0)
-            indexPaths.append(newIndexPath!)
-            tableView.insertRowsAtIndexPaths(indexPaths, withRowAnimation: .Fade)
-        }
-    }
-    
-    func controller(controller: NSFetchedResultsController,
-        didChangeSection sectionInfo: NSFetchedResultsSectionInfo,
-        atIndex sectionIndex: Int,
-        forChangeType type: NSFetchedResultsChangeType)
-    {
-        switch type {
-            
-        case .Insert:
-            self.tableView.insertSections(NSIndexSet(index: sectionIndex),
-                withRowAnimation: .Fade)
-            
-        case .Delete:
-            self.tableView.deleteSections(NSIndexSet(index: sectionIndex),
-                withRowAnimation: .Fade)
-            
-        case .Update, .Move: println("Move or delete called in didChangeSection")
-        }
-    }
-    
-    func controllerDidChangeContent(controller: NSFetchedResultsController)
-    {
-        self.tableView.endUpdates()
-    }
-    
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if let numberOfRowsInSection = self.messagesController.sections?[section].numberOfObjects {
-            return numberOfRowsInSection
-        } else {
-            return 0
-        }
+        return self.messages?.count ?? 0
     }
     
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         return 107
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return self.messagesController.sections?.count ?? 0
+        return 1
     }
-    
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
-        let message = self.messagesController.objectAtIndexPath(indexPath) as! Message
+        let message = self.messages?[indexPath.row] as! RKMessage
         
         var cell = tableView.dequeueReusableCellWithIdentifier("MessageCell") as! MessageCell
         cell.message = message
