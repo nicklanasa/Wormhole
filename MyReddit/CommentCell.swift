@@ -86,6 +86,9 @@ class CommentCell: JZSwipeCell, UITextViewDelegate {
             } else {
                 self.scoreLabel.textColor = UIColor.lightGrayColor()
             }
+            
+            self.commentTextView.font = UIFont(name: self.commentTextView.font.fontName,
+                size: SettingsManager.defaultManager.titleFontSizeForDefaultTextSize)
         }
     }
     
@@ -141,6 +144,9 @@ class CommentCell: JZSwipeCell, UITextViewDelegate {
                     self.contentView.layoutIfNeeded()
                 })
             }
+            
+            self.commentTextView.font = UIFont(name: self.commentTextView.font.fontName,
+                size: SettingsManager.defaultManager.titleFontSizeForDefaultTextSize)
         }
     }
     

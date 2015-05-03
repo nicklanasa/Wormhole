@@ -75,6 +75,9 @@ class PostImageCell: PostCell {
             } else {
                 self.stickyLabel.hidden = true
             }
+            
+            self.titleLabel.font = UIFont(name: self.titleLabel.font.fontName,
+                size: SettingsManager.defaultManager.titleFontSizeForDefaultTextSize)
         }
     }
     

@@ -141,4 +141,14 @@ class SettingsManager {
             return .Medium
         }
     }
+    
+    var titleFontSizeForDefaultTextSize: CGFloat! {
+        get {
+            switch self.defaultTextSize.rawValue {
+            case TextSizeSetting.Small.rawValue: return 14.0
+            case TextSizeSetting.Large.rawValue: return 18.0
+            default: return 16.0
+            }
+        }
+    }
 }

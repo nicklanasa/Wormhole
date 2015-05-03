@@ -210,6 +210,8 @@ SearchViewControllerDelegate {
     
     override func viewWillAppear(animated: Bool) {
         self.updateSubscribeButton()
+        
+        self.tableView.reloadData()
     }
     
     private func updateSubscribeButton() {
