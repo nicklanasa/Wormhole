@@ -148,4 +148,16 @@ class RedditSession {
             completion(error: nil)
         }
     }
+    
+    func searchForLinks(searchText: String, pagination: RKPagination?, completion: PaginationCompletion) {
+        RKClient.sharedClient().search(searchText, pagination: pagination) { (results, pagination, error) -> Void in
+            completion(pagination: pagination, results: results, error: error)
+        }
+    }
+    
+    func searchForLinksInSubreddit(subreddit: RKSubreddit, searchText: String, pagination: RKPagination?, completion: PaginationCompletion) {
+        RKClient.sharedClient().search(searchText, subreddit: subreddit, restrictSubreddit: true, pagination: pagination) { (results, pagination, error) -> Void in
+            completion(pagination: pagination, results: results, error: error)
+        }
+    }
 }

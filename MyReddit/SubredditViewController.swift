@@ -405,6 +405,7 @@ SearchViewControllerDelegate {
             if let nav = segue.destinationViewController as? UINavigationController {
                 if let controller = nav.viewControllers[0] as? SearchViewController {
                     controller.delegate = self
+                    controller.subreddit = self.subreddit
                 }
             }
         } else {
