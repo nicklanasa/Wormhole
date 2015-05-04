@@ -42,6 +42,8 @@ SearchViewControllerDelegate {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet var headerImage: UIImageView!
     @IBOutlet weak var subscribeButton: UIBarButtonItem!
+    @IBOutlet weak var filterButton: UIBarButtonItem!
+    @IBOutlet weak var listButton: UIBarButtonItem!
     
     @IBOutlet weak var filterView: UIView! {
         didSet {
@@ -124,6 +126,50 @@ SearchViewControllerDelegate {
         })
     }
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.syncLinks()
+        
+        self.contextMenu = GHContextMenuView()
+        self.contextMenu.delegate = self
+        self.contextMenu.dataSource = self
+        
+        var long = UILongPressGestureRecognizer(target: self.contextMenu, action: "longPressDetected:")
+        self.view.gestureRecognizers = [long]
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        self.updateSubscribeButton()
+        
+        if self.links.count > 0 {
+            self.tableView.reloadData()
+        }
+        
+        self.filterView.backgroundColor = MyRedditDarkBackgroundColor
+        
+        for subView in self.filterView.subviews {
+            if let button = subView as? UIButton {
+                if button.tag == 99 {
+                    if SettingsManager.defaultManager.valueForSetting(.NightMode) {
+                        button.setBackgroundImage(UIImage(named: "CancelWhite"), forState: .Normal)
+                    } else {
+                        button.setBackgroundImage(UIImage(named: "Cancel"), forState: .Normal)
+                    }
+                } else {
+                    button.setTitleColor(MyRedditLabelColor, forState: .Normal)
+                }
+            } else if let label = subView as? UILabel {
+                label.textColor = MyRedditLabelColor
+            }
+        }
+        
+        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            self.filterButton.tintColor = MyRedditLabelColor
+            self.listButton.tintColor = MyRedditLabelColor
+        })
+    }
+    
     @IBAction func filterButtonTapped(sender: AnyObject) {
         if let filterButton = sender as? UIButton {
             self.pagination = nil
@@ -198,45 +244,6 @@ SearchViewControllerDelegate {
         })
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        self.syncLinks()
-        
-        self.contextMenu = GHContextMenuView()
-        self.contextMenu.delegate = self
-        self.contextMenu.dataSource = self
-        
-        var long = UILongPressGestureRecognizer(target: self.contextMenu, action: "longPressDetected:")
-        self.view.gestureRecognizers = [long]
-    }
-    
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
-        self.updateSubscribeButton()
-        
-        if self.links.count > 0 {
-            self.tableView.reloadData()
-        }
-        
-        self.filterView.backgroundColor = MyRedditDarkBackgroundColor
-        
-        for subView in self.filterView.subviews {
-            if let button = subView as? UIButton {
-                if button.tag == 99 {
-                    if SettingsManager.defaultManager.valueForSetting(.NightMode) {
-                        button.setBackgroundImage(UIImage(named: "CancelWhite"), forState: .Normal)
-                    } else {
-                        button.setBackgroundImage(UIImage(named: "Cancel"), forState: .Normal)
-                    }
-                } else {
-                    button.setTitleColor(MyRedditLabelColor, forState: .Normal)
-                }
-            } else if let label = subView as? UILabel {
-                label.textColor = MyRedditLabelColor
-            }
-        }
-    }
-    
     private func updateSubscribeButton() {
         if self.multiReddit == nil {
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
@@ -257,6 +264,8 @@ SearchViewControllerDelegate {
             self.subscribeButton.action = nil
             self.subscribeButton.target = self
         }
+        
+        
     }
     
     func imageForItemAtIndex(index: Int) -> UIImage! {
@@ -325,8 +334,6 @@ SearchViewControllerDelegate {
                 cell.stopAnimating()
             })
         }
-
-        self.navigationItem.rightBarButtonItem?.enabled = true
     }
     
     private func fetchLinks(completion: () -> ()) {

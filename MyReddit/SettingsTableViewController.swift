@@ -202,6 +202,24 @@ class SettingsTableViewController: UITableViewController, BDGIAPDelegate {
         }
     }
     
+    override func shouldPerformSegueWithIdentifier(identifier: String?, sender: AnyObject?) -> Bool {
+        if identifier == "WebViewSegue" {
+            if let requestURL = sender as? NSURL {
+                return true
+            } else {
+                return false
+            }
+        } else if identifier == "MyRedditSubredditSegue" {
+            if let subreddit = sender as? RKSubreddit {
+                return true
+            } else {
+                return false
+            }
+        }
+        
+        return true
+    }
+    
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "WebViewSegue" {
             if let nav = segue.destinationViewController as? UINavigationController {

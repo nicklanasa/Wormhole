@@ -25,6 +25,10 @@ class LinkViewController: UIViewController {
         self.navigationItem.title =  self.link.title
         
         self.updateVoteButtons()
+        
+        self.navigationController?.navigationBar.tintColor = MyRedditLabelColor
+        
+        self.navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: MyRedditLabelColor]
     }
     
     private func updateVoteButtons() {

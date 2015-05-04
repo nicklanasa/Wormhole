@@ -94,7 +94,7 @@ class UserSession {
         UIBarButtonItem.appearance().tintColor = MyRedditLabelColor
         
         UITableView.appearance().backgroundColor = MyRedditDarkBackgroundColor
-        UITableView.appearance().separatorColor = MyRedditDarkBackgroundColor
+        UITableView.appearance().separatorColor = UIColor.darkGrayColor()
         UITableView.appearance().backgroundView = nil
         UITableView.appearance().sectionIndexBackgroundColor = UIColor.clearColor()
         

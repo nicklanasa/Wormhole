@@ -43,6 +43,10 @@ class CommentsViewController: UITableViewController, CommentCellDelegate, JZSwip
         self.navigationItem.title =  !self.forComment ? "\(self.link.author) | \(self.link.totalComments) comments" : "\(self.comment.author) | \(self.comment.replies.count) replies"
         
         self.tableView.rowHeight = UITableViewAutomaticDimension
+        
+        self.navigationController?.navigationBar.tintColor = MyRedditLabelColor
+        
+        self.navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: MyRedditLabelColor]
     }
     
     func syncComments() {
