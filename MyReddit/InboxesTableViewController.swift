@@ -18,14 +18,38 @@ class InboxesTableViewController: UITableViewController {
     @IBOutlet weak var commentRepliesCell: UserInfoCell!
     @IBOutlet weak var postRepliesCell: UserInfoCell!
     @IBOutlet weak var mentionsCell: UserInfoCell!
+    @IBOutlet weak var moderatorCell: UserInfoCell!
     
     var selectedCategory: RKMessageCategory!
+    
+    lazy var inboxRefreshControl: UIRefreshControl! = {
+        var control = UIRefreshControl()
+        control.attributedTitle = NSAttributedString(string: "Pull to refresh", attributes: [NSFontAttributeName : MyRedditCommentTextBoldFont, NSForegroundColorAttributeName : MyRedditLabelColor])
+        control.addTarget(self, action: "refresh:", forControlEvents: UIControlEvents.ValueChanged)
+        return control
+    }()
+    
+    func refresh(sender: AnyObject)
+    {
+        fetchUnread()
+    }
     
     override func viewDidLoad() {
         self.tableView.backgroundColor = MyRedditDarkBackgroundColor
         
-        RedditSession.sharedSession.fetchMessages(nil, category: .All, read: false) { (pagination, results, error) -> () in
-            print(results)
+        self.refreshControl = self.inboxRefreshControl
+        
+        self.fetchUnread()
+    }
+    
+    private func fetchUnread() {
+        RedditSession.sharedSession.fetchMessages(nil, category: .Unread, read: false) { (pagination, results, error) -> () in
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                self.unreadCell.infoLabel.text = "\(results?.count ?? 0)"
+                self.tableView.reloadData()
+                
+                self.inboxRefreshControl.endRefreshing()
+            })
         }
     }
     
@@ -34,8 +58,12 @@ class InboxesTableViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        self.selectedCategory = RKMessageCategory(rawValue: UInt(indexPath.row))
-        self.performSegueWithIdentifier("MessagesSegue", sender: self)
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        
+        if let cell = tableView.cellForRowAtIndexPath(indexPath) {
+            self.selectedCategory = RKMessageCategory(rawValue: UInt(cell.tag))
+            self.performSegueWithIdentifier("MessagesSegue", sender: self)
+        }
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {

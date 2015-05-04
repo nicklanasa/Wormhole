@@ -9,14 +9,33 @@
 import Foundation
 import UIKit
 
-class MessageCell: UITableViewCell {
+protocol MessageCellDelegate {
+    func messageCell(cell: MessageCell, didTapLink link: NSURL)
+}
+
+class MessageCell: JZSwipeCell, UITextViewDelegate {
+    
+    var messageCellDelegate: MessageCellDelegate?
+    
+    var currentTappedURL: NSURL! {
+        didSet {
+            self.messageCellDelegate?.messageCell(self, didTapLink: self.currentTappedURL)
+        }
+    }
+    
+    
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var readLabel: UILabel!
     @IBOutlet weak var infoLabel: UILabel!
-    @IBOutlet weak var bodyLabel: UILabel!
+    @IBOutlet weak var bodyTextView: UITextView!
 
     override func awakeFromNib() {
+        super.awakeFromNib()
         
+        self.imageSet = SwipeCellImageSetMake(UIImage(named: "moreWhite"), UIImage(named: "moreWhite"), UIImage(named: "ReplySmall"), UIImage(named: "ReplySmall"))
+        self.colorSet = SwipeCellColorSetMake(MyRedditColor, MyRedditColor, MyRedditReplyColor, MyRedditReplyColor)
+        
+        self.bodyTextView.delegate = self
     }
     
     var message: RKMessage! {
@@ -27,21 +46,38 @@ class MessageCell: UITableViewCell {
             }
             
             self.titleLabel.text = message.subject
-            self.bodyLabel.text = message.messageBody
             
-            var messageType = "Message"
+            var parser = XNGMarkdownParser()
+            parser.paragraphFont = MyRedditSelfTextFont
+            parser.boldFontName = MyRedditCommentTextBoldFont.familyName
+            parser.boldItalicFontName = MyRedditCommentTextItalicFont.familyName
+            parser.italicFontName = MyRedditCommentTextItalicFont.familyName
+            parser.linkFontName = MyRedditCommentTextBoldFont.familyName
             
-            if message.commentReply.boolValue {
-               messageType = "Comment Reply"
-            }
+            var parsedString = NSMutableAttributedString(attributedString: parser.attributedStringFromMarkdownString(message.messageBody))
+            var titleAttr = [NSForegroundColorAttributeName : MyRedditLabelColor]
+            var selfTextAttr = [NSForegroundColorAttributeName : UIColor.darkGrayColor()]
+            parsedString.addAttributes(selfTextAttr, range: NSMakeRange(0, count(parsedString.string)))
             
-            var infoString = NSMutableAttributedString(string:"\(message.created.description) | \(message.author) | \(messageType)")
+            self.bodyTextView.attributedText = parsedString
+            
+            var infoString = NSMutableAttributedString(string:"\(message.created.timeAgo()) | \(message.author)")
             var attrs = [NSForegroundColorAttributeName : MyRedditColor]
-            infoString.addAttributes(attrs, range: NSMakeRange(0, count(message.created.description)))
+            infoString.addAttributes(attrs, range: NSMakeRange(0, count(message.created.timeAgo())))
             
             self.infoLabel.attributedText = infoString
             
             self.titleLabel.textColor = MyRedditLabelColor
+            self.bodyTextView.backgroundColor = MyRedditBackgroundColor
+            
+            self.contentView.backgroundColor = MyRedditBackgroundColor
         }
+    }
+    
+    func textView(textView: UITextView, shouldInteractWithURL URL: NSURL, inRange characterRange: NSRange) -> Bool {
+        
+        self.currentTappedURL = URL
+        
+        return false
     }
 }

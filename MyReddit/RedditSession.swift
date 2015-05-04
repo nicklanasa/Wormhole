@@ -93,10 +93,25 @@ class RedditSession {
         }
     }
     
+    func markLinkAsViewed(link: RKLink, completion: ErrorCompletion) {
+    }
+    
     func fetchMessages(pagination: RKPagination?, category: RKMessageCategory, read: Bool, completion: PaginationCompletion) {
         RKClient.sharedClient().messagesInCategory(category, pagination: pagination, markRead: read) { (results, pagination, error) -> Void in
             completion(pagination: pagination, results: results, error: error)
         }
+    }
+    
+    func markMessagesAsRead(messages: [AnyObject], completion: ErrorCompletion) {
+        RKClient.sharedClient().markMessageArrayAsRead(messages, completion: { (error) -> Void in
+            completion(error: error)
+        })
+    }
+    
+    func markMessagesAsUnRead(messages: [AnyObject], completion: ErrorCompletion) {
+        RKClient.sharedClient().markMessageArrayAsUnread(messages, completion: { (error) -> Void in
+            completion(error: error)
+        })
     }
     
     func fetchComments(pagination: RKPagination?, link: RKLink, completion: PaginationCompletion) {

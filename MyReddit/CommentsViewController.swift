@@ -37,8 +37,21 @@ class CommentsViewController: UITableViewController, CommentCellDelegate, JZSwip
         self.syncComments()
     }
     
+    lazy var refreshCommentsControl: UIRefreshControl! = {
+        var control = UIRefreshControl()
+        control.attributedTitle = NSAttributedString(string: "Pull to refresh", attributes: [NSFontAttributeName : MyRedditCommentTextBoldFont, NSForegroundColorAttributeName : MyRedditLabelColor])
+        control.addTarget(self, action: "refresh:", forControlEvents: UIControlEvents.ValueChanged)
+        return control
+    }()
+    
+    func refresh(sender: AnyObject)
+    {
+        self.syncComments()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.refreshControl = self.refreshCommentsControl
         
         self.navigationItem.title =  !self.forComment ? "\(self.link.author) | \(self.link.totalComments) comments" : "\(self.comment.author) | \(self.comment.replies.count) replies"
         
@@ -53,6 +66,7 @@ class CommentsViewController: UITableViewController, CommentCellDelegate, JZSwip
         if !self.forComment {
             RedditSession.sharedSession.fetchComments(nil, link: self.link) { (pagination, results, error) -> () in
                 self.comments = results
+                self.refreshCommentsControl.endRefreshing()
             }
         }
     }

@@ -93,6 +93,25 @@ class SubredditsViewController: UIViewController, UITableViewDataSource, UITable
         }
     }
     
+    lazy var refreshControl: UIRefreshControl! = {
+        var control = UIRefreshControl()
+        control.attributedTitle = NSAttributedString(string: "Pull to refresh", attributes: [NSFontAttributeName : MyRedditCommentTextBoldFont, NSForegroundColorAttributeName : MyRedditLabelColor])
+        control.addTarget(self, action: "refresh:", forControlEvents: UIControlEvents.ValueChanged)
+        return control
+    }()
+    
+    func refresh(sender: AnyObject)
+    {
+        self.syncSubreddits(nil)
+    }
+    
+    @IBOutlet weak var messageButton: UIBarButtonItem!
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.tableView.addSubview(self.refreshControl)
+    }
+    
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
@@ -118,11 +137,27 @@ class SubredditsViewController: UIViewController, UITableViewDataSource, UITable
         }
         
         self.tableView.backgroundColor = MyRedditDarkBackgroundColor
+        
+        self.fetchUnread()
+    }
+    
+    private func fetchUnread() {
+        RedditSession.sharedSession.fetchMessages(nil, category: .Unread, read: false) { (pagination, results, error) -> () in
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                if results?.count > 0 {
+                    self.messageButton.tintColor = MyRedditColor
+                } else {
+                    self.messageButton.tintColor = MyRedditLabelColor
+                }
+            })
+        }
     }
     
     func fetchSubreddits() {
         self.syncSubreddits(nil)
         self.syncMultiReddits()
+        
+        self.refreshControl.endRefreshing()
     }
     
     func syncSubreddits(pagination: RKPagination?) {
