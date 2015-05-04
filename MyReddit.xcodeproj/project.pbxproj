@@ -108,7 +108,6 @@
 		CE046ED01AC4247500DF59B4 /* PostCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostCell.swift; sourceTree = "<group>"; };
 		CE046ED21AC4336500DF59B4 /* String+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Helpers.swift"; sourceTree = "<group>"; };
 		CE0862131AF27DD300F00AAB /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
-		CE0862151AF27DE300F00AAB /* MyReddit.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = MyReddit.entitlements; sourceTree = "<group>"; };
 		CE3588191AC305B200294684 /* MyReddit-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MyReddit-Bridging-Header.h"; sourceTree = "<group>"; };
 		CE35881D1AC305E700294684 /* RedditSession.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RedditSession.swift; sourceTree = "<group>"; };
 		CE35881F1AC30DEE00294684 /* SubredditViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubredditViewController.swift; sourceTree = "<group>"; };
@@ -142,6 +141,7 @@
 		CE769F2C1AF6BCC300031657 /* InboxesTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InboxesTableViewController.swift; sourceTree = "<group>"; };
 		CE769F2E1AF6F19100031657 /* MultiRedditsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultiRedditsViewController.swift; sourceTree = "<group>"; };
 		CE769F301AF6F64800031657 /* UIAlertController+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIAlertController+Helpers.swift"; sourceTree = "<group>"; };
+		CE769F341AF81EA800031657 /* MyReddit.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = MyReddit.entitlements; sourceTree = "<group>"; };
 		CEAC71BC1AF14856006DC831 /* LoadMoreHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadMoreHeader.swift; sourceTree = "<group>"; };
 		CEB866111AF01FC200BE850F /* WebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
 		CEB866131AF05DDF00BE850F /* SubredditsPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubredditsPageViewController.swift; sourceTree = "<group>"; };
@@ -280,12 +280,12 @@
 		CE712EDD1AC2F1A20042B071 /* MyReddit */ = {
 			isa = PBXGroup;
 			children = (
+				CE769F341AF81EA800031657 /* MyReddit.entitlements */,
 				CE538FA61AF3B011008050B6 /* User */,
 				CE712EE01AC2F1A20042B071 /* AppDelegate.swift */,
 				CE3588191AC305B200294684 /* MyReddit-Bridging-Header.h */,
 				CE712EE61AC2F1A20042B071 /* Main.storyboard */,
 				CE712EEB1AC2F1A20042B071 /* LaunchScreen.xib */,
-				CE0862151AF27DE300F00AAB /* MyReddit.entitlements */,
 				CE712EE91AC2F1A20042B071 /* Images.xcassets */,
 				CE4B9E961AE1858C00018742 /* NavBarController.swift */,
 				CE10072E1AF2FDDE000ED144 /* Cells */,
@@ -412,7 +412,7 @@
 								enabled = 1;
 							};
 							com.apple.OMC = {
-								enabled = 1;
+								enabled = 0;
 							};
 						};
 					};
@@ -679,8 +679,8 @@
 			baseConfigurationReference = 7047AFFBDD6CBEEDDCA19D07 /* Pods-MyReddit.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = MyReddit/MyReddit.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = MyReddit/Info.plist;
@@ -690,6 +690,7 @@
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "MyReddit/MyReddit-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -698,16 +699,17 @@
 			baseConfigurationReference = 15EC45AB568566F68E59569F /* Pods-MyReddit.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = MyReddit/MyReddit.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Nicholas Lanasa III (6Q4UNB2LAJ)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Nicholas Lanasa III (6Q4UNB2LAJ)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = MyReddit/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "MyReddit/MyReddit-Bridging-Header.h";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

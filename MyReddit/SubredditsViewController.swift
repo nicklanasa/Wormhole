@@ -372,17 +372,11 @@ class SubredditsViewController: UIViewController, UITableViewDataSource, UITable
     }
     
     @IBAction func loginButtonTapped(sender: AnyObject) {
-//        if NSUserDefaults.standardUserDefaults().objectForKey("purchased") == nil {
-//            self.performSegueWithIdentifier("PurchaseSegue", sender: self)
-//        } else {
-//            if UserSession.sharedSession.isSignedIn {
-//                self.performSegueWithIdentifier("ProfileSegue", sender: self)
-//            } else {
-//                self.performSegueWithIdentifier("LoginSegue", sender: self)
-//            }
-//        }
-        
-        self.performSegueWithIdentifier("AccountsSegue", sender: self)
+        if NSUserDefaults.standardUserDefaults().objectForKey("purchased") == nil {
+            self.performSegueWithIdentifier("PurchaseSegue", sender: self)
+        } else {
+            self.performSegueWithIdentifier("AccountsSegue", sender: self)
+        }
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
