@@ -550,6 +550,18 @@
                                 <rect key="frame" x="0.0" y="556" width="600" height="44"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <items>
+                                    <barButtonItem image="Left" id="FqT-AA-Je3">
+                                        <connections>
+                                            <action selector="goBack" destination="1nH-9Q-fvO" id="gg2-2p-Uff"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem width="22" style="plain" systemItem="fixedSpace" id="msN-uo-PFz"/>
+                                    <barButtonItem image="Right" id="TMO-ed-X7t">
+                                        <connections>
+                                            <action selector="goForward" destination="1nH-9Q-fvO" id="HrR-9u-wTl"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="khs-li-Ak5"/>
                                     <barButtonItem image="Up" id="MhD-B3-eMK">
                                         <connections>
                                             <action selector="upvoteButtonTapped:" destination="oWg-TP-L9t" id="M41-Kk-ERY"/>
@@ -3941,9 +3953,9 @@
         <segue reference="cxw-0o-NAI"/>
         <segue reference="c0A-qT-nAA"/>
         <segue reference="aPe-Za-FV1"/>
-        <segue reference="USc-4p-Rgd"/>
+        <segue reference="tJz-SN-XxH"/>
+        <segue reference="xsL-ln-a3I"/>
         <segue reference="Na3-yg-xfC"/>
-        <segue reference="iqb-h7-VjS"/>
         <segue reference="SWo-82-5L3"/>
         <segue reference="O8K-LF-8mj"/>
         <segue reference="psA-tl-Zoj"/>

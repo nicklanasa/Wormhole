@@ -77,50 +77,32 @@ MultiRedditsViewControllerDelegate {
         self.links = Array<AnyObject>()
         self.tableView.reloadData()
         
-        if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forItem: 0, inSection: 1)) as? LoadMoreHeader {
-            cell.startAnimating()
+        if count(searchController.searchBar.text) == 0 {
+            self.isFiltering = false
+            self.subreddits = Array<AnyObject>()
+        } else {
+            self.isFiltering = true
             
-            if count(searchController.searchBar.text) == 0 {
-                self.isFiltering = false
-                self.subreddits = Array<AnyObject>()
-                
-                cell.stopAnimating()
+            if self.segmentationControl.selectedSegmentIndex == 1 {
+                RedditSession.sharedSession.searchForSubredditByName(searchController.searchBar.text, pagination: nil, completion: { (pagination, results, error) -> () in
+                    if error == nil {
+                        if let subreddits = results {
+                            self.subreddits = subreddits
+                        }
+                    }
+                    
+                })
             } else {
-                self.isFiltering = true
-                
-                if self.segmentationControl.selectedSegmentIndex == 1 {
-                    RedditSession.sharedSession.searchForSubredditByName(searchController.searchBar.text, pagination: nil, completion: { (pagination, results, error) -> () in
-                        if error == nil {
-                            if let subreddits = results {
-                                self.subreddits = subreddits
+                if self.restrictSubreddit.on {
+                    if let subreddit = self.subreddit {
+                        RedditSession.sharedSession.searchForLinksInSubreddit(self.subreddit, searchText: searchController.searchBar.text, pagination: self.pagination, completion: { (pagination, results, error) -> () in
+                            if error == nil {
+                                if let links = results {
+                                    self.links = links
+                                }
                             }
-                        }
-                        
-                        cell.stopAnimating()
-                    })
-                } else {
-                    if self.restrictSubreddit.on {
-                        if let subreddit = self.subreddit {
-                            RedditSession.sharedSession.searchForLinksInSubreddit(self.subreddit, searchText: searchController.searchBar.text, pagination: self.pagination, completion: { (pagination, results, error) -> () in
-                                if error == nil {
-                                    if let links = results {
-                                        self.links = links
-                                    }
-                                }
-                                
-                                cell.stopAnimating()
-                            })
-                        } else {
-                            RedditSession.sharedSession.searchForLinks(searchController.searchBar.text, pagination: self.pagination, completion: { (pagination, results, error) -> () in
-                                if error == nil {
-                                    if let links = results {
-                                        self.links = links
-                                    }
-                                }
-                                
-                                cell.stopAnimating()
-                            })
-                        }
+                            
+                        })
                     } else {
                         RedditSession.sharedSession.searchForLinks(searchController.searchBar.text, pagination: self.pagination, completion: { (pagination, results, error) -> () in
                             if error == nil {
@@ -129,9 +111,17 @@ MultiRedditsViewControllerDelegate {
                                 }
                             }
                             
-                            cell.stopAnimating()
                         })
                     }
+                } else {
+                    RedditSession.sharedSession.searchForLinks(searchController.searchBar.text, pagination: self.pagination, completion: { (pagination, results, error) -> () in
+                        if error == nil {
+                            if let links = results {
+                                self.links = links
+                            }
+                        }
+                        
+                    })
                 }
             }
         }

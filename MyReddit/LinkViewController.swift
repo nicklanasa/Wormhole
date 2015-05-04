@@ -20,15 +20,23 @@ class LinkViewController: UIViewController {
     override func viewDidLoad() {
         let request = NSURLRequest(URL: link.URL)
         self.webView.loadRequest(request)
-        self.webView.backgroundColor = UIColor.whiteColor()
+        self.webView.backgroundColor = MyRedditDarkBackgroundColor
         self.webView.hidden = false
-        self.navigationItem.title =  self.link.title
+        
+        var navLabel = UILabel(frame: CGRectZero)
+        navLabel.text = self.link.title
+        navLabel.font = MyRedditTitleFont
+        navLabel.minimumScaleFactor = 0.8
+        navLabel.adjustsFontSizeToFitWidth = true
+        navLabel.numberOfLines = 2
+        navLabel.textColor = MyRedditLabelColor
+        navLabel.textAlignment = .Left
+        navLabel.sizeToFit()
+        self.navigationItem.titleView = navLabel
         
         self.updateVoteButtons()
         
         self.navigationController?.navigationBar.tintColor = MyRedditLabelColor
-        
-        self.navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: MyRedditLabelColor]
     }
     
     private func updateVoteButtons() {

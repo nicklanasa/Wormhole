@@ -235,12 +235,15 @@ class SubredditsViewController: UIViewController, UITableViewDataSource, UITable
                 
                 alert.addAction(UIAlertAction(title: "Ok", style: .Default, handler: { (action) -> Void in
                     if let textfield = alert.textFields?.first as? UITextField {
-                        if count(textfield.text) == 0 {
+                        
+                        var multiRedditName = textfield.text.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
+                        
+                        if count(multiRedditName) == 0 || multiRedditName.componentsSeparatedByString(" ").count > 1 {
                             UIAlertView(title: "Error!", message: "You must enter in a multireddit name!", delegate: self, cancelButtonTitle: "Ok").show()
                         } else {
                             var visibilityAlert = UIAlertController(title: "Visibility", message: "Please select the visibility for the multireddit.", preferredStyle: .Alert)
                             visibilityAlert.addAction(UIAlertAction(title: "Public", style: .Default, handler: { (a) -> Void in
-                                RedditSession.sharedSession.createMultiReddit(textfield.text, visibility: .Public, completion: { (error) -> () in
+                                RedditSession.sharedSession.createMultiReddit(multiRedditName, visibility: .Public, completion: { (error) -> () in
                                     self.syncMultiReddits()
                                     
                                     self.presentViewController(self.addSubredditsToMultiRedditAlert, animated: true, completion: nil)
@@ -248,7 +251,7 @@ class SubredditsViewController: UIViewController, UITableViewDataSource, UITable
                             }))
                             
                             visibilityAlert.addAction(UIAlertAction(title: "Private", style: .Default, handler: { (a) -> Void in
-                                RedditSession.sharedSession.createMultiReddit(textfield.text, visibility: .Private, completion: { (error) -> () in
+                                RedditSession.sharedSession.createMultiReddit(multiRedditName, visibility: .Private, completion: { (error) -> () in
                                     self.syncMultiReddits()
                                     
                                     self.presentViewController(self.addSubredditsToMultiRedditAlert, animated: true, completion: nil)
