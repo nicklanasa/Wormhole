@@ -241,24 +241,29 @@ class SubredditsViewController: UIViewController, UITableViewDataSource, UITable
                         if count(multiRedditName) == 0 || multiRedditName.componentsSeparatedByString(" ").count > 1 {
                             UIAlertView(title: "Error!", message: "You must enter in a multireddit name!", delegate: self, cancelButtonTitle: "Ok").show()
                         } else {
-                            var visibilityAlert = UIAlertController(title: "Visibility", message: "Please select the visibility for the multireddit.", preferredStyle: .Alert)
-                            visibilityAlert.addAction(UIAlertAction(title: "Public", style: .Default, handler: { (a) -> Void in
-                                RedditSession.sharedSession.createMultiReddit(multiRedditName, visibility: .Public, completion: { (error) -> () in
-                                    self.syncMultiReddits()
-                                    
-                                    self.presentViewController(self.addSubredditsToMultiRedditAlert, animated: true, completion: nil)
-                                })
-                            }))
                             
-                            visibilityAlert.addAction(UIAlertAction(title: "Private", style: .Default, handler: { (a) -> Void in
-                                RedditSession.sharedSession.createMultiReddit(multiRedditName, visibility: .Private, completion: { (error) -> () in
-                                    self.syncMultiReddits()
-                                    
-                                    self.presentViewController(self.addSubredditsToMultiRedditAlert, animated: true, completion: nil)
-                                })
-                            }))
-                            
-                            self.presentViewController(visibilityAlert, animated: true, completion: nil)
+                            if count(multiRedditName) > 3 {
+                                UIAlertView(title: "Error!", message: "Multireddit name is too short!", delegate: self, cancelButtonTitle: "Ok").show()
+                            } else {
+                                var visibilityAlert = UIAlertController(title: "Visibility", message: "Please select the visibility for the multireddit.", preferredStyle: .Alert)
+                                visibilityAlert.addAction(UIAlertAction(title: "Public", style: .Default, handler: { (a) -> Void in
+                                    RedditSession.sharedSession.createMultiReddit(multiRedditName, visibility: .Public, completion: { (error) -> () in
+                                        self.syncMultiReddits()
+                                        
+                                        self.presentViewController(self.addSubredditsToMultiRedditAlert, animated: true, completion: nil)
+                                    })
+                                }))
+                                
+                                visibilityAlert.addAction(UIAlertAction(title: "Private", style: .Default, handler: { (a) -> Void in
+                                    RedditSession.sharedSession.createMultiReddit(multiRedditName, visibility: .Private, completion: { (error) -> () in
+                                        self.syncMultiReddits()
+                                        
+                                        self.presentViewController(self.addSubredditsToMultiRedditAlert, animated: true, completion: nil)
+                                    })
+                                }))
+                                
+                                self.presentViewController(visibilityAlert, animated: true, completion: nil)
+                            }
                         }
                     }
                 }))

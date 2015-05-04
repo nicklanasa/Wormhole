@@ -130,20 +130,24 @@ class MultiRedditsViewController: UIViewController, UITableViewDelegate, UITable
                         UIAlertView(title: "Error!", message: "You must enter a valid MultiReddit name! Please make sure it doesn't contain spaces.", delegate: self, cancelButtonTitle: "Ok").show()
                     } else {
                         
-                        var visibilityAlert = UIAlertController(title: "Visibility", message: "Please select the visibility for the MultiReddit.", preferredStyle: .Alert)
-                        visibilityAlert.addAction(UIAlertAction(title: "Public", style: .Default, handler: { (a) -> Void in
-                            RedditSession.sharedSession.createMultiReddit(multiRedditName, visibility: .Public, completion: { (error) -> () in
-                                self.syncMultiReddits()
-                            })
-                        }))
-                        
-                        visibilityAlert.addAction(UIAlertAction(title: "Private", style: .Default, handler: { (a) -> Void in
-                            RedditSession.sharedSession.createMultiReddit(multiRedditName, visibility: .Private, completion: { (error) -> () in
-                                self.syncMultiReddits()
-                            })
-                        }))
-                        
-                        self.presentViewController(visibilityAlert, animated: true, completion: nil)
+                        if count(multiRedditName) > 3 {
+                            UIAlertView(title: "Error!", message: "Multireddit name is too short!", delegate: self, cancelButtonTitle: "Ok").show()
+                        } else {
+                            var visibilityAlert = UIAlertController(title: "Visibility", message: "Please select the visibility for the MultiReddit.", preferredStyle: .Alert)
+                            visibilityAlert.addAction(UIAlertAction(title: "Public", style: .Default, handler: { (a) -> Void in
+                                RedditSession.sharedSession.createMultiReddit(multiRedditName, visibility: .Public, completion: { (error) -> () in
+                                    self.syncMultiReddits()
+                                })
+                            }))
+                            
+                            visibilityAlert.addAction(UIAlertAction(title: "Private", style: .Default, handler: { (a) -> Void in
+                                RedditSession.sharedSession.createMultiReddit(multiRedditName, visibility: .Private, completion: { (error) -> () in
+                                    self.syncMultiReddits()
+                                })
+                            }))
+                            
+                            self.presentViewController(visibilityAlert, animated: true, completion: nil)
+                        }
                     }
                 }
             }))
