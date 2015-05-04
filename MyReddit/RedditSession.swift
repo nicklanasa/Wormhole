@@ -81,6 +81,18 @@ class RedditSession {
         }
     }
     
+    func createMultiReddit(name: String, visibility: RKMultiredditVisibility, completion: ErrorCompletion) {
+        RKClient.sharedClient().createMultiredditWithName(name, subreddits: [], visibility: visibility) { (multiReddit, error) -> Void in
+            completion(error: error)
+        }
+    }
+    
+    func addSubredditToMultiReddit(multiReddit: RKMultireddit, subreddit: RKSubreddit, completion: ErrorCompletion) {
+        RKClient.sharedClient().addSubreddit(subreddit, toMultireddit: multiReddit) { (error) -> Void in
+            completion(error: error)
+        }
+    }
+    
     func fetchMessages(pagination: RKPagination?, category: RKMessageCategory, read: Bool, completion: PaginationCompletion) {
         RKClient.sharedClient().messagesInCategory(category, pagination: pagination, markRead: read) { (results, pagination, error) -> Void in
             completion(pagination: pagination, results: results, error: error)

@@ -72,7 +72,7 @@ class UserSession {
         
         MyRedditLabelColor = UIColor.whiteColor()
         MyRedditBackgroundColor = UIColor.blackColor()
-        MyRedditDarkBackgroundColor = UIColor.darkGrayColor()
+        MyRedditDarkBackgroundColor = UIColor.blackColor()
         
         UISwitch.appearance().onTintColor = MyRedditColor
         
@@ -105,6 +105,8 @@ class UserSession {
         UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName : MyRedditLabelColor]
         
         UIWebView.appearance().backgroundColor = MyRedditBackgroundColor
+        
+        UITextField.appearance().font = MyRedditFont
     }
     
     func dayMode() {
@@ -148,5 +150,7 @@ class UserSession {
         UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName : MyRedditLabelColor]
         
         UIWebView.appearance().backgroundColor = MyRedditBackgroundColor
+        
+        UITextField.appearance().font = MyRedditFont
     }
 }

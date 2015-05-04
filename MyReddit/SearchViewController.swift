@@ -17,19 +17,20 @@ class SearchViewController: UIViewController,
 UITableViewDelegate,
     UITableViewDataSource,
     UISearchResultsUpdating,
-UISearchBarDelegate, JZSwipeCellDelegate {
+UISearchBarDelegate,
+JZSwipeCellDelegate,
+MultiRedditsViewControllerDelegate {
     
     var delegate: SearchViewControllerDelegate?
     var pagination: RKPagination?
     
-    @IBOutlet weak var tableView: UITableView!
-    
+    var multiReddit: RKMultireddit!
     var subreddit: RKSubreddit!
-    
+    var selectedSubreddit: RKSubreddit!
     var isFiltering = false
     
+    @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var segmentationControl: UISegmentedControl!
-    @IBOutlet weak var subredditNameButton: UIBarButtonItem!
     @IBOutlet weak var restrictToSubredditSwitch: UIBarButtonItem!
     @IBOutlet weak var restrictSubreddit: UISwitch!
     
@@ -150,6 +151,10 @@ UISearchBarDelegate, JZSwipeCellDelegate {
             
             self.searchController.searchBar.placeholder = "Enter subreddit name..."
         }
+        
+        self.subreddits = Array<AnyObject>()
+        self.links = Array<AnyObject>()
+        self.tableView.reloadData()
     }
     
     func searchBarCancelButtonClicked(searchBar: UISearchBar) {
@@ -161,6 +166,7 @@ UISearchBarDelegate, JZSwipeCellDelegate {
         self.searchController.searchBar.becomeFirstResponder()
         
         self.tableView.rowHeight = UITableViewAutomaticDimension
+        self.tableView.backgroundColor = MyRedditDarkBackgroundColor
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -176,10 +182,6 @@ UISearchBarDelegate, JZSwipeCellDelegate {
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if section == 1 {
-            return 1
-        }
-        
         if self.segmentationControl.selectedSegmentIndex == 1 {
             if self.subreddits.count > 0 {
                 if let searchedSubreddits = self.subreddits[0] as? Array<RKSubreddit> {
@@ -194,15 +196,10 @@ UISearchBarDelegate, JZSwipeCellDelegate {
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 2
+        return 1
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        
-        if indexPath.section == 1 {
-            var cell =  tableView.dequeueReusableCellWithIdentifier("LoadMoreHeader") as! LoadMoreHeader
-            return cell
-        }
         
         if self.segmentationControl.selectedSegmentIndex == 1 {
             var cell = tableView.dequeueReusableCellWithIdentifier("SubredditCell") as! SubredditCell
@@ -238,11 +235,25 @@ UISearchBarDelegate, JZSwipeCellDelegate {
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if self.segmentationControl.selectedSegmentIndex == 1 {
-            
             if let subreddit = self.subreddits[0][indexPath.row] as? RKSubreddit {
-                self.searchController.active = false
-                self.dismissViewControllerAnimated(true, completion: { () -> Void in
-                    self.delegate?.searchViewController(self, didTapSubreddit: subreddit)
+                var alert = UIAlertController(title: "Add subreddit",
+                    message: "Would you like to add this subreddit to a multireddit?",
+                    preferredStyle: .Alert)
+                alert.addAction(UIAlertAction(title: "Yes", style: .Default, handler: { (a) -> Void in
+                    self.selectedSubreddit = subreddit
+                    self.searchController.active = false
+                    self.performSegueWithIdentifier("MultiRedditSegue", sender: self)
+                }))
+                
+                alert.addAction(UIAlertAction(title: "See posts", style: .Cancel, handler: { (a) -> Void in
+                    self.searchController.active = false
+                    self.dismissViewControllerAnimated(true, completion: { () -> Void in
+                        self.delegate?.searchViewController(self, didTapSubreddit: subreddit)
+                    })
+                }))
+                
+                alert.present(animated: true, completion: { () -> Void in
+                    
                 })
             }
         } else {
@@ -264,6 +275,12 @@ UISearchBarDelegate, JZSwipeCellDelegate {
             if let link = sender as? RKLink {
                 if let controller = segue.destinationViewController as? LinkViewController {
                     controller.link = link
+                }
+            }
+        } else if segue.identifier == "MultiRedditSegue" {
+            if let controller = segue.destinationViewController as? UINavigationController {
+                if let subredditViewController = controller.viewControllers[0] as? MultiRedditsViewController {
+                    subredditViewController.delegate = self
                 }
             }
         } else {
@@ -331,5 +348,21 @@ UISearchBarDelegate, JZSwipeCellDelegate {
     
     func swipeCell(cell: JZSwipeCell!, swipeTypeChangedFrom from: JZSwipeType, to: JZSwipeType) {
         
+    }
+    
+    func multiRedditsViewController(controller: MultiRedditsViewController, didTapMultiReddit multiReddit: RKMultireddit) {
+        RedditSession.sharedSession.addSubredditToMultiReddit(multiReddit, subreddit: self.selectedSubreddit, completion: { (error) -> () in
+            if error != nil {
+                UIAlertView(title: "Error!",
+                    message: "Unable to add subreddit to multireddit! Please check your internet connection.",
+                    delegate: self,
+                    cancelButtonTitle: "Ok").show()
+            } else {
+                UIAlertView(title: "Sucess!",
+                    message: "Added subreddit!",
+                    delegate: self,
+                    cancelButtonTitle: "Ok").show()
+            }
+        })
     }
 }

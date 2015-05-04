@@ -60,7 +60,7 @@ class SubredditCell: UITableViewCell {
             
             self.nameLabel.textColor = MyRedditLabelColor
             
-            self.subredditImageView.backgroundColor = MyRedditDarkBackgroundColor
+            self.subredditImageView.backgroundColor = UIColor.groupTableViewBackgroundColor()
         }
     }
     
@@ -77,6 +77,8 @@ class SubredditCell: UITableViewCell {
             self.subredditImageView.backgroundColor = MyRedditDarkBackgroundColor
             
             self.subredditImageView.image = UIImage(named: "Reddit")
+            
+            self.subredditImageView.backgroundColor = UIColor.groupTableViewBackgroundColor()
         }
     }
     

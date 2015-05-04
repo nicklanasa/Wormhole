@@ -76,13 +76,6 @@ SearchViewControllerDelegate {
                 })
             }
             
-            
-            if self.links.count == 25 || self.links.count == 0 {
-                self.tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: .Fade)
-            } else {
-                self.tableView.reloadData()
-            }
-            
             var foundImage = false
             if let post = self.links.first as? RKLink {
                 if post.isImageLink() {
@@ -108,6 +101,12 @@ SearchViewControllerDelegate {
                 } else {
                     self.displayHeader(false)
                 }
+            }
+            
+            if self.links.count == 25 || self.links.count == 0 {
+                self.tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: .Fade)
+            } else {
+                self.tableView.reloadData()
             }
         }
     }

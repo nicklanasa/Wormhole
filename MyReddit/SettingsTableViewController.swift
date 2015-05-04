@@ -87,7 +87,7 @@ class SettingsTableViewController: UITableViewController, BDGIAPDelegate {
             self.otherAppMuzCell.titleLabel.textColor = MyRedditLabelColor
             self.otherAppMuzCell.backgroundColor = MyRedditBackgroundColor
             
-            self.tableView.backgroundColor = MyRedditBackgroundColor
+            self.tableView.backgroundColor = MyRedditDarkBackgroundColor
             self.navigationController?.navigationBar.barTintColor = MyRedditBackgroundColor
             self.navigationController?.navigationBar.tintColor = MyRedditLabelColor
             self.navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName : MyRedditLabelColor]
