@@ -130,7 +130,14 @@ class CommentCell: JZSwipeCell, UITextViewDelegate {
                 self.scoreLabel.textColor = UIColor.lightGrayColor()
             }
             
+            self.repliesLabelHeightConstraint.constant = 30.0
+            self.contentView.layoutIfNeeded()
+            
             if comment.replies.count > 0 {
+                
+                self.repliesLabel.font = MyRedditCommentInfoFont
+                self.repliesLabel.textColor = UIColor.lightGrayColor()
+                self.repliesLabel.textAlignment = .Left
                 
                 var lastReply = comment.replies[comment.replies.count - 1] as! RKComment
                 
@@ -142,13 +149,11 @@ class CommentCell: JZSwipeCell, UITextViewDelegate {
                 self.repliesLabel.attributedText = repliesString
                 self.repliesLabel.hidden = false
                 
-                self.repliesLabelHeightConstraint.constant = 30.0
-                self.contentView.layoutIfNeeded()
-                
             } else {
-                self.repliesLabel.hidden = true
-                self.repliesLabelHeightConstraint.constant = 0.0
-                self.contentView.layoutIfNeeded()
+                self.repliesLabel.text = "Reply"
+                self.repliesLabel.font = MyRedditCommentReplyBoldFont
+                self.repliesLabel.textColor = MyRedditLabelColor
+                self.repliesLabel.textAlignment = .Center
             }
             
             self.commentTextView.font = UIFont(name: self.commentTextView.font.fontName,

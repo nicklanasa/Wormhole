@@ -27,6 +27,8 @@ class ComposeTableViewController: UITableViewController, UITextViewDelegate {
     override func viewDidLoad() {
         self.tableView.backgroundColor = MyRedditBackgroundColor
         self.textView.backgroundColor = MyRedditBackgroundColor
+        
+        self.tableView.tableFooterView = UIView()
     }
     
     override func viewDidAppear(animated: Bool) {

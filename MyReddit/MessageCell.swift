@@ -68,6 +68,7 @@ class MessageCell: JZSwipeCell, UITextViewDelegate {
             self.infoLabel.attributedText = infoString
             
             self.titleLabel.textColor = MyRedditLabelColor
+            self.bodyTextView.textColor = SettingsManager.defaultManager.valueForSetting(.NightMode) ? UIColor.whiteColor() : UIColor.darkGrayColor()
             self.bodyTextView.backgroundColor = MyRedditBackgroundColor
             
             self.contentView.backgroundColor = MyRedditBackgroundColor

@@ -115,26 +115,11 @@ class SubredditsViewController: UIViewController, UITableViewDataSource, UITable
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
-        self.syncSubreddits = Array<AnyObject>()
-        self.syncMultiSubreddits = Array<AnyObject>()
-        
-        if let subredditsData = NSUserDefaults.standardUserDefaults().objectForKey("subreddits") as? NSData {
-            if let subreddits = NSKeyedUnarchiver.unarchiveObjectWithData(subredditsData) as? [RKSubreddit] {
-                self.subreddits = subreddits
-            }
-        }
-        
-        if let subredditsData = NSUserDefaults.standardUserDefaults().objectForKey("multiSubreddits") as? NSData {
-            if let subreddits = NSKeyedUnarchiver.unarchiveObjectWithData(subredditsData) as? [RKMultireddit] {
-                self.multiSubreddits = subreddits
-            }
-        }
-        
-        self.fetchSubreddits()
-        
         for item in self.toolbarItems as! [UIBarButtonItem] {
             item.tintColor = MyRedditLabelColor
         }
+        
+        self.fetchSubreddits()
         
         self.tableView.backgroundColor = MyRedditDarkBackgroundColor
         
@@ -154,6 +139,22 @@ class SubredditsViewController: UIViewController, UITableViewDataSource, UITable
     }
     
     func fetchSubreddits() {
+        
+        self.syncSubreddits = Array<AnyObject>()
+        self.syncMultiSubreddits = Array<AnyObject>()
+        
+        if let subredditsData = NSUserDefaults.standardUserDefaults().objectForKey("subreddits") as? NSData {
+            if let subreddits = NSKeyedUnarchiver.unarchiveObjectWithData(subredditsData) as? [RKSubreddit] {
+                self.subreddits = subreddits
+            }
+        }
+        
+        if let subredditsData = NSUserDefaults.standardUserDefaults().objectForKey("multiSubreddits") as? NSData {
+            if let subreddits = NSKeyedUnarchiver.unarchiveObjectWithData(subredditsData) as? [RKMultireddit] {
+                self.multiSubreddits = subreddits
+            }
+        }
+        
         self.syncSubreddits(nil)
         self.syncMultiReddits()
         

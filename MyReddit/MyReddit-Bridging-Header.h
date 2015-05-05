@@ -16,3 +16,4 @@
 #import "MBProgressHUD.h"
 #import "GHContextMenuView.h"
 #import "JZSwipeCell.h"
+#import "ImgurAnonymousAPIClient.h"

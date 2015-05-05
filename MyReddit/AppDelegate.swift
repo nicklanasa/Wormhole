@@ -13,10 +13,12 @@ let MyRedditUpvoteColor = UIColor(red: 150/255, green: 217/255, blue: 81/255, al
 let MyRedditDownvoteColor = UIColor(red: 255/255, green: 87/255, blue: 87/255, alpha: 1.0)
 let MyRedditReplyColor = UIColor(red: 94/255, green: 227/255, blue: 255/255, alpha: 1.0)
 let MyRedditFont = UIFont(name: "AvenirNext-Regular", size: 13)!
+let MyRedditCommentInfoFont = UIFont(name: "AvenirNext-Regular", size: 11)!
 let MyRedditTitleFont = UIFont(name: "AvenirNext-Medium", size: 18)!
 let MyRedditSelfTextFont = UIFont(name: "AvenirNext-Medium", size: 16)!
 let MyRedditCommentTextFont = UIFont(name: "AvenirNext-Regular", size: 14)!
 let MyRedditCommentTextBoldFont = UIFont(name: "AvenirNext-Medium", size: 14)!
+let MyRedditCommentReplyBoldFont = UIFont(name: "AvenirNext-Medium", size: 11)!
 let MyRedditCommentTextItalicFont = UIFont(name: "AvenirNext-Italic", size: 14)!
 let MyRedditTitleBigFont = UIFont(name: "AvenirNext-Medium", size: 23)!
 
@@ -31,7 +33,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         
-        NSUserDefaults.standardUserDefaults().setObject(true, forKey: "purchased")
+        //NSUserDefaults.standardUserDefaults().setObject(true, forKey: "purchased")
         
         if SettingsManager.defaultManager.valueForSetting(.NightMode) {
             UserSession.sharedSession.nightMode()

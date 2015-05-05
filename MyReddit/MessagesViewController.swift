@@ -43,6 +43,8 @@ class MessagesViewController: UIViewController, UITableViewDataSource, UITableVi
         self.tableView.rowHeight = UITableViewAutomaticDimension
         self.tableView.separatorColor = UIColor.lightGrayColor()
         self.tableView.backgroundColor = MyRedditBackgroundColor
+        
+        self.tableView.tableFooterView = UIView()
     }
     
     override func viewWillAppear(animated: Bool) {

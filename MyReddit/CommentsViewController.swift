@@ -15,9 +15,7 @@ class CommentsViewController: UITableViewController, CommentCellDelegate, JZSwip
     var comment: RKComment!
     
     var forComment = false
-    
-    @IBOutlet weak var comentToolbar: UIToolbar!
-    
+        
     var comments: [AnyObject]? {
         didSet {
             self.tableView.reloadData()
@@ -38,6 +36,10 @@ class CommentsViewController: UITableViewController, CommentCellDelegate, JZSwip
         self.syncComments()
     }
     
+    override func viewDidDisappear(animated: Bool) {
+        super.viewDidDisappear(animated)
+    }
+    
     lazy var refreshCommentsControl: UIRefreshControl! = {
         var control = UIRefreshControl()
         control.attributedTitle = NSAttributedString(string: "Pull to refresh", attributes: [NSFontAttributeName : MyRedditCommentTextBoldFont, NSForegroundColorAttributeName : MyRedditLabelColor])
@@ -52,7 +54,10 @@ class CommentsViewController: UITableViewController, CommentCellDelegate, JZSwip
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.refreshControl = self.refreshCommentsControl
+        
+        if !self.forComment {
+            self.refreshControl = self.refreshCommentsControl
+        }
         
         self.navigationItem.title =  !self.forComment ? "\(self.link.author) | \(self.link.totalComments) comments" : "\(self.comment.author) | \(self.comment.replies.count) replies"
         
@@ -61,6 +66,16 @@ class CommentsViewController: UITableViewController, CommentCellDelegate, JZSwip
         self.navigationController?.navigationBar.tintColor = MyRedditLabelColor
         
         self.navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: MyRedditLabelColor]
+        
+        self.tableView.backgroundColor = MyRedditBackgroundColor
+        
+        if self.forComment {
+            if self.comment.replies.count == 0 {
+                self.performSegueWithIdentifier("AddCommentSegue", sender: self)
+            }
+        }
+        
+        self.tableView.tableFooterView = UIView()
     }
     
     func syncComments() {
@@ -120,14 +135,6 @@ class CommentsViewController: UITableViewController, CommentCellDelegate, JZSwip
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
     
-    override func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return self.comentToolbar.frame.size.height
-    }
-    
-    override func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        return self.comentToolbar
-    }
-    
     override func shouldPerformSegueWithIdentifier(identifier: String?, sender: AnyObject?) -> Bool {
         if identifier == "RepliesSegue" {
             if let cell = sender as? CommentCell {
@@ -162,9 +169,17 @@ class CommentsViewController: UITableViewController, CommentCellDelegate, JZSwip
             if let nav = segue.destinationViewController as? UINavigationController {
                 if let controller = nav.viewControllers[0] as? AddCommentViewController {
                     if self.forComment {
-                        controller.comment = self.comment
+                        if let replyComment = sender as? RKComment {
+                            controller.comment = replyComment
+                        } else {
+                            controller.comment = self.comment
+                        }
                     } else {
-                        controller.link = self.link
+                        if let replyComment = sender as? RKComment {
+                            controller.comment = replyComment
+                        } else {
+                            controller.link = self.link
+                        }
                     }
                     
                     controller.delegate = self
@@ -229,7 +244,7 @@ class CommentsViewController: UITableViewController, CommentCellDelegate, JZSwip
                                     self.tableView.reloadData()
                                 }
                             })
-                        } else if swipeType.value == JZSwipeTypeShortLeft.value || swipeType.value == JZSwipeTypeLongLeft.value {
+                        } else if swipeType.value == JZSwipeTypeShortLeft.value {
                             // Upvote
                             RedditSession.sharedSession.upvote(object, completion: { (error) -> () in
                                 self.hud.hide(true)
@@ -243,6 +258,21 @@ class CommentsViewController: UITableViewController, CommentCellDelegate, JZSwip
                                     self.tableView.reloadData()
                                 }
                             })
+                        } else if swipeType.value == JZSwipeTypeLongLeft.value {
+                            
+                            var comment: RKComment!
+                            
+                            if self.forComment {
+                                comment = self.comment.replies?[indexPath.row] as? RKComment
+                            } else {
+                                if indexPath.row == 0 {
+                                    self.performSegueWithIdentifier("AddCommentSegue", sender: self)
+                                } else {
+                                    comment = self.comments?[indexPath.row - 1] as? RKComment
+                                }
+                            }
+                            
+                            self.performSegueWithIdentifier("AddCommentSegue", sender: comment)
                         } else {
                             self.hud.hide(true)
                         }
@@ -253,7 +283,7 @@ class CommentsViewController: UITableViewController, CommentCellDelegate, JZSwip
     }
     
     func swipeCell(cell: JZSwipeCell!, swipeTypeChangedFrom from: JZSwipeType, to: JZSwipeType) {
-        
+
     }
     
     func addCommentViewController(controller: AddCommentViewController, didAddComment success: Bool) {
@@ -279,9 +309,12 @@ class CommentsViewController: UITableViewController, CommentCellDelegate, JZSwip
         for comment in comments as! [RKComment] {
             
             if self.comment.fullName == comment.fullName {
-                self.comment = comment
-                self.tableView.reloadData()
-                break
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    self.comment = comment
+                    self.tableView.reloadData()
+                    
+                    self.navigationItem.title =  !self.forComment ? "\(self.link.author) | \(self.link.totalComments) comments" : "\(self.comment.author) | \(self.comment.replies.count) replies"
+                })
             }
             
             if comment.replies.count > 0 {

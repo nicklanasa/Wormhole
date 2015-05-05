@@ -94,13 +94,15 @@ class ProfileViewController: UIViewController, UITableViewDataSource, UITableVie
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "UserContentSegue" {
-            if let controller = segue.destinationViewController as? UserContentViewController {
-                if let cell = sender as? UITableViewCell {
-                    
-                    var indexPath: NSIndexPath = self.tableView.indexPathForCell(cell)!
-                    var category = RKUserContentCategory(rawValue: UInt(indexPath.row+1))
-                    controller.category = category
-                    controller.categoryTitle = self.userTitles[indexPath.row] as String
+            if let nav = segue.destinationViewController as? UINavigationController {
+                if let controller = nav.viewControllers[0] as? UserContentViewController {
+                    if let cell = sender as? UITableViewCell {
+                        
+                        var indexPath: NSIndexPath = self.tableView.indexPathForCell(cell)!
+                        var category = RKUserContentCategory(rawValue: UInt(indexPath.row+1))
+                        controller.category = category
+                        controller.categoryTitle = self.userTitles[indexPath.row] as String
+                    }
                 }
             }
         }

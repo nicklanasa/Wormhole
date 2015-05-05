@@ -134,6 +134,10 @@ class UserContentViewController: UIViewController, UITableViewDelegate, UITableV
         }
     }
     
+    @IBAction func cancelButtonTapped(sender: AnyObject) {
+        self.dismissViewControllerAnimated(true, completion: nil)
+    }
+    
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "SubredditLink" {
             if let link = sender as? RKLink {
@@ -143,14 +147,18 @@ class UserContentViewController: UIViewController, UITableViewDelegate, UITableV
             }
         } else {
             if let comment = sender as? RKComment {
-                if let controller = segue.destinationViewController as? CommentsViewController {
-                    controller.comment = comment
-                    controller.forComment = true
+                if let nav = segue.destinationViewController as? UINavigationController {
+                    if let controller = nav.viewControllers[0] as? CommentsViewController {
+                        controller.comment = comment
+                        controller.forComment = true
+                    }
                 }
             } else if let link = sender as? RKLink {
-                if let controller = segue.destinationViewController as? CommentsViewController {
-                    controller.link = link
-                    controller.forComment = false
+                if let nav = segue.destinationViewController as? UINavigationController {
+                    if let controller = nav.viewControllers[0] as? CommentsViewController {
+                        controller.link = link
+                        controller.forComment = false
+                    }
                 }
             }
         }

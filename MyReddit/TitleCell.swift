@@ -62,6 +62,12 @@ class TitleCell: PostCell {
             
             self.titleLabel.textColor = MyRedditLabelColor
             self.contentView.backgroundColor = MyRedditBackgroundColor
+            
+            if link.viewed() {
+                self.titleLabel.textColor = UIColor.lightGrayColor()
+            } else {
+                self.titleLabel.textColor = MyRedditLabelColor
+            }
         }
     }
     

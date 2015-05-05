@@ -37,6 +37,45 @@ class LinkViewController: UIViewController {
         self.updateVoteButtons()
         
         self.navigationController?.navigationBar.tintColor = MyRedditLabelColor
+        
+        RedditSession.sharedSession.markLinkAsViewed(self.link, completion: { (error) -> () in
+            
+        })
+        
+        NSUserDefaults.standardUserDefaults().setObject(true, forKey: self.link.identifier)
+        
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "Saved"), style: .Plain, target: self, action: "saveLink")
+        
+        if self.link.saved {
+            self.navigationItem.rightBarButtonItem?.tintColor = MyRedditColor
+        }
+    }
+    
+    func saveLink() {
+        if self.link.saved {
+            // unsave
+            RedditSession.sharedSession.unSaveLink(self.link, completion: { (error) -> () in
+                if error != nil {
+                    UIAlertView(title: "Error!",
+                        message: error!.localizedDescription,
+                        delegate: self,
+                        cancelButtonTitle: "Ok").show()
+                } else {
+                    self.navigationItem.rightBarButtonItem?.tintColor = MyRedditLabelColor
+                }
+            })
+        } else {
+            RedditSession.sharedSession.saveLink(self.link, completion: { (error) -> () in
+                if error != nil {
+                    UIAlertView(title: "Error!",
+                        message: error!.localizedDescription,
+                        delegate: self,
+                        cancelButtonTitle: "Ok").show()
+                } else {
+                    self.navigationItem.rightBarButtonItem?.tintColor = MyRedditColor
+                }
+            })
+        }
     }
     
     private func updateVoteButtons() {
@@ -54,8 +93,10 @@ class LinkViewController: UIViewController {
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "CommentsSegue" {
-            if let controller = segue.destinationViewController as? CommentsViewController {
-                controller.link = link
+            if let nav = segue.destinationViewController as? UINavigationController {
+                if let controller = nav.viewControllers[0] as? CommentsViewController {
+                    controller.link = link
+                }
             }
         }
     }

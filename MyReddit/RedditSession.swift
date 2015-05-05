@@ -94,6 +94,9 @@ class RedditSession {
     }
     
     func markLinkAsViewed(link: RKLink, completion: ErrorCompletion) {
+        RKClient.sharedClient().storeVisitedLink(link, completion: { (error) -> Void in
+            completion(error: error)
+        })
     }
     
     func fetchMessages(pagination: RKPagination?, category: RKMessageCategory, read: Bool, completion: PaginationCompletion) {
@@ -187,8 +190,12 @@ class RedditSession {
     }
     
     func searchForSubredditByName(name: String, pagination: RKPagination?, completion: PaginationCompletion) {
-        RKClient.sharedClient().searchForSubredditsByName(name, pagination: pagination) { (subreddit, pagination, error) -> Void in
-            completion(pagination: pagination, results: [subreddit], error: error)
+        RKClient.sharedClient().searchForSubredditsByName(name, pagination: pagination) { (result, pagination, error) -> Void in
+            if let subreddit = result {
+                completion(pagination: pagination, results: [subreddit], error: error)
+            } else {
+                completion(pagination: pagination, results: nil, error: error)
+            }
         }
     }
     
@@ -228,5 +235,39 @@ class RedditSession {
         RKClient.sharedClient().search(searchText, subreddit: subreddit, restrictSubreddit: true, pagination: pagination) { (results, pagination, error) -> Void in
             completion(pagination: pagination, results: results, error: error)
         }
+    }
+    
+    func submitLink(title: String, subredditName: String, text: String?, url: NSURL?, postType: PostType, completion: ErrorCompletion) {
+        RKClient.sharedClient().needsCaptchaWithCompletion({ (needsCaptcha, error) -> Void in
+            if error != nil {
+                completion(error: error)
+            } else {
+                if !needsCaptcha {
+                    if postType == .Text {
+                        RKClient.sharedClient().submitSelfPostWithTitle(title, subredditName: subredditName, text: text, captchaIdentifier: nil, captchaValue: nil, completion: { (error) -> Void in
+                            completion(error: error)
+                        })
+                    } else {
+                        RKClient.sharedClient().submitLinkPostWithTitle(title, subredditName: subredditName, URL: url, captchaIdentifier: nil, captchaValue: nil, completion: { (error) -> Void in
+                            completion(error: error)
+                        })
+                    }
+                } else {
+                    completion(error: error)
+                }
+            }
+        })
+    }
+    
+    func saveLink(link: RKLink, completion: ErrorCompletion) {
+        RKClient.sharedClient().saveLink(link, completion: { (error) -> Void in
+            completion(error: error)
+        })
+    }
+    
+    func unSaveLink(link: RKLink, completion: ErrorCompletion) {
+        RKClient.sharedClient().unsaveLink(link, completion: { (error) -> Void in
+            completion(error: error)
+        })
     }
 }

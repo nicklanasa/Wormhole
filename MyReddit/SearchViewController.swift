@@ -163,6 +163,16 @@ MultiRedditsViewControllerDelegate {
                 textField.textColor = MyRedditLabelColor
             }
         }
+        
+        self.tableView.tableFooterView = UIView()
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        if let delegateObj = self.delegate as? PostTableViewController {
+            self.segmentationControl.selectedSegmentIndex = 1
+            self.searchController.searchBar.becomeFirstResponder()
+        }
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -232,25 +242,33 @@ MultiRedditsViewControllerDelegate {
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if self.segmentationControl.selectedSegmentIndex == 1 {
             if let subreddit = self.subreddits[0][indexPath.row] as? RKSubreddit {
-                var alert = UIAlertController(title: "Add subreddit",
-                    message: "Would you like to add this subreddit to a multireddit?",
-                    preferredStyle: .Alert)
-                alert.addAction(UIAlertAction(title: "Yes", style: .Default, handler: { (a) -> Void in
-                    self.selectedSubreddit = subreddit
-                    self.searchController.active = false
-                    self.performSegueWithIdentifier("MultiRedditSegue", sender: self)
-                }))
                 
-                alert.addAction(UIAlertAction(title: "See posts", style: .Cancel, handler: { (a) -> Void in
+                if let delegateObj = self.delegate as? PostTableViewController {
                     self.searchController.active = false
                     self.dismissViewControllerAnimated(true, completion: { () -> Void in
                         self.delegate?.searchViewController(self, didTapSubreddit: subreddit)
                     })
-                }))
-                
-                alert.present(animated: true, completion: { () -> Void in
+                } else {
+                    var alert = UIAlertController(title: "Add subreddit",
+                        message: "Would you like to add this subreddit to a multireddit?",
+                        preferredStyle: .Alert)
+                    alert.addAction(UIAlertAction(title: "Yes", style: .Default, handler: { (a) -> Void in
+                        self.selectedSubreddit = subreddit
+                        self.searchController.active = false
+                        self.performSegueWithIdentifier("MultiRedditSegue", sender: self)
+                    }))
                     
-                })
+                    alert.addAction(UIAlertAction(title: "See posts", style: .Cancel, handler: { (a) -> Void in
+                        self.searchController.active = false
+                        self.dismissViewControllerAnimated(true, completion: { () -> Void in
+                            self.delegate?.searchViewController(self, didTapSubreddit: subreddit)
+                        })
+                    }))
+                    
+                    alert.present(animated: true, completion: { () -> Void in
+                        
+                    })
+                }
             }
         } else {
             self.tableView.deselectRowAtIndexPath(indexPath, animated: true)
@@ -281,8 +299,10 @@ MultiRedditsViewControllerDelegate {
             }
         } else {
             if let link = sender as? RKLink {
-                if let controller = segue.destinationViewController as? CommentsViewController {
-                    controller.link = link
+                if let nav = segue.destinationViewController as? UINavigationController {
+                    if let controller = nav.viewControllers[0] as? CommentsViewController {
+                        controller.link = link
+                    }
                 }
             }
         }

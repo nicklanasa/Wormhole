@@ -21,6 +21,8 @@ PODS:
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
   - BDGInAppPurchase (0.0.2)
+  - ImgurAnonymousAPIClient (0.1.1):
+    - AFNetworking (>= 2.2.2)
   - JZSwipeCell (1.1)
   - Mantle (1.5.4):
     - Mantle/extobjc (= 1.5.4)
@@ -43,6 +45,8 @@ PODS:
 
 DEPENDENCIES:
   - BDGInAppPurchase
+  - ImgurAnonymousAPIClient (from `https://github.com/nolanw/ImgurAnonymousAPIClient.git`,
+    tag `v0.1.1`)
   - JZSwipeCell (~> 1.1)
   - MBProgressHUD
   - NSDate+TimeAgo
@@ -54,9 +58,20 @@ DEPENDENCIES:
   - UICKeyChainStore
   - XNGMarkdownParser
 
+EXTERNAL SOURCES:
+  ImgurAnonymousAPIClient:
+    :git: https://github.com/nolanw/ImgurAnonymousAPIClient.git
+    :tag: v0.1.1
+
+CHECKOUT OPTIONS:
+  ImgurAnonymousAPIClient:
+    :git: https://github.com/nolanw/ImgurAnonymousAPIClient.git
+    :tag: v0.1.1
+
 SPEC CHECKSUMS:
   AFNetworking: e1d86c2a96bb5d2e7408da36149806706ee122fe
   BDGInAppPurchase: 9f466e82a4a3e1d8b744268280748c1d91ddda67
+  ImgurAnonymousAPIClient: 3e5f9b8782e300743ed167d62b775a7f248fa218
   JZSwipeCell: 662d75e1ed6805abbd977dee70e7dac807853109
   Mantle: 60acd0cd363e27d945bda0a6b8e90577112d28f3
   MBProgressHUD: c47f2c166c126cf2ce36498d80f33e754d4e93ad

@@ -80,6 +80,8 @@ class UserSession {
         UINavigationBar.appearance().backgroundColor = MyRedditBackgroundColor
         UINavigationBar.appearance().barTintColor = MyRedditBackgroundColor
         
+        UINavigationBar.appearance().titleTextAttributes = [NSFontAttributeName: MyRedditTitleFont]
+        
         UISearchBar.appearance().backgroundColor = MyRedditBackgroundColor
         
         UIToolbar.appearance().barTintColor = MyRedditBackgroundColor
@@ -109,6 +111,8 @@ class UserSession {
         UITextField.appearance().font = MyRedditSelfTextFont
         
         UIRefreshControl.appearance().tintColor = MyRedditColor
+        
+        UISegmentedControl.appearance().setTitleTextAttributes([NSFontAttributeName: MyRedditSelfTextFont, NSForegroundColorAttributeName : MyRedditLabelColor], forState: .Normal)
     }
     
     func dayMode() {
@@ -128,6 +132,8 @@ class UserSession {
         UINavigationBar.appearance().tintColor = MyRedditLabelColor
         UINavigationBar.appearance().backgroundColor = MyRedditBackgroundColor
         UINavigationBar.appearance().barTintColor = MyRedditBackgroundColor
+        
+        UINavigationBar.appearance().titleTextAttributes = [NSFontAttributeName: MyRedditTitleFont]
         
         UISearchBar.appearance().backgroundColor = MyRedditBackgroundColor
         
@@ -155,5 +161,6 @@ class UserSession {
         UITextField.appearance().font = MyRedditSelfTextFont
         
         UIRefreshControl.appearance().tintColor = MyRedditColor
+        UISegmentedControl.appearance().setTitleTextAttributes([NSFontAttributeName: MyRedditSelfTextFont, NSForegroundColorAttributeName : MyRedditLabelColor], forState: .Normal)
     }
 }

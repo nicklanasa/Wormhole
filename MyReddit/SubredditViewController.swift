@@ -63,6 +63,15 @@ SearchViewControllerDelegate {
         }
     }
     
+    var refreshControl: UIRefreshControl! {
+        get {
+            var control = UIRefreshControl()
+            control.attributedTitle = NSAttributedString(string: "Pull to refresh", attributes: [NSFontAttributeName : MyRedditCommentTextBoldFont, NSForegroundColorAttributeName : MyRedditLabelColor])
+            control.addTarget(self, action: "refresh:", forControlEvents: UIControlEvents.ValueChanged)
+            return control
+        }
+    }
+    
     @IBOutlet weak var filterViewBottomConstraint: NSLayoutConstraint!
     
     var links = Array<AnyObject>() {
@@ -101,6 +110,7 @@ SearchViewControllerDelegate {
                         })
                     }
                 } else {
+                    self.tableView.addSubview(self.refreshControl)
                     self.displayHeader(false)
                 }
             }
@@ -136,6 +146,10 @@ SearchViewControllerDelegate {
         
         var long = UILongPressGestureRecognizer(target: self.contextMenu, action: "longPressDetected:")
         self.view.gestureRecognizers = [long]
+        
+        var rightBarButtons = self.navigationItem.rightBarButtonItems
+        var postBarButton = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: "")
+        rightBarButtons?.append(postBarButton)
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -146,7 +160,7 @@ SearchViewControllerDelegate {
             self.tableView.reloadData()
         }
         
-        self.filterView.backgroundColor = MyRedditDarkBackgroundColor
+        self.filterView.backgroundColor = SettingsManager.defaultManager.valueForSetting(.NightMode) ? UIColor.blackColor() : UIColor.whiteColor()
         
         for subView in self.filterView.subviews {
             if let button = subView as? UIButton {
@@ -298,13 +312,17 @@ SearchViewControllerDelegate {
             self.headerImage.frame = f
             
             if yOffset <= -400 {
-                self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0)
-                self.headerImage.removeFromSuperview()
-                self.links = Array<AnyObject>()
-                self.pagination = nil
-                self.syncLinks()
+                self.refresh(nil)
             }
         }
+    }
+    
+    func refresh(sender: AnyObject?) {
+        self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0)
+        self.headerImage.removeFromSuperview()
+        self.links = Array<AnyObject>()
+        self.pagination = nil
+        self.syncLinks()
     }
     
     private func syncLinks() {
@@ -446,6 +464,24 @@ SearchViewControllerDelegate {
         }
     }
     
+    override func shouldPerformSegueWithIdentifier(identifier: String?, sender: AnyObject?) -> Bool {
+        if identifier == "SavedSegue" {
+            if UserSession.sharedSession.isSignedIn {
+                return true
+            } else {
+                if NSUserDefaults.standardUserDefaults().objectForKey("purchased") == nil {
+                    self.performSegueWithIdentifier("PurchaseSegue", sender: self)
+                } else {
+                    self.performSegueWithIdentifier("LoginSegue", sender: self)
+                }
+            }
+            
+            return false
+        }
+        
+        return true
+    }
+    
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "SubredditImageLink" || segue.identifier == "SubredditLink" {
             if let link = sender as? RKLink {
@@ -460,10 +496,19 @@ SearchViewControllerDelegate {
                     controller.subreddit = self.subreddit
                 }
             }
+        } else if segue.identifier == "SavedSegue" {
+            if let nav = segue.destinationViewController as? UINavigationController {
+                if let controller = nav.viewControllers[0] as? UserContentViewController {
+                    controller.category = .Saved
+                    controller.categoryTitle = "Saved"
+                }
+            }
         } else {
             if let link = sender as? RKLink {
-                if let controller = segue.destinationViewController as? CommentsViewController {
-                    controller.link = link
+                if let nav = segue.destinationViewController as? UINavigationController {
+                    if let controller = nav.viewControllers[0] as? CommentsViewController {
+                        controller.link = link
+                    }
                 }
             }
         }
