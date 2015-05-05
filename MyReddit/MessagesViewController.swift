@@ -40,17 +40,19 @@ class MessagesViewController: UIViewController, UITableViewDataSource, UITableVi
         super.viewDidLoad()
         self.tableView.addSubview(refreshControl)
         
-        self.fetchMessages()
-        
         self.tableView.rowHeight = UITableViewAutomaticDimension
         self.tableView.separatorColor = UIColor.lightGrayColor()
         self.tableView.backgroundColor = MyRedditBackgroundColor
     }
     
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        self.fetchMessages()
+    }
+    
     @IBOutlet weak var tableView: UITableView!
-    
-    
-    
+
     private func fetchMessages() {
         
         if let messageCategory = self.category {
@@ -118,9 +120,11 @@ class MessagesViewController: UIViewController, UITableViewDataSource, UITableVi
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if let nav = segue.destinationViewController as? UINavigationController {
-            if let controller = nav.viewControllers[0] as? WebViewController {
-                controller.url = sender as! NSURL
+        if segue.identifier == "MessageLinkSegue" {
+            if let nav = segue.destinationViewController as? UINavigationController {
+                if let controller = nav.viewControllers[0] as? WebViewController {
+                    controller.url = sender as! NSURL
+                }
             }
         } else if let nav = segue.destinationViewController as? UINavigationController {
             if let controller = nav.viewControllers[0] as? AddCommentViewController {
@@ -181,7 +185,7 @@ class MessagesViewController: UIViewController, UITableViewDataSource, UITableVi
                 if swipeType.value == JZSwipeTypeLongLeft.value || swipeType.value == JZSwipeTypeShortLeft.value {
                     
                     if let message = self.messages[indexPath.row] as? RKMessage {
-                        self.performSegueWithIdentifier("ReplyToMessageSegue", sender: self)
+                        self.performSegueWithIdentifier("ReplyToMessageSegue", sender: message)
                     }
                 } else {
                     
