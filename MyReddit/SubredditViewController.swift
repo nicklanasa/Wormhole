@@ -150,6 +150,8 @@ SearchViewControllerDelegate {
         var rightBarButtons = self.navigationItem.rightBarButtonItems
         var postBarButton = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: "")
         rightBarButtons?.append(postBarButton)
+        
+        self.tableView.tableFooterView = UIView()
     }
     
     override func viewWillAppear(animated: Bool) {

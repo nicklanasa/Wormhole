@@ -24,6 +24,8 @@ class UserContentViewController: UIViewController, UITableViewDelegate, UITableV
         
         self.navigationItem.title = self.categoryTitle.lowercaseString
         self.tableView.backgroundColor = MyRedditBackgroundColor
+        
+        self.tableView.tableFooterView = UIView()
     }
     
     private func syncContent() {

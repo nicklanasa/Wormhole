@@ -33,7 +33,7 @@ class PostTextCell: UITableViewCell, UITextViewDelegate {
 
         if count(textView.text) == 0 {
             textView.text = "enter text..."
-            textView.textColor = UIColor.lightGrayColor()
+            textView.textColor = UIColor(red: 187/255, green: 187/255, blue: 193/255, alpha: 1.0)
         }
     }
     
