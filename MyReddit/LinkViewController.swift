@@ -52,30 +52,32 @@ class LinkViewController: UIViewController {
     }
     
     func saveLink() {
-        if self.link.saved {
-            // unsave
-            RedditSession.sharedSession.unSaveLink(self.link, completion: { (error) -> () in
-                if error != nil {
-                    UIAlertView(title: "Error!",
-                        message: error!.localizedDescription,
-                        delegate: self,
-                        cancelButtonTitle: "Ok").show()
-                } else {
-                    self.navigationItem.rightBarButtonItem?.tintColor = MyRedditLabelColor
-                }
-            })
-        } else {
-            RedditSession.sharedSession.saveLink(self.link, completion: { (error) -> () in
-                if error != nil {
-                    UIAlertView(title: "Error!",
-                        message: error!.localizedDescription,
-                        delegate: self,
-                        cancelButtonTitle: "Ok").show()
-                } else {
-                    self.navigationItem.rightBarButtonItem?.tintColor = MyRedditColor
-                }
-            })
-        }
+        RedditSession.sharedSession.saveLink(self.link, completion: { (error) -> () in
+            if error != nil {
+                UIAlertView(title: "Error!",
+                    message: error!.localizedDescription,
+                    delegate: self,
+                    cancelButtonTitle: "Ok").show()
+            } else {
+                self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "Saved"), style: .Plain, target: self, action: "unSaveLink")
+                self.navigationItem.rightBarButtonItem?.tintColor = MyRedditColor
+            }
+        })
+    }
+    
+    func unSaveLink() {
+        // unsave
+        RedditSession.sharedSession.unSaveLink(self.link, completion: { (error) -> () in
+            if error != nil {
+                UIAlertView(title: "Error!",
+                    message: error!.localizedDescription,
+                    delegate: self,
+                    cancelButtonTitle: "Ok").show()
+            } else {
+                 self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "Saved"), style: .Plain, target: self, action: "saveLink")
+                self.navigationItem.rightBarButtonItem?.tintColor = MyRedditLabelColor
+            }
+        })
     }
     
     private func updateVoteButtons() {

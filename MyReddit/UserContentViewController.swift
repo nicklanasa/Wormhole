@@ -20,6 +20,7 @@ class UserContentViewController: UIViewController, UITableViewDelegate, UITableV
     
     override func viewDidLoad() {
         self.tableView.rowHeight = UITableViewAutomaticDimension
+        self.tableView.reloadData()
         self.syncContent()
         
         self.navigationItem.title = self.categoryTitle.lowercaseString
@@ -29,17 +30,22 @@ class UserContentViewController: UIViewController, UITableViewDelegate, UITableV
     }
     
     private func syncContent() {
-        UserSession.sharedSession.userContent(self.category, pagination: self.pagination) { (pagination, results, error) -> () in
-            
-            self.pagination = pagination
-            if let moreContent = results {
-                self.content.extend(moreContent)
-            }
-            
-            if self.content.count == 25 || self.content.count == 0 {
-                self.tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: .Fade)
-            } else {
-                self.tableView.reloadData()
+        if let cell =  self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 1)) as? LoadMoreHeader {
+            cell.startAnimating()
+            UserSession.sharedSession.userContent(self.category, pagination: self.pagination) { (pagination, results, error) -> () in
+                
+                self.pagination = pagination
+                if let moreContent = results {
+                    self.content.extend(moreContent)
+                }
+                
+                if self.content.count == 25 || self.content.count == 0 {
+                    self.tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: .Fade)
+                } else {
+                    self.tableView.reloadData()
+                }
+                
+                cell.stopAnimating()
             }
         }
     }
