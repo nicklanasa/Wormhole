@@ -22,7 +22,7 @@ class UserContentViewController: UIViewController, UITableViewDelegate, UITableV
         self.tableView.rowHeight = UITableViewAutomaticDimension
         self.syncContent()
         
-        self.navigationItem.title = self.categoryTitle
+        self.navigationItem.title = self.categoryTitle.lowercaseString
         self.tableView.backgroundColor = MyRedditBackgroundColor
     }
     

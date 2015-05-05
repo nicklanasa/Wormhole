@@ -314,7 +314,7 @@ SearchViewControllerDelegate {
         if let multiReddit = self.multiReddit {
             title = multiReddit.name
         } else {
-            title = front ? "Front" : "/r/\(subreddit.name)"
+            title = front ? "front" : "/r/\(subreddit.name.lowercaseString)"
         }
         
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: title, style: .Plain, target: self, action: nil)

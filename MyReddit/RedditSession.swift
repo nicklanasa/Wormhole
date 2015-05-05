@@ -114,6 +114,12 @@ class RedditSession {
         })
     }
     
+    func sendMessage(message: String, subject: String, recipient: String, completion: ErrorCompletion) {
+        RKClient.sharedClient().sendMessage(message, subject: subject, recipient: recipient) { (error) -> Void in
+            completion(error: error)
+        }
+    }
+    
     func fetchComments(pagination: RKPagination?, link: RKLink, completion: PaginationCompletion) {
         RKClient.sharedClient().commentsForLink(link, completion: { (comments, pagination, error) -> Void in
             completion(pagination: pagination, results: comments, error: error)

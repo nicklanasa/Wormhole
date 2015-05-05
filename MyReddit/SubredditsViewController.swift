@@ -367,7 +367,11 @@ class SubredditsViewController: UIViewController, UITableViewDataSource, UITable
         if NSUserDefaults.standardUserDefaults().objectForKey("purchased") == nil {
             self.performSegueWithIdentifier("PurchaseSegue", sender: self)
         } else {
-            self.performSegueWithIdentifier("MessagesSegue", sender: self)
+            if UserSession.sharedSession.isSignedIn {
+                self.performSegueWithIdentifier("MessagesSegue", sender: self)
+            } else {
+                self.performSegueWithIdentifier("AccountsSegue", sender: self)
+            }
         }
     }
     

@@ -82,7 +82,7 @@ class MessagesViewController: UIViewController, UITableViewDataSource, UITableVi
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.messages.count
+        return self.messages.count + 1
     }
     
     func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
@@ -95,6 +95,13 @@ class MessagesViewController: UIViewController, UITableViewDataSource, UITableVi
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
+        
+        if indexPath.row == self.messages.count {
+            var header = tableView.dequeueReusableCellWithIdentifier("LoadMoreHeader") as! LoadMoreHeader
+            header.delegate = self
+            return header
+        }
+        
         var cell = tableView.dequeueReusableCellWithIdentifier("MessageCell") as! MessageCell
         
         let message = self.messages[indexPath.row] as! RKMessage
@@ -102,16 +109,6 @@ class MessagesViewController: UIViewController, UITableViewDataSource, UITableVi
         cell.messageCellDelegate = self
     
         return cell
-    }
-    
-    func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return 60
-    }
-    
-    func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        var header = tableView.dequeueReusableCellWithIdentifier("LoadMoreHeader") as! LoadMoreHeader
-        header.delegate = self
-        return header
     }
     
     func messageCell(cell: MessageCell, didTapLink link: NSURL) {

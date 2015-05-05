@@ -106,7 +106,7 @@ class UserSession {
         
         UIWebView.appearance().backgroundColor = MyRedditBackgroundColor
         
-        UITextField.appearance().font = MyRedditFont
+        UITextField.appearance().font = MyRedditSelfTextFont
         
         UIRefreshControl.appearance().tintColor = MyRedditColor
     }
@@ -152,7 +152,7 @@ class UserSession {
         
         UIWebView.appearance().backgroundColor = MyRedditBackgroundColor
         
-        UITextField.appearance().font = MyRedditFont
+        UITextField.appearance().font = MyRedditSelfTextFont
         
         UIRefreshControl.appearance().tintColor = MyRedditColor
     }
