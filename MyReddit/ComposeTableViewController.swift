@@ -28,6 +28,12 @@ class ComposeTableViewController: UITableViewController, UITextViewDelegate {
         self.tableView.backgroundColor = MyRedditBackgroundColor
     }
     
+    override func viewDidAppear(animated: Bool) {
+        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            self.toTextField.becomeFirstResponder()
+        })
+    }
+    
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         if indexPath.row == 2 {
             return self.tableView.frame.size.height - (88)

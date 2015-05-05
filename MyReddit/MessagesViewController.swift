@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 import CoreData
 
-class MessagesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, MessageCellDelegate, LoadMoreHeaderDelegate {
+class MessagesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, MessageCellDelegate, LoadMoreHeaderDelegate, JZSwipeCellDelegate {
     
     var category: RKMessageCategory!
     var pagination: RKPagination?
@@ -25,7 +25,8 @@ class MessagesViewController: UIViewController, UITableViewDataSource, UITableVi
     
     lazy var refreshControl: UIRefreshControl! = {
         var control = UIRefreshControl()
-        control.attributedTitle = NSAttributedString(string: "Pull to refresh", attributes: [NSFontAttributeName : MyRedditCommentTextBoldFont, NSForegroundColorAttributeName : MyRedditLabelColor])
+        control.attributedTitle = NSAttributedString(string: "Pull to refresh",
+            attributes: [NSFontAttributeName : MyRedditCommentTextBoldFont, NSForegroundColorAttributeName : MyRedditLabelColor])
         control.addTarget(self, action: "refresh:", forControlEvents: UIControlEvents.ValueChanged)
         return control
     }()
@@ -107,6 +108,7 @@ class MessagesViewController: UIViewController, UITableViewDataSource, UITableVi
         let message = self.messages[indexPath.row] as! RKMessage
         cell.message = message
         cell.messageCellDelegate = self
+        cell.delegate = self
     
         return cell
     }
@@ -119,6 +121,12 @@ class MessagesViewController: UIViewController, UITableViewDataSource, UITableVi
         if let nav = segue.destinationViewController as? UINavigationController {
             if let controller = nav.viewControllers[0] as? WebViewController {
                 controller.url = sender as! NSURL
+            }
+        } else if let nav = segue.destinationViewController as? UINavigationController {
+            if let controller = nav.viewControllers[0] as? AddCommentViewController {
+                if let message = sender as? RKMessage {
+                    controller.message = message
+                }
             }
         }
     }
@@ -140,21 +148,43 @@ class MessagesViewController: UIViewController, UITableViewDataSource, UITableVi
     }
     
     func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
-        if let message = self.messages[indexPath.row] as? RKMessage {
-            if message.unread {
-                
-                var filteredMessages = self.readMessages.filter({ (object) -> Bool in
-                    if let readMessage = object as? RKMessage {
-                        return readMessage.identifier == message.identifier
+        if self.messages.count > 0 {
+            if indexPath.row != self.messages.count {
+                if let message = self.messages[indexPath.row] as? RKMessage {
+                    if message.unread {
+                        
+                        var filteredMessages = self.readMessages.filter({ (object) -> Bool in
+                            if let readMessage = object as? RKMessage {
+                                return readMessage.identifier == message.identifier
+                            }
+                            
+                            return false
+                        })
+                        
+                        if filteredMessages.count == 0 {
+                            RedditSession.sharedSession.markMessagesAsRead([message], completion: { (error) -> () in
+                                self.readMessages.append(message)
+                            })
+                        }
                     }
-                    
-                    return false
-                })
+                }
+            }
+        }
+    }
+    
+    func swipeCell(cell: JZSwipeCell!, triggeredSwipeWithType swipeType: JZSwipeType) {
+        
+        if let indexPath = self.tableView.indexPathForCell(cell) {
+            if swipeType.value != JZSwipeTypeNone.value {
+                cell.reset()
                 
-                if filteredMessages.count == 0 {
-                    RedditSession.sharedSession.markMessagesAsRead([message], completion: { (error) -> () in
-                        self.readMessages.append(message)
-                    })
+                if swipeType.value == JZSwipeTypeLongLeft.value || swipeType.value == JZSwipeTypeShortLeft.value {
+                    
+                    if let message = self.messages[indexPath.row] as? RKMessage {
+                        self.performSegueWithIdentifier("ReplyToMessageSegue", sender: self)
+                    }
+                } else {
+                    
                 }
             }
         }

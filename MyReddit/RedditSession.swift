@@ -206,6 +206,12 @@ class RedditSession {
         }
     }
     
+    func submitComment(commentText: String, onThingWithFullName: String, completion: ErrorCompletion) {
+        RKClient.sharedClient().submitComment(commentText, onThingWithFullName: onThingWithFullName) { (error) -> Void in
+            completion(error: error)
+        }
+    }
+    
     func searchForLinks(searchText: String, pagination: RKPagination?, completion: PaginationCompletion) {
         RKClient.sharedClient().search(searchText, pagination: pagination) { (results, pagination, error) -> Void in
             completion(pagination: pagination, results: results, error: error)
