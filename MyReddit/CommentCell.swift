@@ -39,10 +39,6 @@ class CommentCell: JZSwipeCell, UITextViewDelegate {
         }
         
         self.commentTextView.delegate = self
-        
-        UIView.animateWithDuration(0.1, animations: { () -> Void in
-            self.contentView.layoutIfNeeded()
-        })
     }
     
     var link: RKLink! {
@@ -145,13 +141,14 @@ class CommentCell: JZSwipeCell, UITextViewDelegate {
                 
                 self.repliesLabel.attributedText = repliesString
                 self.repliesLabel.hidden = false
+                
+                self.repliesLabelHeightConstraint.constant = 30.0
+                self.contentView.layoutIfNeeded()
+                
             } else {
                 self.repliesLabel.hidden = true
-                
-                UIView.animateWithDuration(0.1, animations: { () -> Void in
-                    self.repliesLabelHeightConstraint.constant = 0.0
-                    self.contentView.layoutIfNeeded()
-                })
+                self.repliesLabelHeightConstraint.constant = 0.0
+                self.contentView.layoutIfNeeded()
             }
             
             self.commentTextView.font = UIFont(name: self.commentTextView.font.fontName,

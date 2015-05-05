@@ -9,10 +9,11 @@
 import Foundation
 import UIKit
 
-class CommentsViewController: UITableViewController, CommentCellDelegate, JZSwipeCellDelegate, UITextFieldDelegate {
+class CommentsViewController: UITableViewController, CommentCellDelegate, JZSwipeCellDelegate, UITextFieldDelegate, AddCommentViewControllerDelegate {
     
     var link: RKLink!
     var comment: RKComment!
+    
     var forComment = false
     
     @IBOutlet weak var comentToolbar: UIToolbar!
@@ -132,13 +133,13 @@ class CommentsViewController: UITableViewController, CommentCellDelegate, JZSwip
             if let cell = sender as? CommentCell {
                 var indexPath: NSIndexPath = self.tableView.indexPathForCell(cell)!
                 
-                if indexPath.row != 0 || self.forComment {
-                    return true
+                if indexPath.row == 0 && !self.forComment {
+                    return false
                 }
             }
         }
         
-        return false
+        return true
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
@@ -147,13 +148,14 @@ class CommentsViewController: UITableViewController, CommentCellDelegate, JZSwip
                 if let cell = sender as? CommentCell {
                     var indexPath: NSIndexPath = self.tableView.indexPathForCell(cell)!
                     
-                    if self.forComment {
-                        controller.comment = self.comment.replies?[indexPath.row] as! RKComment
-                    } else {
+                    if !self.forComment {
                         controller.comment = self.comments?[indexPath.row - 1] as! RKComment
+                    } else {
+                        controller.comment = self.comment.replies?[indexPath.row] as! RKComment
                     }
                     
                     controller.forComment = true
+                    controller.link = self.link
                 }
             }
         } else if segue.identifier == "AddCommentSegue" {
@@ -164,6 +166,8 @@ class CommentsViewController: UITableViewController, CommentCellDelegate, JZSwip
                     } else {
                         controller.link = self.link
                     }
+                    
+                    controller.delegate = self
                 }
             }
         } else {
@@ -250,5 +254,39 @@ class CommentsViewController: UITableViewController, CommentCellDelegate, JZSwip
     
     func swipeCell(cell: JZSwipeCell!, swipeTypeChangedFrom from: JZSwipeType, to: JZSwipeType) {
         
+    }
+    
+    func addCommentViewController(controller: AddCommentViewController, didAddComment success: Bool) {
+        if success {
+            if !self.forComment {
+                RedditSession.sharedSession.fetchComments(nil, link: self.link) { (pagination, results, error) -> () in
+                    
+                    if let comments = results {
+                        self.comments = comments
+                    }
+                }
+            } else {
+                RedditSession.sharedSession.fetchComments(nil, link: self.link) { (pagination, results, error) -> () in
+                    if let comments = results {
+                        self.findCurrentCommentInComments(comments)
+                    }
+                }
+            }
+        }
+    }
+    
+    private func findCurrentCommentInComments(comments: [AnyObject]) {
+        for comment in comments as! [RKComment] {
+            
+            if self.comment.fullName == comment.fullName {
+                self.comment = comment
+                self.tableView.reloadData()
+                break
+            }
+            
+            if comment.replies.count > 0 {
+                self.findCurrentCommentInComments(comment.replies)
+            }
+        }
     }
 }

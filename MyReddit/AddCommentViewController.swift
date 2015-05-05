@@ -9,9 +9,15 @@
 import Foundation
 import UIKit
 
+protocol AddCommentViewControllerDelegate {
+    func addCommentViewController(controller: AddCommentViewController, didAddComment success: Bool)
+}
+
 class AddCommentViewController: UIViewController, UITextViewDelegate {
     
     @IBOutlet weak var textViewContainerView: UIView!
+    
+    var delegate: AddCommentViewControllerDelegate?
     
     var comment: RKComment?
     var message: RKMessage?
@@ -69,7 +75,9 @@ class AddCommentViewController: UIViewController, UITextViewDelegate {
                             cancelButtonTitle: "Ok").show()
                     } else {
                         self.hud.hide(true)
-                        self.cancelButtonTapped(self)
+                        self.dismissViewControllerAnimated(true, completion: { () -> Void in
+                            self.delegate?.addCommentViewController(self, didAddComment: true)
+                        })
                     }
                 })
             } else {
@@ -85,12 +93,17 @@ class AddCommentViewController: UIViewController, UITextViewDelegate {
                                 cancelButtonTitle: "Ok").show()
                         } else {
                             self.hud.hide(true)
-                            self.cancelButtonTapped(self)
+                            self.dismissViewControllerAnimated(true, completion: { () -> Void in
+                                self.delegate?.addCommentViewController(self, didAddComment: true)
+                            })
                         }
                 })
             }
         } else {
-            
+            UIAlertView(title: "Error!",
+                message: "Reply cannot be empty!",
+                delegate: self,
+                cancelButtonTitle: "Ok").show()
         }
     }
     
