@@ -25,33 +25,31 @@ class LoginViewController: UIViewController, UITableViewDataSource, UITableViewD
     var user: User?
 
     @IBAction func loginButtonPressed(sender: AnyObject) {
-        DataManager.manager.datastore.removeAllSubreddits { (error) -> () in
-            var emailCell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) as! EmailCell
-            var passwordCell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 1, inSection: 0)) as! PasswordCell
-            
-            self.hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
-            
-            if count(emailCell.usernameTextField.text) > 0 && count(passwordCell.passwordTextField.text) > 0 {
-                UserSession.sharedSession.loginWithUsername(emailCell.usernameTextField.text,
-                    password: passwordCell.passwordTextField.text) { (error) -> () in
-                        if error != nil {
-                            self.hud.hide(true)
-                            UIAlertView(title: "Error!",
-                                message: "Unable to login. Please try again.",
-                                delegate: self,
-                                cancelButtonTitle: "Ok").show()
-                        } else {
-                            self.hud.hide(true)
-                            self.cancelButtonPressed(sender)
-                        }
-                }
-            } else {
-                self.hud.hide(true)
-                UIAlertView(title: "Error!",
-                    message: "You must supply a username and password!",
-                    delegate: self,
-                    cancelButtonTitle: "Ok").show()
+        var emailCell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) as! EmailCell
+        var passwordCell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 1, inSection: 0)) as! PasswordCell
+        
+        self.hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
+        
+        if count(emailCell.usernameTextField.text) > 0 && count(passwordCell.passwordTextField.text) > 0 {
+            UserSession.sharedSession.loginWithUsername(emailCell.usernameTextField.text,
+                password: passwordCell.passwordTextField.text) { (error) -> () in
+                    if error != nil {
+                        self.hud.hide(true)
+                        UIAlertView(title: "Error!",
+                            message: "Unable to login. Please try again.",
+                            delegate: self,
+                            cancelButtonTitle: "Ok").show()
+                    } else {
+                        self.hud.hide(true)
+                        self.cancelButtonPressed(sender)
+                    }
             }
+        } else {
+            self.hud.hide(true)
+            UIAlertView(title: "Error!",
+                message: "You must supply a username and password!",
+                delegate: self,
+                cancelButtonTitle: "Ok").show()
         }
     }
     

@@ -31,6 +31,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         
+        NSUserDefaults.standardUserDefaults().setObject(true, forKey: "purchased")
+        
         if SettingsManager.defaultManager.valueForSetting(.NightMode) {
             UserSession.sharedSession.nightMode()
         } else {

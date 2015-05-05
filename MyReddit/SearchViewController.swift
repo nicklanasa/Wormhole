@@ -157,6 +157,12 @@ MultiRedditsViewControllerDelegate {
         
         self.tableView.rowHeight = UITableViewAutomaticDimension
         self.tableView.backgroundColor = MyRedditDarkBackgroundColor
+        
+        for subView in self.searchController.searchBar.subviews {
+            if let textField = subView as? UITextField {
+                textField.textColor = MyRedditLabelColor
+            }
+        }
     }
     
     override func viewWillDisappear(animated: Bool) {

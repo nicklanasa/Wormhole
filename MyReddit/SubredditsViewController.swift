@@ -102,7 +102,7 @@ class SubredditsViewController: UIViewController, UITableViewDataSource, UITable
     
     func refresh(sender: AnyObject)
     {
-        self.syncSubreddits(nil)
+        self.fetchSubreddits()
     }
     
     @IBOutlet weak var messageButton: UIBarButtonItem!
@@ -277,8 +277,8 @@ class SubredditsViewController: UIViewController, UITableViewDataSource, UITable
                             UIAlertView(title: "Error!", message: "You must enter in a multireddit name!", delegate: self, cancelButtonTitle: "Ok").show()
                         } else {
                             
-                            if count(multiRedditName) > 3 {
-                                UIAlertView(title: "Error!", message: "Multireddit name is too short!", delegate: self, cancelButtonTitle: "Ok").show()
+                            if count(multiRedditName) < 3 {
+                                UIAlertView(title: "Error!", message: "Multireddit name must be greater than 3 characters!", delegate: self, cancelButtonTitle: "Ok").show()
                             } else {
                                 var visibilityAlert = UIAlertController(title: "Visibility", message: "Please select the visibility for the multireddit.", preferredStyle: .Alert)
                                 visibilityAlert.addAction(UIAlertAction(title: "Public", style: .Default, handler: { (a) -> Void in

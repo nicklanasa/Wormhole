@@ -126,6 +126,12 @@ class RedditSession {
         })
     }
     
+    func fetchCommentsForComment(comment: RKComment, pagination: RKPagination?, completion: PaginationCompletion) {
+        RKClient.sharedClient().commentsForLinkWithIdentifier(comment.fullName, completion: { (results, pagination, error) -> Void in
+            completion(pagination: pagination, results: results, error: error)
+        })
+    }
+    
     func fetchLinkWithComment(comment: RKComment, completion: PaginationCompletion) {
         RKClient.sharedClient().linkWithFullName(comment.linkID, completion: { (link, error) -> Void in
             completion(pagination: nil, results: [link], error: error)
