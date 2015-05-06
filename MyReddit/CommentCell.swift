@@ -103,7 +103,7 @@ class CommentCell: JZSwipeCell, UITextViewDelegate {
         didSet {
             
             var parser = XNGMarkdownParser()
-            parser.paragraphFont = MyRedditCommentTextBoldFont
+            parser.paragraphFont = MyRedditCommentTextFont
             parser.boldFontName = MyRedditCommentTextBoldFont.familyName
             parser.boldItalicFontName = MyRedditCommentTextItalicFont.familyName
             parser.italicFontName = MyRedditCommentTextItalicFont.familyName

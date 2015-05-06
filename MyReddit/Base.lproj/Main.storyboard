@@ -195,8 +195,11 @@
                                                     <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" clipsSubviews="YES" contentMode="top" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Chinese scientists have built the world’s first hydrogen-powered tram and water is it's only emission" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="V7g-sP-Kyz">
-                                                    <rect key="frame" x="16" y="25" width="535" height="55"/>
+                                                <label opaque="NO" clipsSubviews="YES" contentMode="top" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Chinese scientists have built the world’s first hydrogen-powered tram and water is it's only emission" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="V7g-sP-Kyz">
+                                                    <rect key="frame" x="16" y="25" width="576" height="55"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="576" id="pJ1-wU-9tI"/>
+                                                    </constraints>
                                                     <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="16"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -258,7 +261,7 @@
                                                 <constraint firstItem="lp1-76-hIu" firstAttribute="top" secondItem="gHD-KG-wcY" secondAttribute="bottom" constant="9" id="NBe-U5-Ulr"/>
                                                 <constraint firstItem="V7g-sP-Kyz" firstAttribute="leading" secondItem="lp1-76-hIu" secondAttribute="leading" id="PMu-Lg-Bed"/>
                                                 <constraint firstItem="pWw-pd-oxI" firstAttribute="firstBaseline" secondItem="7Ab-Ja-Prp" secondAttribute="baseline" id="TV1-ZE-KqF"/>
-                                                <constraint firstAttribute="trailingMargin" secondItem="V7g-sP-Kyz" secondAttribute="trailing" constant="41" id="UZS-Jy-fKX"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="V7g-sP-Kyz" secondAttribute="trailing" id="UZS-Jy-fKX"/>
                                                 <constraint firstItem="gHD-KG-wcY" firstAttribute="leading" secondItem="fQy-ma-bHq" secondAttribute="leading" id="Z3v-Q2-7Hf"/>
                                                 <constraint firstAttribute="bottomMargin" secondItem="7Ab-Ja-Prp" secondAttribute="bottom" constant="361" id="aYn-7l-sSh"/>
                                                 <constraint firstItem="X29-Kf-s5S" firstAttribute="top" secondItem="fQy-ma-bHq" secondAttribute="topMargin" constant="-4" id="hYo-mY-ITL"/>
@@ -558,9 +561,12 @@
                     <view key="view" contentMode="scaleToFill" id="RBY-wT-OJH">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <userGuides>
+                            <userLayoutGuide location="335" affinity="minY"/>
+                        </userGuides>
                         <subviews>
                             <webView contentMode="scaleToFill" scalesPageToFit="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1nH-9Q-fvO">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="556"/>
+                                <rect key="frame" x="0.0" y="114" width="600" height="442"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                             </webView>
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LAb-tP-3gA">
@@ -604,20 +610,34 @@
                                 </items>
                                 <color key="barTintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </toolbar>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="yYD-bD-ZYe">
+                                <rect key="frame" x="0.0" y="64" width="600" height="50"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="OXc-7d-A0D"/>
+                                </constraints>
+                                <color key="textColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
                         </subviews>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstItem="1nH-9Q-fvO" firstAttribute="leading" secondItem="LAb-tP-3gA" secondAttribute="leading" id="8IV-Ld-BKs"/>
-                            <constraint firstItem="LAb-tP-3gA" firstAttribute="top" secondItem="1nH-9Q-fvO" secondAttribute="bottom" id="DtV-jA-0en"/>
-                            <constraint firstItem="1nH-9Q-fvO" firstAttribute="trailing" secondItem="LAb-tP-3gA" secondAttribute="trailing" id="NZY-Qk-gL1"/>
-                            <constraint firstAttribute="trailing" secondItem="LAb-tP-3gA" secondAttribute="trailing" id="hml-gL-cVm"/>
-                            <constraint firstItem="LAb-tP-3gA" firstAttribute="bottom" secondItem="TiA-LT-D0m" secondAttribute="top" id="oP1-Z6-BPS"/>
-                            <constraint firstItem="LAb-tP-3gA" firstAttribute="leading" secondItem="RBY-wT-OJH" secondAttribute="leading" id="rWm-H0-Nq0"/>
-                            <constraint firstItem="1nH-9Q-fvO" firstAttribute="top" secondItem="RBY-wT-OJH" secondAttribute="top" id="thM-nm-KuZ"/>
+                            <constraint firstItem="1nH-9Q-fvO" firstAttribute="trailing" secondItem="yYD-bD-ZYe" secondAttribute="trailing" id="B4J-2h-Pmh"/>
+                            <constraint firstItem="yYD-bD-ZYe" firstAttribute="leading" secondItem="RBY-wT-OJH" secondAttribute="leading" id="DJs-6B-dE5"/>
+                            <constraint firstAttribute="trailing" secondItem="LAb-tP-3gA" secondAttribute="trailing" id="Dl3-KO-F4c"/>
+                            <constraint firstItem="yYD-bD-ZYe" firstAttribute="leading" secondItem="1nH-9Q-fvO" secondAttribute="leading" id="EX0-C6-pBh"/>
+                            <constraint firstItem="LAb-tP-3gA" firstAttribute="bottom" secondItem="TiA-LT-D0m" secondAttribute="top" id="Pey-7q-t9z"/>
+                            <constraint firstItem="LAb-tP-3gA" firstAttribute="top" secondItem="1nH-9Q-fvO" secondAttribute="bottom" id="cp3-o8-F8N"/>
+                            <constraint firstItem="LAb-tP-3gA" firstAttribute="leading" secondItem="1nH-9Q-fvO" secondAttribute="leading" id="jPB-HV-Ixf"/>
+                            <constraint firstItem="yYD-bD-ZYe" firstAttribute="top" secondItem="jm1-xP-tTI" secondAttribute="bottom" id="nkD-IP-Fm0"/>
+                            <constraint firstItem="1nH-9Q-fvO" firstAttribute="top" secondItem="yYD-bD-ZYe" secondAttribute="bottom" id="tTv-bm-J6p"/>
+                            <constraint firstItem="LAb-tP-3gA" firstAttribute="trailing" secondItem="1nH-9Q-fvO" secondAttribute="trailing" id="uJO-Bg-Y4t"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="downvoteButton" destination="IfD-b9-GVN" id="hka-Y9-myY"/>
+                        <outlet property="titleTextView" destination="yYD-bD-ZYe" id="8d4-fK-irQ"/>
                         <outlet property="upvoteButton" destination="MhD-B3-eMK" id="jUD-P4-f5r"/>
                         <outlet property="webView" destination="1nH-9Q-fvO" id="dgZ-96-Qv4"/>
                         <segue destination="Hdo-ax-c9X" kind="presentation" identifier="PurchaseSegue" modalTransitionStyle="crossDissolve" id="xsL-ln-a3I"/>
@@ -2447,14 +2467,6 @@
                                             <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" verticalCompressionResistancePriority="749" scrollEnabled="NO" editable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZsZ-g1-wiD">
-                                            <rect key="frame" x="11" y="8" width="573" height="43"/>
-                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                            <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
-                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                            <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                                            <dataDetectorType key="dataDetectorTypes" link="YES"/>
-                                        </textView>
                                         <label opaque="NO" clipsSubviews="YES" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="4.5k" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ehj-sX-ayA">
                                             <rect key="frame" x="540" y="56" width="44" height="17"/>
                                             <constraints>
@@ -2464,22 +2476,34 @@
                                             <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
                                         </label>
+                                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" verticalCompressionResistancePriority="749" scrollEnabled="NO" editable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZsZ-g1-wiD">
+                                            <rect key="frame" x="11" y="8" width="568" height="43"/>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
+                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                            <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                            <dataDetectorType key="dataDetectorTypes" link="YES"/>
+                                        </textView>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="ZsZ-g1-wiD" firstAttribute="top" secondItem="0fl-cW-8LI" secondAttribute="topMargin" id="1Lu-c8-HNY"/>
                                         <constraint firstAttribute="trailingMargin" secondItem="Ehj-sX-ayA" secondAttribute="trailing" constant="8" id="25U-9f-fqO"/>
+                                        <constraint firstItem="Ue5-Gd-E0C" firstAttribute="top" secondItem="Ehj-sX-ayA" secondAttribute="bottom" constant="4" id="3kc-xx-Y7Q"/>
                                         <constraint firstItem="Ue5-Gd-E0C" firstAttribute="top" secondItem="NpS-5U-pEy" secondAttribute="bottom" constant="6" id="5Lo-5a-9v6"/>
                                         <constraint firstItem="Ue5-Gd-E0C" firstAttribute="leading" secondItem="0fl-cW-8LI" secondAttribute="leadingMargin" constant="8" id="5Zh-KG-boX"/>
-                                        <constraint firstItem="ZsZ-g1-wiD" firstAttribute="leading" secondItem="0fl-cW-8LI" secondAttribute="leadingMargin" constant="3" id="5rd-lX-ebO"/>
+                                        <constraint firstItem="Ue5-Gd-E0C" firstAttribute="leading" secondItem="0fl-cW-8LI" secondAttribute="leading" constant="16" id="F7h-X6-8X6"/>
                                         <constraint firstAttribute="trailingMargin" secondItem="Ue5-Gd-E0C" secondAttribute="trailing" constant="8" id="JXu-Oe-Ne1"/>
+                                        <constraint firstAttribute="trailing" secondItem="ZsZ-g1-wiD" secondAttribute="trailing" constant="21" id="NIy-II-Zam"/>
                                         <constraint firstItem="Ehj-sX-ayA" firstAttribute="leading" secondItem="NpS-5U-pEy" secondAttribute="trailing" constant="21" id="VoL-Dz-vd0"/>
+                                        <constraint firstItem="ZsZ-g1-wiD" firstAttribute="top" secondItem="0fl-cW-8LI" secondAttribute="top" constant="8" id="WFn-8K-M9Z"/>
+                                        <constraint firstItem="ZsZ-g1-wiD" firstAttribute="leading" secondItem="0fl-cW-8LI" secondAttribute="leading" constant="11" id="Xfm-N1-3Q1"/>
                                         <constraint firstItem="Ue5-Gd-E0C" firstAttribute="bottom" secondItem="0fl-cW-8LI" secondAttribute="bottomMargin" id="YGb-sl-dz5"/>
                                         <constraint firstItem="NpS-5U-pEy" firstAttribute="leading" secondItem="0fl-cW-8LI" secondAttribute="leadingMargin" constant="8" id="ao0-Ag-3T1"/>
                                         <constraint firstItem="NpS-5U-pEy" firstAttribute="leading" secondItem="Ue5-Gd-E0C" secondAttribute="leading" id="ffJ-vU-E7q"/>
+                                        <constraint firstItem="NpS-5U-pEy" firstAttribute="top" secondItem="ZsZ-g1-wiD" secondAttribute="bottom" constant="4" id="flt-Q2-f6D"/>
+                                        <constraint firstAttribute="trailing" secondItem="Ue5-Gd-E0C" secondAttribute="trailing" constant="16" id="gZe-4b-uCz"/>
                                         <constraint firstItem="Ue5-Gd-E0C" firstAttribute="top" secondItem="Ehj-sX-ayA" secondAttribute="bottom" constant="4" id="jLI-Mr-8TD"/>
                                         <constraint firstItem="Ehj-sX-ayA" firstAttribute="leading" secondItem="NpS-5U-pEy" secondAttribute="trailing" constant="21" id="nGy-EB-ZOG"/>
-                                        <constraint firstAttribute="trailingMargin" secondItem="ZsZ-g1-wiD" secondAttribute="trailing" constant="8" id="qNk-jy-lTM"/>
-                                        <constraint firstItem="NpS-5U-pEy" firstAttribute="top" secondItem="ZsZ-g1-wiD" secondAttribute="bottom" constant="4" id="qht-3v-X1G"/>
+                                        <constraint firstAttribute="bottom" secondItem="Ue5-Gd-E0C" secondAttribute="bottom" constant="8" id="pyR-bb-I5y"/>
                                         <constraint firstItem="NpS-5U-pEy" firstAttribute="leading" secondItem="0fl-cW-8LI" secondAttribute="leadingMargin" constant="8" id="yys-tQ-51d"/>
                                     </constraints>
                                 </tableViewCellContentView>
@@ -4521,19 +4545,19 @@
         <image name="Up" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="3tl-bC-neo"/>
         <segue reference="cxw-0o-NAI"/>
-        <segue reference="c0A-qT-nAA"/>
         <segue reference="DoA-ah-cSI"/>
         <segue reference="QqN-ZE-i77"/>
-        <segue reference="Udn-dz-6HG"/>
-        <segue reference="aev-Tk-Wb5"/>
+        <segue reference="s4Y-Y8-M2P"/>
+        <segue reference="c0A-qT-nAA"/>
         <segue reference="tJz-SN-XxH"/>
         <segue reference="xsL-ln-a3I"/>
         <segue reference="UM9-7d-Dnl"/>
         <segue reference="Na3-yg-xfC"/>
         <segue reference="MQa-bF-U0r"/>
+        <segue reference="Udn-dz-6HG"/>
         <segue reference="psA-tl-Zoj"/>
         <segue reference="O8K-LF-8mj"/>
-        <segue reference="3tl-bC-neo"/>
     </inferredMetricsTieBreakers>
 </document>

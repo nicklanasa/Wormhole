@@ -16,6 +16,7 @@ class LinkViewController: UIViewController {
     @IBOutlet weak var webView: UIWebView!
     @IBOutlet weak var upvoteButton: UIBarButtonItem!
     @IBOutlet weak var downvoteButton: UIBarButtonItem!
+    @IBOutlet weak var titleTextView: UITextView!
     
     override func viewDidLoad() {
         let request = NSURLRequest(URL: link.URL)
@@ -24,15 +25,19 @@ class LinkViewController: UIViewController {
         self.webView.hidden = false
         
         var navLabel = UILabel(frame: CGRectZero)
-        navLabel.text = self.link.title
+        navLabel.text = self.link.URL.absoluteString
         navLabel.font = MyRedditTitleFont
-        navLabel.minimumScaleFactor = 0.8
+        navLabel.minimumScaleFactor = 0.5
         navLabel.adjustsFontSizeToFitWidth = true
         navLabel.numberOfLines = 2
         navLabel.textColor = MyRedditLabelColor
         navLabel.textAlignment = .Left
         navLabel.sizeToFit()
         self.navigationItem.titleView = navLabel
+        
+        self.navigationController?.navigationBar.hideBottomHairline()
+        
+        self.titleTextView.text = self.link.title
         
         self.updateVoteButtons()
         
