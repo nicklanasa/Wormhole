@@ -144,7 +144,8 @@ SearchViewControllerDelegate {
         self.contextMenu.delegate = self
         self.contextMenu.dataSource = self
         
-        var long = UILongPressGestureRecognizer(target: self.contextMenu, action: "longPressDetected:")
+        var long = UILongPressGestureRecognizer(target: self.contextMenu,
+            action: "longPressDetected:")
         self.view.gestureRecognizers = [long]
         
         var rightBarButtons = self.navigationItem.rightBarButtonItems
@@ -286,7 +287,7 @@ SearchViewControllerDelegate {
     
     func imageForItemAtIndex(index: Int) -> UIImage! {
         if index == 0 {
-            return UIImage(named: "Up")
+            return UIImage(named: "SavedMenuItem")
         } else {
             return UIImage(named: "Down")
         }

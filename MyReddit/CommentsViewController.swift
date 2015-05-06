@@ -244,7 +244,7 @@ class CommentsViewController: UITableViewController, CommentCellDelegate, JZSwip
                                     self.tableView.reloadData()
                                 }
                             })
-                        } else if swipeType.value == JZSwipeTypeShortLeft.value {
+                        } else if swipeType.value == JZSwipeTypeShortLeft.value || swipeType.value == JZSwipeTypeLongLeft.value {
                             // Upvote
                             RedditSession.sharedSession.upvote(object, completion: { (error) -> () in
                                 self.hud.hide(true)
@@ -258,7 +258,8 @@ class CommentsViewController: UITableViewController, CommentCellDelegate, JZSwip
                                     self.tableView.reloadData()
                                 }
                             })
-                        } else if swipeType.value == JZSwipeTypeLongLeft.value {
+                        }
+                        /*else if swipeType.value == JZSwipeTypeLongLeft.value {
                             
                             var comment: RKComment!
                             
@@ -273,7 +274,7 @@ class CommentsViewController: UITableViewController, CommentCellDelegate, JZSwip
                             }
                             
                             self.performSegueWithIdentifier("AddCommentSegue", sender: comment)
-                        } else {
+                        }*/ else {
                             self.hud.hide(true)
                         }
                     }
