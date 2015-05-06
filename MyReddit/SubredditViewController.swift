@@ -40,10 +40,19 @@ SearchViewControllerDelegate {
     var contextMenu: GHContextMenuView!
     
     @IBOutlet weak var tableView: UITableView!
-    @IBOutlet var headerImage: UIImageView!
+    
+    @IBOutlet var headerImage: UIImageView! {
+        didSet {
+            self.headerImage.autoresizingMask = .FlexibleWidth
+        }
+    }
+    
     @IBOutlet weak var subscribeButton: UIBarButtonItem!
     @IBOutlet weak var filterButton: UIBarButtonItem!
     @IBOutlet weak var listButton: UIBarButtonItem!
+    @IBOutlet weak var postButton: UIBarButtonItem!
+    @IBOutlet weak var saveButton: UIBarButtonItem!
+    @IBOutlet weak var searchButton: UIBarButtonItem!
     
     @IBOutlet weak var filterView: UIView! {
         didSet {
@@ -163,64 +172,49 @@ SearchViewControllerDelegate {
             self.tableView.reloadData()
         }
         
-        self.filterView.backgroundColor = SettingsManager.defaultManager.valueForSetting(.NightMode) ? UIColor.blackColor() : UIColor.whiteColor()
-        
-        for subView in self.filterView.subviews {
-            if let button = subView as? UIButton {
-                if button.tag == 99 {
-                    if SettingsManager.defaultManager.valueForSetting(.NightMode) {
-                        button.setBackgroundImage(UIImage(named: "CancelWhite"), forState: .Normal)
-                    } else {
-                        button.setBackgroundImage(UIImage(named: "Cancel"), forState: .Normal)
-                    }
-                } else {
-                    button.setTitleColor(MyRedditLabelColor, forState: .Normal)
-                }
-            } else if let label = subView as? UILabel {
-                label.textColor = MyRedditLabelColor
-            }
-        }
-        
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
             self.filterButton.tintColor = MyRedditLabelColor
             self.listButton.tintColor = MyRedditLabelColor
+            self.postButton.tintColor = MyRedditLabelColor
+            self.searchButton.tintColor = MyRedditLabelColor
+            self.saveButton.tintColor = MyRedditLabelColor
         })
     }
-    
-    @IBAction func filterButtonTapped(sender: AnyObject) {
-        if let filterButton = sender as? UIButton {
-            self.pagination = nil
-            
-            self.links = Array<AnyObject>()
-            
-            if let type = FilterSwitchType(rawValue: filterButton.tag) {
-                self.currentCategory = RKSubredditCategory(rawValue: UInt(type.rawValue))
-                
-                self.filterViewCloseButtonPressed(sender)
-                
-                self.syncLinks()
-            }
-        }
-    }
-    
-    @IBAction func filterViewCloseButtonPressed(sender: AnyObject) {
-        self.filterViewBottomConstraint.constant += 330
-        
-        UIView.animateWithDuration(0.3, animations: { () -> Void in
-            self.view.layoutIfNeeded()
-            
-            self.navigationItem.rightBarButtonItem?.enabled = true
-        })
-    }
-    
+
     @IBAction func filterButtonPressed(sender: AnyObject) {
-        self.filterViewBottomConstraint.constant -= 330
         
-        UIView.animateWithDuration(0.3, animations: { () -> Void in
-            self.view.layoutIfNeeded()
-            
-            self.navigationItem.rightBarButtonItem?.enabled = false
-        })
+        var alert = UIAlertController(title: "Select filter", message: nil, preferredStyle: .ActionSheet)
+        
+        alert.addAction(UIAlertAction(title: "hot", style: .Default, handler: { (action) -> Void in
+            self.filterLinks(.Hot)
+        }))
+        
+        alert.addAction(UIAlertAction(title: "new", style: .Default, handler: { (action) -> Void in
+            self.filterLinks(.New)
+        }))
+        
+        alert.addAction(UIAlertAction(title: "rising", style: .Default, handler: { (action) -> Void in
+            self.filterLinks(.Rising)
+        }))
+        
+        alert.addAction(UIAlertAction(title: "controversial", style: .Default, handler: { (action) -> Void in
+            self.filterLinks(.Controversial)
+        }))
+        
+        alert.addAction(UIAlertAction(title: "top", style: .Default, handler: { (action) -> Void in
+            self.filterLinks(.Top)
+        }))
+        
+        alert.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
+        
+        self.presentViewController(alert, animated: true, completion: nil)
+    }
+    
+    func filterLinks(filterSwtichType: FilterSwitchType) {
+        self.pagination = nil
+        self.links = Array<AnyObject>()
+        self.currentCategory = RKSubredditCategory(rawValue: UInt(filterSwtichType.rawValue))
+        self.syncLinks()
     }
     
     @IBAction func subscribeButtonTapped(sender: AnyObject) {
@@ -230,7 +224,10 @@ SearchViewControllerDelegate {
                     RedditSession.sharedSession.unsubscribe(self.subreddit, completion: { (error) -> () in
                         print(error)
                         if error != nil {
-                            UIAlertView(title: "Error!", message: "Unable to unsubscribe to Subreddit. Please make sure you are connected to the internets.", delegate: self, cancelButtonTitle: "Ok").show()
+                            UIAlertView(title: "Error!",
+                                message: "Unable to unsubscribe to Subreddit. Please make sure you are connected to the internets.",
+                                delegate: self,
+                                cancelButtonTitle: "Ok").show()
                         } else {
                             self.links = Array<AnyObject>()
                             self.pagination = nil
@@ -302,11 +299,6 @@ SearchViewControllerDelegate {
     }
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
-        
-        if self.filterViewBottomConstraint.constant < 636 {
-            self.filterViewCloseButtonPressed(scrollView)
-        }
-        
         var yOffset: CGFloat = scrollView.contentOffset.y
         if yOffset < -HeaderHeight {
             var f = self.headerImage.frame
@@ -472,7 +464,7 @@ SearchViewControllerDelegate {
             if UserSession.sharedSession.isSignedIn {
                 return true
             } else {
-                if NSUserDefaults.standardUserDefaults().objectForKey("purchased") == nil {
+                if !SettingsManager.defaultManager.purchased {
                     self.performSegueWithIdentifier("PurchaseSegue", sender: self)
                 } else {
                     self.performSegueWithIdentifier("LoginSegue", sender: self)
@@ -536,7 +528,7 @@ SearchViewControllerDelegate {
     func swipeCell(cell: JZSwipeCell!, triggeredSwipeWithType swipeType: JZSwipeType) {
         if swipeType.value != JZSwipeTypeNone.value {
             cell.reset()
-            if NSUserDefaults.standardUserDefaults().objectForKey("purchased") == nil {
+            if !SettingsManager.defaultManager.purchased {
                 self.performSegueWithIdentifier("PurchaseSegue", sender: self)
             } else {
                 
@@ -572,6 +564,36 @@ SearchViewControllerDelegate {
                                     self.syncLinks()
                                 }
                             })
+                        } else if swipeType.value == JZSwipeTypeLongLeft.value {
+                            // Save
+                            if link.saved() {
+                                RedditSession.sharedSession.unSaveLink(link, completion: { (error) -> () in
+                                    self.hud.hide(true)
+                                    link.unSaveLink()
+                                })
+                            } else {
+                                RedditSession.sharedSession.saveLink(link, completion: { (error) -> () in
+                                    self.hud.hide(true)
+                                    link.saveLink()
+                                })
+                            }
+                        } else {
+                            // Hide
+                            if link.isHidden() {
+                                RedditSession.sharedSession.unHideLink(link, completion: { (error) -> () in
+                                    self.hud.hide(true)
+                                    link.unHideink()
+                                })
+                            } else {
+                                RedditSession.sharedSession.hideLink(link, completion: { (error) -> () in
+                                    self.hud.hide(true)
+                                    link.hideLink()
+                                    self.links.removeAtIndex(indexPath.row)
+                                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                                        self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+                                    })
+                                })
+                            }
                         }
                     }
                 }

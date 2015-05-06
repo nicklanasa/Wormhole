@@ -16,6 +16,16 @@ class UserContentViewController: UIViewController, UITableViewDelegate, UITableV
     var pagination: RKPagination?
     var content = Array<AnyObject>()
     
+    var user: RKUser!
+    
+    var hud: MBProgressHUD! {
+        didSet {
+            hud.labelFont = MyRedditSelfTextFont
+            hud.mode = .Indeterminate
+            hud.labelText = "Loading"
+        }
+    }
+    
     @IBOutlet weak var tableView: UITableView!
     
     override func viewDidLoad() {
@@ -32,8 +42,7 @@ class UserContentViewController: UIViewController, UITableViewDelegate, UITableV
     private func syncContent() {
         if let cell =  self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 1)) as? LoadMoreHeader {
             cell.startAnimating()
-            UserSession.sharedSession.userContent(self.category, pagination: self.pagination) { (pagination, results, error) -> () in
-                
+            UserSession.sharedSession.userContent(self.user, category: self.category, pagination: self.pagination, completion: { (pagination, results, error) -> () in
                 self.pagination = pagination
                 if let moreContent = results {
                     self.content.extend(moreContent)
@@ -46,7 +55,7 @@ class UserContentViewController: UIViewController, UITableViewDelegate, UITableV
                 }
                 
                 cell.stopAnimating()
-            }
+            })
         }
     }
     
@@ -94,15 +103,10 @@ class UserContentViewController: UIViewController, UITableViewDelegate, UITableV
             
             cell.link = link
         } else if let comment = self.content[indexPath.row] as? RKComment {
-            if self.category == .Overview {
-                cell = tableView.dequeueReusableCellWithIdentifier("TitleCell") as! TitleCell
-                cell.linkComment = comment
-            } else {
-                var cell = tableView.dequeueReusableCellWithIdentifier("CommentCell") as! CommentCell
-                cell.comment = comment
-                cell.delegate = self
-                return cell
-            }
+            var cell = tableView.dequeueReusableCellWithIdentifier("CommentCell") as! CommentCell
+            cell.comment = comment
+            cell.delegate = self
+            return cell
         }
         
         cell.delegate = self
@@ -175,46 +179,111 @@ class UserContentViewController: UIViewController, UITableViewDelegate, UITableV
     func swipeCell(cell: JZSwipeCell!, triggeredSwipeWithType swipeType: JZSwipeType) {
         if swipeType.value != JZSwipeTypeNone.value {
             cell.reset()
-//            if NSUserDefaults.standardUserDefaults().objectForKey("purchased") == nil {
-//                self.performSegueWithIdentifier("PurchaseSegue", sender: self)
-//            } else {
-//                
-//                self.hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
-//                
-//                if let indexPath = self.tableView.indexPathForCell(cell) {
-//                    if let link = self.links[indexPath.row] as? RKLink {
-//                        if swipeType.value == JZSwipeTypeShortLeft.value {
-//                            // Upvote
-//                            RedditSession.sharedSession.upvote(link, completion: { (error) -> () in
-//                                self.hud.hide(true)
-//                                
-//                                if error != nil {
-//                                    UIAlertView(title: "Error!",
-//                                        message: "Unable to upvote! Please try again!",
-//                                        delegate: self,
-//                                        cancelButtonTitle: "Ok").show()
-//                                } else {
-//                                    self.syncLinks(self.currentCategory)
-//                                }
-//                            })
-//                        } else if swipeType.value == JZSwipeTypeShortRight.value {
-//                            // Downvote
-//                            RedditSession.sharedSession.downvote(link, completion: { (error) -> () in
-//                                self.hud.hide(true)
-//                                
-//                                if error != nil {
-//                                    UIAlertView(title: "Error!",
-//                                        message: "Unable to downvote! Please try again!",
-//                                        delegate: self,
-//                                        cancelButtonTitle: "Ok").show()
-//                                } else {
-//                                    self.syncLinks(self.currentCategory)
-//                                }
-//                            })
-//                        }
-//                    }
-//                }
-//            }
+            if let indexPath = self.tableView.indexPathForCell(cell) {
+                if let link = self.content[indexPath.row] as? RKLink  {
+                    self.hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
+                    if swipeType.value == JZSwipeTypeShortLeft.value {
+                        // Upvote
+                        RedditSession.sharedSession.upvote(link, completion: { (error) -> () in
+                            self.hud.hide(true)
+                            
+                            if error != nil {
+                                UIAlertView(title: "Error!",
+                                    message: error!.localizedDescription,
+                                    delegate: self,
+                                    cancelButtonTitle: "Ok").show()
+                            } else {
+                                self.syncContent()
+                            }
+                        })
+                    } else if swipeType.value == JZSwipeTypeShortRight.value {
+                        // Downvote
+                        RedditSession.sharedSession.downvote(link, completion: { (error) -> () in
+                            self.hud.hide(true)
+                            
+                            if error != nil {
+                                UIAlertView(title: "Error!",
+                                    message: error!.localizedDescription,
+                                    delegate: self,
+                                    cancelButtonTitle: "Ok").show()
+                            } else {
+                                self.syncContent()
+                            }
+                        })
+                    } else if swipeType.value == JZSwipeTypeLongLeft.value {
+                        // Save
+                        if link.saved() {
+                            RedditSession.sharedSession.unSaveLink(link, completion: { (error) -> () in
+                                self.hud.hide(true)
+                                link.unSaveLink()
+                            })
+                        } else {
+                            RedditSession.sharedSession.saveLink(link, completion: { (error) -> () in
+                                self.hud.hide(true)
+                                link.saveLink()
+                            })
+                        }
+                    } else {
+                        // Hide
+                        if link.isHidden() {
+                            RedditSession.sharedSession.unHideLink(link, completion: { (error) -> () in
+                                self.hud.hide(true)
+                                link.unHideink()
+                                
+                                if self.category == .Hidden {
+                                    self.content.removeAtIndex(indexPath.row)
+                                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                                        self.tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: .Fade)
+                                    })
+                                }
+                            })
+                        } else {
+                            RedditSession.sharedSession.hideLink(link, completion: { (error) -> () in
+                                self.hud.hide(true)
+                                link.hideLink()
+                                self.content.removeAtIndex(indexPath.row)
+                                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                                    self.tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: .Fade)
+                                })
+                            })
+                        }
+                    }
+                } else if let comment = self.content[indexPath.row] as? RKComment {
+                    self.hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
+                    
+                    if swipeType.value == JZSwipeTypeShortRight.value || swipeType.value == JZSwipeTypeLongRight.value {
+                        // Downvote
+                        RedditSession.sharedSession.downvote(comment, completion: { (error) -> () in
+                            self.hud.hide(true)
+                            
+                            if error != nil {
+                                UIAlertView(title: "Error!",
+                                    message: error!.localizedDescription,
+                                    delegate: self,
+                                    cancelButtonTitle: "Ok").show()
+                            } else {
+                                self.tableView.reloadData()
+                            }
+                        })
+                    } else if swipeType.value == JZSwipeTypeShortLeft.value || swipeType.value == JZSwipeTypeLongLeft.value {
+                        // Upvote
+                        RedditSession.sharedSession.upvote(comment, completion: { (error) -> () in
+                            self.hud.hide(true)
+                            
+                            if error != nil {
+                                UIAlertView(title: "Error!",
+                                    message: error!.localizedDescription,
+                                    delegate: self,
+                                    cancelButtonTitle: "Ok").show()
+                            } else {
+                                self.tableView.reloadData()
+                            }
+                        })
+                    } else {
+                        self.hud.hide(true)
+                    }
+                }
+            }
         }
     }
     

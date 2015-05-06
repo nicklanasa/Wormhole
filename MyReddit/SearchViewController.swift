@@ -15,8 +15,9 @@ protocol SearchViewControllerDelegate {
 
 class SearchViewController: UIViewController,
 UITableViewDelegate,
-    UITableViewDataSource,
-    UISearchResultsUpdating,
+UITableViewDataSource,
+UISearchResultsUpdating,
+UISearchDisplayDelegate,
 UISearchBarDelegate,
 JZSwipeCellDelegate,
 MultiRedditsViewControllerDelegate {
@@ -50,6 +51,14 @@ MultiRedditsViewControllerDelegate {
         }
     }
     
+    var users = Array<AnyObject>() {
+        didSet {
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                self.tableView.reloadData()
+            })
+        }
+    }
+    
     var hud: MBProgressHUD! {
         didSet {
             hud.labelFont = MyRedditSelfTextFont
@@ -58,18 +67,20 @@ MultiRedditsViewControllerDelegate {
         }
     }
     
-    lazy var searchController: UISearchController = {
-        var controller = UISearchController(searchResultsController: nil)
-        controller.searchResultsUpdater = self
-        controller.dimsBackgroundDuringPresentation = false
-        controller.searchBar.delegate = self
-        controller.hidesNavigationBarDuringPresentation = false
-        controller.searchBar.sizeToFit()
-        controller.searchBar.searchBarStyle = .Minimal
-        controller.searchBar.returnKeyType = .Done
-        controller.searchBar.placeholder = "Enter subreddit name..."
-        return controller
-    }()
+    var searchController: UISearchController {
+        get {
+            var controller = UISearchController(searchResultsController: nil)
+            controller.searchResultsUpdater = self
+            controller.dimsBackgroundDuringPresentation = false
+            controller.searchBar.delegate = self
+            controller.hidesNavigationBarDuringPresentation = false
+            controller.searchBar.sizeToFit()
+            controller.searchBar.searchBarStyle = .Minimal
+            controller.searchBar.returnKeyType = .Done
+            controller.searchBar.placeholder = "Enter subreddit name..."
+            return controller
+        }
+    }
     
     func updateSearchResultsForSearchController(searchController: UISearchController) {
         
@@ -83,36 +94,35 @@ MultiRedditsViewControllerDelegate {
         } else {
             self.isFiltering = true
             
-            if self.segmentationControl.selectedSegmentIndex == 1 {
-                RedditSession.sharedSession.searchForSubredditByName(searchController.searchBar.text, pagination: nil, completion: { (pagination, results, error) -> () in
-                    if error == nil {
-                        if let subreddits = results {
-                            self.subreddits = subreddits
+            self.search()
+        }
+    }
+    
+    func searchBarSearchButtonClicked(searchBar: UISearchBar) {
+        self.search()
+    }
+    
+    func search() {
+        if self.segmentationControl.selectedSegmentIndex == 1 {
+            RedditSession.sharedSession.searchForSubredditByName(searchController.searchBar.text, pagination: nil, completion: { (pagination, results, error) -> () in
+                if error == nil {
+                    if let subreddits = results {
+                        self.subreddits = subreddits
+                    }
+                }
+                
+            })
+        } else if self.segmentationControl.selectedSegmentIndex == 0 {
+            if self.restrictSubreddit.on {
+                if let subreddit = self.subreddit {
+                    RedditSession.sharedSession.searchForLinksInSubreddit(self.subreddit, searchText: searchController.searchBar.text, pagination: self.pagination, completion: { (pagination, results, error) -> () in
+                        if error == nil {
+                            if let links = results {
+                                self.links = links
+                            }
                         }
-                    }
-                    
-                })
-            } else {
-                if self.restrictSubreddit.on {
-                    if let subreddit = self.subreddit {
-                        RedditSession.sharedSession.searchForLinksInSubreddit(self.subreddit, searchText: searchController.searchBar.text, pagination: self.pagination, completion: { (pagination, results, error) -> () in
-                            if error == nil {
-                                if let links = results {
-                                    self.links = links
-                                }
-                            }
-                            
-                        })
-                    } else {
-                        RedditSession.sharedSession.searchForLinks(searchController.searchBar.text, pagination: self.pagination, completion: { (pagination, results, error) -> () in
-                            if error == nil {
-                                if let links = results {
-                                    self.links = links
-                                }
-                            }
-                            
-                        })
-                    }
+                        
+                    })
                 } else {
                     RedditSession.sharedSession.searchForLinks(searchController.searchBar.text, pagination: self.pagination, completion: { (pagination, results, error) -> () in
                         if error == nil {
@@ -123,23 +133,36 @@ MultiRedditsViewControllerDelegate {
                         
                     })
                 }
+            } else {
+                RedditSession.sharedSession.searchForLinks(searchController.searchBar.text, pagination: self.pagination, completion: { (pagination, results, error) -> () in
+                    if error == nil {
+                        if let links = results {
+                            self.links = links
+                        }
+                    }
+                })
             }
+        } else {
+            RedditSession.sharedSession.searchForUser(searchController.searchBar.text.stringByReplacingOccurrencesOfString(" ", withString: "", options: nil, range: nil), completion: { (pagination, results, error) -> () in
+                if error == nil {
+                    if let users = results {
+                        self.users = users
+                    }
+                }
+            })
         }
-    }
-    
-    func searchBarSearchButtonClicked(searchBar: UISearchBar) {
-        
     }
     
     @IBAction func segmentationControlValueChanged(sender: AnyObject) {
         if self.segmentationControl.selectedSegmentIndex == 0 {
             self.restrictToSubredditSwitch.enabled = true
-            
             self.searchController.searchBar.placeholder = "Search for link..."
+        } else if self.segmentationControl.selectedSegmentIndex == 1 {
+            self.restrictToSubredditSwitch.enabled = false
+            self.searchController.searchBar.placeholder = "Enter subreddit name..."
         } else {
             self.restrictToSubredditSwitch.enabled = false
-            
-            self.searchController.searchBar.placeholder = "Enter subreddit name..."
+            self.searchController.searchBar.placeholder = "Enter username..."
         }
         
         self.subreddits = Array<AnyObject>()
@@ -153,10 +176,9 @@ MultiRedditsViewControllerDelegate {
     
     override func viewDidAppear(animated: Bool) {
         self.tableView.tableHeaderView = self.searchController.searchBar
-        self.searchController.searchBar.becomeFirstResponder()
         
         self.tableView.rowHeight = UITableViewAutomaticDimension
-        self.tableView.backgroundColor = MyRedditDarkBackgroundColor
+        self.tableView.backgroundColor = MyRedditBackgroundColor
         
         for subView in self.searchController.searchBar.subviews {
             if let textField = subView as? UITextField {
@@ -165,13 +187,28 @@ MultiRedditsViewControllerDelegate {
         }
         
         self.tableView.tableFooterView = UIView()
+        
+        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            self.searchController.searchBar.becomeFirstResponder()
+        })
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         if let delegateObj = self.delegate as? PostTableViewController {
             self.segmentationControl.selectedSegmentIndex = 1
-            self.searchController.searchBar.becomeFirstResponder()
+            self.segmentationControl.setEnabled(false, forSegmentAtIndex: 0)
+            self.segmentationControl.setEnabled(false, forSegmentAtIndex: 2)
+            self.searchController.active = true
+        } else {
+            var restrictToSubreddit: UIBarButtonItem!
+            if let subreddit = self.subreddit {
+                restrictToSubreddit = UIBarButtonItem(title: "/r/\(subreddit.name)", style: .Plain, target: self, action: nil)
+            } else {
+                restrictToSubreddit = UIBarButtonItem(title: "front", style: .Plain, target: self, action: nil)
+            }
+            
+            self.navigationItem.rightBarButtonItems = [restrictToSubredditSwitch, restrictToSubreddit]
         }
     }
     
@@ -196,8 +233,10 @@ MultiRedditsViewControllerDelegate {
             }
             
             return self.subreddits.count ?? 0
-        } else {
+        } else if self.segmentationControl.selectedSegmentIndex == 0 {
             return self.links.count ?? 0
+        } else {
+            return self.users.count ?? 0
         }
     }
     
@@ -215,7 +254,7 @@ MultiRedditsViewControllerDelegate {
             }
             
             return cell
-        } else {
+        } else if self.segmentationControl.selectedSegmentIndex == 0 {
             var cell = tableView.dequeueReusableCellWithIdentifier("PostImageCell") as! PostCell
             
             if let link = self.links[indexPath.row] as? RKLink {
@@ -235,6 +274,12 @@ MultiRedditsViewControllerDelegate {
             
             cell.delegate = self
             
+            return cell
+        } else {
+            var cell = tableView.dequeueReusableCellWithIdentifier("AccountCell") as! UserInfoCell
+            if let user = self.users[indexPath.row] as? RKUser {
+                cell.user = user
+            }
             return cell
         }
     }
@@ -270,7 +315,7 @@ MultiRedditsViewControllerDelegate {
                     })
                 }
             }
-        } else {
+        } else if self.segmentationControl.selectedSegmentIndex == 0 {
             self.tableView.deselectRowAtIndexPath(indexPath, animated: true)
             if indexPath.section == 0 {
                 if let link = self.links[indexPath.row] as? RKLink {
@@ -279,6 +324,12 @@ MultiRedditsViewControllerDelegate {
                     } else {
                         self.performSegueWithIdentifier("SubredditLink", sender: link)
                     }
+                }
+            }
+        } else {
+            if indexPath.section == 0 {
+                if let user = self.users[indexPath.row] as? RKUser {
+                    self.performSegueWithIdentifier("UserSegue", sender: user)
                 }
             }
         }
@@ -295,6 +346,14 @@ MultiRedditsViewControllerDelegate {
             if let controller = segue.destinationViewController as? UINavigationController {
                 if let subredditViewController = controller.viewControllers[0] as? MultiRedditsViewController {
                     subredditViewController.delegate = self
+                }
+            }
+        } else if segue.identifier == "UserSegue" {
+            if let controller = segue.destinationViewController as? UINavigationController {
+                if let profileController = controller.viewControllers[0] as? ProfileViewController {
+                    if let user = sender as? RKUser {
+                        profileController.user = user
+                    }
                 }
             }
         } else {
@@ -319,7 +378,7 @@ MultiRedditsViewControllerDelegate {
     func swipeCell(cell: JZSwipeCell!, triggeredSwipeWithType swipeType: JZSwipeType) {
         if swipeType.value != JZSwipeTypeNone.value {
             cell.reset()
-            if NSUserDefaults.standardUserDefaults().objectForKey("purchased") == nil {
+            if !SettingsManager.defaultManager.purchased {
                 self.performSegueWithIdentifier("PurchaseSegue", sender: self)
             } else {
                 
@@ -338,7 +397,7 @@ MultiRedditsViewControllerDelegate {
                                         delegate: self,
                                         cancelButtonTitle: "Ok").show()
                                 } else {
-                                    self.tableView.reloadData()
+                                    
                                 }
                             })
                         } else if swipeType.value == JZSwipeTypeShortRight.value {
@@ -352,12 +411,43 @@ MultiRedditsViewControllerDelegate {
                                         delegate: self,
                                         cancelButtonTitle: "Ok").show()
                                 } else {
-                                    self.tableView.reloadData()
+                                    
                                 }
                             })
+                        } else if swipeType.value == JZSwipeTypeLongLeft.value {
+                            // Save
+                            if link.saved() {
+                                RedditSession.sharedSession.unSaveLink(link, completion: { (error) -> () in
+                                    self.hud.hide(true)
+                                    link.unSaveLink()
+                                })
+                            } else {
+                                RedditSession.sharedSession.saveLink(link, completion: { (error) -> () in
+                                    self.hud.hide(true)
+                                    link.saveLink()
+                                })
+                            }
+                        } else {
+                            // Hide
+                            if link.isHidden() {
+                                RedditSession.sharedSession.unHideLink(link, completion: { (error) -> () in
+                                    self.hud.hide(true)
+                                    link.unHideink()
+                                })
+                            } else {
+                                RedditSession.sharedSession.hideLink(link, completion: { (error) -> () in
+                                    self.hud.hide(true)
+                                    link.hideLink()
+                                    self.links.removeAtIndex(indexPath.row)
+                                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                                        self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+                                    })
+                                })
+                            }
                         }
                     }
                 }
+
             }
         }
     }

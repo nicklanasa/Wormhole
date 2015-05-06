@@ -16,7 +16,8 @@ class PostCell: JZSwipeCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         
-        self.imageSet = SwipeCellImageSetMake(UIImage(named: "Down"), UIImage(named: "Down"), UIImage(named: "Up"), UIImage(named: "Up"))
-        self.colorSet = SwipeCellColorSetMake(MyRedditDownvoteColor, MyRedditReplyColor, MyRedditUpvoteColor, MyRedditUpvoteColor)
+        self.shortSwipeLength = 150
+        self.imageSet = SwipeCellImageSetMake(UIImage(named: "Down"), UIImage(named: "CancelWhiteSwipe"), UIImage(named: "Up"), UIImage(named: "BookmarkSwipe"))
+        self.colorSet = SwipeCellColorSetMake(MyRedditDownvoteColor, MyRedditDownvoteColor, MyRedditUpvoteColor, MyRedditColor)
     }
 }

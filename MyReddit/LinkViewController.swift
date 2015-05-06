@@ -112,7 +112,7 @@ class LinkViewController: UIViewController {
     }
     
     @IBAction func downvoteButtonTapped(sender: AnyObject) {
-        if NSUserDefaults.standardUserDefaults().objectForKey("purchased") == nil {
+        if !SettingsManager.defaultManager.purchased {
             self.performSegueWithIdentifier("PurchaseSegue", sender: self)
         } else {
             RedditSession.sharedSession.downvote(self.link, completion: { (error) -> () in
@@ -122,7 +122,7 @@ class LinkViewController: UIViewController {
     }
     
     @IBAction func upvoteButtonTapped(sender: AnyObject) {
-        if NSUserDefaults.standardUserDefaults().objectForKey("purchased") == nil {
+        if !SettingsManager.defaultManager.purchased {
             self.performSegueWithIdentifier("PurchaseSegue", sender: self)
         } else {
             RedditSession.sharedSession.upvote(self.link, completion: { (error) -> () in

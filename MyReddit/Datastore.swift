@@ -270,7 +270,16 @@ class Datastore {
             self.saveDatastoreWithCompletion({ (error) -> () in
                 completion(user: addedUser, error: nil)
             })
+        }
+    }
+    
+    func deleteUser(user: User, completion: (error: NSError?) -> ()) {
+        self.mainQueueContext.performBlock { () -> Void in
+            self.mainQueueContext.deleteObject(user)
             
+            self.saveDatastoreWithCompletion({ (error) -> () in
+                completion(error: nil)
+            })
         }
     }
     

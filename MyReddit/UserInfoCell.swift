@@ -17,4 +17,11 @@ class UserInfoCell: UITableViewCell {
     override func awakeFromNib() {
         self.titleLabel.textColor = MyRedditLabelColor
     }
+    
+    var user: RKUser! {
+        didSet {
+            self.titleLabel.text = user.username
+            self.infoLabel.hidden = true
+        }
+    }
 }

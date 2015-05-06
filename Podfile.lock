@@ -21,6 +21,28 @@ PODS:
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
   - BDGInAppPurchase (0.0.2)
+  - Bolts (1.1.5):
+    - Bolts/AppLinks (= 1.1.5)
+    - Bolts/Tasks (= 1.1.5)
+  - Bolts/AppLinks (1.1.5):
+    - Bolts/Tasks
+  - Bolts/Tasks (1.1.5)
+  - Facebook-iOS-SDK (4.1.0):
+    - Bolts (~> 1.1)
+    - Facebook-iOS-SDK/CoreKit (= 4.1.0)
+    - Facebook-iOS-SDK/LoginKit (= 4.1.0)
+    - Facebook-iOS-SDK/ShareKit (= 4.1.0)
+  - Facebook-iOS-SDK/CoreKit (4.1.0):
+    - Bolts (~> 1.1)
+    - Facebook-iOS-SDK/CoreKit/no-arc (= 4.1.0)
+  - Facebook-iOS-SDK/CoreKit/no-arc (4.1.0):
+    - Bolts (~> 1.1)
+  - Facebook-iOS-SDK/LoginKit (4.1.0):
+    - Bolts (~> 1.1)
+    - Facebook-iOS-SDK/CoreKit
+  - Facebook-iOS-SDK/ShareKit (4.1.0):
+    - Bolts (~> 1.1)
+    - Facebook-iOS-SDK/CoreKit
   - ImgurAnonymousAPIClient (0.1.1):
     - AFNetworking (>= 2.2.2)
   - JZSwipeCell (1.1)
@@ -28,6 +50,7 @@ PODS:
     - Mantle/extobjc (= 1.5.4)
   - Mantle/extobjc (1.5.4)
   - MBProgressHUD (0.9.1)
+  - NSDate+Calendar (0.0.7)
   - NSDate+TimeAgo (1.0.3)
   - RedditKit (1.3.0):
     - AFNetworking (~> 2.3)
@@ -45,10 +68,12 @@ PODS:
 
 DEPENDENCIES:
   - BDGInAppPurchase
+  - Facebook-iOS-SDK
   - ImgurAnonymousAPIClient (from `https://github.com/nolanw/ImgurAnonymousAPIClient.git`,
     tag `v0.1.1`)
   - JZSwipeCell (~> 1.1)
   - MBProgressHUD
+  - NSDate+Calendar
   - NSDate+TimeAgo
   - RedditKit (~> 1.3)
   - RFMarkdownTextView (~> 1.4)
@@ -71,10 +96,13 @@ CHECKOUT OPTIONS:
 SPEC CHECKSUMS:
   AFNetworking: e1d86c2a96bb5d2e7408da36149806706ee122fe
   BDGInAppPurchase: 9f466e82a4a3e1d8b744268280748c1d91ddda67
+  Bolts: aac24961496d504aa56fc267cde95162a71bac39
+  Facebook-iOS-SDK: f42dfb27283bf5f05e3a9edc88459a75b9892d99
   ImgurAnonymousAPIClient: 3e5f9b8782e300743ed167d62b775a7f248fa218
   JZSwipeCell: 662d75e1ed6805abbd977dee70e7dac807853109
   Mantle: 60acd0cd363e27d945bda0a6b8e90577112d28f3
   MBProgressHUD: c47f2c166c126cf2ce36498d80f33e754d4e93ad
+  NSDate+Calendar: 30747b15cbeda4d835c39f5d597d8eaa2ddc3942
   NSDate+TimeAgo: 416f55d2696d3744c313091c5a9280d47f8238fe
   RedditKit: b6bccd8f65cc9b4a79befa177e21432d03d946a8
   RFKeyboardToolbar: c96a7d9458564d1fedc8ef6844b6c467934aade2

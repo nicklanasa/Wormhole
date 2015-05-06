@@ -85,11 +85,11 @@ class TitleCell: PostCell {
             }
             
             self.commentsLabel.text = linkComment.replies?.count.description
-            self.subredditLabel.text = "/r/\(linkComment.subreddit)"
+            self.subredditLabel.hidden = true
             
             var replies = linkComment.replies?.count == 1 ? "reply" : "replies"
             
-            var infoString = NSMutableAttributedString(string: "\(linkComment.author) - \(linkComment.created.timeAgo()) - \(linkComment.replies?.count) \(replies)")
+            var infoString = NSMutableAttributedString(string: "\(linkComment.author) - \(linkComment.created.timeAgo()) - \(linkComment.replies?.count ?? 0) \(replies)")
 
             var attrs = [NSForegroundColorAttributeName : MyRedditLabelColor]
             infoString.addAttributes(attrs, range: NSMakeRange(0, count(linkComment.author)))

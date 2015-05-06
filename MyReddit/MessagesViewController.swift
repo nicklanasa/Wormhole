@@ -10,7 +10,12 @@ import Foundation
 import UIKit
 import CoreData
 
-class MessagesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, MessageCellDelegate, LoadMoreHeaderDelegate, JZSwipeCellDelegate {
+class MessagesViewController: UIViewController,
+UITableViewDataSource,
+UITableViewDelegate,
+MessageCellDelegate,
+LoadMoreHeaderDelegate,
+JZSwipeCellDelegate {
     
     var category: RKMessageCategory!
     var pagination: RKPagination?

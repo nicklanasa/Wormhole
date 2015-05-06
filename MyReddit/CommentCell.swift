@@ -103,13 +103,13 @@ class CommentCell: JZSwipeCell, UITextViewDelegate {
         didSet {
             
             var parser = XNGMarkdownParser()
-            parser.paragraphFont = MyRedditCommentTextFont
+            parser.paragraphFont = MyRedditCommentTextBoldFont
             parser.boldFontName = MyRedditCommentTextBoldFont.familyName
             parser.boldItalicFontName = MyRedditCommentTextItalicFont.familyName
             parser.italicFontName = MyRedditCommentTextItalicFont.familyName
             parser.linkFontName = MyRedditCommentTextBoldFont.familyName
             
-            var parsedString = NSMutableAttributedString(attributedString: parser.attributedStringFromMarkdownString(comment.body))
+            var parsedString = NSMutableAttributedString(attributedString: parser.attributedStringFromMarkdownString(comment.body.stringByReplacingPercentEscapesUsingEncoding(NSUTF8StringEncoding)))
             self.commentTextView.attributedText = parsedString
             
             var timeAgo = comment.created.timeAgo()

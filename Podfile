@@ -15,6 +15,8 @@ pod 'BDGInAppPurchase'
 pod 'MBProgressHUD'
 pod 'JZSwipeCell', '~> 1.1'
 pod 'ImgurAnonymousAPIClient', :git => 'https://github.com/nolanw/ImgurAnonymousAPIClient.git', :tag => 'v0.1.1'
+pod 'Facebook-iOS-SDK'
+pod 'NSDate+Calendar'
 
 end
 

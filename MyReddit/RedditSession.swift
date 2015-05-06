@@ -270,4 +270,26 @@ class RedditSession {
             completion(error: error)
         })
     }
+    
+    func hideLink(link: RKLink, completion: ErrorCompletion) {
+        RKClient.sharedClient().hideLink(link, completion: { (error) -> Void in
+            completion(error: error)
+        })
+    }
+    
+    func unHideLink(link: RKLink, completion: ErrorCompletion) {
+        RKClient.sharedClient().unhideLink(link, completion: { (error) -> Void in
+            completion(error: error)
+        })
+    }
+    
+    func searchForUser(username: String, completion: PaginationCompletion) {
+        RKClient.sharedClient().userWithUsername(username, completion: { (result, error) -> Void in
+            if let user = result as? RKUser {
+                completion(pagination: nil, results: [user], error: error)
+            } else {
+                completion(pagination: nil, results: nil, error: error)
+            }
+        })
+    }
 }

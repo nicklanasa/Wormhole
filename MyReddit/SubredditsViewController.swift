@@ -12,6 +12,32 @@ import CoreData
 
 class SubredditsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, NSFetchedResultsControllerDelegate {
     
+    @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var messageButton: UIBarButtonItem!
+    
+    @IBAction func cancelButtonTapped(sender: AnyObject) {
+        self.dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    @IBAction func editButtonTApped(sender: AnyObject) {
+        self.tableView.setEditing(true, animated: true)
+        
+        if let barButton = sender as? UIBarButtonItem {
+            barButton.action = "finishEditing:"
+            barButton.title = "Done"
+        }
+    }
+    
+    var syncSubreddits = Array<AnyObject>()
+    var syncMultiSubreddits = Array<AnyObject>()
+    
+    lazy var refreshControl: UIRefreshControl! = {
+        var control = UIRefreshControl()
+        control.attributedTitle = NSAttributedString(string: "Pull to refresh", attributes: [NSFontAttributeName : MyRedditCommentTextBoldFont, NSForegroundColorAttributeName : MyRedditLabelColor])
+        control.addTarget(self, action: "refresh:", forControlEvents: UIControlEvents.ValueChanged)
+        return control
+    }()
+    
     var addSubredditsToMultiRedditAlert: UIAlertController! {
         get {
             var alert = UIAlertController(title: "Search", message: "Would you like to go to search now to add subreddit's to your multireddits?", preferredStyle: .Alert)
@@ -65,47 +91,6 @@ class SubredditsViewController: UIViewController, UITableViewDataSource, UITable
             NSUserDefaults.standardUserDefaults().setObject(subredditsData, forKey: "multiSubreddits")
         }
     }
-    
-    var syncSubreddits = Array<AnyObject>()
-    var syncMultiSubreddits = Array<AnyObject>()
-    
-    @IBOutlet weak var tableView: UITableView!
-
-    @IBAction func cancelButtonTapped(sender: AnyObject) {
-        self.dismissViewControllerAnimated(true, completion: nil)
-    }
-
-    @IBAction func editButtonTApped(sender: AnyObject) {
-        self.tableView.setEditing(true, animated: true)
-        
-        if let barButton = sender as? UIBarButtonItem {
-            barButton.action = "finishEditing:"
-            barButton.title = "Done"
-        }
-    }
-    
-    func finishEditing(sender: AnyObject) {
-        self.tableView.setEditing(false, animated: true)
-        
-        if let barButton = sender as? UIBarButtonItem {
-            barButton.action = "editButtonTApped:"
-            barButton.title = "Edit"
-        }
-    }
-    
-    lazy var refreshControl: UIRefreshControl! = {
-        var control = UIRefreshControl()
-        control.attributedTitle = NSAttributedString(string: "Pull to refresh", attributes: [NSFontAttributeName : MyRedditCommentTextBoldFont, NSForegroundColorAttributeName : MyRedditLabelColor])
-        control.addTarget(self, action: "refresh:", forControlEvents: UIControlEvents.ValueChanged)
-        return control
-    }()
-    
-    func refresh(sender: AnyObject)
-    {
-        self.fetchSubreddits()
-    }
-    
-    @IBOutlet weak var messageButton: UIBarButtonItem!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -166,21 +151,29 @@ class SubredditsViewController: UIViewController, UITableViewDataSource, UITable
         if UserSession.sharedSession.isSignedIn {
             RedditSession.sharedSession.fetchSubscribedSubreddits(pagination, category: .Subscriber, completion: { (pagination, results, error) -> () in
                 if let subreddits = results {
-                    self.syncSubreddits.extend(subreddits)
-                    if pagination != nil {
-                        self.syncSubreddits(pagination)
+                    if subreddits.count == 0 {
+                        self.syncPopularSubreddits()
                     } else {
-                        self.subreddits = self.syncSubreddits
+                        self.syncSubreddits.extend(subreddits)
+                        if pagination != nil {
+                            self.syncSubreddits(pagination)
+                        } else {
+                            self.subreddits = self.syncSubreddits
+                        }
                     }
                 }
             })
         } else {
-            RedditSession.sharedSession.fetchPopularSubreddits(pagination, completion: { (pagination, results, error) -> () in
-                if let subreddits = results {
-                    self.subreddits = subreddits
-                }
-            })
+            self.syncPopularSubreddits()
         }
+    }
+    
+    func syncPopularSubreddits() {
+        RedditSession.sharedSession.fetchPopularSubreddits(nil, completion: { (pagination, results, error) -> () in
+            if let subreddits = results {
+                self.subreddits = subreddits
+            }
+        })
     }
     
     func syncMultiReddits() {
@@ -194,7 +187,21 @@ class SubredditsViewController: UIViewController, UITableViewDataSource, UITable
             })
         }
     }
+    
+    func finishEditing(sender: AnyObject) {
+        self.tableView.setEditing(false, animated: true)
         
+        if let barButton = sender as? UIBarButtonItem {
+            barButton.action = "editButtonTApped:"
+            barButton.title = "Edit"
+        }
+    }
+    
+    func refresh(sender: AnyObject)
+    {
+        self.fetchSubreddits()
+    }
+    
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 0 {
             return self.multiSubreddits.count + 1
@@ -365,7 +372,7 @@ class SubredditsViewController: UIViewController, UITableViewDataSource, UITable
     }
     
     @IBAction func messagesButtonTapped(sender: AnyObject) {
-        if NSUserDefaults.standardUserDefaults().objectForKey("purchased") == nil {
+        if !SettingsManager.defaultManager.purchased {
             self.performSegueWithIdentifier("PurchaseSegue", sender: self)
         } else {
             if UserSession.sharedSession.isSignedIn {
@@ -377,7 +384,7 @@ class SubredditsViewController: UIViewController, UITableViewDataSource, UITable
     }
     
     @IBAction func loginButtonTapped(sender: AnyObject) {
-        if NSUserDefaults.standardUserDefaults().objectForKey("purchased") == nil {
+        if !SettingsManager.defaultManager.purchased {
             self.performSegueWithIdentifier("PurchaseSegue", sender: self)
         } else {
             self.performSegueWithIdentifier("AccountsSegue", sender: self)

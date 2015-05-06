@@ -33,7 +33,7 @@
 		CE046ED31AC4336500DF59B4 /* String+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE046ED21AC4336500DF59B4 /* String+Helpers.swift */; };
 		CE0862141AF27DD300F00AAB /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE0862131AF27DD300F00AAB /* StoreKit.framework */; };
 		CE25FBA01AF8438600A40C3B /* ComposeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE25FB9F1AF8438600A40C3B /* ComposeTableViewController.swift */; };
-		CE25FBD01AF93E0600A40C3B /* RKLink+Viewed.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE25FBCF1AF93E0600A40C3B /* RKLink+Viewed.swift */; };
+		CE25FBD01AF93E0600A40C3B /* RKLink+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE25FBCF1AF93E0600A40C3B /* RKLink+Helpers.swift */; };
 		CE25FBD21AF9411A00A40C3B /* PostTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE25FBD11AF9411A00A40C3B /* PostTableViewController.swift */; };
 		CE25FBD41AF9483D00A40C3B /* LinkCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE25FBD31AF9483D00A40C3B /* LinkCell.swift */; };
 		CE25FBD61AF9484400A40C3B /* PostTitleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE25FBD51AF9484400A40C3B /* PostTitleCell.swift */; };
@@ -118,7 +118,7 @@
 		CE046ED21AC4336500DF59B4 /* String+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Helpers.swift"; sourceTree = "<group>"; };
 		CE0862131AF27DD300F00AAB /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		CE25FB9F1AF8438600A40C3B /* ComposeTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeTableViewController.swift; sourceTree = "<group>"; };
-		CE25FBCF1AF93E0600A40C3B /* RKLink+Viewed.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "RKLink+Viewed.swift"; sourceTree = "<group>"; };
+		CE25FBCF1AF93E0600A40C3B /* RKLink+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "RKLink+Helpers.swift"; sourceTree = "<group>"; };
 		CE25FBD11AF9411A00A40C3B /* PostTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostTableViewController.swift; sourceTree = "<group>"; };
 		CE25FBD31AF9483D00A40C3B /* LinkCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LinkCell.swift; sourceTree = "<group>"; };
 		CE25FBD51AF9484400A40C3B /* PostTitleCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostTitleCell.swift; sourceTree = "<group>"; };
@@ -374,7 +374,7 @@
 				01F965561AC4FB9200DE0CD6 /* Message+Helpers.swift */,
 				CE538FAD1AF3F19B008050B6 /* RKClient+Search.swift */,
 				CE769F301AF6F64800031657 /* UIAlertController+Helpers.swift */,
-				CE25FBCF1AF93E0600A40C3B /* RKLink+Viewed.swift */,
+				CE25FBCF1AF93E0600A40C3B /* RKLink+Helpers.swift */,
 				CE25FBDD1AF9667000A40C3B /* UITableViewCell+Helpers.swift */,
 			);
 			name = Data;
@@ -557,7 +557,7 @@
 				CE712F271AC304610042B071 /* Comment.swift in Sources */,
 				CE3588201AC30DEE00294684 /* SubredditViewController.swift in Sources */,
 				01F965531AC4F4B500DE0CD6 /* MessageCell.swift in Sources */,
-				CE25FBD01AF93E0600A40C3B /* RKLink+Viewed.swift in Sources */,
+				CE25FBD01AF93E0600A40C3B /* RKLink+Helpers.swift in Sources */,
 				CE538FAE1AF3F19B008050B6 /* RKClient+Search.swift in Sources */,
 				CE25FBD61AF9484400A40C3B /* PostTitleCell.swift in Sources */,
 				018E40221AC38A060055384D /* LinkViewController.swift in Sources */,

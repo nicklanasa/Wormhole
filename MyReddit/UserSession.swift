@@ -59,9 +59,10 @@ class UserSession {
         }
     }
     
-    func userContent(category: RKUserContentCategory, pagination: RKPagination?, completion: PaginationCompletion) {
-        var user = RKClient.sharedClient().currentUser
-        RKClient.sharedClient().contentForUser(user, category: category, pagination: pagination) { (results, pagination, error) -> Void in
+    func userContent(user: RKUser, category: RKUserContentCategory, pagination: RKPagination?, completion: PaginationCompletion) {
+        RKClient.sharedClient().contentForUser(user,
+            category: category,
+            pagination: pagination) { (results, pagination, error) -> Void in
             completion(pagination: pagination, results: results, error: error)
         }
     }

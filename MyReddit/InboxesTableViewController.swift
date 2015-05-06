@@ -38,6 +38,10 @@ class InboxesTableViewController: UITableViewController {
         self.tableView.backgroundColor = MyRedditDarkBackgroundColor
         
         self.refreshControl = self.inboxRefreshControl
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
         
         self.fetchUnread()
     }

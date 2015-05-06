@@ -17,6 +17,8 @@ class ProfileViewController: UIViewController, UITableViewDataSource, UITableVie
     var karmaTitles = ["Link Karma", "Comment Karma"]
     var profileTitles = ["Username", "Created"]
     
+    var user: RKUser?
+    
     @IBAction func cancelButtonTapped(sender: AnyObject) {
         self.dismissViewControllerAnimated(true, completion: nil)
     }
@@ -30,8 +32,13 @@ class ProfileViewController: UIViewController, UITableViewDataSource, UITableVie
     }
     
     override func viewDidLoad() {
-        if let user = UserSession.sharedSession.currentUser {
-            self.navigationItem.title = user.username
+        
+        if let searchedUser = user {
+            self.userTitles =  ["Overview", "Comments", "Submitted", "Gilded"]
+        } else {
+            if let user = UserSession.sharedSession.currentUser {
+                self.navigationItem.title = user.username
+            }
         }
         
         self.tableView.backgroundColor = MyRedditDarkBackgroundColor
@@ -45,22 +52,22 @@ class ProfileViewController: UIViewController, UITableViewDataSource, UITableVie
         if section == 0 || section == 1 {
             return 2
         } else {
-            return 8
+            return self.userTitles.count
         }
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var cell = tableView.dequeueReusableCellWithIdentifier("UserInfoCell") as! UserInfoCell
         
-        if let user = UserSession.sharedSession.currentUser {
+        if let searchedUser = self.user {
             if indexPath.section == 0 {
                 var title = self.profileTitles[indexPath.row] as String
                 cell.titleLabel.text = title
                 
                 if indexPath.row == 0 {
-                    cell.infoLabel.text = user.username
+                    cell.infoLabel.text = searchedUser.username
                 } else {
-                    cell.infoLabel.text = user.created.timeAgo()
+                    cell.infoLabel.text = searchedUser.created.timeAgo()
                 }
                 
                 cell.selectionStyle = .None
@@ -70,9 +77,9 @@ class ProfileViewController: UIViewController, UITableViewDataSource, UITableVie
                 cell.titleLabel.text = title
                 
                 if indexPath.row == 0 {
-                    cell.infoLabel.text = user.commentKarma.description
+                    cell.infoLabel.text = searchedUser.commentKarma.description
                 } else {
-                    cell.infoLabel.text = user.linkKarma.description
+                    cell.infoLabel.text = searchedUser.linkKarma.description
                 }
                 
                 cell.selectionStyle = .None
@@ -82,6 +89,39 @@ class ProfileViewController: UIViewController, UITableViewDataSource, UITableVie
                 cell.infoLabel.hidden = true
                 
                 cell.accessoryType = .DisclosureIndicator
+            }
+        } else {
+            if let user = UserSession.sharedSession.currentUser {
+                if indexPath.section == 0 {
+                    var title = self.profileTitles[indexPath.row] as String
+                    cell.titleLabel.text = title
+                    
+                    if indexPath.row == 0 {
+                        cell.infoLabel.text = user.username
+                    } else {
+                        cell.infoLabel.text = user.created.timeAgo()
+                    }
+                    
+                    cell.selectionStyle = .None
+                    
+                } else if indexPath.section == 1 {
+                    var title = self.karmaTitles[indexPath.row] as String
+                    cell.titleLabel.text = title
+                    
+                    if indexPath.row == 0 {
+                        cell.infoLabel.text = user.commentKarma.description
+                    } else {
+                        cell.infoLabel.text = user.linkKarma.description
+                    }
+                    
+                    cell.selectionStyle = .None
+                } else {
+                    var title = self.userTitles[indexPath.row] as String
+                    cell.titleLabel.text = title
+                    cell.infoLabel.hidden = true
+                    
+                    cell.accessoryType = .DisclosureIndicator
+                }
             }
         }
         
@@ -102,6 +142,12 @@ class ProfileViewController: UIViewController, UITableViewDataSource, UITableVie
                         var category = RKUserContentCategory(rawValue: UInt(indexPath.row+1))
                         controller.category = category
                         controller.categoryTitle = self.userTitles[indexPath.row] as String
+                        
+                        if let searchedUser = self.user {
+                            controller.user = searchedUser
+                        } else {
+                            controller.user = RKClient.sharedClient().currentUser
+                        }
                     }
                 }
             }

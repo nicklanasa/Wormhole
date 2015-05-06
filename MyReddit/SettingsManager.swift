@@ -151,4 +151,18 @@ class SettingsManager {
             }
         }
     }
+    
+    var purchased: Bool! {
+        get {
+            if NSUserDefaults.standardUserDefaults().objectForKey("purchased") == nil {
+                return false
+            } else {
+                if let purchaseDate = NSUserDefaults.standardUserDefaults().objectForKey("expirationDate") as? NSDate {
+                    return NSDate().compare(purchaseDate) == .OrderedAscending
+                } else {
+                    return true
+                }
+            }
+        }
+    }
 }

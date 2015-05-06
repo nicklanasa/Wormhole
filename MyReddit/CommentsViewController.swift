@@ -195,7 +195,7 @@ class CommentsViewController: UITableViewController, CommentCellDelegate, JZSwip
     }
     
     @IBAction func addCommentButtonTapped(sender: AnyObject) {
-        if NSUserDefaults.standardUserDefaults().objectForKey("purchased") == nil {
+        if !SettingsManager.defaultManager.purchased {
             self.performSegueWithIdentifier("PurchaseSegue", sender: self)
         } else {
             self.performSegueWithIdentifier("AddCommentSegue", sender: self)
@@ -209,7 +209,7 @@ class CommentsViewController: UITableViewController, CommentCellDelegate, JZSwip
     func swipeCell(cell: JZSwipeCell!, triggeredSwipeWithType swipeType: JZSwipeType) {
         if swipeType.value != JZSwipeTypeNone.value {
             cell.reset()
-            if NSUserDefaults.standardUserDefaults().objectForKey("purchased") == nil {
+            if !SettingsManager.defaultManager.purchased {
                 self.performSegueWithIdentifier("PurchaseSegue", sender: self)
             } else {
                 
@@ -258,23 +258,7 @@ class CommentsViewController: UITableViewController, CommentCellDelegate, JZSwip
                                     self.tableView.reloadData()
                                 }
                             })
-                        }
-                        /*else if swipeType.value == JZSwipeTypeLongLeft.value {
-                            
-                            var comment: RKComment!
-                            
-                            if self.forComment {
-                                comment = self.comment.replies?[indexPath.row] as? RKComment
-                            } else {
-                                if indexPath.row == 0 {
-                                    self.performSegueWithIdentifier("AddCommentSegue", sender: self)
-                                } else {
-                                    comment = self.comments?[indexPath.row - 1] as? RKComment
-                                }
-                            }
-                            
-                            self.performSegueWithIdentifier("AddCommentSegue", sender: comment)
-                        }*/ else {
+                        } else {
                             self.hud.hide(true)
                         }
                     }

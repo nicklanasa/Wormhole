@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import Social
 
 class PurchaseViewController: UIViewController, BDGIAPDelegate {
     
@@ -22,26 +23,73 @@ class PurchaseViewController: UIViewController, BDGIAPDelegate {
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         
-        self.view.backgroundColor = MyRedditDarkBackgroundColor
-        self.restoreButton.setTitleColor(MyRedditLabelColor, forState: .Normal)
+        self.view.backgroundColor = MyRedditBackgroundColor
     }
 
     @IBOutlet weak var purchaseButton: UIButton!
-    @IBOutlet weak var restoreButton: UIButton!
     @IBOutlet weak var purchaseLabel: UILabel!
-    
-    @IBAction func restoreButtonTapped(sender: AnyObject) {
-        self.hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
-        BDGInAppPurchase.sharedBDGInAppPurchase().delegate = self
-        BDGInAppPurchase.sharedBDGInAppPurchase().productID = "myreddit.premium"
-        BDGInAppPurchase.sharedBDGInAppPurchase().restoreIAP()
-    }
     
     @IBAction func purchaseButtonTapped(sender: AnyObject) {
         self.hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
         BDGInAppPurchase.sharedBDGInAppPurchase().delegate = self
         BDGInAppPurchase.sharedBDGInAppPurchase().productID = "myreddit.premium"
         BDGInAppPurchase.sharedBDGInAppPurchase().purchaseIAP()
+    }
+    
+    @IBAction func shareToUnlockButtonTapped(sender: AnyObject) {
+        var alert = UIAlertController(title: "Share", message: nil, preferredStyle: .ActionSheet)
+        alert.addAction(UIAlertAction(title: "facebook", style: .Default, handler: { (action) -> Void in
+            if SLComposeViewController.isAvailableForServiceType(SLServiceTypeFacebook) {
+                var socialVC = SLComposeViewController(forServiceType: SLServiceTypeFacebook)
+                socialVC.addImage(UIImage(named: "MyReddit"))
+                
+                var completion: SLComposeViewControllerCompletionHandler = { (result) -> Void in
+                    if result == .Done {
+                        NSUserDefaults.standardUserDefaults().setObject(true, forKey: "purchased")
+                        NSUserDefaults.standardUserDefaults().setObject(NSDate().dateByAddingMonth(1), forKey: "expirationDate")
+                        
+                        self.cancelButtonTapped(self)
+                    }
+                }
+                
+                socialVC.completionHandler = completion
+                
+                self.presentViewController(socialVC, animated: true, completion: nil)
+            } else {
+                UIAlertView(title: "Error!",
+                    message: "Please make sure you are logged in to facebook in the Settings app on your device.",
+                    delegate: self,
+                    cancelButtonTitle: "Ok").show()
+            }
+        }))
+        alert.addAction(UIAlertAction(title: "twitter", style: .Default, handler: { (action) -> Void in
+            if SLComposeViewController.isAvailableForServiceType(SLServiceTypeTwitter) {
+                var socialVC = SLComposeViewController(forServiceType: SLServiceTypeTwitter)
+                socialVC.addImage(UIImage(named: "MyReddit"))
+                
+                var completion: SLComposeViewControllerCompletionHandler = { (result) -> Void in
+                    if result == .Done {
+                        NSUserDefaults.standardUserDefaults().setObject(true, forKey: "purchased")
+                        NSUserDefaults.standardUserDefaults().setObject(NSDate().dateByAddingMonth(1), forKey: "expirationDate")
+                        
+                        self.cancelButtonTapped(self)
+                    }
+                }
+                
+                socialVC.completionHandler = completion
+                
+                self.presentViewController(socialVC, animated: true, completion: nil)
+            } else {
+                UIAlertView(title: "Error!",
+                    message: "Please make sure you are logged in to twitter in the Settings app on your device.",
+                    delegate: self,
+                    cancelButtonTitle: "Ok").show()
+            }
+        }))
+        
+        alert.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
+        
+        self.presentViewController(alert, animated: true, completion: nil)
     }
     
     @IBAction func cancelButtonTapped(sender: AnyObject) {
@@ -69,11 +117,13 @@ class PurchaseViewController: UIViewController, BDGIAPDelegate {
     func didPurchaseIAP() {
         self.hud.hide(true)
         NSUserDefaults.standardUserDefaults().setObject(true, forKey: "purchased")
+        NSUserDefaults.standardUserDefaults().setObject(nil, forKey: "expirationDate")
         self.cancelButtonTapped(self)
     }
     
     func didRestoreIAP(productID: String!) {
         NSUserDefaults.standardUserDefaults().setObject(true, forKey: "purchased")
+        NSUserDefaults.standardUserDefaults().setObject(nil, forKey: "expirationDate")
         self.cancelButtonTapped(self)
     }
     

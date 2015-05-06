@@ -8,81 +8,121 @@
 		<dict>
 			<key>isShown</key>
 			<false/>
+			<key>orderHint</key>
+			<integer>2</integer>
 		</dict>
 		<key>Pods-MyReddit-BDGInAppPurchase.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
+			<key>orderHint</key>
+			<integer>3</integer>
+		</dict>
+		<key>Pods-MyReddit-ImgurAnonymousAPIClient.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>16</integer>
 		</dict>
 		<key>Pods-MyReddit-JZSwipeCell.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
+			<key>orderHint</key>
+			<integer>4</integer>
 		</dict>
 		<key>Pods-MyReddit-MBProgressHUD.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
+			<key>orderHint</key>
+			<integer>6</integer>
 		</dict>
 		<key>Pods-MyReddit-Mantle.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
+			<key>orderHint</key>
+			<integer>5</integer>
 		</dict>
 		<key>Pods-MyReddit-NSDate+TimeAgo.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
+			<key>orderHint</key>
+			<integer>7</integer>
 		</dict>
 		<key>Pods-MyReddit-RFKeyboardToolbar.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
+			<key>orderHint</key>
+			<integer>9</integer>
 		</dict>
 		<key>Pods-MyReddit-RFMarkdownTextView.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
+			<key>orderHint</key>
+			<integer>10</integer>
 		</dict>
 		<key>Pods-MyReddit-RedditKit.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
+			<key>orderHint</key>
+			<integer>8</integer>
 		</dict>
 		<key>Pods-MyReddit-SDWebImage.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
+			<key>orderHint</key>
+			<integer>11</integer>
 		</dict>
 		<key>Pods-MyReddit-SWTableViewCell.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
+			<key>orderHint</key>
+			<integer>12</integer>
 		</dict>
 		<key>Pods-MyReddit-TTTAttributedLabel.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
+			<key>orderHint</key>
+			<integer>13</integer>
 		</dict>
 		<key>Pods-MyReddit-UICKeyChainStore.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
+			<key>orderHint</key>
+			<integer>14</integer>
 		</dict>
 		<key>Pods-MyReddit-XNGMarkdownParser.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
+			<key>orderHint</key>
+			<integer>15</integer>
 		</dict>
 		<key>Pods-MyReddit.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
+			<key>orderHint</key>
+			<integer>1</integer>
 		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
 		<key>02753D305B42768C202F116F</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>04257490378406FDF7CF769C</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -98,6 +138,11 @@
 			<true/>
 		</dict>
 		<key>14D67F6195CBE1EDB5834C08</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>19787E18279FD20DF10A55EF</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -122,7 +167,37 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>30BF4D59A42D990FAEB600FB</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>31960D303A3AA167A0B2E6DC</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>33304EA9FDFD92361AA340C0</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>396A627EC130E4E6D7D128E9</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>39A09F7C7E04A2E2D2D2F957</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>3CC2E347DBA82E4A9765AC61</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>4495A9A8CF05788AF76B4491</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -152,12 +227,42 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>6200BBD59514857FC985E9A5</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>67431FA58E5EBE46D0E31E39</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>70EAE04D3AF02E758F73B768</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>72A95D1FA20C4B6E779F4EE9</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>8468A166A131EF9B4BDA5F1F</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>86F9375D60AD97883AC7DB12</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>936029F2FB410B94B2451DAF</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>A05A0A37BF17E6638E67AB12</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -173,6 +278,11 @@
 			<true/>
 		</dict>
 		<key>AA168FF3142BB376727B57DF</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>B28B0392270636003105D3FB</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -208,6 +318,11 @@
 			<true/>
 		</dict>
 		<key>E1400A4EECFD752436EB2F1C</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>E767BEFB9860623897004E2F</key>
 		<dict>
 			<key>primary</key>
 			<true/>

@@ -50,6 +50,12 @@ UINavigationControllerDelegate {
         
         tableView.estimatedRowHeight = 44.0
         tableView.rowHeight = UITableViewAutomaticDimension
+        
+        self.tableView.reloadData()
+        
+        if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 1, inSection: 0)) as? PostSubredditCell {
+            cell.subredditTextField.becomeFirstResponder()
+        }
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -221,6 +227,10 @@ UINavigationControllerDelegate {
             if let postType = PostType(rawValue: segementationControl.selectedSegmentIndex) {
                 self.postType = postType
             }
+        }
+        
+        if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 1, inSection: 0)) as? PostSubredditCell {
+            cell.subredditTextField.becomeFirstResponder()
         }
     }
     

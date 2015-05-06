@@ -278,6 +278,7 @@ class SettingsTableViewController: UITableViewController, BDGIAPDelegate {
             self.hud.hide(true)
         })
         NSUserDefaults.standardUserDefaults().setObject(true, forKey: "purchased")
+        NSUserDefaults.standardUserDefaults().setObject(nil, forKey: "expirationDate")
     }
     
     func didRestoreIAP(productID: String!) {
@@ -285,6 +286,7 @@ class SettingsTableViewController: UITableViewController, BDGIAPDelegate {
             self.hud.hide(true)
         })
         NSUserDefaults.standardUserDefaults().setObject(true, forKey: "purchased")
+        NSUserDefaults.standardUserDefaults().setObject(nil, forKey: "expirationDate")
         
         UIAlertView(title: "Success!",
             message: "Purchase restored!",

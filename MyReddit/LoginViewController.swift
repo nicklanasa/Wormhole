@@ -55,6 +55,10 @@ class LoginViewController: UIViewController, UITableViewDataSource, UITableViewD
     
     override func viewDidAppear(animated: Bool) {
         self.tableView.backgroundColor = MyRedditDarkBackgroundColor
+        
+        self.tableView.reloadData()
+        var emailCell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) as! EmailCell
+        emailCell.usernameTextField.becomeFirstResponder()
     }
     
     @IBAction func cancelButtonPressed(sender: AnyObject) {

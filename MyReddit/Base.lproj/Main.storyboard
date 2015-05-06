@@ -491,6 +491,7 @@
                                 </userDefinedRuntimeAttributes>
                                 <variation key="default">
                                     <mask key="constraints">
+                                        <exclude reference="G0D-rJ-QXD"/>
                                         <exclude reference="2ev-1h-L5g"/>
                                     </mask>
                                 </variation>
@@ -526,6 +527,9 @@
                         <outlet property="filterViewBottomConstraint" destination="C1f-Dd-5Oz" id="F94-yT-dyc"/>
                         <outlet property="headerImage" destination="4hy-5l-arK" id="fdI-s8-DO0"/>
                         <outlet property="listButton" destination="Q2v-JC-IKA" id="A9X-WL-7WP"/>
+                        <outlet property="postButton" destination="4CL-zW-GHL" id="WXj-ia-LPD"/>
+                        <outlet property="saveButton" destination="q86-9s-9Q8" id="stH-D3-yhD"/>
+                        <outlet property="searchButton" destination="dOl-GF-7qg" id="9hL-2c-8zW"/>
                         <outlet property="subscribeButton" destination="ZCd-hO-GGS" id="a52-S9-0f8"/>
                         <outlet property="tableView" destination="C52-gL-QAq" id="0ar-Ad-qf5"/>
                         <segue destination="lwG-4j-KBB" kind="show" identifier="CommentsSegue" id="ovW-r7-Crm"/>
@@ -543,10 +547,10 @@
             </objects>
             <point key="canvasLocation" x="608" y="-379"/>
         </scene>
-        <!--Link ViewController-->
+        <!--Link View Controller-->
         <scene sceneID="sbQ-IA-Mog">
             <objects>
-                <viewController storyboardIdentifier="LinkViewController" title="Link ViewController" hidesBottomBarWhenPushed="YES" id="oWg-TP-L9t" customClass="LinkViewController" customModule="MyReddit" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="LinkViewController" hidesBottomBarWhenPushed="YES" id="oWg-TP-L9t" customClass="LinkViewController" customModule="MyReddit" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="jm1-xP-tTI"/>
                         <viewControllerLayoutGuide type="bottom" id="TiA-LT-D0m"/>
@@ -782,12 +786,90 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K3k-oK-Zyd">
+                                <rect key="frame" x="0.0" y="556" width="600" height="44"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="XXA-B1-Sht"/>
+                                    <constraint firstAttribute="height" constant="44" id="ex8-Xg-S8S"/>
+                                </constraints>
+                                <items>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="Clt-SZ-wIR"/>
+                                    <barButtonItem image="Cancel" id="h3E-IC-BSN">
+                                        <connections>
+                                            <action selector="cancelButtonTapped:" destination="Zov-bH-lU9" id="r8g-eC-sU8"/>
+                                        </connections>
+                                    </barButtonItem>
+                                </items>
+                                <color key="barTintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="ex8-Xg-S8S"/>
+                                    </mask>
+                                </variation>
+                                <variation key="heightClass=compact-widthClass=regular">
+                                    <mask key="constraints">
+                                        <exclude reference="XXA-B1-Sht"/>
+                                        <include reference="ex8-Xg-S8S"/>
+                                    </mask>
+                                </variation>
+                            </toolbar>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.70000000000000018" translatesAutoresizingMaskIntoConstraints="NO" id="7EO-1f-duY">
+                                <rect key="frame" x="16" y="72" width="568" height="332"/>
+                                <string key="text">Unlock all of MyReddit's premium features with one purchase:  - Use your reddit.com account w/ multiple account support - Voting, posting - Manage multireddits - Subscribed subreddits - Messages - Night mode - Support the development of MyReddit.</string>
+                                <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="15"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                                <variation key="widthClass=regular" misplaced="YES">
+                                    <rect key="frame" x="16" y="72" width="768" height="315"/>
+                                </variation>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xHw-Aj-2pR">
+                                <rect key="frame" x="162" y="493" width="276" height="46"/>
+                                <color key="backgroundColor" red="0.36862745098039218" green="0.8901960784313725" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="46" id="IXX-mG-Bka"/>
+                                    <constraint firstAttribute="width" constant="276" id="xAE-12-FvL"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="15"/>
+                                <state key="normal" title="SHARE TO UNLOCK FOR 1 MONTH">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="layer.borderWidth" value="1"/>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="layer.borderColor">
+                                        <color key="value" red="0.20000000000000001" green="0.59999999999999998" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="layer.cornerRadius" value="22"/>
+                                </userDefinedRuntimeAttributes>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="xAE-12-FvL"/>
+                                    </mask>
+                                </variation>
+                                <variation key="widthClass=regular" misplaced="YES">
+                                    <rect key="frame" x="508" y="459" width="276" height="46"/>
+                                </variation>
+                                <variation key="heightClass=compact-widthClass=regular" misplaced="YES">
+                                    <rect key="frame" x="508" y="287" width="276" height="46"/>
+                                    <mask key="constraints">
+                                        <exclude reference="IXX-mG-Bka"/>
+                                        <include reference="xAE-12-FvL"/>
+                                    </mask>
+                                </variation>
+                                <connections>
+                                    <action selector="shareToUnlockButtonTapped:" destination="Zov-bH-lU9" eventType="touchUpInside" id="Wyn-F1-tHI"/>
+                                </connections>
+                            </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CwJ-2M-ggV">
-                                <rect key="frame" x="162" y="435" width="276" height="46"/>
+                                <rect key="frame" x="162" y="434" width="276" height="46"/>
                                 <color key="backgroundColor" red="0.20000000000000001" green="0.59999999999999998" blue="0.20000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="276" id="4M1-pF-k4Z"/>
-                                    <constraint firstAttribute="height" constant="46" id="HvM-NM-TeE"/>
+                                    <constraint firstAttribute="height" constant="46" id="Qo0-GR-lOo"/>
+                                    <constraint firstAttribute="width" constant="276" id="SJb-Ne-yE5"/>
+                                    <constraint firstAttribute="width" constant="276" id="Yjm-9i-w5L"/>
+                                    <constraint firstAttribute="height" constant="46" id="rXd-oP-Cee"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="16"/>
                                 <state key="normal" title="UNLOCK EVERYTHING FOR $1.99">
@@ -801,75 +883,136 @@
                                     </userDefinedRuntimeAttribute>
                                     <userDefinedRuntimeAttribute type="string" keyPath="layer.cornerRadius" value="22"/>
                                 </userDefinedRuntimeAttributes>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="Yjm-9i-w5L"/>
+                                        <exclude reference="rXd-oP-Cee"/>
+                                    </mask>
+                                </variation>
+                                <variation key="widthClass=regular" misplaced="YES">
+                                    <rect key="frame" x="16" y="459" width="276" height="46"/>
+                                </variation>
+                                <variation key="heightClass=compact-widthClass=regular">
+                                    <mask key="constraints">
+                                        <exclude reference="Qo0-GR-lOo"/>
+                                        <exclude reference="SJb-Ne-yE5"/>
+                                        <include reference="Yjm-9i-w5L"/>
+                                        <include reference="rXd-oP-Cee"/>
+                                    </mask>
+                                </variation>
                                 <connections>
                                     <action selector="purchaseButtonTapped:" destination="Zov-bH-lU9" eventType="touchUpInside" id="34g-RX-uEi"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tt5-PV-XLa">
-                                <rect key="frame" x="162" y="496" width="276" height="41"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="41" id="mWY-Fx-xCp"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="15"/>
-                                <state key="normal" title="RESTORE PURCHASE">
-                                    <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="restoreButtonTapped:" destination="Zov-bH-lU9" eventType="touchUpInside" id="ACH-fh-IRK"/>
-                                </connections>
-                            </button>
-                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K3k-oK-Zyd">
-                                <rect key="frame" x="0.0" y="556" width="600" height="44"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <items>
-                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="Clt-SZ-wIR"/>
-                                    <barButtonItem image="Cancel" id="h3E-IC-BSN">
-                                        <connections>
-                                            <action selector="cancelButtonTapped:" destination="Zov-bH-lU9" id="r8g-eC-sU8"/>
-                                        </connections>
-                                    </barButtonItem>
-                                </items>
-                                <color key="barTintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            </toolbar>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7EO-1f-duY">
-                                <rect key="frame" x="16" y="72" width="568" height="315"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="315" id="usk-8w-umP"/>
-                                </constraints>
-                                <string key="text">Unlock all of MyReddit's premium features with one purchase:  - Use your reddit.com account - Voting - Reply on posts - Subscribed Subreddits - Messages - Night mode - Posting  Support the development of MyReddit.</string>
-                                <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="15"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="tt5-PV-XLa" firstAttribute="top" secondItem="CwJ-2M-ggV" secondAttribute="bottom" constant="15" id="2iR-Y1-8nO"/>
-                            <constraint firstItem="7EO-1f-duY" firstAttribute="leading" secondItem="f7m-JM-yYb" secondAttribute="leadingMargin" id="377-yX-rbx"/>
-                            <constraint firstItem="K3k-oK-Zyd" firstAttribute="bottom" secondItem="gc8-Y3-EIA" secondAttribute="top" id="87h-eP-aOi"/>
-                            <constraint firstAttribute="trailing" secondItem="K3k-oK-Zyd" secondAttribute="trailing" id="BKm-Ja-9Pw"/>
-                            <constraint firstItem="K3k-oK-Zyd" firstAttribute="leading" secondItem="f7m-JM-yYb" secondAttribute="leading" id="Bqe-wj-2Ct"/>
-                            <constraint firstItem="tt5-PV-XLa" firstAttribute="trailing" secondItem="CwJ-2M-ggV" secondAttribute="trailing" id="Esm-BP-i1J"/>
-                            <constraint firstItem="7EO-1f-duY" firstAttribute="centerX" secondItem="K3k-oK-Zyd" secondAttribute="centerX" id="Irz-Ju-Rme"/>
-                            <constraint firstItem="CwJ-2M-ggV" firstAttribute="leading" secondItem="tt5-PV-XLa" secondAttribute="leading" id="MFq-Ez-Xkp"/>
-                            <constraint firstItem="CwJ-2M-ggV" firstAttribute="top" secondItem="4U6-0s-9UA" secondAttribute="bottom" constant="371" id="NBA-u0-TC2"/>
-                            <constraint firstItem="tt5-PV-XLa" firstAttribute="centerX" secondItem="7EO-1f-duY" secondAttribute="centerX" id="VMf-0w-0LC"/>
-                            <constraint firstItem="7EO-1f-duY" firstAttribute="top" secondItem="tt5-PV-XLa" secondAttribute="bottom" constant="-465" id="bkS-Ha-xdO"/>
+                            <constraint firstItem="7EO-1f-duY" firstAttribute="leading" secondItem="f7m-JM-yYb" secondAttribute="leadingMargin" id="23L-J9-L1M"/>
+                            <constraint firstItem="CwJ-2M-ggV" firstAttribute="leading" secondItem="f7m-JM-yYb" secondAttribute="leadingMargin" id="2x1-wb-VRV"/>
+                            <constraint firstItem="CwJ-2M-ggV" firstAttribute="top" secondItem="7EO-1f-duY" secondAttribute="bottom" constant="13" id="9JG-9J-ILM"/>
+                            <constraint firstItem="7EO-1f-duY" firstAttribute="centerX" secondItem="K3k-oK-Zyd" secondAttribute="centerX" id="9Nk-9Y-Wkg"/>
+                            <constraint firstItem="xHw-Aj-2pR" firstAttribute="baseline" secondItem="CwJ-2M-ggV" secondAttribute="firstBaseline" id="Am3-fd-V6t"/>
+                            <constraint firstItem="xHw-Aj-2pR" firstAttribute="trailing" secondItem="7EO-1f-duY" secondAttribute="trailing" id="Dw0-TY-0kG"/>
+                            <constraint firstItem="K3k-oK-Zyd" firstAttribute="top" secondItem="xHw-Aj-2pR" secondAttribute="bottom" constant="17" id="Ebl-Qc-app">
+                                <variation key="heightClass=compact-widthClass=regular" constant="23"/>
+                            </constraint>
+                            <constraint firstItem="K3k-oK-Zyd" firstAttribute="leading" secondItem="f7m-JM-yYb" secondAttribute="leading" id="HI1-yX-qDU"/>
+                            <constraint firstItem="K3k-oK-Zyd" firstAttribute="bottom" secondItem="gc8-Y3-EIA" secondAttribute="top" id="KXB-gK-6mV"/>
+                            <constraint firstItem="xHw-Aj-2pR" firstAttribute="top" secondItem="CwJ-2M-ggV" secondAttribute="bottom" constant="13" id="RJq-Ua-205">
+                                <variation key="widthClass=regular" constant="-46"/>
+                                <variation key="heightClass=compact-widthClass=regular" constant="-46"/>
+                            </constraint>
+                            <constraint firstItem="xHw-Aj-2pR" firstAttribute="leading" secondItem="CwJ-2M-ggV" secondAttribute="leading" id="SXX-US-pky">
+                                <variation key="widthClass=regular" constant="492"/>
+                                <variation key="heightClass=compact-widthClass=regular" constant="492"/>
+                            </constraint>
+                            <constraint firstItem="K3k-oK-Zyd" firstAttribute="leading" secondItem="f7m-JM-yYb" secondAttribute="leading" id="ViO-9B-4Lz"/>
+                            <constraint firstItem="CwJ-2M-ggV" firstAttribute="bottom" secondItem="xHw-Aj-2pR" secondAttribute="bottom" id="W6r-2p-EYg"/>
+                            <constraint firstItem="K3k-oK-Zyd" firstAttribute="bottom" secondItem="gc8-Y3-EIA" secondAttribute="top" id="X2p-co-hjM"/>
+                            <constraint firstItem="7EO-1f-duY" firstAttribute="top" secondItem="4U6-0s-9UA" secondAttribute="bottom" constant="8" symbolic="YES" id="Xx9-Ez-LxE"/>
+                            <constraint firstAttribute="trailing" secondItem="K3k-oK-Zyd" secondAttribute="trailing" id="YqF-3e-UPB"/>
+                            <constraint firstItem="7EO-1f-duY" firstAttribute="top" secondItem="4U6-0s-9UA" secondAttribute="bottom" constant="8" symbolic="YES" id="dbi-vG-Zq8"/>
+                            <constraint firstItem="7EO-1f-duY" firstAttribute="centerX" secondItem="CwJ-2M-ggV" secondAttribute="centerX" id="fk4-O9-JYW">
+                                <variation key="widthClass=regular" constant="246"/>
+                                <variation key="heightClass=compact-widthClass=regular" constant="246"/>
+                            </constraint>
+                            <constraint firstItem="CwJ-2M-ggV" firstAttribute="leading" secondItem="7EO-1f-duY" secondAttribute="leading" id="hWN-s9-PKr"/>
+                            <constraint firstItem="K3k-oK-Zyd" firstAttribute="top" secondItem="CwJ-2M-ggV" secondAttribute="bottom" constant="23" id="hx4-2Q-j79"/>
+                            <constraint firstItem="CwJ-2M-ggV" firstAttribute="trailing" secondItem="xHw-Aj-2pR" secondAttribute="trailing" id="iLS-bJ-ajY">
+                                <variation key="widthClass=regular" constant="-492"/>
+                                <variation key="heightClass=compact-widthClass=regular" constant="-492"/>
+                            </constraint>
+                            <constraint firstItem="CwJ-2M-ggV" firstAttribute="baseline" secondItem="xHw-Aj-2pR" secondAttribute="firstBaseline" id="jqh-63-1Jl"/>
+                            <constraint firstItem="CwJ-2M-ggV" firstAttribute="top" secondItem="xHw-Aj-2pR" secondAttribute="top" id="lGI-t5-LT0"/>
+                            <constraint firstItem="xHw-Aj-2pR" firstAttribute="centerX" secondItem="K3k-oK-Zyd" secondAttribute="centerX" id="lrg-Z9-yxO">
+                                <variation key="heightClass=compact-widthClass=regular" constant="246"/>
+                            </constraint>
+                            <constraint firstAttribute="trailing" secondItem="K3k-oK-Zyd" secondAttribute="trailing" id="odr-DS-E8z"/>
+                            <constraint firstItem="CwJ-2M-ggV" firstAttribute="top" secondItem="7EO-1f-duY" secondAttribute="bottom" constant="30" id="z0S-yO-YaM">
+                                <variation key="widthClass=regular" constant="72"/>
+                                <variation key="heightClass=compact-widthClass=regular" constant="13"/>
+                            </constraint>
                         </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="9Nk-9Y-Wkg"/>
+                                <exclude reference="Xx9-Ez-LxE"/>
+                                <exclude reference="2x1-wb-VRV"/>
+                                <exclude reference="9JG-9J-ILM"/>
+                                <exclude reference="W6r-2p-EYg"/>
+                                <exclude reference="hWN-s9-PKr"/>
+                                <exclude reference="jqh-63-1Jl"/>
+                                <exclude reference="lGI-t5-LT0"/>
+                                <exclude reference="Am3-fd-V6t"/>
+                                <exclude reference="Dw0-TY-0kG"/>
+                                <exclude reference="HI1-yX-qDU"/>
+                                <exclude reference="KXB-gK-6mV"/>
+                                <exclude reference="hx4-2Q-j79"/>
+                                <exclude reference="odr-DS-E8z"/>
+                            </mask>
+                        </variation>
+                        <variation key="heightClass=compact-widthClass=regular">
+                            <mask key="constraints">
+                                <exclude reference="23L-J9-L1M"/>
+                                <include reference="9Nk-9Y-Wkg"/>
+                                <include reference="Xx9-Ez-LxE"/>
+                                <exclude reference="dbi-vG-Zq8"/>
+                                <exclude reference="fk4-O9-JYW"/>
+                                <include reference="2x1-wb-VRV"/>
+                                <include reference="9JG-9J-ILM"/>
+                                <include reference="W6r-2p-EYg"/>
+                                <include reference="hWN-s9-PKr"/>
+                                <exclude reference="iLS-bJ-ajY"/>
+                                <include reference="jqh-63-1Jl"/>
+                                <include reference="lGI-t5-LT0"/>
+                                <exclude reference="z0S-yO-YaM"/>
+                                <include reference="Am3-fd-V6t"/>
+                                <include reference="Dw0-TY-0kG"/>
+                                <exclude reference="RJq-Ua-205"/>
+                                <exclude reference="SXX-US-pky"/>
+                                <exclude reference="lrg-Z9-yxO"/>
+                                <exclude reference="Ebl-Qc-app"/>
+                                <include reference="HI1-yX-qDU"/>
+                                <include reference="KXB-gK-6mV"/>
+                                <exclude reference="ViO-9B-4Lz"/>
+                                <exclude reference="X2p-co-hjM"/>
+                                <exclude reference="YqF-3e-UPB"/>
+                                <include reference="hx4-2Q-j79"/>
+                                <include reference="odr-DS-E8z"/>
+                            </mask>
+                        </variation>
                     </view>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" title="unlock everything" id="b68-ie-zfd"/>
                     <connections>
                         <outlet property="purchaseButton" destination="CwJ-2M-ggV" id="RJH-SB-vhj"/>
                         <outlet property="purchaseLabel" destination="7EO-1f-duY" id="Ore-Oh-7cz"/>
-                        <outlet property="restoreButton" destination="tt5-PV-XLa" id="X40-YC-GD0"/>
                         <segue destination="QDb-Kc-Q7i" kind="presentation" identifier="LoginSegue" modalTransitionStyle="crossDissolve" id="fLo-75-wzd"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KeU-zk-uN3" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3236" y="-2676"/>
+            <point key="canvasLocation" x="3235" y="-2676"/>
         </scene>
         <!--multireddits-->
         <scene sceneID="0ar-2L-ITP">
@@ -2497,7 +2640,7 @@
             </objects>
             <point key="canvasLocation" x="4539" y="-403"/>
         </scene>
-        <!--search-->
+        <!--Search View Controller-->
         <scene sceneID="VhL-uT-cvd">
             <objects>
                 <viewController id="jpB-u1-7lM" customClass="SearchViewController" customModule="MyReddit" customModuleProvider="target" sceneMemberID="viewController">
@@ -2513,6 +2656,45 @@
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="556"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="AccountCell" id="PaZ-F8-tqK" customClass="UserInfoCell" customModule="MyReddit" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="278" width="600" height="44"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="PaZ-F8-tqK" id="zdR-8c-wbu">
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="budakikickflip" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z0h-Lr-oV2">
+                                                    <rect key="frame" x="15" y="16" width="361" height="21"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="361" id="oA6-Xw-dtD"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="16"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="100k" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jBK-al-dX7">
+                                                    <rect key="frame" x="233" y="15" width="326" height="21"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="326" id="MLK-46-z6M"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="16"/>
+                                                    <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="z0h-Lr-oV2" firstAttribute="top" secondItem="zdR-8c-wbu" secondAttribute="topMargin" constant="8" id="7fB-o8-Svp"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="z0h-Lr-oV2" secondAttribute="bottom" constant="9" id="AiS-tT-uP7"/>
+                                                <constraint firstItem="jBK-al-dX7" firstAttribute="firstBaseline" secondItem="z0h-Lr-oV2" secondAttribute="firstBaseline" constant="-1" id="ESY-mL-HHG"/>
+                                                <constraint firstItem="z0h-Lr-oV2" firstAttribute="leading" secondItem="zdR-8c-wbu" secondAttribute="leadingMargin" constant="7" id="idp-l1-iNO"/>
+                                                <constraint firstItem="z0h-Lr-oV2" firstAttribute="baseline" secondItem="jBK-al-dX7" secondAttribute="baseline" constant="1" id="mmr-va-u1X"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="jBK-al-dX7" secondAttribute="trailing" id="nhl-hO-02Y"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="infoLabel" destination="jBK-al-dX7" id="wJU-m2-hMJ"/>
+                                            <outlet property="titleLabel" destination="z0h-Lr-oV2" id="zqc-8Q-Z2L"/>
+                                        </connections>
+                                    </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TitleCell" rowHeight="122" id="He9-ev-QjY" customClass="TitleCell" customModule="MyReddit" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="239" width="600" height="122"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -2860,26 +3042,20 @@
                                 <items>
                                     <navigationItem id="ZY5-xd-CW9">
                                         <nil key="title"/>
-                                        <barButtonItem key="leftBarButtonItem" style="plain" id="rAl-Hu-NUx">
-                                            <switch key="customView" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" id="avk-q9-TgO">
-                                                <rect key="frame" x="-25" y="-15" width="51" height="31"/>
+                                        <barButtonItem key="leftBarButtonItem" style="plain" id="WkV-Mb-c9w">
+                                            <segmentedControl key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" id="sid-K8-bnp">
+                                                <rect key="frame" x="179" y="7" width="242" height="30"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <segments>
+                                                    <segment title="links"/>
+                                                    <segment title="subs"/>
+                                                    <segment title="users"/>
+                                                </segments>
                                                 <connections>
-                                                    <action selector="restrictToSubredditSwitchValueChanged:" destination="jpB-u1-7lM" eventType="valueChanged" id="ggc-ug-uHn"/>
+                                                    <action selector="segmentationControlValueChanged:" destination="jpB-u1-7lM" eventType="valueChanged" id="5CZ-bP-EAq"/>
                                                 </connections>
-                                            </switch>
+                                            </segmentedControl>
                                         </barButtonItem>
-                                        <segmentedControl key="titleView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" id="sid-K8-bnp">
-                                            <rect key="frame" x="220" y="7" width="161" height="30"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <segments>
-                                                <segment title="Links"/>
-                                                <segment title="Subreddits"/>
-                                            </segments>
-                                            <connections>
-                                                <action selector="segmentationControlValueChanged:" destination="jpB-u1-7lM" eventType="valueChanged" id="5CZ-bP-EAq"/>
-                                            </connections>
-                                        </segmentedControl>
                                         <barButtonItem key="rightBarButtonItem" image="Cancel" id="2rB-Vs-S9w">
                                             <connections>
                                                 <action selector="cancelButtonTapped:" destination="jpB-u1-7lM" id="CQA-4m-EAF"/>
@@ -2903,7 +3079,9 @@
                             <constraint firstItem="fss-vF-smf" firstAttribute="trailing" secondItem="BjY-Zr-Gwe" secondAttribute="trailing" id="wLf-cx-0hQ"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="search" id="1sf-0b-hmz"/>
+                    <navigationItem key="navigationItem" id="1sf-0b-hmz">
+                        <barButtonItem key="leftBarButtonItem" title="search" id="9WT-7C-6MB"/>
+                    </navigationItem>
                     <connections>
                         <outlet property="restrictSubreddit" destination="avk-q9-TgO" id="Lgc-B4-5fV"/>
                         <outlet property="restrictToSubredditSwitch" destination="rAl-Hu-NUx" id="HeB-R1-AaZ"/>
@@ -2912,9 +3090,19 @@
                         <segue destination="oWg-TP-L9t" kind="show" identifier="SubredditLink" id="aPe-Za-FV1"/>
                         <segue destination="lwG-4j-KBB" kind="show" identifier="CommentsSegue" id="USc-4p-Rgd"/>
                         <segue destination="MbH-Gq-s0c" kind="presentation" identifier="MultiRedditSegue" modalTransitionStyle="crossDissolve" id="HuC-vd-ISD"/>
+                        <segue destination="7sL-pi-tiS" kind="show" identifier="UserSegue" id="Udn-dz-6HG"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JKt-uO-kmL" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <barButtonItem style="plain" id="rAl-Hu-NUx">
+                    <switch key="customView" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" id="avk-q9-TgO">
+                        <rect key="frame" x="-25" y="-15" width="51" height="31"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <connections>
+                            <action selector="restrictToSubredditSwitchValueChanged:" destination="jpB-u1-7lM" eventType="valueChanged" id="ggc-ug-uHn"/>
+                        </connections>
+                    </switch>
+                </barButtonItem>
             </objects>
             <point key="canvasLocation" x="1420" y="443"/>
         </scene>
@@ -3899,8 +4087,15 @@
                             <constraint firstItem="VSC-eV-ovC" firstAttribute="top" secondItem="mjp-MP-giA" secondAttribute="bottom" id="tc8-fN-9Ro"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="accounts" id="Dx2-oh-pnr"/>
+                    <navigationItem key="navigationItem" title="accounts" id="Dx2-oh-pnr">
+                        <barButtonItem key="rightBarButtonItem" title="edit" id="ii2-hS-uhN">
+                            <connections>
+                                <action selector="editButtonTapped:" destination="a2h-mb-3Wm" id="P3d-1V-Gp3"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
+                        <outlet property="editButton" destination="ii2-hS-uhN" id="3NP-pX-c27"/>
                         <outlet property="tableView" destination="mjp-MP-giA" id="z4u-3E-KQ0"/>
                         <outlet property="view" destination="dTD-27-b20" id="H5J-eX-RKg"/>
                         <segue destination="Cxf-Qd-xoU" kind="show" identifier="SavedUserLoginSegue" id="psA-tl-Zoj"/>
@@ -4326,18 +4521,19 @@
         <image name="Up" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="s4Y-Y8-M2P"/>
         <segue reference="cxw-0o-NAI"/>
-        <segue reference="vvu-K9-HER"/>
-        <segue reference="psA-tl-Zoj"/>
-        <segue reference="O8K-LF-8mj"/>
         <segue reference="c0A-qT-nAA"/>
-        <segue reference="ovW-r7-Crm"/>
         <segue reference="DoA-ah-cSI"/>
         <segue reference="QqN-ZE-i77"/>
-        <segue reference="FH5-lg-p4i"/>
+        <segue reference="Udn-dz-6HG"/>
+        <segue reference="aev-Tk-Wb5"/>
+        <segue reference="tJz-SN-XxH"/>
+        <segue reference="xsL-ln-a3I"/>
         <segue reference="UM9-7d-Dnl"/>
-        <segue reference="MQa-bF-U0r"/>
         <segue reference="Na3-yg-xfC"/>
+        <segue reference="MQa-bF-U0r"/>
+        <segue reference="psA-tl-Zoj"/>
+        <segue reference="O8K-LF-8mj"/>
+        <segue reference="3tl-bC-neo"/>
     </inferredMetricsTieBreakers>
 </document>
