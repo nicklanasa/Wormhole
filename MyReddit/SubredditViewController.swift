@@ -142,8 +142,17 @@ SearchViewControllerDelegate {
                 self.tableView.contentInset = UIEdgeInsetsMake(HeaderHeight, 0, 0, 0)
                 self.tableView.addSubview(self.headerImage)
                 self.headerImage.frame = CGRectMake(0, -HeaderHeight, UIScreen.mainScreen().bounds.size.width, HeaderHeight)
+                
+                var tap = UITapGestureRecognizer(target: self, action: "headerImageTapped:")
+                tap.numberOfTapsRequired = 1
+                self.headerImage.gestureRecognizers = [tap]
             }
         })
+    }
+    
+    func headerImageTapped(gesture: UIGestureRecognizer) {
+        self.tableView(self.tableView,
+            didSelectRowAtIndexPath: NSIndexPath(forRow: 0, inSection: 0))
     }
     
     override func viewDidLoad() {
@@ -527,6 +536,7 @@ SearchViewControllerDelegate {
                 if let controller = nav.viewControllers[0] as? UserContentViewController {
                     controller.category = .Saved
                     controller.categoryTitle = "Saved"
+                    controller.user = RKClient.sharedClient().currentUser
                 }
             }
         } else if segue.identifier == "GallerySegue" {

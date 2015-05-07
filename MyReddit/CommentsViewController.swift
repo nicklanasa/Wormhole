@@ -32,7 +32,6 @@ class CommentsViewController: UITableViewController, CommentCellDelegate, JZSwip
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        
         self.syncComments()
     }
     
@@ -80,9 +79,11 @@ class CommentsViewController: UITableViewController, CommentCellDelegate, JZSwip
     
     func syncComments() {
         if !self.forComment {
+            self.hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
             RedditSession.sharedSession.fetchComments(nil, link: self.link) { (pagination, results, error) -> () in
                 self.comments = results
                 self.refreshCommentsControl.endRefreshing()
+                self.hud.hide(true)
             }
         }
     }

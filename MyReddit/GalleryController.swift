@@ -12,11 +12,12 @@ import UIKit
 class GalleryController: UIViewController, UIPageViewControllerDataSource, UIPageViewControllerDelegate {
     
     @IBOutlet weak var pageControl: UIPageControl!
+    @IBOutlet weak var upvoteButton: UIBarButtonItem!
+    @IBOutlet weak var downvoteButton: UIBarButtonItem!
+    @IBOutlet weak var pagesBarbutton: UIBarButtonItem!
    
     var link: RKLink!
     
-    @IBOutlet weak var upvoteButton: UIBarButtonItem!
-    @IBOutlet weak var downvoteButton: UIBarButtonItem!
     
     override func viewDidLoad() {
         self.updateVoteButtons()
@@ -29,13 +30,17 @@ class GalleryController: UIViewController, UIPageViewControllerDataSource, UIPag
         
         NSUserDefaults.standardUserDefaults().setObject(true, forKey: self.link.identifier)
         
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "Saved"), style: .Plain, target: self, action: "saveLink")
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "Saved"),
+            style: .Plain,
+            target: self,
+            action: "saveLink")
         
         if self.link.saved {
             self.navigationItem.rightBarButtonItem?.tintColor = MyRedditColor
         }
         
-        self.navigationItem.title = "\(1)/\(self.images!.count)"
+        self.pagesBarbutton.title = "\(1)/\(self.images!.count)"
+        self.navigationItem.title = self.link.title
         
         self.view.backgroundColor = MyRedditBackgroundColor
         self.pageControl.hidden = true
@@ -67,7 +72,7 @@ class GalleryController: UIViewController, UIPageViewControllerDataSource, UIPag
         
         self.pageControl.currentPage = index
         
-        self.navigationItem.title = "\(index+1)/\(self.images!.count)"
+        self.pagesBarbutton.title = "\(index+1)/\(self.images!.count)"
         
         if index == 0 || index == NSNotFound {
             return nil
@@ -84,7 +89,7 @@ class GalleryController: UIViewController, UIPageViewControllerDataSource, UIPag
         
         self.pageControl.currentPage = index
         
-        self.navigationItem.title = "\(index+1)/\(self.images!.count)"
+        self.pagesBarbutton.title = "\(index+1)/\(self.images!.count)"
         
         if index == NSNotFound {
             return nil
@@ -169,18 +174,16 @@ class GalleryController: UIViewController, UIPageViewControllerDataSource, UIPag
     }
     
     private func updateVoteButtons() {
-        dispatch_async(dispatch_get_main_queue(), { () -> Void in
-            if self.link.upvoted() {
-                self.upvoteButton.tintColor = MyRedditUpvoteColor
-                self.downvoteButton.tintColor = MyRedditLabelColor
-            } else if self.link.downvoted() {
-                self.upvoteButton.tintColor = MyRedditLabelColor
-                self.downvoteButton.tintColor = MyRedditDownvoteColor
-            } else {
-                self.upvoteButton.tintColor = MyRedditLabelColor
-                self.downvoteButton.tintColor = MyRedditLabelColor
-            }
-        })
+        if self.link.upvoted() {
+            self.upvoteButton.tintColor = MyRedditUpvoteColor
+            self.downvoteButton.tintColor = MyRedditLabelColor
+        } else if self.link.downvoted() {
+            self.upvoteButton.tintColor = MyRedditLabelColor
+            self.downvoteButton.tintColor = MyRedditDownvoteColor
+        } else {
+            self.upvoteButton.tintColor = MyRedditLabelColor
+            self.downvoteButton.tintColor = MyRedditLabelColor
+        }
     }
 
     @IBAction func shareButtonTapped(sender: AnyObject) {

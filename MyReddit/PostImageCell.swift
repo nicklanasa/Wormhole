@@ -26,16 +26,16 @@ class PostImageCell: PostCell {
     override var link: RKLink! {
         didSet {
             if link.isImageLink() {
-                self.postImageView.sd_setImageWithURL(link.URL)
+                self.postImageView.sd_setImageWithURL(link.URL, placeholderImage: nil, options: .RefreshCached )
             } else if let media = link.media {
                 if let thumbnailURL = media.thumbnailURL {
-                    self.postImageView.sd_setImageWithURL(thumbnailURL)
+                    self.postImageView.sd_setImageWithURL(thumbnailURL, placeholderImage: nil, options: .RefreshCached )
                 }
             } else if link.domain == "imgur.com" {
                 if let absoluteString = link.URL.absoluteString {
                     var stringURL = absoluteString + ".jpg"
                     var imageURL = NSURL(string: stringURL)
-                    self.postImageView.sd_setImageWithURL(imageURL, placeholderImage: UIImage(), completed: { (image, error, cacheType, url) -> Void in
+                    self.postImageView.sd_setImageWithURL(imageURL, placeholderImage: nil, options: .RefreshCached , completed: { (image, error, cachetype, url) -> Void in
                         if error != nil {
                             self.postImageView.image = UIImage(named: "Reddit")
                         }

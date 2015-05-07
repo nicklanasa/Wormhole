@@ -114,9 +114,7 @@ class UserSession {
         UIRefreshControl.appearance().tintColor = MyRedditColor
         
         UISegmentedControl.appearance().setTitleTextAttributes([NSFontAttributeName: MyRedditSelfTextFont, NSForegroundColorAttributeName : MyRedditLabelColor], forState: .Normal)
-        
-        UIPageControl.appearance().tintColor = MyRedditColor
-    }
+        }
     
     func dayMode() {
         
@@ -165,7 +163,5 @@ class UserSession {
         
         UIRefreshControl.appearance().tintColor = MyRedditColor
         UISegmentedControl.appearance().setTitleTextAttributes([NSFontAttributeName: MyRedditSelfTextFont, NSForegroundColorAttributeName : MyRedditLabelColor], forState: .Normal)
-        
-        UIPageControl.appearance().tintColor = MyRedditColor
-    }
+        }
 }

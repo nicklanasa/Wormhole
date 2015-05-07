@@ -13,18 +13,24 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
     
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var scrollView: UIScrollView!
+    @IBOutlet weak var indicator: UIActivityIndicatorView!
     
     var imageURL: NSURL!
     var pageIndex: Int!
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        self.imageView.sd_setImageWithURL(self.imageURL,
-            placeholderImage: UIImage(named: "Placeholder"))
+    override func viewDidAppear(animated: Bool) {
+        self.imageView.clipsToBounds = true
+        self.indicator.startAnimating()
+        self.imageView.sd_setImageWithURL(self.imageURL, placeholderImage: nil, options: nil) { (image, error, cacheType, url) -> Void in
+            self.indicator.stopAnimating()
+            self.imageView.image = image
+        }
+        
         self.view.backgroundColor = MyRedditBackgroundColor
         
         self.scrollView.contentSize = self.parentViewController!.view.frame.size
     }
+
     
     func viewForZoomingInScrollView(scrollView: UIScrollView) -> UIView? {
         return self.imageView
