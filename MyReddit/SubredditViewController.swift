@@ -35,6 +35,7 @@ SearchViewControllerDelegate {
     var multiReddit: RKMultireddit!
     var front = true
     var pagination: RKPagination?
+    var selectedLink: RKLink!
     var pageIndex: Int!
     var currentCategory: RKSubredditCategory?
     var contextMenu: GHContextMenuView!
@@ -438,10 +439,40 @@ SearchViewControllerDelegate {
         self.tableView.deselectRowAtIndexPath(indexPath, animated: true)
         if indexPath.section == 0 {
             if let link = self.links[indexPath.row] as? RKLink {
+                self.selectedLink = link
                 if link.selfPost {
                     self.performSegueWithIdentifier("CommentsSegue", sender: link)
                 } else {
-                    self.performSegueWithIdentifier("SubredditLink", sender: link)
+                    if link.domain == "imgur.com" || link.isImageLink() {
+                        if link.domain == "imgur.com" {
+                            // Get gallery images
+                            
+                            var urlComponents = link.URL.absoluteString?.componentsSeparatedByString("/")
+                            if urlComponents?.count > 4 {
+                                let albumID = urlComponents?[4]
+                                IMGAlbumRequest.albumWithID(albumID, success: { (album) -> Void in
+                                    self.performSegueWithIdentifier("GallerySegue", sender: album.images)
+                                    }) { (error) -> Void in
+                                        print(error)
+                                }
+                            } else {
+                                if urlComponents?.count > 3 {
+                                    let imageID = urlComponents?[3]
+                                    IMGImageRequest.imageWithID(imageID, success: { (image) -> Void in
+                                        self.performSegueWithIdentifier("GallerySegue", sender: [image])
+                                    }, failure: { (error) -> Void in
+                                        
+                                    })
+                                } else {
+                                    self.performSegueWithIdentifier("SubredditLink", sender: link)
+                                }
+                            }
+                        } else {
+                            self.performSegueWithIdentifier("GallerySegue", sender: [link.URL!])
+                        }
+                    } else {
+                        self.performSegueWithIdentifier("SubredditLink", sender: link)
+                    }
                 }
             }
         }
@@ -496,6 +527,13 @@ SearchViewControllerDelegate {
                 if let controller = nav.viewControllers[0] as? UserContentViewController {
                     controller.category = .Saved
                     controller.categoryTitle = "Saved"
+                }
+            }
+        } else if segue.identifier == "GallerySegue" {
+            if let controller = segue.destinationViewController as? GalleryController {
+                if let images = sender as? [AnyObject] {
+                    controller.images = images
+                    controller.link = self.selectedLink
                 }
             }
         } else {

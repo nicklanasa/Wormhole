@@ -27,17 +27,13 @@ class LinkViewController: UIViewController {
         var navLabel = UILabel(frame: CGRectZero)
         navLabel.text = self.link.URL.absoluteString
         navLabel.font = MyRedditTitleFont
-        navLabel.minimumScaleFactor = 0.5
+        navLabel.minimumScaleFactor = 0.7
         navLabel.adjustsFontSizeToFitWidth = true
         navLabel.numberOfLines = 2
         navLabel.textColor = MyRedditLabelColor
         navLabel.textAlignment = .Left
         navLabel.sizeToFit()
         self.navigationItem.titleView = navLabel
-        
-        self.navigationController?.navigationBar.hideBottomHairline()
-        
-        self.titleTextView.text = self.link.title
         
         self.updateVoteButtons()
         

@@ -27,12 +27,15 @@ var MyRedditBackgroundColor = UIColor.whiteColor()
 var MyRedditDarkBackgroundColor = UIColor.groupTableViewBackgroundColor()
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, IMGSessionDelegate {
 
     var window: UIWindow?
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-            
+        
+        
+        IMGSession.anonymousSessionWithClientID("e97d1faf5a39e09", withDelegate: self)
+        
         if SettingsManager.defaultManager.valueForSetting(.NightMode) {
             UserSession.sharedSession.nightMode()
         } else {

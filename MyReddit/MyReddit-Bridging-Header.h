@@ -7,9 +7,7 @@
 #import "RedditKit.h"
 #import "RKCompletionBlocks.h"
 #import <SDWebImage/UIImageView+WebCache.h>
-#import "SWTableViewCell.h"
 #import "UIImage+ImageEffects.h"
-#import "TTTAttributedLabel.h"
 #import "NSDate+TimeAgo.h"
 #import "NSDate+Calendar.h"
 #import "XNGMarkdownParser.h"
@@ -20,3 +18,4 @@
 #import "GHContextMenuView.h"
 #import "JZSwipeCell.h"
 #import "ImgurAnonymousAPIClient.h"
+#import "ImgurSession.h"

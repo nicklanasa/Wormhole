@@ -19,12 +19,27 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>Pods-MyReddit-EGOCache.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>Pods-MyReddit-FSImageViewer.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Pods-MyReddit-Facebook-iOS-SDK.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 		</dict>
 		<key>Pods-MyReddit-ImgurAnonymousAPIClient.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>Pods-MyReddit-ImgurSession.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -74,17 +89,7 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>Pods-MyReddit-SWTableViewCell.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
-		<key>Pods-MyReddit-TTTAttributedLabel.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
-		<key>Pods-MyReddit-UICKeyChainStore.xcscheme</key>
+		<key>Pods-MyReddit-UAProgressView.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -102,97 +107,102 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>066C61A1A655C86EE6835F6B</key>
+		<key>0247C82ECF398C9E8E3A6E63</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>1F77A5E6BE8415E2E9B40137</key>
+		<key>09EA1C1F169810F6D8CD3492</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>2875EE0561FB449E63C43556</key>
+		<key>1944791D516FA3CDF8A3C1E2</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>28ECB48AAA6FEFC3AEF955FD</key>
+		<key>2227CD91330145DF87897FC3</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>301E0271B238AE7F58FBAA04</key>
+		<key>2308504A837794C163BA1D05</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>3FBA08F6E7DD178AFE742EA6</key>
+		<key>43C6E796FFAD0F60B2B52491</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>447AFA3E5A4087B2A81C91A1</key>
+		<key>51D44CD78820E32E8301040A</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>7093D8C540F37E544B838856</key>
+		<key>625CD8E261A1D60665B76BE5</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>904D1B2D46AEE912D7A632EF</key>
+		<key>7ACBCC38A7EB17B760881073</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>949323AE5982E068B889CBC3</key>
+		<key>7D3D5BB91AF50FDF6C7046CB</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>B826C7B9381B80F9584243ED</key>
+		<key>7E4B53B21787F33236957712</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>BFD13A857E0AC9815811AD23</key>
+		<key>8A2B00159FDBAC02DD509B27</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>C4951C62D6B579F9963151AB</key>
+		<key>8A54444AE843E59C771AE1E1</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>CDC270CC1B016EE35E88D761</key>
+		<key>8EA9FAA8FDAFD5E7D4001854</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>CFA56CAA6AD5810439D7B76A</key>
+		<key>993934041EEFD19759685CF0</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>D7C3AF4B7983E1264BF623BF</key>
+		<key>9D07BA1AB61C02F6F7F46799</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>D9C672500072231740572CEA</key>
+		<key>C5552112CEAAB18ADE854CEB</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>F28BC22962C56F51A3C622D9</key>
+		<key>F0A1C0419EB5775D7DF233F9</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>F989DFC8BD0CA89FFEA997B6</key>
+		<key>F8A222E57D953A1E5BA0C0AC</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>FE3F2F97DA96713E63663124</key>
 		<dict>
 			<key>primary</key>
 			<true/>

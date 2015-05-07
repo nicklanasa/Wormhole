@@ -67,20 +67,18 @@ MultiRedditsViewControllerDelegate {
         }
     }
     
-    var searchController: UISearchController {
-        get {
-            var controller = UISearchController(searchResultsController: nil)
-            controller.searchResultsUpdater = self
-            controller.dimsBackgroundDuringPresentation = false
-            controller.searchBar.delegate = self
-            controller.hidesNavigationBarDuringPresentation = false
-            controller.searchBar.sizeToFit()
-            controller.searchBar.searchBarStyle = .Minimal
-            controller.searchBar.returnKeyType = .Done
-            controller.searchBar.placeholder = "Enter subreddit name..."
-            return controller
-        }
-    }
+    lazy var searchController: UISearchController = {
+        var controller = UISearchController(searchResultsController: nil)
+        controller.searchResultsUpdater = self
+        controller.dimsBackgroundDuringPresentation = false
+        controller.searchBar.delegate = self
+        controller.hidesNavigationBarDuringPresentation = false
+        controller.searchBar.sizeToFit()
+        controller.searchBar.searchBarStyle = .Minimal
+        controller.searchBar.returnKeyType = .Done
+        controller.searchBar.placeholder = "Enter subreddit name..."
+        return controller
+    }()
     
     func updateSearchResultsForSearchController(searchController: UISearchController) {
         
@@ -93,13 +91,12 @@ MultiRedditsViewControllerDelegate {
             self.subreddits = Array<AnyObject>()
         } else {
             self.isFiltering = true
-            
             self.search()
         }
     }
     
     func searchBarSearchButtonClicked(searchBar: UISearchBar) {
-        self.search()
+        
     }
     
     func search() {

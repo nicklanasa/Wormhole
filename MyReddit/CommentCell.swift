@@ -170,10 +170,6 @@ class CommentCell: JZSwipeCell, UITextViewDelegate {
     
     @IBOutlet weak var repliesLabelHeightConstraint: NSLayoutConstraint!
     
-    func attributedLabel(label: TTTAttributedLabel!, didSelectLinkWithURL url: NSURL!) {
-        self.commentDelegate?.commentCell(self, didTapLink: url)
-    }
-    
     func textView(textView: UITextView, shouldInteractWithURL URL: NSURL, inRange characterRange: NSRange) -> Bool {
         
         self.currentTappedURL = URL

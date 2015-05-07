@@ -5,9 +5,6 @@ target 'MyReddit' do
 
 pod 'RedditKit', '~> 1.3'
 pod 'SDWebImage'
-pod 'UICKeyChainStore'
-pod 'SWTableViewCell', '~> 0.3.7'
-pod 'TTTAttributedLabel'
 pod 'NSDate+TimeAgo'
 pod 'XNGMarkdownParser'
 pod 'RFMarkdownTextView', '~> 1.4'
@@ -17,6 +14,8 @@ pod 'JZSwipeCell', '~> 1.1'
 pod 'ImgurAnonymousAPIClient', :git => 'https://github.com/nolanw/ImgurAnonymousAPIClient.git', :tag => 'v0.1.1'
 pod 'Facebook-iOS-SDK'
 pod 'NSDate+Calendar'
+pod 'ImgurSession'
+pod 'FSImageViewer', '~> 3.2'
 
 end
 

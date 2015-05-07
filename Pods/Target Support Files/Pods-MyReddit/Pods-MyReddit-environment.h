@@ -72,6 +72,18 @@
 #define COCOAPODS_VERSION_MINOR_Bolts_Tasks 1
 #define COCOAPODS_VERSION_PATCH_Bolts_Tasks 5
 
+// EGOCache
+#define COCOAPODS_POD_AVAILABLE_EGOCache
+#define COCOAPODS_VERSION_MAJOR_EGOCache 2
+#define COCOAPODS_VERSION_MINOR_EGOCache 1
+#define COCOAPODS_VERSION_PATCH_EGOCache 3
+
+// FSImageViewer
+#define COCOAPODS_POD_AVAILABLE_FSImageViewer
+#define COCOAPODS_VERSION_MAJOR_FSImageViewer 3
+#define COCOAPODS_VERSION_MINOR_FSImageViewer 2
+#define COCOAPODS_VERSION_PATCH_FSImageViewer 0
+
 // Facebook-iOS-SDK
 #define COCOAPODS_POD_AVAILABLE_Facebook_iOS_SDK
 #define COCOAPODS_VERSION_MAJOR_Facebook_iOS_SDK 4
@@ -107,6 +119,12 @@
 #define COCOAPODS_VERSION_MAJOR_ImgurAnonymousAPIClient 0
 #define COCOAPODS_VERSION_MINOR_ImgurAnonymousAPIClient 1
 #define COCOAPODS_VERSION_PATCH_ImgurAnonymousAPIClient 1
+
+// ImgurSession
+#define COCOAPODS_POD_AVAILABLE_ImgurSession
+#define COCOAPODS_VERSION_MAJOR_ImgurSession 1
+#define COCOAPODS_VERSION_MINOR_ImgurSession 2
+#define COCOAPODS_VERSION_PATCH_ImgurSession 0
 
 // JZSwipeCell
 #define COCOAPODS_POD_AVAILABLE_JZSwipeCell
@@ -174,23 +192,11 @@
 #define COCOAPODS_VERSION_MINOR_SDWebImage_Core 7
 #define COCOAPODS_VERSION_PATCH_SDWebImage_Core 2
 
-// SWTableViewCell
-#define COCOAPODS_POD_AVAILABLE_SWTableViewCell
-#define COCOAPODS_VERSION_MAJOR_SWTableViewCell 0
-#define COCOAPODS_VERSION_MINOR_SWTableViewCell 3
-#define COCOAPODS_VERSION_PATCH_SWTableViewCell 7
-
-// TTTAttributedLabel
-#define COCOAPODS_POD_AVAILABLE_TTTAttributedLabel
-#define COCOAPODS_VERSION_MAJOR_TTTAttributedLabel 1
-#define COCOAPODS_VERSION_MINOR_TTTAttributedLabel 13
-#define COCOAPODS_VERSION_PATCH_TTTAttributedLabel 3
-
-// UICKeyChainStore
-#define COCOAPODS_POD_AVAILABLE_UICKeyChainStore
-#define COCOAPODS_VERSION_MAJOR_UICKeyChainStore 2
-#define COCOAPODS_VERSION_MINOR_UICKeyChainStore 0
-#define COCOAPODS_VERSION_PATCH_UICKeyChainStore 4
+// UAProgressView
+#define COCOAPODS_POD_AVAILABLE_UAProgressView
+#define COCOAPODS_VERSION_MAJOR_UAProgressView 0
+#define COCOAPODS_VERSION_MINOR_UAProgressView 1
+#define COCOAPODS_VERSION_PATCH_UAProgressView 1
 
 // XNGMarkdownParser
 #define COCOAPODS_POD_AVAILABLE_XNGMarkdownParser
