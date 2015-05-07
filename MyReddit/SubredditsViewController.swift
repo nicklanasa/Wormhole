@@ -13,7 +13,7 @@ import CoreData
 class SubredditsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, NSFetchedResultsControllerDelegate {
     
     @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var messageButton: UIBarButtonItem!
+    @IBOutlet weak var savedButton: UIBarButtonItem!
     
     @IBAction func cancelButtonTapped(sender: AnyObject) {
         self.dismissViewControllerAnimated(true, completion: nil)
@@ -108,19 +108,6 @@ class SubredditsViewController: UIViewController, UITableViewDataSource, UITable
         
         self.tableView.backgroundColor = MyRedditDarkBackgroundColor
         
-        self.fetchUnread()
-    }
-    
-    private func fetchUnread() {
-        RedditSession.sharedSession.fetchMessages(nil, category: .Unread, read: false) { (pagination, results, error) -> () in
-            dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                if results?.count > 0 {
-                    self.messageButton.tintColor = MyRedditColor
-                } else {
-                    self.messageButton.tintColor = MyRedditLabelColor
-                }
-            })
-        }
     }
     
     func fetchSubreddits() {
@@ -371,12 +358,12 @@ class SubredditsViewController: UIViewController, UITableViewDataSource, UITable
         }
     }
     
-    @IBAction func messagesButtonTapped(sender: AnyObject) {
+    @IBAction func savedButtonTapped(sender: AnyObject) {
         if !SettingsManager.defaultManager.purchased {
             self.performSegueWithIdentifier("PurchaseSegue", sender: self)
         } else {
             if UserSession.sharedSession.isSignedIn {
-                self.performSegueWithIdentifier("MessagesSegue", sender: self)
+                self.performSegueWithIdentifier("SavedSegue", sender: self)
             } else {
                 self.performSegueWithIdentifier("AccountsSegue", sender: self)
             }
@@ -415,6 +402,14 @@ class SubredditsViewController: UIViewController, UITableViewDataSource, UITable
                             }
                         }
                     }
+                }
+            }
+        } else if segue.identifier == "SavedSegue" {
+            if let nav = segue.destinationViewController as? UINavigationController {
+                if let controller = nav.viewControllers[0] as? UserContentViewController {
+                    controller.category = .Saved
+                    controller.categoryTitle = "Saved"
+                    controller.user = RKClient.sharedClient().currentUser
                 }
             }
         }

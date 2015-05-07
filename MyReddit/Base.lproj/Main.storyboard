@@ -310,9 +310,9 @@
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="0Eo-xh-fQy"/>
-                                    <barButtonItem image="Saved" id="q86-9s-9Q8">
+                                    <barButtonItem image="Messages" id="r8k-Hp-EGO">
                                         <connections>
-                                            <segue destination="SpP-xf-ygO" kind="presentation" identifier="SavedSegue" modalTransitionStyle="crossDissolve" id="QqN-ZE-i77"/>
+                                            <action selector="messagesButtonTapped:" destination="yqo-vd-J8K" id="aNF-Wt-V64"/>
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="tbD-iB-qae"/>
@@ -530,8 +530,8 @@
                         <outlet property="filterViewBottomConstraint" destination="C1f-Dd-5Oz" id="F94-yT-dyc"/>
                         <outlet property="headerImage" destination="4hy-5l-arK" id="fdI-s8-DO0"/>
                         <outlet property="listButton" destination="Q2v-JC-IKA" id="A9X-WL-7WP"/>
+                        <outlet property="messages" destination="r8k-Hp-EGO" id="U3o-pS-oM3"/>
                         <outlet property="postButton" destination="4CL-zW-GHL" id="WXj-ia-LPD"/>
-                        <outlet property="saveButton" destination="q86-9s-9Q8" id="stH-D3-yhD"/>
                         <outlet property="searchButton" destination="dOl-GF-7qg" id="9hL-2c-8zW"/>
                         <outlet property="subscribeButton" destination="ZCd-hO-GGS" id="a52-S9-0f8"/>
                         <outlet property="tableView" destination="C52-gL-QAq" id="0ar-Ad-qf5"/>
@@ -1095,7 +1095,7 @@
                                                     <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="20"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="SLK-AM-MzY">
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="SLK-AM-MzY">
                                                     <rect key="frame" x="17" y="10" width="34" height="34"/>
                                                     <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                                                     <constraints>
@@ -1239,7 +1239,7 @@
                                                     <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="17"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="BOr-rb-lYe">
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="BOr-rb-lYe">
                                                     <rect key="frame" x="17" y="10" width="34" height="34"/>
                                                     <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
                                                     <constraints>
@@ -1343,10 +1343,10 @@
                             </connections>
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="j4b-az-j2i"/>
-                        <barButtonItem image="Messages" id="qQy-4A-2Wh">
+                        <barButtonItem image="BookmarkSwipe" id="qQy-4A-2Wh">
                             <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
-                                <action selector="messagesButtonTapped:" destination="AYg-o0-LaT" id="ols-xc-YIH"/>
+                                <action selector="savedButtonTapped:" destination="AYg-o0-LaT" id="hcA-gf-lzO"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="zos-4F-y4Y"/>
@@ -1366,14 +1366,14 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="messageButton" destination="qQy-4A-2Wh" id="nCE-El-SL8"/>
+                        <outlet property="savedButton" destination="qQy-4A-2Wh" id="zDg-0T-laD"/>
                         <outlet property="tableView" destination="PkC-hZ-FKA" id="w7o-wG-BtQ"/>
                         <segue destination="QDb-Kc-Q7i" kind="presentation" identifier="LoginSegue" modalTransitionStyle="crossDissolve" id="SWo-82-5L3"/>
                         <segue destination="Hdo-ax-c9X" kind="presentation" identifier="PurchaseSegue" modalTransitionStyle="crossDissolve" id="kaq-Nv-BbA"/>
                         <segue destination="7sL-pi-tiS" kind="presentation" identifier="ProfileSegue" modalTransitionStyle="crossDissolve" id="bxZ-6W-PbQ"/>
                         <segue destination="AVn-oL-g0d" kind="presentation" identifier="AccountsSegue" modalTransitionStyle="crossDissolve" id="sND-y2-DTj"/>
                         <segue destination="EKU-QU-ihl" kind="presentation" identifier="SearchSegue" modalTransitionStyle="crossDissolve" id="FVR-U4-dim"/>
-                        <segue destination="PTZ-wg-Lzy" kind="presentation" identifier="MessagesSegue" modalTransitionStyle="crossDissolve" id="yda-aD-xVB"/>
+                        <segue destination="SpP-xf-ygO" kind="presentation" identifier="SavedSegue" modalTransitionStyle="crossDissolve" id="gh5-lw-0Sc"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BRW-wG-3Pw" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -2457,7 +2457,8 @@
                                         <label opaque="NO" clipsSubviews="YES" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="4.5k" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ehj-sX-ayA">
                                             <rect key="frame" x="540" y="56" width="44" height="17"/>
                                             <constraints>
-                                                <constraint firstAttribute="width" constant="44" id="XaU-TF-qqm"/>
+                                                <constraint firstAttribute="height" constant="17" id="5x4-0o-tik"/>
+                                                <constraint firstAttribute="width" constant="44" id="61r-3C-6fN"/>
                                             </constraints>
                                             <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="12"/>
                                             <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
@@ -2473,14 +2474,14 @@
                                         </textView>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstAttribute="trailingMargin" secondItem="Ehj-sX-ayA" secondAttribute="trailing" constant="8" id="25U-9f-fqO"/>
-                                        <constraint firstItem="Ue5-Gd-E0C" firstAttribute="top" secondItem="Ehj-sX-ayA" secondAttribute="bottom" constant="4" id="3kc-xx-Y7Q"/>
                                         <constraint firstItem="Ue5-Gd-E0C" firstAttribute="top" secondItem="NpS-5U-pEy" secondAttribute="bottom" constant="6" id="5Lo-5a-9v6"/>
                                         <constraint firstItem="Ue5-Gd-E0C" firstAttribute="leading" secondItem="0fl-cW-8LI" secondAttribute="leadingMargin" constant="8" id="5Zh-KG-boX"/>
                                         <constraint firstItem="Ue5-Gd-E0C" firstAttribute="leading" secondItem="0fl-cW-8LI" secondAttribute="leading" constant="16" id="F7h-X6-8X6"/>
                                         <constraint firstAttribute="trailingMargin" secondItem="Ue5-Gd-E0C" secondAttribute="trailing" constant="8" id="JXu-Oe-Ne1"/>
+                                        <constraint firstItem="Ehj-sX-ayA" firstAttribute="leading" secondItem="NpS-5U-pEy" secondAttribute="trailing" constant="21" id="MW7-yN-Svl"/>
                                         <constraint firstAttribute="trailing" secondItem="ZsZ-g1-wiD" secondAttribute="trailing" constant="21" id="NIy-II-Zam"/>
-                                        <constraint firstItem="Ehj-sX-ayA" firstAttribute="leading" secondItem="NpS-5U-pEy" secondAttribute="trailing" constant="21" id="VoL-Dz-vd0"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="Ehj-sX-ayA" secondAttribute="trailing" constant="8" id="Olz-fQ-sI5"/>
+                                        <constraint firstItem="Ue5-Gd-E0C" firstAttribute="top" secondItem="Ehj-sX-ayA" secondAttribute="bottom" constant="4" id="WAv-XA-Fyp"/>
                                         <constraint firstItem="ZsZ-g1-wiD" firstAttribute="top" secondItem="0fl-cW-8LI" secondAttribute="top" constant="8" id="WFn-8K-M9Z"/>
                                         <constraint firstItem="ZsZ-g1-wiD" firstAttribute="leading" secondItem="0fl-cW-8LI" secondAttribute="leading" constant="11" id="Xfm-N1-3Q1"/>
                                         <constraint firstItem="Ue5-Gd-E0C" firstAttribute="bottom" secondItem="0fl-cW-8LI" secondAttribute="bottomMargin" id="YGb-sl-dz5"/>
@@ -2488,10 +2489,9 @@
                                         <constraint firstItem="NpS-5U-pEy" firstAttribute="leading" secondItem="Ue5-Gd-E0C" secondAttribute="leading" id="ffJ-vU-E7q"/>
                                         <constraint firstItem="NpS-5U-pEy" firstAttribute="top" secondItem="ZsZ-g1-wiD" secondAttribute="bottom" constant="4" id="flt-Q2-f6D"/>
                                         <constraint firstAttribute="trailing" secondItem="Ue5-Gd-E0C" secondAttribute="trailing" constant="16" id="gZe-4b-uCz"/>
-                                        <constraint firstItem="Ue5-Gd-E0C" firstAttribute="top" secondItem="Ehj-sX-ayA" secondAttribute="bottom" constant="4" id="jLI-Mr-8TD"/>
-                                        <constraint firstItem="Ehj-sX-ayA" firstAttribute="leading" secondItem="NpS-5U-pEy" secondAttribute="trailing" constant="21" id="nGy-EB-ZOG"/>
                                         <constraint firstAttribute="bottom" secondItem="Ue5-Gd-E0C" secondAttribute="bottom" constant="8" id="pyR-bb-I5y"/>
                                         <constraint firstItem="NpS-5U-pEy" firstAttribute="leading" secondItem="0fl-cW-8LI" secondAttribute="leadingMargin" constant="8" id="yys-tQ-51d"/>
+                                        <constraint firstItem="Ehj-sX-ayA" firstAttribute="top" secondItem="ZsZ-g1-wiD" secondAttribute="bottom" constant="5" id="zzr-kA-BpI"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
@@ -4663,6 +4663,7 @@
     </scenes>
     <resources>
         <image name="Add" width="22" height="22"/>
+        <image name="BookmarkSwipe" width="50" height="50"/>
         <image name="Camera" width="22" height="18"/>
         <image name="Cancel" width="25" height="25"/>
         <image name="Chat" width="22" height="20"/>
@@ -4672,31 +4673,30 @@
         <image name="Filter" width="22" height="23"/>
         <image name="Left" width="10" height="20"/>
         <image name="List" width="26" height="16"/>
-        <image name="Male" width="28" height="28"/>
+        <image name="Male" width="25" height="25"/>
         <image name="Messages" width="28" height="18"/>
         <image name="Post" width="28" height="28"/>
         <image name="Refresh" width="18" height="22"/>
         <image name="Right" width="10" height="20"/>
-        <image name="Saved" width="22" height="18"/>
         <image name="Search" width="22" height="22"/>
-        <image name="Settings" width="28" height="28"/>
+        <image name="Settings" width="25" height="25"/>
         <image name="Star" width="22" height="22"/>
         <image name="Up" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="psA-tl-Zoj"/>
         <segue reference="cxw-0o-NAI"/>
-        <segue reference="ykc-Jy-SLH"/>
         <segue reference="c0A-qT-nAA"/>
         <segue reference="DoA-ah-cSI"/>
         <segue reference="s4Y-Y8-M2P"/>
         <segue reference="ovW-r7-Crm"/>
-        <segue reference="QqN-ZE-i77"/>
-        <segue reference="Udn-dz-6HG"/>
         <segue reference="UM9-7d-Dnl"/>
         <segue reference="Na3-yg-xfC"/>
+        <segue reference="iqb-h7-VjS"/>
         <segue reference="MQa-bF-U0r"/>
+        <segue reference="bxZ-6W-PbQ"/>
+        <segue reference="gh5-lw-0Sc"/>
+        <segue reference="MsL-gN-mnM"/>
         <segue reference="3tl-bC-neo"/>
-        <segue reference="O8K-LF-8mj"/>
     </inferredMetricsTieBreakers>
 </document>

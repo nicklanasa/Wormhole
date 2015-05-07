@@ -92,7 +92,6 @@ class CommentCell: JZSwipeCell, UITextViewDelegate {
                 size: SettingsManager.defaultManager.titleFontSizeForDefaultTextSize)
             
             self.commentTextView.backgroundColor = MyRedditBackgroundColor
-            self.commentTextView.textColor = MyRedditLabelColor
             self.contentView.backgroundColor = MyRedditBackgroundColor
         }
     }

@@ -52,8 +52,8 @@ SearchViewControllerDelegate {
     @IBOutlet weak var filterButton: UIBarButtonItem!
     @IBOutlet weak var listButton: UIBarButtonItem!
     @IBOutlet weak var postButton: UIBarButtonItem!
-    @IBOutlet weak var saveButton: UIBarButtonItem!
     @IBOutlet weak var searchButton: UIBarButtonItem!
+    @IBOutlet weak var messages: UIBarButtonItem!
     
     @IBOutlet weak var filterView: UIView! {
         didSet {
@@ -187,8 +187,22 @@ SearchViewControllerDelegate {
             self.listButton.tintColor = MyRedditLabelColor
             self.postButton.tintColor = MyRedditLabelColor
             self.searchButton.tintColor = MyRedditLabelColor
-            self.saveButton.tintColor = MyRedditLabelColor
+            self.messages.tintColor = MyRedditLabelColor
         })
+        
+        self.fetchUnread()
+    }
+    
+    private func fetchUnread() {
+        RedditSession.sharedSession.fetchMessages(nil, category: .Unread, read: false) { (pagination, results, error) -> () in
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                if results?.count > 0 {
+                    self.messages.tintColor = MyRedditColor
+                } else {
+                    self.messages.tintColor = MyRedditLabelColor
+                }
+            })
+        }
     }
 
     @IBAction func filterButtonPressed(sender: AnyObject) {
@@ -225,6 +239,20 @@ SearchViewControllerDelegate {
         self.links = Array<AnyObject>()
         self.currentCategory = RKSubredditCategory(rawValue: UInt(filterSwtichType.rawValue))
         self.syncLinks()
+    }
+    
+    
+    
+    @IBAction func messagesButtonTapped(sender: AnyObject) {
+        if !SettingsManager.defaultManager.purchased {
+            self.performSegueWithIdentifier("PurchaseSegue", sender: self)
+        } else {
+            if UserSession.sharedSession.isSignedIn {
+                self.performSegueWithIdentifier("MessagesSegue", sender: self)
+            } else {
+                self.performSegueWithIdentifier("AccountsSegue", sender: self)
+            }
+        }
     }
     
     @IBAction func subscribeButtonTapped(sender: AnyObject) {
@@ -340,13 +368,20 @@ SearchViewControllerDelegate {
             title = front ? "front" : "/r/\(subreddit.name.lowercaseString)"
         }
         
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: title, style: .Plain, target: self, action: nil)
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: title,
+            style: .Plain,
+            target: self,
+            action: nil)
+        
         self.navigationController?.navigationBarHidden = false
         
         self.navigationItem.title = ""
         
         self.navigationItem.leftBarButtonItem!.setTitleTextAttributes([
             NSFontAttributeName: MyRedditTitleBigFont],
+            forState: UIControlState.Normal)
+        self.navigationItem.rightBarButtonItem!.setTitleTextAttributes([
+            NSFontAttributeName: MyRedditTitleFont],
             forState: UIControlState.Normal)
         
         self.tableView.reloadData()
@@ -529,14 +564,6 @@ SearchViewControllerDelegate {
                 if let controller = nav.viewControllers[0] as? SearchViewController {
                     controller.delegate = self
                     controller.subreddit = self.subreddit
-                }
-            }
-        } else if segue.identifier == "SavedSegue" {
-            if let nav = segue.destinationViewController as? UINavigationController {
-                if let controller = nav.viewControllers[0] as? UserContentViewController {
-                    controller.category = .Saved
-                    controller.categoryTitle = "Saved"
-                    controller.user = RKClient.sharedClient().currentUser
                 }
             }
         } else if segue.identifier == "GallerySegue" {

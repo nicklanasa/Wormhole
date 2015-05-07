@@ -3,17 +3,17 @@
     {
       "idiom" : "universal",
       "scale" : "1x",
-      "filename" : "740-gear.png"
+      "filename" : "settings-25.png"
     },
     {
       "idiom" : "universal",
       "scale" : "2x",
-      "filename" : "740-gear@2x.png"
+      "filename" : "settings-50.png"
     },
     {
       "idiom" : "universal",
       "scale" : "3x",
-      "filename" : "740-gear@3x.png"
+      "filename" : "settings-75.png"
     }
   ],
   "info" : {

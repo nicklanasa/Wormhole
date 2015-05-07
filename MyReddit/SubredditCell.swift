@@ -31,9 +31,9 @@ class SubredditCell: UITableViewCell {
             }
             
             if let headerURL = subreddit.headerImageURL {
-                self.subredditImageView.sd_setImageWithURL(NSURL(string: headerURL), placeholderImage: UIImage(named: "Reddit"))
+                self.subredditImageView.sd_setImageWithURL(NSURL(string: headerURL), placeholderImage: nil)
             } else {
-                self.subredditImageView.image = UIImage(named: "Reddit")
+                self.subredditImageView.image = nil
             }
         }
     }
@@ -52,9 +52,9 @@ class SubredditCell: UITableViewCell {
             
             if !SettingsManager.defaultManager.valueForSetting(.SubredditLogos) {
                 if let headerURL = rkSubreddit.headerImageURL {
-                    self.subredditImageView.sd_setImageWithURL(headerURL, placeholderImage: UIImage(named: "Reddit"))
+                    self.subredditImageView.sd_setImageWithURL(headerURL, placeholderImage: nil)
                 } else {
-                    self.subredditImageView.image = UIImage(named: "Reddit")
+                    self.subredditImageView.image = nil
                 }
             }
             
@@ -76,7 +76,8 @@ class SubredditCell: UITableViewCell {
             
             self.subredditImageView.backgroundColor = MyRedditDarkBackgroundColor
             
-            self.subredditImageView.image = UIImage(named: "Reddit")
+            self.subredditImageView.image = UIImage(named: "Multireddit")
+            self.subredditImageView.contentMode = .ScaleAspectFit
             
             self.subredditImageView.backgroundColor = UIColor.groupTableViewBackgroundColor()
         }
@@ -105,7 +106,7 @@ class SubredditCell: UITableViewCell {
                 if let headerURL = NSURL(string: headerIMG) {
                     self.subredditImageView.sd_setImageWithURL(headerURL, placeholderImage: UIImage(named: "Reddit"))
                 } else {
-                    self.subredditImageView.image = UIImage(named: "Reddit")
+                    self.subredditImageView.image = nil
                 }
             }
         }
