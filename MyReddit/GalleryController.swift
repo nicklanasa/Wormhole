@@ -9,15 +9,78 @@
 import Foundation
 import UIKit
 
-class GalleryController: UIViewController, UIPageViewControllerDataSource, UIPageViewControllerDelegate {
+class GalleryController: UIViewController,
+UIPageViewControllerDataSource,
+UIPageViewControllerDelegate,
+ImageViewControllerDelegate {
     
-    @IBOutlet weak var pageControl: UIPageControl!
     @IBOutlet weak var upvoteButton: UIBarButtonItem!
     @IBOutlet weak var downvoteButton: UIBarButtonItem!
     @IBOutlet weak var pagesBarbutton: UIBarButtonItem!
+    @IBOutlet weak var postTitleView: UIView!
+    @IBOutlet weak var postTitleLabel: UILabel!
+    @IBOutlet weak var toolbar: UIToolbar!
+    @IBOutlet weak var seeMoreButton: UIButton!
+    @IBOutlet weak var seeLessButton: UIButton!
    
     var link: RKLink!
     
+    func heightForLabel(text:String, font:UIFont, width:CGFloat) -> CGFloat
+    {
+        let label: UILabel = UILabel(frame: CGRectMake(0, 0, width, CGFloat.max))
+        label.numberOfLines = 0
+        label.lineBreakMode = NSLineBreakMode.ByWordWrapping
+        label.font = font
+        label.text = text
+        
+        label.sizeToFit()
+        return label.frame.height + 20
+        
+    }
+    
+    @IBAction func seeMoreButtonTapped(sender: AnyObject) {
+        
+        var newOrigin: CGFloat!
+        var newHeight: CGFloat!
+        var newLabelHeight: CGFloat!
+        var frame = self.postTitleView.frame
+        var offsetToolBarHeight = self.toolbar.frame.height - 10
+        
+        if self.postTitleView.frame.size.height > 35 {
+            offsetToolBarHeight = -(offsetToolBarHeight)
+            newHeight = -self.postTitleLabel.frame.height
+            newLabelHeight = 35
+            newOrigin = -(self.postTitleLabel.frame.height - 35)
+            self.seeMoreButton.hidden = false
+            self.seeLessButton.hidden = true
+        } else {
+            newHeight = self.heightForLabel(self.postTitleLabel.text!, font: self.postTitleLabel.font, width:  self.postTitleLabel.frame.size.width)
+            newLabelHeight = newHeight
+            newOrigin = (newHeight - frame.height)
+            
+            self.seeMoreButton.hidden = true
+            self.seeLessButton.hidden = false
+        }
+        
+        UIView.animateWithDuration(0.3, animations: { () -> Void in
+            self.postTitleLabel.alpha = 0.0
+            frame.origin.y -= newOrigin
+            frame.size.height += (newHeight - offsetToolBarHeight)
+            self.postTitleView.frame = frame
+            
+            print(frame)
+
+        }) { (s) -> Void in
+            UIView.animateWithDuration(0.3, animations: { () -> Void in
+                self.postTitleLabel.alpha = 1.0
+                var labelFrame = self.postTitleLabel.frame
+                labelFrame.size.height = newLabelHeight
+                self.postTitleLabel.frame = labelFrame
+                
+            }, completion: { (s) -> Void in
+            })
+        }
+    }
     
     override func viewDidLoad() {
         self.updateVoteButtons()
@@ -40,10 +103,22 @@ class GalleryController: UIViewController, UIPageViewControllerDataSource, UIPag
         }
         
         self.pagesBarbutton.title = "\(1)/\(self.images!.count)"
-        self.navigationItem.title = self.link.title
         
+        var infoString = NSMutableAttributedString(string:"\(self.link.title)\nby \(self.link.author)")
+        var attrs = [NSFontAttributeName : MyRedditSelfTextFont]
+        infoString.addAttributes(attrs, range: NSMakeRange(count("\(self.link.title)\nby "), count(link.author)))
+        
+        self.postTitleLabel.attributedText = infoString
+
+        self.postTitleView.backgroundColor = MyRedditBackgroundColor
+        self.postTitleLabel.textColor = MyRedditLabelColor
         self.view.backgroundColor = MyRedditBackgroundColor
-        self.pageControl.hidden = true
+    }
+    
+    func pageViewController(pageViewController: UIPageViewController, willTransitionToViewControllers pendingViewControllers: [AnyObject]) {
+        if self.postTitleView.frame.size.height > 35 {
+            self.seeMoreButtonTapped(self)
+        }
     }
     
     var pageViewController: UIPageViewController! {
@@ -57,8 +132,6 @@ class GalleryController: UIViewController, UIPageViewControllerDataSource, UIPag
                 direction: UIPageViewControllerNavigationDirection.Forward,
                 animated: false,
                 completion: nil)
-            
-            self.pageControl.numberOfPages = self.images?.count ?? 0
         }
     }
     
@@ -69,8 +142,6 @@ class GalleryController: UIViewController, UIPageViewControllerDataSource, UIPag
     func pageViewController(pageViewController: UIPageViewController, viewControllerBeforeViewController viewController: UIViewController) -> UIViewController? {
         var controller = viewController as! ImageViewController
         var index: NSInteger = controller.pageIndex
-        
-        self.pageControl.currentPage = index
         
         self.pagesBarbutton.title = "\(index+1)/\(self.images!.count)"
         
@@ -86,8 +157,6 @@ class GalleryController: UIViewController, UIPageViewControllerDataSource, UIPag
     func pageViewController(pageViewController: UIPageViewController, viewControllerAfterViewController viewController: UIViewController) -> UIViewController? {
         var controller = viewController as! ImageViewController
         var index: NSInteger = controller.pageIndex
-        
-        self.pageControl.currentPage = index
         
         self.pagesBarbutton.title = "\(index+1)/\(self.images!.count)"
         
@@ -118,6 +187,9 @@ class GalleryController: UIViewController, UIPageViewControllerDataSource, UIPag
         } else if let imageURL = self.images?[index] as? NSURL {
             controller.imageURL = imageURL
         }
+        
+        controller.delegate = self
+        
         return controller
     }
 
@@ -224,6 +296,21 @@ class GalleryController: UIViewController, UIPageViewControllerDataSource, UIPag
                 } else {
                     self.refreshLink()
                 }
+            })
+        }
+    }
+    
+    func imageViewController(controller: ImageViewController, didTapImage image: UIImage?) {
+        
+        if self.postTitleView.alpha == 0.0 {
+            UIView.animateWithDuration(0.3, animations: { () -> Void in
+                self.postTitleView.alpha = 1.0
+                self.toolbar.alpha = 1.0
+            })
+        } else {
+            UIView.animateWithDuration(0.3, animations: { () -> Void in
+                self.postTitleView.alpha = 0.0
+                self.toolbar.alpha = 0.0
             })
         }
     }

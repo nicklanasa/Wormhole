@@ -19,3 +19,4 @@
 #import "JZSwipeCell.h"
 #import "ImgurAnonymousAPIClient.h"
 #import "ImgurSession.h"
+#import "SNTextView.h"

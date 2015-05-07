@@ -16,7 +16,7 @@ class LinkViewController: UIViewController {
     @IBOutlet weak var webView: UIWebView!
     @IBOutlet weak var upvoteButton: UIBarButtonItem!
     @IBOutlet weak var downvoteButton: UIBarButtonItem!
-    @IBOutlet weak var titleTextView: UITextView!
+    @IBOutlet weak var titleTextView: SNTextView!
     
     override func viewDidLoad() {
         let request = NSURLRequest(URL: link.URL)
@@ -34,6 +34,9 @@ class LinkViewController: UIViewController {
         navLabel.textAlignment = .Left
         navLabel.sizeToFit()
         self.navigationItem.titleView = navLabel
+        
+        //self.titleTextView.expandable = true
+        //self.titleTextView.addSeeMoreForText(self.link.title, maxHeight: 80)
         
         self.updateVoteButtons()
         

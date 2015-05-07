@@ -62,6 +62,8 @@
 		CE712F1F1AC303A50042B071 /* Media.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE712F1E1AC303A50042B071 /* Media.swift */; };
 		CE712F231AC303A60042B071 /* MultiReddit.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE712F221AC303A60042B071 /* MultiReddit.swift */; };
 		CE712F271AC304610042B071 /* Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE712F261AC304610042B071 /* Comment.swift */; };
+		CE73F2451AFBD1B70094DCB8 /* SNTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = CE73F2441AFBD1B70094DCB8 /* SNTextView.m */; };
+		CE73F2471AFBDC170094DCB8 /* UILabel+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE73F2461AFBDC170094DCB8 /* UILabel+Helpers.swift */; };
 		CE769F271AF5A6CB00031657 /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE769F261AF5A6CB00031657 /* SettingsTableViewController.swift */; };
 		CE769F291AF5A8BA00031657 /* SettingsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE769F281AF5A8BA00031657 /* SettingsManager.swift */; };
 		CE769F2B1AF6A17000031657 /* FrontCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE769F2A1AF6A17000031657 /* FrontCell.swift */; };
@@ -156,6 +158,9 @@
 		CE712F1E1AC303A50042B071 /* Media.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Media.swift; sourceTree = "<group>"; };
 		CE712F221AC303A60042B071 /* MultiReddit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultiReddit.swift; sourceTree = "<group>"; };
 		CE712F261AC304610042B071 /* Comment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Comment.swift; path = ../../Comment.swift; sourceTree = "<group>"; };
+		CE73F2431AFBD1B70094DCB8 /* SNTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SNTextView.h; sourceTree = "<group>"; };
+		CE73F2441AFBD1B70094DCB8 /* SNTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SNTextView.m; sourceTree = "<group>"; };
+		CE73F2461AFBDC170094DCB8 /* UILabel+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UILabel+Helpers.swift"; sourceTree = "<group>"; };
 		CE769F261AF5A6CB00031657 /* SettingsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsTableViewController.swift; sourceTree = "<group>"; };
 		CE769F281AF5A8BA00031657 /* SettingsManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsManager.swift; sourceTree = "<group>"; };
 		CE769F2A1AF6A17000031657 /* FrontCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FrontCell.swift; sourceTree = "<group>"; };
@@ -255,6 +260,8 @@
 		CE1007301AF2FDF6000ED144 /* Library */ = {
 			isa = PBXGroup;
 			children = (
+				CE73F2431AFBD1B70094DCB8 /* SNTextView.h */,
+				CE73F2441AFBD1B70094DCB8 /* SNTextView.m */,
 				CE4B9E9A1AE1957200018742 /* UIImage+ImageEffects.h */,
 				CE4B9E9B1AE1957200018742 /* UIImage+ImageEffects.m */,
 				CEC5DE731AF2A66F002012DC /* GHContextMenuView.h */,
@@ -372,6 +379,7 @@
 				CE712F261AC304610042B071 /* Comment.swift */,
 				CE712F221AC303A60042B071 /* MultiReddit.swift */,
 				CE712F1E1AC303A50042B071 /* Media.swift */,
+				CE73F2461AFBDC170094DCB8 /* UILabel+Helpers.swift */,
 				018E40271AC39C1C0055384D /* User+Helpers.swift */,
 				CE712F021AC2F7090042B071 /* DataManager.swift */,
 				CE712F031AC2F7090042B071 /* Datastore.swift */,
@@ -566,6 +574,7 @@
 				CEA3E3001AFAE65B008323A6 /* GalleryController.swift in Sources */,
 				CE769F291AF5A8BA00031657 /* SettingsManager.swift in Sources */,
 				CE712F271AC304610042B071 /* Comment.swift in Sources */,
+				CE73F2471AFBDC170094DCB8 /* UILabel+Helpers.swift in Sources */,
 				CE3588201AC30DEE00294684 /* SubredditViewController.swift in Sources */,
 				01F965531AC4F4B500DE0CD6 /* MessageCell.swift in Sources */,
 				CE25FBD01AF93E0600A40C3B /* RKLink+Helpers.swift in Sources */,
@@ -585,6 +594,7 @@
 				CE769F271AF5A6CB00031657 /* SettingsTableViewController.swift in Sources */,
 				CE25FBDA1AF9485900A40C3B /* PostTextCell.swift in Sources */,
 				CE538FAC1AF3E850008050B6 /* SearchViewController.swift in Sources */,
+				CE73F2451AFBD1B70094DCB8 /* SNTextView.m in Sources */,
 				CEC59EAC1AF1B0B600D0D62B /* AddCommentViewController.swift in Sources */,
 				CE046ED11AC4247500DF59B4 /* PostCell.swift in Sources */,
 				018E40261AC395D30055384D /* UserSession.swift in Sources */,
