@@ -84,7 +84,7 @@ class GalleryController: UIViewController, UIPageViewControllerDataSource, UIPag
         
         self.pageControl.currentPage = index
         
-        self.navigationItem.title = "\(index)/\(self.images!.count)"
+        self.navigationItem.title = "\(index+1)/\(self.images!.count)"
         
         if index == NSNotFound {
             return nil
@@ -159,17 +159,28 @@ class GalleryController: UIViewController, UIPageViewControllerDataSource, UIPag
         })
     }
     
+    func refreshLink() {
+        RedditSession.sharedSession.linkWithFullName(self.link, completion: { (pagination, results, error) -> () in
+            if let link = results?.first as? RKLink {
+                self.link = link
+                self.updateVoteButtons()
+            }
+        })
+    }
+    
     private func updateVoteButtons() {
-        if self.link.upvoted() {
-            self.upvoteButton.tintColor = MyRedditUpvoteColor
-            self.downvoteButton.tintColor = MyRedditLabelColor
-        } else if self.link.downvoted() {
-            self.upvoteButton.tintColor = MyRedditLabelColor
-            self.downvoteButton.tintColor = MyRedditDownvoteColor
-        } else {
-            self.upvoteButton.tintColor = MyRedditLabelColor
-            self.downvoteButton.tintColor = MyRedditLabelColor
-        }
+        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            if self.link.upvoted() {
+                self.upvoteButton.tintColor = MyRedditUpvoteColor
+                self.downvoteButton.tintColor = MyRedditLabelColor
+            } else if self.link.downvoted() {
+                self.upvoteButton.tintColor = MyRedditLabelColor
+                self.downvoteButton.tintColor = MyRedditDownvoteColor
+            } else {
+                self.upvoteButton.tintColor = MyRedditLabelColor
+                self.downvoteButton.tintColor = MyRedditLabelColor
+            }
+        })
     }
 
     @IBAction func shareButtonTapped(sender: AnyObject) {
@@ -191,7 +202,7 @@ class GalleryController: UIViewController, UIPageViewControllerDataSource, UIPag
                         delegate: self,
                         cancelButtonTitle: "Ok").show()
                 } else {
-                    self.updateVoteButtons()
+                    self.refreshLink()
                 }
             })
         }
@@ -208,7 +219,7 @@ class GalleryController: UIViewController, UIPageViewControllerDataSource, UIPag
                         delegate: self,
                         cancelButtonTitle: "Ok").show()
                 } else {
-                    self.updateVoteButtons()
+                    self.refreshLink()
                 }
             })
         }

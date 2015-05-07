@@ -4537,18 +4537,18 @@
                                 <items>
                                     <barButtonItem image="Up" id="jm6-6P-LCE">
                                         <connections>
-                                            <action selector="upvoteButtonTapped:" destination="SEn-8E-jyR" id="Db6-aS-ihr"/>
+                                            <action selector="upvoteButtonTapped:" destination="SEn-8E-jyR" id="5kp-aw-xSD"/>
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem image="Down" id="3GI-Al-YNF">
                                         <connections>
-                                            <action selector="downvoteButtonTapped:" destination="SEn-8E-jyR" id="s9w-JQ-jbK"/>
+                                            <action selector="downvoteButtonTapped:" destination="SEn-8E-jyR" id="3UB-o7-WMH"/>
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="uXh-Cb-4EQ"/>
                                     <barButtonItem systemItem="action" id="Khg-Bo-m5B">
                                         <connections>
-                                            <action selector="shareButtonTapped:" destination="SEn-8E-jyR" id="jPI-mX-A1c"/>
+                                            <action selector="shareButtonTapped:" destination="SEn-8E-jyR" id="slC-LP-qAM"/>
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem width="20" style="plain" systemItem="fixedSpace" id="qqO-Ju-i4F"/>
@@ -4576,9 +4576,9 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="downvoteButton" destination="3GI-Al-YNF" id="Qdq-AC-8hc"/>
+                        <outlet property="downvoteButton" destination="3GI-Al-YNF" id="MhZ-a7-xgc"/>
                         <outlet property="pageControl" destination="ue8-cG-vlt" id="sNW-ty-1Mp"/>
-                        <outlet property="upvoteButton" destination="jm6-6P-LCE" id="zwc-OE-gmQ"/>
+                        <outlet property="upvoteButton" destination="jm6-6P-LCE" id="Gbw-Y1-KAE"/>
                         <segue destination="Hdo-ax-c9X" kind="presentation" identifier="PurchaseSegue" modalTransitionStyle="crossDissolve" id="IKJ-Uc-imU"/>
                     </connections>
                 </viewController>
@@ -4680,19 +4680,19 @@
         <image name="Up" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="psA-tl-Zoj"/>
         <segue reference="cxw-0o-NAI"/>
         <segue reference="DoA-ah-cSI"/>
         <segue reference="c0A-qT-nAA"/>
-        <segue reference="QqN-ZE-i77"/>
         <segue reference="s4Y-Y8-M2P"/>
+        <segue reference="QqN-ZE-i77"/>
         <segue reference="Udn-dz-6HG"/>
-        <segue reference="HFw-0W-cdG"/>
         <segue reference="IKJ-Uc-imU"/>
+        <segue reference="HFw-0W-cdG"/>
         <segue reference="UM9-7d-Dnl"/>
         <segue reference="Na3-yg-xfC"/>
         <segue reference="MQa-bF-U0r"/>
-        <segue reference="O8K-LF-8mj"/>
-        <segue reference="psA-tl-Zoj"/>
         <segue reference="3tl-bC-neo"/>
+        <segue reference="O8K-LF-8mj"/>
     </inferredMetricsTieBreakers>
 </document>

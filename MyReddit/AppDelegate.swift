@@ -8,10 +8,10 @@
 
 import UIKit
 
-let MyRedditColor = UIColor(red: 245/255, green: 133/255, blue: 100/255, alpha: 1.0)
-let MyRedditUpvoteColor = UIColor(red: 150/255, green: 217/255, blue: 81/255, alpha: 1.0)
-let MyRedditDownvoteColor = UIColor(red: 255/255, green: 87/255, blue: 87/255, alpha: 1.0)
-let MyRedditReplyColor = UIColor(red: 94/255, green: 227/255, blue: 255/255, alpha: 1.0)
+let MyRedditColor = UIColor(red: 245.0/255.0, green: 133.0/255.0, blue: 100.0/255.0, alpha: 1.0)
+let MyRedditUpvoteColor = UIColor(red: 150.0/255.0, green: 217.0/255.0, blue: 81.0/255.0, alpha: 1.0)
+let MyRedditDownvoteColor = UIColor(red: 255.0/255.0, green: 87.0/255.0, blue: 87.0/255.0, alpha: 1.0)
+let MyRedditReplyColor = UIColor(red: 94.0/255.0, green: 227.0/255.0, blue: 255.0/255.0, alpha: 1.0)
 let MyRedditFont = UIFont(name: "AvenirNext-Regular", size: 13)!
 let MyRedditCommentInfoFont = UIFont(name: "AvenirNext-Regular", size: 11)!
 let MyRedditTitleFont = UIFont(name: "AvenirNext-Medium", size: 18)!

@@ -292,4 +292,10 @@ class RedditSession {
             }
         })
     }
+    
+    func linkWithFullName(link: RKLink, completion: PaginationCompletion) {
+        RKClient.sharedClient().linkWithFullName(link.fullName, completion: { (link, error) -> Void in
+            completion(pagination: nil, results: [link], error: error)
+        })
+    }
 }

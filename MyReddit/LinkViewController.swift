@@ -81,17 +81,28 @@ class LinkViewController: UIViewController {
         })
     }
     
+    func refreshLink() {
+        RedditSession.sharedSession.linkWithFullName(self.link, completion: { (pagination, results, error) -> () in
+            if let link = results?.first as? RKLink {
+                self.link = link
+                self.updateVoteButtons()
+            }
+        })
+    }
+    
     private func updateVoteButtons() {
-        if self.link.upvoted() {
-            self.upvoteButton.tintColor = MyRedditUpvoteColor
-            self.downvoteButton.tintColor = MyRedditLabelColor
-        } else if self.link.downvoted() {
-            self.upvoteButton.tintColor = MyRedditLabelColor
-            self.downvoteButton.tintColor = MyRedditDownvoteColor
-        } else {
-            self.upvoteButton.tintColor = MyRedditLabelColor
-            self.downvoteButton.tintColor = MyRedditLabelColor
-        }
+        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            if self.link.upvoted() {
+                self.upvoteButton.tintColor = MyRedditUpvoteColor
+                self.downvoteButton.tintColor = MyRedditLabelColor
+            } else if self.link.downvoted() {
+                self.upvoteButton.tintColor = MyRedditLabelColor
+                self.downvoteButton.tintColor = MyRedditDownvoteColor
+            } else {
+                self.upvoteButton.tintColor = MyRedditLabelColor
+                self.downvoteButton.tintColor = MyRedditLabelColor
+            }
+        })
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
@@ -117,7 +128,7 @@ class LinkViewController: UIViewController {
             self.performSegueWithIdentifier("PurchaseSegue", sender: self)
         } else {
             RedditSession.sharedSession.downvote(self.link, completion: { (error) -> () in
-                self.updateVoteButtons()
+                self.refreshLink()
             })
         }
     }
@@ -127,7 +138,7 @@ class LinkViewController: UIViewController {
             self.performSegueWithIdentifier("PurchaseSegue", sender: self)
         } else {
             RedditSession.sharedSession.upvote(self.link, completion: { (error) -> () in
-                self.updateVoteButtons()
+                self.refreshLink()
             })
         }
     }

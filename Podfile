@@ -15,7 +15,6 @@ pod 'ImgurAnonymousAPIClient', :git => 'https://github.com/nolanw/ImgurAnonymous
 pod 'Facebook-iOS-SDK'
 pod 'NSDate+Calendar'
 pod 'ImgurSession'
-pod 'FSImageViewer', '~> 3.2'
 
 end
 
