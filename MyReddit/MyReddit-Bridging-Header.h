@@ -7,9 +7,6 @@
 #import <SDWebImage/UIImageView+WebCache.h>
 #import <SDWebImage/SDWebImageDownloader.h>
 #import <Localytics-AMP/LocalyticsSession.h>
-#import <uservoice-iphone-sdk/UVConfig.h>
-#import <uservoice-iphone-sdk/UserVoice.h>
-#import <uservoice-iphone-sdk/UVStyleSheet.h>
 #import <Appirater/Appirater.h>
 
 #import "RedditKit.h"

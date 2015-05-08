@@ -24,7 +24,7 @@ MultiRedditsViewControllerDelegate {
     
     var delegate: SearchViewControllerDelegate?
     var pagination: RKPagination?
-    
+    var optionsController: LinkShareOptionsViewController!
     var multiReddit: RKMultireddit!
     var subreddit: RKSubreddit!
     var selectedSubreddit: RKSubreddit!
@@ -411,8 +411,6 @@ MultiRedditsViewControllerDelegate {
                                         message: "Unable to upvote! Please try again!",
                                         delegate: self,
                                         cancelButtonTitle: "Ok").show()
-                                } else {
-                                    self.syncLinks()
                                 }
                             })
                         } else if swipeType.value == JZSwipeTypeShortRight.value {
@@ -426,9 +424,7 @@ MultiRedditsViewControllerDelegate {
                                         message: "Unable to downvote! Please try again!",
                                         delegate: self,
                                         cancelButtonTitle: "Ok").show()
-                                } else {
-                                    self.syncLinks()
-                                }
+                                } 
                             })
                         } else if swipeType.value == JZSwipeTypeLongLeft.value {
                             LocalyticsSession.shared().tagEvent("Swipe more")
