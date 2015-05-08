@@ -34,8 +34,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, IMGSessionDelegate {
     
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         
-        NSUserDefaults.standardUserDefaults().setObject(true, forKey: "purchased")
-        
         IMGSession.anonymousSessionWithClientID("e97d1faf5a39e09", withDelegate: self)
         
         if SettingsManager.defaultManager.valueForSetting(.NightMode) {
