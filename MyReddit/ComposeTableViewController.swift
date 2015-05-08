@@ -31,6 +31,11 @@ class ComposeTableViewController: UITableViewController, UITextViewDelegate {
         self.tableView.tableFooterView = UIView()
     }
     
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        LocalyticsSession.shared().tagScreen("Compose")
+    }
+    
     override func viewDidAppear(animated: Bool) {
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
             self.toTextField.becomeFirstResponder()
@@ -66,7 +71,10 @@ class ComposeTableViewController: UITableViewController, UITextViewDelegate {
                                 delegate: self,
                                 cancelButtonTitle: "Ok").show()
                             self.hud.hide(true)
+                            
+                            LocalyticsSession.shared().tagEvent("Send message failed")
                         } else {
+                            LocalyticsSession.shared().tagEvent("Send message")
                             self.hud.hide(true)
                             self.dismissViewControllerAnimated(true, completion: nil)
                         }

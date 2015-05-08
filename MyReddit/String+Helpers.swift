@@ -15,4 +15,12 @@ extension String {
         let attributedString = NSAttributedString(data: encodedData, options: attributedOptions, documentAttributes: nil, error: nil)
         return attributedString!.string
     }
+    
+    func hasExtension() -> Bool {
+        if self.rangeOfString(".jpg") != nil || self.rangeOfString(".png") != nil || self.rangeOfString(".gif") != nil || self.rangeOfString(".jpeg") != nil {
+            return true
+        }
+        
+        return false
+    }
 }

@@ -18,6 +18,7 @@ class PostImageCell: PostCell {
     @IBOutlet weak var postInfoLabel: UILabel!
     @IBOutlet weak var subredditLabel: UILabel!
     @IBOutlet weak var stickyLabel: UILabel!
+    @IBOutlet weak var commentImageView: UIImageView!
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -35,10 +36,15 @@ class PostImageCell: PostCell {
                 if let absoluteString = link.URL.absoluteString {
                     var stringURL = absoluteString + ".jpg"
                     var imageURL = NSURL(string: stringURL)
-                    self.postImageView.sd_setImageWithURL(imageURL, placeholderImage: nil, options: .RefreshCached , completed: { (image, error, cachetype, url) -> Void in
+                    
+                    SDWebImageDownloader.sharedDownloader().downloadImageWithURL(imageURL, options: SDWebImageDownloaderOptions.ContinueInBackground, progress: { (rSize, eSize) -> Void in
+                        
+                    }, completed: { (image, data, error, success) -> Void in
                         if error != nil {
                             self.postImageView.image = UIImage(named: "Reddit")
                             self.postImageView.contentMode = UIViewContentMode.ScaleAspectFit
+                        } else {
+                            self.postImageView.image = image
                         }
                     })
                 }
@@ -88,11 +94,14 @@ class PostImageCell: PostCell {
             } else {
                 self.titleLabel.textColor = MyRedditLabelColor
             }
+            if let imageView = self.commentImageView {
+                if SettingsManager.defaultManager.valueForSetting(.NightMode) {
+                    imageView.image = UIImage(named: "ChatWhite")
+                } else {
+                    imageView.image = UIImage(named: "Chat")
+                }
+            }
         }
-    }
-    
-    override func prepareForReuse() {
-        self.postImageView.image = nil
     }
 }
 

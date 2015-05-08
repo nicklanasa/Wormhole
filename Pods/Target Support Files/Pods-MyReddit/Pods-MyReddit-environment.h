@@ -48,6 +48,12 @@
 #define COCOAPODS_VERSION_MINOR_AFNetworking_UIKit 5
 #define COCOAPODS_VERSION_PATCH_AFNetworking_UIKit 3
 
+// Appirater
+#define COCOAPODS_POD_AVAILABLE_Appirater
+#define COCOAPODS_VERSION_MAJOR_Appirater 2
+#define COCOAPODS_VERSION_MINOR_Appirater 0
+#define COCOAPODS_VERSION_PATCH_Appirater 4
+
 // BDGInAppPurchase
 #define COCOAPODS_POD_AVAILABLE_BDGInAppPurchase
 #define COCOAPODS_VERSION_MAJOR_BDGInAppPurchase 0
@@ -119,6 +125,12 @@
 #define COCOAPODS_VERSION_MAJOR_JZSwipeCell 1
 #define COCOAPODS_VERSION_MINOR_JZSwipeCell 1
 #define COCOAPODS_VERSION_PATCH_JZSwipeCell 0
+
+// Localytics-AMP
+#define COCOAPODS_POD_AVAILABLE_Localytics_AMP
+#define COCOAPODS_VERSION_MAJOR_Localytics_AMP 2
+#define COCOAPODS_VERSION_MINOR_Localytics_AMP 71
+#define COCOAPODS_VERSION_PATCH_Localytics_AMP 0
 
 // MBProgressHUD
 #define COCOAPODS_POD_AVAILABLE_MBProgressHUD

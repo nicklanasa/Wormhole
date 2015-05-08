@@ -30,6 +30,8 @@ class AccountsViewController: UIViewController, UITableViewDelegate, UITableView
         }
         
         self.tableView.backgroundColor = MyRedditDarkBackgroundColor
+        
+        LocalyticsSession.shared().tagScreen("Accounts")
     }
     
     // MARK: Sectors NSFetchedResultsControllerDelegate
@@ -106,12 +108,16 @@ class AccountsViewController: UIViewController, UITableViewDelegate, UITableView
         self.tableView.setEditing(true, animated: true)
         self.editButton.action = "finishEditing"
         self.editButton.title = "done"
+        
+        LocalyticsSession.shared().tagEvent("Edit accounts")
     }
     
     func finishEditing() {
         self.tableView.setEditing(false, animated: true)
         self.editButton.action = "editButtonTapped:"
         self.editButton.title = "edit"
+        
+        LocalyticsSession.shared().tagEvent("Finish editing accounts")
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -193,6 +199,8 @@ class AccountsViewController: UIViewController, UITableViewDelegate, UITableView
             
             DataManager.manager.datastore.deleteUser(user, completion: { (error) -> () in
                 self.tableView.reloadData()
+                
+                LocalyticsSession.shared().tagEvent("Delete account")
             })
         })
         

@@ -55,6 +55,11 @@ class MultiRedditsViewController: UIViewController, UITableViewDelegate, UITable
         self.syncMultiReddits()
     }
     
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        LocalyticsSession.shared().tagScreen("Mutlireddits")
+    }
+    
     func syncMultiReddits() {
         if UserSession.sharedSession.isSignedIn {
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
@@ -181,8 +186,10 @@ class MultiRedditsViewController: UIViewController, UITableViewDelegate, UITable
                             RedditSession.sharedSession.deleteMultiReddit(multiReddit, completion: { (error) -> () in
                                 if error != nil {
                                     UIAlertView(title: "Error!", message: "Unable to delete MultiReddit! Please make sure you're connected to the internets.", delegate: self, cancelButtonTitle: "Ok").show()
+                                    LocalyticsSession.shared().tagEvent("Delete multireddit failed")
                                 } else {
                                     self.multiSubreddits.removeAtIndex(indexPath.row - 1)
+                                    LocalyticsSession.shared().tagEvent("Deleted multireddit")
                                 }
                             })
                         }

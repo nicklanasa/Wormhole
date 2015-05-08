@@ -15,7 +15,8 @@ class UserContentViewController: UIViewController, UITableViewDelegate, UITableV
     var categoryTitle: String!
     var pagination: RKPagination?
     var content = Array<AnyObject>()
-    
+    var optionsController: LinkShareOptionsViewController!
+    var selectedLink: RKLink!
     var user: RKUser!
     
     var hud: MBProgressHUD! {
@@ -37,6 +38,11 @@ class UserContentViewController: UIViewController, UITableViewDelegate, UITableV
         self.tableView.backgroundColor = MyRedditBackgroundColor
         
         self.tableView.tableFooterView = UIView()
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        LocalyticsSession.shared().tagScreen("UserContent")
     }
     
     private func syncContent() {
@@ -118,10 +124,38 @@ class UserContentViewController: UIViewController, UITableViewDelegate, UITableV
         self.tableView.deselectRowAtIndexPath(indexPath, animated: true)
         if indexPath.section == 0 {
             if let link = self.content[indexPath.row] as? RKLink {
+                self.selectedLink = link
                 if link.selfPost {
                     self.performSegueWithIdentifier("CommentsSegue", sender: link)
                 } else {
-                    self.performSegueWithIdentifier("SubredditLink", sender: link)
+                    if link.domain == "imgur.com" || link.isImageLink() {
+                        if link.domain == "imgur.com" && !link.URL.absoluteString!.hasExtension() {
+                            var urlComponents = link.URL.absoluteString?.componentsSeparatedByString("/")
+                            if urlComponents?.count > 4 {
+                                let albumID = urlComponents?[4]
+                                IMGAlbumRequest.albumWithID(albumID, success: { (album) -> Void in
+                                    self.performSegueWithIdentifier("GallerySegue", sender: album.images)
+                                    }) { (error) -> Void in
+                                        self.performSegueWithIdentifier("SubredditLink", sender: link)
+                                }
+                            } else {
+                                if urlComponents?.count > 3 {
+                                    let imageID = urlComponents?[3]
+                                    IMGImageRequest.imageWithID(imageID, success: { (image) -> Void in
+                                        self.performSegueWithIdentifier("GallerySegue", sender: [image])
+                                        }, failure: { (error) -> Void in
+                                            self.performSegueWithIdentifier("SubredditLink", sender: link)
+                                    })
+                                } else {
+                                    self.performSegueWithIdentifier("GallerySegue", sender: [link.URL])
+                                }
+                            }
+                        } else {
+                            self.performSegueWithIdentifier("GallerySegue", sender: [link.URL!])
+                        }
+                    } else {
+                        self.performSegueWithIdentifier("SubredditLink", sender: link)
+                    }
                 }
             } else if let comment = self.content[indexPath.row] as? RKComment {
                 if self.category == .Overview {
@@ -157,6 +191,13 @@ class UserContentViewController: UIViewController, UITableViewDelegate, UITableV
                     controller.link = link
                 }
             }
+        } else if segue.identifier == "GallerySegue" {
+            if let controller = segue.destinationViewController as? GalleryController {
+                if let images = sender as? [AnyObject] {
+                    controller.images = images
+                    controller.link = self.selectedLink
+                }
+            }
         } else {
             if let comment = sender as? RKComment {
                 if let nav = segue.destinationViewController as? UINavigationController {
@@ -184,6 +225,7 @@ class UserContentViewController: UIViewController, UITableViewDelegate, UITableV
                     self.hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
                     if swipeType.value == JZSwipeTypeShortLeft.value {
                         // Upvote
+                        LocalyticsSession.shared().tagEvent("Swipe Upvote")
                         RedditSession.sharedSession.upvote(link, completion: { (error) -> () in
                             self.hud.hide(true)
                             
@@ -198,6 +240,7 @@ class UserContentViewController: UIViewController, UITableViewDelegate, UITableV
                         })
                     } else if swipeType.value == JZSwipeTypeShortRight.value {
                         // Downvote
+                        LocalyticsSession.shared().tagEvent("Swipe Downvote")
                         RedditSession.sharedSession.downvote(link, completion: { (error) -> () in
                             self.hud.hide(true)
                             
@@ -211,47 +254,85 @@ class UserContentViewController: UIViewController, UITableViewDelegate, UITableV
                             }
                         })
                     } else if swipeType.value == JZSwipeTypeLongLeft.value {
-                        // Save
+                        // More
+                        
+                        LocalyticsSession.shared().tagEvent("Swipe more")
+                        
+                        self.hud.hide(true)
+                        var alertController = UIAlertController(title: "Select option", message: nil, preferredStyle: .ActionSheet)
+                        
                         if link.saved() {
-                            RedditSession.sharedSession.unSaveLink(link, completion: { (error) -> () in
-                                self.hud.hide(true)
-                                link.unSaveLink()
-                            })
-                        } else {
-                            RedditSession.sharedSession.saveLink(link, completion: { (error) -> () in
-                                self.hud.hide(true)
-                                link.saveLink()
-                            })
-                        }
-                    } else {
-                        // Hide
-                        if link.isHidden() {
-                            RedditSession.sharedSession.unHideLink(link, completion: { (error) -> () in
-                                self.hud.hide(true)
-                                link.unHideink()
-                                
-                                if self.category == .Hidden {
-                                    self.content.removeAtIndex(indexPath.row)
-                                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                                        self.tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: .Fade)
-                                    })
-                                }
-                            })
-                        } else {
-                            RedditSession.sharedSession.hideLink(link, completion: { (error) -> () in
-                                self.hud.hide(true)
-                                link.hideLink()
-                                self.content.removeAtIndex(indexPath.row)
-                                dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                                    self.tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: .Fade)
+                            alertController.addAction(UIAlertAction(title: "unsave", style: .Default, handler: { (action) -> Void in
+                                RedditSession.sharedSession.unSaveLink(link, completion: { (error) -> () in
+                                    self.hud.hide(true)
+                                    link.unSaveLink()
                                 })
-                            })
+                            }))
+                        } else {
+                            alertController.addAction(UIAlertAction(title: "save", style: .Default, handler: { (action) -> Void in
+                                LocalyticsSession.shared().tagEvent("Save")
+                                RedditSession.sharedSession.saveLink(link, completion: { (error) -> () in
+                                    self.hud.hide(true)
+                                    link.saveLink()
+                                })
+                            }))
                         }
+        
+                        if link.isHidden() {
+                            if self.category != .Submissions {
+                                RedditSession.sharedSession.unHideLink(link, completion: { (error) -> () in
+                                    self.hud.hide(true)
+                                    link.unHideink()
+                                    
+                                    if self.category == .Hidden {
+                                        alertController.addAction(UIAlertAction(title: "unhide", style: .Default, handler: { (action) -> Void in
+                                            RedditSession.sharedSession.unHideLink(link, completion: { (error) -> () in
+                                                self.hud.hide(true)
+                                                link.unHideink()
+                                                
+                                                self.content.removeAtIndex(indexPath.row)
+                                                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                                                    self.tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: .Fade)
+                                                })
+                                            })
+                                        }))
+                                    }
+                                })
+                            }
+                        } else {
+                            if self.category != .Submissions {
+                                alertController.addAction(UIAlertAction(title: "hide", style: .Default, handler: { (action) -> Void in
+                                    RedditSession.sharedSession.hideLink(link, completion: { (error) -> () in
+                                        self.hud.hide(true)
+                                        link.hideLink()
+                                        
+                                        self.content.removeAtIndex(indexPath.row)
+                                        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                                            self.tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: .Fade)
+                                        })
+                                    })
+                                }))
+                            }
+                        }
+                        
+                        alertController.addAction(UIAlertAction(title: "see comments", style: .Default, handler: { (action) -> Void in
+                            LocalyticsSession.shared().tagEvent("Swipe comments")
+                            self.performSegueWithIdentifier("CommentsSegue", sender: link)
+                        }))
+                        
+                        alertController.addAction(UIAlertAction(title: "cancel", style: .Cancel, handler: nil))
+                        alertController.present(animated: true, completion: nil)
+                    } else {
+                        // Share
+                        self.hud.hide(true)
+                        self.optionsController = LinkShareOptionsViewController(link: link)
+                        self.optionsController.showInView(self.view)
                     }
                 } else if let comment = self.content[indexPath.row] as? RKComment {
                     self.hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
                     
                     if swipeType.value == JZSwipeTypeShortRight.value || swipeType.value == JZSwipeTypeLongRight.value {
+                        LocalyticsSession.shared().tagEvent("Swipe downvote comment")
                         // Downvote
                         RedditSession.sharedSession.downvote(comment, completion: { (error) -> () in
                             self.hud.hide(true)
@@ -267,6 +348,7 @@ class UserContentViewController: UIViewController, UITableViewDelegate, UITableV
                         })
                     } else if swipeType.value == JZSwipeTypeShortLeft.value || swipeType.value == JZSwipeTypeLongLeft.value {
                         // Upvote
+                        LocalyticsSession.shared().tagEvent("Swipe upvote comment")
                         RedditSession.sharedSession.upvote(comment, completion: { (error) -> () in
                             self.hud.hide(true)
                             
@@ -299,6 +381,7 @@ class UserContentViewController: UIViewController, UITableViewDelegate, UITableV
             header.activityIndicator.startAnimating()
             
             if self.pagination != nil {
+                LocalyticsSession.shared().tagEvent("Load more")
                 self.syncContent()
             } else {
                 self.tableView.reloadData()

@@ -31,6 +31,11 @@ class ProfileViewController: UIViewController, UITableViewDataSource, UITableVie
         }
     }
     
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        LocalyticsSession.shared().tagScreen("Profile")
+    }
+    
     override func viewDidLoad() {
         
         if let searchedUser = user {
@@ -130,6 +135,11 @@ class ProfileViewController: UIViewController, UITableViewDataSource, UITableVie
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         self.tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        
+        if indexPath.section == 2 {
+            self.performSegueWithIdentifier("UserContentSegue",
+                sender: tableView.cellForRowAtIndexPath(indexPath))
+        }
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
@@ -148,6 +158,8 @@ class ProfileViewController: UIViewController, UITableViewDataSource, UITableVie
                         } else {
                             controller.user = RKClient.sharedClient().currentUser
                         }
+                        
+                        LocalyticsSession.shared().tagEvent("UserContent segue")
                     }
                 }
             }

@@ -42,6 +42,11 @@ class SettingsTableViewController: UITableViewController, BDGIAPDelegate {
         }
     }
     
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        LocalyticsSession.shared().tagScreen("Settings")
+    }
+    
     override func viewDidLoad() {
         self.updateTable()
     }
@@ -159,24 +164,30 @@ class SettingsTableViewController: UITableViewController, BDGIAPDelegate {
                             message: "Unable to find that subreddit! Please check your internet connection.",
                             delegate: self,
                             cancelButtonTitle: "Ok").show()
+                        LocalyticsSession.shared().tagEvent("Unable to load Myreddit subreddit")
                     } else {
                         if let subreddit = results?.first as? RKSubreddit {
                             self.performSegueWithIdentifier("MyRedditSubredditSegue", sender: subreddit)
+                            LocalyticsSession.shared().tagEvent("Loaded Myreddit subreddit")
                         }
                     }
                 })
             case 1:
+                LocalyticsSession.shared().tagEvent("Rate app button tapped")
                 UIApplication.sharedApplication().openURL(NSURL(string: "itms://itunes.apple.com/us/app/apple-store/id544533053?mt=8")!)
             case 2:
+                LocalyticsSession.shared().tagEvent("MyReddit Facebook button tapped")
                 var url = NSURL(string: "https://www.facebook.com/pages/MyReddit/442141645823510?ref=hl")
                 self.performSegueWithIdentifier("WebViewSegue", sender: url)
             case 3:
+                LocalyticsSession.shared().tagEvent("Settings share button tapped")
                 var url = NSURL(string: "https://www.facebook.com/pages/MyReddit/442141645823510?ref=hl")
                 var shareText = "Check out MyReddit - A Reddit client for iOS that rocks!"
                 let objectsToShare = [shareText, url!]
                 let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
                 self.presentViewController(activityVC, animated: true, completion: nil)
             case 4:
+                LocalyticsSession.shared().tagEvent("Settings restore button tapped")
                 // Restore purchase
                 self.hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
                 BDGInAppPurchase.sharedBDGInAppPurchase().delegate = self
@@ -187,17 +198,21 @@ class SettingsTableViewController: UITableViewController, BDGIAPDelegate {
         } else if indexPath.section == 3 {
             switch indexPath.row {
             case 0:
+                LocalyticsSession.shared().tagEvent("Nytek Productions twitter")
                 var url = NSURL(string: "twitter://user?screen_name=Nytekproduction")
                 UIApplication.sharedApplication().openURL(url!)
             case 1:
+                LocalyticsSession.shared().tagEvent("Nick Lanasa twitter")
                 var url = NSURL(string: "twitter://user?screen_name=nicklanasa")
                 UIApplication.sharedApplication().openURL(url!)
             case 2:
+                LocalyticsSession.shared().tagEvent("Samantha Lanasa twitter")
                 var url = NSURL(string: "twitter://user?screen_name=3lovethemapples")
                 UIApplication.sharedApplication().openURL(url!)
             default: return
             }
         } else if indexPath.section == 4 {
+            LocalyticsSession.shared().tagEvent("Muz button tapped")
             UIApplication.sharedApplication().openURL(NSURL(string: "itms://itunes.apple.com/us/app/apple-store/id951709415?mt=8")!)
         }
     }
@@ -242,6 +257,7 @@ class SettingsTableViewController: UITableViewController, BDGIAPDelegate {
     }
     
     func didFailIAP() {
+        LocalyticsSession.shared().tagEvent("Unable to purchase")
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
             self.hud.hide(true)
         })
@@ -252,12 +268,14 @@ class SettingsTableViewController: UITableViewController, BDGIAPDelegate {
     }
     
     func didEndIAS() {
+        LocalyticsSession.shared().tagEvent("Purchased cancelled")
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
             self.hud.hide(true)
         })
     }
     
     func didFailIAS() {
+        LocalyticsSession.shared().tagEvent("Unable to purchase")
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
             self.hud.hide(true)
         })
@@ -268,12 +286,14 @@ class SettingsTableViewController: UITableViewController, BDGIAPDelegate {
     }
     
     func didCancelIAP() {
+        LocalyticsSession.shared().tagEvent("Purchase cancelled")
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
             self.hud.hide(true)
         })
     }
     
     func didPurchaseIAP() {
+        LocalyticsSession.shared().tagEvent("Purchased premium")
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
             self.hud.hide(true)
         })
@@ -282,6 +302,7 @@ class SettingsTableViewController: UITableViewController, BDGIAPDelegate {
     }
     
     func didRestoreIAP(productID: String!) {
+        LocalyticsSession.shared().tagEvent("Restored premium")
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
             self.hud.hide(true)
         })

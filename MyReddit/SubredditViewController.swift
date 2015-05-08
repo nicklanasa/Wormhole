@@ -39,6 +39,9 @@ SearchViewControllerDelegate {
     var pageIndex: Int!
     var currentCategory: RKSubredditCategory?
     var contextMenu: GHContextMenuView!
+    var optionsController: LinkShareOptionsViewController!
+    
+    var expandButton: OCExpandableButton!
     
     @IBOutlet weak var tableView: UITableView!
     
@@ -54,16 +57,6 @@ SearchViewControllerDelegate {
     @IBOutlet weak var postButton: UIBarButtonItem!
     @IBOutlet weak var searchButton: UIBarButtonItem!
     @IBOutlet weak var messages: UIBarButtonItem!
-    
-    @IBOutlet weak var filterView: UIView! {
-        didSet {
-            filterView.layer.shadowColor = UIColor.blackColor().CGColor
-            filterView.layer.shadowOffset = CGSize(width: 10, height: 15)
-            filterView.layer.shadowOpacity = 0.8
-            filterView.layer.shadowRadius = 30
-            filterView.layer.masksToBounds = true
-        }
-    }
     
     var hud: MBProgressHUD! {
         didSet {
@@ -81,8 +74,6 @@ SearchViewControllerDelegate {
             return control
         }
     }
-    
-    @IBOutlet weak var filterViewBottomConstraint: NSLayoutConstraint!
     
     var links = Array<AnyObject>() {
         didSet {
@@ -153,6 +144,37 @@ SearchViewControllerDelegate {
     func headerImageTapped(gesture: UIGestureRecognizer) {
         self.tableView(self.tableView,
             didSelectRowAtIndexPath: NSIndexPath(forRow: 0, inSection: 0))
+        
+        LocalyticsSession.shared().tagEvent("Subreddit Header image tapped")
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        LocalyticsSession.shared().tagScreen("Subreddit")
+        
+        self.updateSubscribeButton()
+        
+        if self.links.count > 0 {
+            self.tableView.reloadData()
+        }
+        
+        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            self.filterButton.tintColor = MyRedditLabelColor
+            self.listButton.tintColor = MyRedditLabelColor
+            self.postButton.tintColor = MyRedditLabelColor
+            self.searchButton.tintColor = MyRedditLabelColor
+            self.messages.tintColor = MyRedditLabelColor
+            
+            self.navigationItem.leftBarButtonItem!.setTitleTextAttributes([
+                NSFontAttributeName: MyRedditTitleBigFont, NSForegroundColorAttributeName : MyRedditLabelColor],
+                forState: UIControlState.Normal)
+            self.navigationItem.rightBarButtonItem!.setTitleTextAttributes([
+                NSFontAttributeName: MyRedditTitleFont],
+                forState: UIControlState.Normal)
+        })
+        
+        self.fetchUnread()
     }
     
     override func viewDidLoad() {
@@ -174,23 +196,25 @@ SearchViewControllerDelegate {
         self.tableView.tableFooterView = UIView()
     }
     
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
-        self.updateSubscribeButton()
-        
-        if self.links.count > 0 {
-            self.tableView.reloadData()
-        }
-        
-        dispatch_async(dispatch_get_main_queue(), { () -> Void in
-            self.filterButton.tintColor = MyRedditLabelColor
-            self.listButton.tintColor = MyRedditLabelColor
-            self.postButton.tintColor = MyRedditLabelColor
-            self.searchButton.tintColor = MyRedditLabelColor
-            self.messages.tintColor = MyRedditLabelColor
-        })
-        
-        self.fetchUnread()
+    func setupExpandButton() {
+//        var list = UIImageView(frame: CGRectMake(5, 5, 30, 30))
+//        list.image = UIImage(named: "List")
+//        list.contentMode = UIViewContentMode.ScaleAspectFit
+//        var listView = UIView(frame: CGRectMake(0, 0, 45, 45))
+//        listView.backgroundColor = UIColor.clearColor()
+//        listView.addSubview(list)
+//        var search = UIImageView(image: UIImage(named: "Search"))
+//        var messages = UIImageView(image: UIImage(named: "Messages"))
+//        var filter = UIImageView(image: UIImage(named: "Filter"))
+//        var add = UIImageView(image: UIImage(named: "Add"))
+
+//        self.expandButton = OCExpandableButton(frame: CGRect(x: UIScreen.mainScreen().bounds.size.width - 100,
+//            y: UIScreen.mainScreen().bounds.size.height - 200,
+//            width: 45,
+//            height: 45),
+//            subviews: [listView, listView])
+//        self.expandButton.alignment = OCExpandableButtonAlignmentRight
+//        self.view.addSubview(self.expandButton)
     }
     
     private func fetchUnread() {
@@ -235,6 +259,9 @@ SearchViewControllerDelegate {
     }
     
     func filterLinks(filterSwtichType: FilterSwitchType) {
+        
+        LocalyticsSession.shared().tagEvent("Filtered subreddit")
+        
         self.pagination = nil
         self.links = Array<AnyObject>()
         self.currentCategory = RKSubredditCategory(rawValue: UInt(filterSwtichType.rawValue))
@@ -244,6 +271,9 @@ SearchViewControllerDelegate {
     
     
     @IBAction func messagesButtonTapped(sender: AnyObject) {
+        
+        LocalyticsSession.shared().tagEvent("Subreddit message button tapped")
+        
         if !SettingsManager.defaultManager.purchased {
             self.performSegueWithIdentifier("PurchaseSegue", sender: self)
         } else {
@@ -316,8 +346,6 @@ SearchViewControllerDelegate {
             self.subscribeButton.action = nil
             self.subscribeButton.target = self
         }
-        
-        
     }
     
     func imageForItemAtIndex(index: Int) -> UIImage! {
@@ -377,13 +405,6 @@ SearchViewControllerDelegate {
         
         self.navigationItem.title = ""
         
-        self.navigationItem.leftBarButtonItem!.setTitleTextAttributes([
-            NSFontAttributeName: MyRedditTitleBigFont],
-            forState: UIControlState.Normal)
-        self.navigationItem.rightBarButtonItem!.setTitleTextAttributes([
-            NSFontAttributeName: MyRedditTitleFont],
-            forState: UIControlState.Normal)
-        
         self.tableView.reloadData()
         if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forItem: 0, inSection: 1)) as? LoadMoreHeader {
             cell.startAnimating()
@@ -395,6 +416,9 @@ SearchViewControllerDelegate {
     }
     
     private func fetchLinks(completion: () -> ()) {
+        
+        LocalyticsSession.shared().tagEvent("Fetched links")
+        
         if front {
             RedditSession.sharedSession.fetchFrontPagePosts(self.pagination,
                 category: self.currentCategory, completion: { (pagination, results, error) -> () in
@@ -488,16 +512,15 @@ SearchViewControllerDelegate {
                     self.performSegueWithIdentifier("CommentsSegue", sender: link)
                 } else {
                     if link.domain == "imgur.com" || link.isImageLink() {
-                        if link.domain == "imgur.com" {
-                            // Get gallery images
-                            
+                        if link.domain == "imgur.com" && !link.URL.absoluteString!.hasExtension() {
                             var urlComponents = link.URL.absoluteString?.componentsSeparatedByString("/")
                             if urlComponents?.count > 4 {
                                 let albumID = urlComponents?[4]
                                 IMGAlbumRequest.albumWithID(albumID, success: { (album) -> Void in
                                     self.performSegueWithIdentifier("GallerySegue", sender: album.images)
                                     }) { (error) -> Void in
-                                        print(error)
+                                        LocalyticsSession.shared().tagEvent("Imgur album request failed")
+                                       self.performSegueWithIdentifier("SubredditLink", sender: link)
                                 }
                             } else {
                                 if urlComponents?.count > 3 {
@@ -505,10 +528,11 @@ SearchViewControllerDelegate {
                                     IMGImageRequest.imageWithID(imageID, success: { (image) -> Void in
                                         self.performSegueWithIdentifier("GallerySegue", sender: [image])
                                     }, failure: { (error) -> Void in
-                                        
+                                        LocalyticsSession.shared().tagEvent("Imgur image request failed")
+                                        self.performSegueWithIdentifier("SubredditLink", sender: link)
                                     })
                                 } else {
-                                    self.performSegueWithIdentifier("SubredditLink", sender: link)
+                                    self.performSegueWithIdentifier("GallerySegue", sender: [link.URL])
                                 }
                             }
                         } else {
@@ -524,7 +548,7 @@ SearchViewControllerDelegate {
     
     func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
         if indexPath.section == 0 {
-            if indexPath.row == self.links.count - 1 {
+            if indexPath.row == self.links.count - 1 && self.links.count != 0 {
                 if SettingsManager.defaultManager.valueForSetting(.InfiniteScrolling) {
                     self.fetchLinks({ () -> () in
                         
@@ -613,6 +637,7 @@ SearchViewControllerDelegate {
                     if let link = self.links[indexPath.row] as? RKLink {
                         if swipeType.value == JZSwipeTypeShortLeft.value {
                             // Upvote
+                            LocalyticsSession.shared().tagEvent("Swipe upvote")
                             RedditSession.sharedSession.upvote(link, completion: { (error) -> () in
                                 self.hud.hide(true)
                                 
@@ -626,6 +651,7 @@ SearchViewControllerDelegate {
                                 }
                             })
                         } else if swipeType.value == JZSwipeTypeShortRight.value {
+                            LocalyticsSession.shared().tagEvent("Swipe downvote")
                             // Downvote
                             RedditSession.sharedSession.downvote(link, completion: { (error) -> () in
                                 self.hud.hide(true)
@@ -640,35 +666,52 @@ SearchViewControllerDelegate {
                                 }
                             })
                         } else if swipeType.value == JZSwipeTypeLongLeft.value {
-                            // Save
+                            LocalyticsSession.shared().tagEvent("Swipe more")
+                            // More
+                            self.hud.hide(true)
+                            var alertController = UIAlertController(title: "Select option", message: nil, preferredStyle: .ActionSheet)
+                            
                             if link.saved() {
-                                RedditSession.sharedSession.unSaveLink(link, completion: { (error) -> () in
-                                    self.hud.hide(true)
-                                    link.unSaveLink()
-                                })
+                                alertController.addAction(UIAlertAction(title: "unsave", style: .Default, handler: { (action) -> Void in
+                                    RedditSession.sharedSession.unSaveLink(link, completion: { (error) -> () in
+                                        self.hud.hide(true)
+                                        link.unSaveLink()
+                                    })
+                                }))
                             } else {
-                                RedditSession.sharedSession.saveLink(link, completion: { (error) -> () in
-                                    self.hud.hide(true)
-                                    link.saveLink()
-                                })
+                                alertController.addAction(UIAlertAction(title: "save", style: .Default, handler: { (action) -> Void in
+                                    RedditSession.sharedSession.saveLink(link, completion: { (error) -> () in
+                                        self.hud.hide(true)
+                                        link.saveLink()
+                                    })
+                                }))
                             }
-                        } else {
-                            // Hide
-                            if link.isHidden() {
-                                RedditSession.sharedSession.unHideLink(link, completion: { (error) -> () in
-                                    self.hud.hide(true)
-                                    link.unHideink()
-                                })
-                            } else {
+                            
+                            alertController.addAction(UIAlertAction(title: "hide", style: .Default, handler: { (action) -> Void in
                                 RedditSession.sharedSession.hideLink(link, completion: { (error) -> () in
                                     self.hud.hide(true)
-                                    link.hideLink()
+                                    link.saveLink()
+                                    
                                     self.links.removeAtIndex(indexPath.row)
                                     dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                                        self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+                                        self.tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: .Fade)
                                     })
                                 })
-                            }
+                            }))
+                            
+                            alertController.addAction(UIAlertAction(title: "see comments", style: .Default, handler: { (action) -> Void in
+                                self.performSegueWithIdentifier("CommentsSegue", sender: link)
+                            }))
+                            
+                            alertController.addAction(UIAlertAction(title: "cancel", style: .Cancel, handler: nil))
+                            alertController.present(animated: true, completion: nil)
+                            
+                        } else {
+                            LocalyticsSession.shared().tagEvent("Swipe share")
+                            // Share
+                            self.hud.hide(true)
+                            self.optionsController = LinkShareOptionsViewController(link: link)
+                            self.optionsController.showInView(self.view)
                         }
                     }
                 }
@@ -681,6 +724,7 @@ SearchViewControllerDelegate {
     }
     
     func searchViewController(controller: SearchViewController, didTapSubreddit subreddit: RKSubreddit) {
+        LocalyticsSession.shared().tagEvent("Search subreddit loaded")
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
             self.front = false
             self.subreddit = subreddit

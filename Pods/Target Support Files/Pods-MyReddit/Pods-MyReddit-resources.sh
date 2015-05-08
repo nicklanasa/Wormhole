@@ -52,9 +52,11 @@ install_resource()
 }
 if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_resource "NSDate+TimeAgo/NSDateTimeAgo.bundle"
+  install_resource "${BUILT_PRODUCTS_DIR}/Appirater.bundle"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_resource "NSDate+TimeAgo/NSDateTimeAgo.bundle"
+  install_resource "${BUILT_PRODUCTS_DIR}/Appirater.bundle"
 fi
 
 rsync -avr --copy-links --no-relative --exclude '*/.svn/*' --files-from="$RESOURCES_TO_COPY" / "${CONFIGURATION_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}"

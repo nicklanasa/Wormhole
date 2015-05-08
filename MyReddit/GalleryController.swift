@@ -22,23 +22,14 @@ ImageViewControllerDelegate {
     @IBOutlet weak var toolbar: UIToolbar!
     @IBOutlet weak var seeMoreButton: UIButton!
     @IBOutlet weak var seeLessButton: UIButton!
+    
+    var optionsController: LinkShareOptionsViewController!
    
     var link: RKLink!
     
-    func heightForLabel(text:String, font:UIFont, width:CGFloat) -> CGFloat
-    {
-        let label: UILabel = UILabel(frame: CGRectMake(0, 0, width, CGFloat.max))
-        label.numberOfLines = 0
-        label.lineBreakMode = NSLineBreakMode.ByWordWrapping
-        label.font = font
-        label.text = text
-        
-        label.sizeToFit()
-        return label.frame.height + 20
-        
-    }
-    
     @IBAction func seeMoreButtonTapped(sender: AnyObject) {
+        
+        LocalyticsSession.shared().tagEvent("See more button toggled")
         
         var newOrigin: CGFloat!
         var newHeight: CGFloat!
@@ -54,7 +45,7 @@ ImageViewControllerDelegate {
             self.seeMoreButton.hidden = false
             self.seeLessButton.hidden = true
         } else {
-            newHeight = self.heightForLabel(self.postTitleLabel.text!, font: self.postTitleLabel.font, width:  self.postTitleLabel.frame.size.width)
+            newHeight = self.postTitleLabel.heightText()
             newLabelHeight = newHeight
             newOrigin = (newHeight - frame.height)
             
@@ -82,8 +73,24 @@ ImageViewControllerDelegate {
         }
     }
     
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        LocalyticsSession.shared().tagScreen("Gallery")
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.seeMoreButtonTapped(self)
+    }
+    
     override func viewDidLoad() {
         self.updateVoteButtons()
+        
+        self.seeMoreButton.hidden = false
+        self.seeLessButton.hidden = true
+        
+        self.postTitleView.backgroundColor = MyRedditBackgroundColor
+        self.postTitleLabel.textColor = MyRedditLabelColor
         
         self.navigationController?.navigationBar.tintColor = MyRedditLabelColor
         
@@ -104,16 +111,37 @@ ImageViewControllerDelegate {
         
         self.pagesBarbutton.title = "\(1)/\(self.images!.count)"
         
-        var infoString = NSMutableAttributedString(string:"\(self.link.title)\nby \(self.link.author)")
+        self.configureNav()
+    }
+    
+    private func configureNav() {
+        
+        var infoString = NSMutableAttributedString(string:"\(self.link.title)\nby \(self.link.author) on /r/\(self.link.subreddit)")
         var attrs = [NSFontAttributeName : MyRedditSelfTextFont]
+        var subAttrs = [NSFontAttributeName : MyRedditSelfTextFont, NSForegroundColorAttributeName : MyRedditColor]
         infoString.addAttributes(attrs, range: NSMakeRange(count("\(self.link.title)\nby "), count(link.author)))
+        infoString.addAttributes(subAttrs, range: NSMakeRange(count("\(self.link.title)\nby \(self.link.author) on "), count("/r/\(link.subreddit)")))
         
         self.postTitleLabel.attributedText = infoString
-
-        self.postTitleView.backgroundColor = MyRedditBackgroundColor
-        self.postTitleLabel.textColor = MyRedditLabelColor
+        
         self.view.backgroundColor = MyRedditBackgroundColor
-    }
+        
+        var score = self.link.score.abbreviateNumber()
+        var comments = Int(self.link.totalComments).abbreviateNumber()
+        
+        var titleString = NSMutableAttributedString(string: "\(score) | \(comments) comments")
+        var fontAttrs = [NSFontAttributeName : MyRedditTitleFont]
+        var scoreAttrs = [NSForegroundColorAttributeName : MyRedditUpvoteColor]
+        var commentsAttr = [NSForegroundColorAttributeName : MyRedditColor]
+        titleString.addAttributes(fontAttrs, range: NSMakeRange(0, count(titleString.string)))
+        titleString.addAttributes(scoreAttrs, range: NSMakeRange(0, count(score)))
+        titleString.addAttributes(commentsAttr, range: NSMakeRange(count("\(score) | "), count(comments)))
+        
+        var navLabel = UILabel(frame: CGRectZero)
+        navLabel.attributedText = titleString
+        navLabel.textAlignment = .Center
+        navLabel.sizeToFit()
+        self.navigationItem.titleView = navLabel    }
     
     func pageViewController(pageViewController: UIPageViewController, willTransitionToViewControllers pendingViewControllers: [AnyObject]) {
         if self.postTitleView.frame.size.height > 35 {
@@ -246,6 +274,7 @@ ImageViewControllerDelegate {
     }
     
     private func updateVoteButtons() {
+        self.seeMoreButtonTapped(self)
         if self.link.upvoted() {
             self.upvoteButton.tintColor = MyRedditUpvoteColor
             self.downvoteButton.tintColor = MyRedditLabelColor
@@ -259,14 +288,14 @@ ImageViewControllerDelegate {
     }
 
     @IBAction func shareButtonTapped(sender: AnyObject) {
-        let objectsToShare = [self.link.title, self.link.URL]
+        self.optionsController = LinkShareOptionsViewController(link: self.link)
+        self.optionsController.showInView(self.view)
         
-        let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
-        
-        self.presentViewController(activityVC, animated: true, completion: nil)
+        LocalyticsSession.shared().tagEvent("Gallery share button tapped")
     }
     
     @IBAction func downvoteButtonTapped(sender: AnyObject) {
+        LocalyticsSession.shared().tagEvent("Gallery downvote button tapped")
         if !SettingsManager.defaultManager.purchased {
             self.performSegueWithIdentifier("PurchaseSegue", sender: self)
         } else {
@@ -284,6 +313,7 @@ ImageViewControllerDelegate {
     }
     
     @IBAction func upvoteButtonTapped(sender: AnyObject) {
+        LocalyticsSession.shared().tagEvent("Gallery upvote button tapped")
         if !SettingsManager.defaultManager.purchased {
             self.performSegueWithIdentifier("PurchaseSegue", sender: self)
         } else {
@@ -301,7 +331,7 @@ ImageViewControllerDelegate {
     }
     
     func imageViewController(controller: ImageViewController, didTapImage image: UIImage?) {
-        
+        LocalyticsSession.shared().tagEvent("Gallery image tapped")
         if self.postTitleView.alpha == 0.0 {
             UIView.animateWithDuration(0.3, animations: { () -> Void in
                 self.postTitleView.alpha = 1.0

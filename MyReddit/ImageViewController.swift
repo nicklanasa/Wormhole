@@ -28,11 +28,20 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
         self.imageView.image = nil
     }
     
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        LocalyticsSession.shared().tagScreen("GalleryImage")
+    }
+    
     override func viewDidAppear(animated: Bool) {
         self.indicator.startAnimating()
         self.imageView.sd_setImageWithURL(self.imageURL, placeholderImage: nil, options: nil) { (image, error, cacheType, url) -> Void in
+            if error != nil {
+                UIAlertView(title: "Error!", message: "Unable to load image.", delegate: self, cancelButtonTitle: "Ok").show()
+            } else {
+                self.imageView.image = image
+            }
             self.indicator.stopAnimating()
-            self.imageView.image = image
         }
         
         self.view.backgroundColor = MyRedditBackgroundColor

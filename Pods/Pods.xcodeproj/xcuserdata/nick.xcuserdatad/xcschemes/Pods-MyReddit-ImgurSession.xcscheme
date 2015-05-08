@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "D7F54F708534FBB8B72D0CCE"
+               BlueprintIdentifier = "E19F980CE2A839414C9E6098"
                BuildableName = "libPods-MyReddit-ImgurSession.a"
                BlueprintName = "Pods-MyReddit-ImgurSession"
                ReferencedContainer = "container:Pods.xcodeproj">

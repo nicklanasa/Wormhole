@@ -62,6 +62,11 @@ UINavigationControllerDelegate {
 
     }
     
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        LocalyticsSession.shared().tagScreen("Post")
+    }
+    
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1
     }
@@ -134,7 +139,9 @@ UINavigationControllerDelegate {
                                                 message: error!.localizedDescription,
                                                 delegate: self,
                                                 cancelButtonTitle: "Ok").show()
+                                            LocalyticsSession.shared().tagEvent("Unable to text")
                                         } else {
+                                            LocalyticsSession.shared().tagEvent("Posted text link")
                                             self.cancelButtonTapped(self)
                                         }
                                     })
@@ -159,6 +166,8 @@ UINavigationControllerDelegate {
                                                     message: error.localizedDescription,
                                                     delegate: self,
                                                     cancelButtonTitle: "Ok").show()
+                                                
+                                                LocalyticsSession.shared().tagEvent("Unable to upload image")
                                             } else {
                                                 RedditSession.sharedSession.submitLink(postTitleCell.titleTextField.text, subredditName: subredditCell.subredditTextField.text, text: nil, url: url, postType: .Link, completion: { (error) -> () in
                                                     if error != nil {
@@ -167,7 +176,9 @@ UINavigationControllerDelegate {
                                                             message: error!.localizedDescription,
                                                             delegate: self,
                                                             cancelButtonTitle: "Ok").show()
+                                                        LocalyticsSession.shared().tagEvent("Unable to post link")
                                                     } else {
+                                                        LocalyticsSession.shared().tagEvent("Posted link")
                                                         self.cancelButtonTapped(self)
                                                     }
                                                 })
@@ -181,7 +192,9 @@ UINavigationControllerDelegate {
                                                     message: error!.localizedDescription,
                                                     delegate: self,
                                                     cancelButtonTitle: "Ok").show()
+                                                LocalyticsSession.shared().tagEvent("Unable to post link")
                                             } else {
+                                                LocalyticsSession.shared().tagEvent("Posted link")
                                                 self.cancelButtonTapped(self)
                                             }
                                         })
@@ -219,6 +232,7 @@ UINavigationControllerDelegate {
     }
     
     func postSubredditCell(cell: PostSubredditCell, didTapAddButton sender: AnyObject) {
+        LocalyticsSession.shared().tagEvent("Post search for subreddit")
         self.performSegueWithIdentifier("SearchSegue", sender: self)
     }
     
@@ -245,10 +259,12 @@ UINavigationControllerDelegate {
     }
     
     func searchViewController(controller: SearchViewController, didTapSubreddit subreddit: RKSubreddit) {
+        LocalyticsSession.shared().tagEvent("Added subreddit to post")
         self.subreddit = subreddit
     }
     
     func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage!, editingInfo: [NSObject : AnyObject]!) {
+        LocalyticsSession.shared().tagEvent("Added image from device to post")
         self.selectedImage = image
         picker.dismissViewControllerAnimated(true, completion: nil)
     }
@@ -262,6 +278,8 @@ UINavigationControllerDelegate {
                 picker.delegate = self
                 picker.sourceType = .PhotoLibrary
                 self.presentViewController(picker, animated: true, completion: nil)
+                
+                LocalyticsSession.shared().tagEvent("Photo library tapped")
             }
             else{
                 NSLog("No Camera.")
@@ -274,6 +292,8 @@ UINavigationControllerDelegate {
                 picker.delegate = self
                 picker.sourceType = .Camera
                 self.presentViewController(picker, animated: true, completion: nil)
+                
+                LocalyticsSession.shared().tagEvent("Camera tapped")
             }
             else{
                 NSLog("No Camera.")
@@ -281,12 +301,13 @@ UINavigationControllerDelegate {
         }))
         
         alertController.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: { (action) -> Void in
-            
+            LocalyticsSession.shared().tagEvent("Image selected cancelled")
         }))
         
         if let image = self.selectedImage {
             alertController.addAction(UIAlertAction(title: "Remove link", style: .Destructive, handler: { (action) -> Void in
                 self.selectedImage = nil
+                LocalyticsSession.shared().tagEvent("Removed image from post")
             }))
         }
         

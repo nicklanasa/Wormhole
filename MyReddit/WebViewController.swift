@@ -23,6 +23,11 @@ class WebViewController: UIViewController, UIWebViewDelegate {
         
         self.navigationItem.title = self.url.absoluteString
     }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        LocalyticsSession.shared().tagScreen("WebView")
+    }
 
     @IBAction func closeButtonTapped(sender: AnyObject) {
         self.dismissViewControllerAnimated(true, completion: nil)
@@ -35,5 +40,7 @@ class WebViewController: UIViewController, UIWebViewDelegate {
             applicationActivities: nil)
         
         self.presentViewController(activityVC, animated: true, completion: nil)
+        
+        LocalyticsSession.shared().tagEvent("Share button tapped WebView")
     }
 }

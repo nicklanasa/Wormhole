@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "314AE308F238FFC798239ECB"
+               BlueprintIdentifier = "A9157C64B0196B719C6D58D9"
                BuildableName = "libPods-MyReddit-RFMarkdownTextView.a"
                BlueprintName = "Pods-MyReddit-RFMarkdownTextView"
                ReferencedContainer = "container:Pods.xcodeproj">

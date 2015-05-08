@@ -16,6 +16,7 @@ class TitleCell: PostCell {
     @IBOutlet weak var postInfoLabel: UILabel!
     @IBOutlet weak var subredditLabel: UILabel!
     @IBOutlet weak var stickyLabel: UILabel!
+    @IBOutlet weak var commentImageView: UIImageView!
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -68,6 +69,14 @@ class TitleCell: PostCell {
             } else {
                 self.titleLabel.textColor = MyRedditLabelColor
             }
+            
+            if let imageView = self.commentImageView {
+                if SettingsManager.defaultManager.valueForSetting(.NightMode) {
+                    imageView.image = UIImage(named: "ChatWhite")
+                } else {
+                    imageView.image = UIImage(named: "Chat")
+                }
+            }
         }
     }
     
@@ -98,6 +107,12 @@ class TitleCell: PostCell {
             
             self.titleLabel.textColor = MyRedditLabelColor
             self.contentView.backgroundColor = MyRedditBackgroundColor
+            
+            if SettingsManager.defaultManager.valueForSetting(.NightMode) {
+                self.commentImageView.image = UIImage(named: "ChatWhite")
+            } else {
+                self.commentImageView.image = UIImage(named: "Chat")
+            }
         }
     }
 }

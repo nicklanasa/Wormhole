@@ -36,9 +36,13 @@ class UserSession {
         NSUserDefaults.standardUserDefaults().setObject(nil, forKey: "password")
         NSUserDefaults.standardUserDefaults().setObject(nil, forKey: "username")
         RKClient.sharedClient().signOut()
+        
+        LocalyticsSession.shared().tagEvent("Logged out")
     }
     
     func loginWithUsername(username: String, password: String, completion: ErrorCompletion) {
+        
+        LocalyticsSession.shared().tagEvent("Logged in")
         
         self.logout()
         
@@ -68,6 +72,8 @@ class UserSession {
     }
     
     func nightMode() {
+        
+        LocalyticsSession.shared().tagEvent("Night mode toggled")
         
         UIApplication.sharedApplication().setStatusBarStyle(.LightContent, animated: true)
         
@@ -117,6 +123,8 @@ class UserSession {
         }
     
     func dayMode() {
+        
+        LocalyticsSession.shared().tagEvent("Day mode toggled")
         
         UIApplication.sharedApplication().setStatusBarStyle(.Default, animated: true)
         

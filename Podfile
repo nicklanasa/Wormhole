@@ -15,6 +15,8 @@ pod 'ImgurAnonymousAPIClient', :git => 'https://github.com/nolanw/ImgurAnonymous
 pod 'Facebook-iOS-SDK'
 pod 'NSDate+Calendar'
 pod 'ImgurSession'
+pod 'Appirater'
+pod 'Localytics-AMP', '~> 2.0'
 
 end
 

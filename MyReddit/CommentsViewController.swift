@@ -13,6 +13,7 @@ class CommentsViewController: UITableViewController, CommentCellDelegate, JZSwip
     
     var link: RKLink!
     var comment: RKComment!
+    var optionsController: LinkShareOptionsViewController!
     
     var forComment = false
         
@@ -30,15 +31,6 @@ class CommentsViewController: UITableViewController, CommentCellDelegate, JZSwip
         }
     }
     
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
-        self.syncComments()
-    }
-    
-    override func viewDidDisappear(animated: Bool) {
-        super.viewDidDisappear(animated)
-    }
-    
     lazy var refreshCommentsControl: UIRefreshControl! = {
         var control = UIRefreshControl()
         control.attributedTitle = NSAttributedString(string: "Pull to refresh", attributes: [NSFontAttributeName : MyRedditCommentTextBoldFont, NSForegroundColorAttributeName : MyRedditLabelColor])
@@ -51,14 +43,24 @@ class CommentsViewController: UITableViewController, CommentCellDelegate, JZSwip
         self.syncComments()
     }
     
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        LocalyticsSession.shared().tagScreen("Comments")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         if !self.forComment {
             self.refreshControl = self.refreshCommentsControl
+            self.navigationItem.rightBarButtonItem?.enabled = true
+        } else {
+            self.navigationItem.rightBarButtonItem?.enabled = false
         }
         
-        self.navigationItem.title =  !self.forComment ? "\(self.link.author) | \(self.link.totalComments) comments" : "\(self.comment.author) | \(self.comment.replies.count) replies"
+        self.syncComments()
+        
+        self.navigationItem.title =  !self.forComment ? "\(self.link.totalComments) comments" : "\(self.comment.author) | \(self.comment.replies.count) replies"
         
         self.tableView.rowHeight = UITableViewAutomaticDimension
         
@@ -233,6 +235,7 @@ class CommentsViewController: UITableViewController, CommentCellDelegate, JZSwip
                     if let object = votedable {
                         if swipeType.value == JZSwipeTypeShortRight.value || swipeType.value == JZSwipeTypeLongRight.value {
                             // Downvote
+                            LocalyticsSession.shared().tagEvent("Swipe downvote comment")
                             RedditSession.sharedSession.downvote(object, completion: { (error) -> () in
                                 self.hud.hide(true)
                                 
@@ -247,6 +250,7 @@ class CommentsViewController: UITableViewController, CommentCellDelegate, JZSwip
                             })
                         } else if swipeType.value == JZSwipeTypeShortLeft.value || swipeType.value == JZSwipeTypeLongLeft.value {
                             // Upvote
+                            LocalyticsSession.shared().tagEvent("Swipe upvote comment")
                             RedditSession.sharedSession.upvote(object, completion: { (error) -> () in
                                 self.hud.hide(true)
                                 
@@ -274,6 +278,9 @@ class CommentsViewController: UITableViewController, CommentCellDelegate, JZSwip
     
     func addCommentViewController(controller: AddCommentViewController, didAddComment success: Bool) {
         if success {
+            
+            LocalyticsSession.shared().tagEvent("Added comment")
+            
             if !self.forComment {
                 RedditSession.sharedSession.fetchComments(nil, link: self.link) { (pagination, results, error) -> () in
                     
@@ -288,6 +295,8 @@ class CommentsViewController: UITableViewController, CommentCellDelegate, JZSwip
                     }
                 }
             }
+        } else {
+            LocalyticsSession.shared().tagEvent("Add comment failed")
         }
     }
     
@@ -307,5 +316,10 @@ class CommentsViewController: UITableViewController, CommentCellDelegate, JZSwip
                 self.findCurrentCommentInComments(comment.replies)
             }
         }
+    }
+    
+    @IBAction func shareButtonTapped(sender: AnyObject) {
+        var linkOptions = LinkShareOptionsViewController(link: self.link)
+        linkOptions.showInView(self.view)
     }
 }

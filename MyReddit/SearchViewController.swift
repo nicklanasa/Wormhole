@@ -76,7 +76,7 @@ MultiRedditsViewControllerDelegate {
         controller.searchBar.sizeToFit()
         controller.searchBar.searchBarStyle = .Minimal
         controller.searchBar.returnKeyType = .Done
-        controller.searchBar.placeholder = "Enter subreddit name..."
+        controller.searchBar.placeholder = "Search links..."
         return controller
     }()
     
@@ -100,66 +100,77 @@ MultiRedditsViewControllerDelegate {
     }
     
     func search() {
-        if self.segmentationControl.selectedSegmentIndex == 1 {
-            RedditSession.sharedSession.searchForSubredditByName(searchController.searchBar.text, pagination: nil, completion: { (pagination, results, error) -> () in
-                if error == nil {
-                    if let subreddits = results {
-                        self.subreddits = subreddits
+        var searchTtext = self.searchController.searchBar.text.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
+        
+        if count(searchTtext) > 0 {
+            if self.segmentationControl.selectedSegmentIndex == 1 {
+                RedditSession.sharedSession.searchForSubredditByName(searchTtext, pagination: nil, completion: { (pagination, results, error) -> () in
+                    if error == nil {
+                        if let subreddits = results {
+                            self.subreddits = subreddits
+                        }
                     }
-                }
-                
-            })
-        } else if self.segmentationControl.selectedSegmentIndex == 0 {
-            if self.restrictSubreddit.on {
-                if let subreddit = self.subreddit {
-                    RedditSession.sharedSession.searchForLinksInSubreddit(self.subreddit, searchText: searchController.searchBar.text, pagination: self.pagination, completion: { (pagination, results, error) -> () in
-                        if error == nil {
-                            if let links = results {
-                                self.links = links
+                    
+                })
+            } else if self.segmentationControl.selectedSegmentIndex == 0 {
+                if self.restrictSubreddit.on {
+                    if let subreddit = self.subreddit {
+                        RedditSession.sharedSession.searchForLinksInSubreddit(self.subreddit, searchText: searchController.searchBar.text, pagination: self.pagination, completion: { (pagination, results, error) -> () in
+                            if error == nil {
+                                if let links = results {
+                                    self.links = links
+                                }
                             }
-                        }
-                        
-                    })
+                            
+                        })
+                    } else {
+                        RedditSession.sharedSession.searchForLinks(searchTtext, pagination: self.pagination, completion: { (pagination, results, error) -> () in
+                            if error == nil {
+                                if let links = results {
+                                    self.links = links
+                                }
+                            }
+                            
+                        })
+                    }
                 } else {
-                    RedditSession.sharedSession.searchForLinks(searchController.searchBar.text, pagination: self.pagination, completion: { (pagination, results, error) -> () in
+                    RedditSession.sharedSession.searchForLinks(searchTtext, pagination: self.pagination, completion: { (pagination, results, error) -> () in
                         if error == nil {
                             if let links = results {
                                 self.links = links
                             }
                         }
-                        
                     })
                 }
             } else {
-                RedditSession.sharedSession.searchForLinks(searchController.searchBar.text, pagination: self.pagination, completion: { (pagination, results, error) -> () in
+                RedditSession.sharedSession.searchForUser(searchTtext, completion: { (pagination, results, error) -> () in
                     if error == nil {
-                        if let links = results {
-                            self.links = links
+                        if let users = results {
+                            self.users = users
                         }
                     }
                 })
             }
-        } else {
-            RedditSession.sharedSession.searchForUser(searchController.searchBar.text.stringByReplacingOccurrencesOfString(" ", withString: "", options: nil, range: nil), completion: { (pagination, results, error) -> () in
-                if error == nil {
-                    if let users = results {
-                        self.users = users
-                    }
-                }
-            })
         }
     }
     
     @IBAction func segmentationControlValueChanged(sender: AnyObject) {
         if self.segmentationControl.selectedSegmentIndex == 0 {
             self.restrictToSubredditSwitch.enabled = true
-            self.searchController.searchBar.placeholder = "Search for link..."
+            self.searchController.searchBar.placeholder = "Search links..."
+            
+            LocalyticsSession.shared().tagEvent("Link search filter changed")
+            
         } else if self.segmentationControl.selectedSegmentIndex == 1 {
             self.restrictToSubredditSwitch.enabled = false
-            self.searchController.searchBar.placeholder = "Enter subreddit name..."
+            self.searchController.searchBar.placeholder = "Search subreddits..."
+            
+            LocalyticsSession.shared().tagEvent("Subreddit search filter changed")
         } else {
             self.restrictToSubredditSwitch.enabled = false
-            self.searchController.searchBar.placeholder = "Enter username..."
+            self.searchController.searchBar.placeholder = "Search users..."
+            
+            LocalyticsSession.shared().tagEvent("Users search filter changed")
         }
         
         self.subreddits = Array<AnyObject>()
@@ -169,6 +180,8 @@ MultiRedditsViewControllerDelegate {
     
     func searchBarCancelButtonClicked(searchBar: UISearchBar) {
         self.isFiltering = false
+        
+        LocalyticsSession.shared().tagEvent("Search cancelled")
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -192,11 +205,15 @@ MultiRedditsViewControllerDelegate {
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        
+        LocalyticsSession.shared().tagScreen("Search")
+        
         if let delegateObj = self.delegate as? PostTableViewController {
             self.segmentationControl.selectedSegmentIndex = 1
             self.segmentationControl.setEnabled(false, forSegmentAtIndex: 0)
             self.segmentationControl.setEnabled(false, forSegmentAtIndex: 2)
             self.searchController.active = true
+            self.searchController.searchBar.placeholder = "Search subreddits..."
         } else {
             var restrictToSubreddit: UIBarButtonItem!
             if let subreddit = self.subreddit {
@@ -385,6 +402,7 @@ MultiRedditsViewControllerDelegate {
                     if let link = self.links[indexPath.row] as? RKLink {
                         if swipeType.value == JZSwipeTypeShortLeft.value {
                             // Upvote
+                            LocalyticsSession.shared().tagEvent("Swipe upvote")
                             RedditSession.sharedSession.upvote(link, completion: { (error) -> () in
                                 self.hud.hide(true)
                                 
@@ -394,10 +412,11 @@ MultiRedditsViewControllerDelegate {
                                         delegate: self,
                                         cancelButtonTitle: "Ok").show()
                                 } else {
-                                    
+                                    self.syncLinks()
                                 }
                             })
                         } else if swipeType.value == JZSwipeTypeShortRight.value {
+                            LocalyticsSession.shared().tagEvent("Swipe downvote")
                             // Downvote
                             RedditSession.sharedSession.downvote(link, completion: { (error) -> () in
                                 self.hud.hide(true)
@@ -408,43 +427,59 @@ MultiRedditsViewControllerDelegate {
                                         delegate: self,
                                         cancelButtonTitle: "Ok").show()
                                 } else {
-                                    
+                                    self.syncLinks()
                                 }
                             })
                         } else if swipeType.value == JZSwipeTypeLongLeft.value {
-                            // Save
+                            LocalyticsSession.shared().tagEvent("Swipe more")
+                            // More
+                            self.hud.hide(true)
+                            var alertController = UIAlertController(title: "Select option", message: nil, preferredStyle: .ActionSheet)
+                            
                             if link.saved() {
-                                RedditSession.sharedSession.unSaveLink(link, completion: { (error) -> () in
-                                    self.hud.hide(true)
-                                    link.unSaveLink()
-                                })
+                                alertController.addAction(UIAlertAction(title: "unsave", style: .Default, handler: { (action) -> Void in
+                                    RedditSession.sharedSession.unSaveLink(link, completion: { (error) -> () in
+                                        self.hud.hide(true)
+                                        link.unSaveLink()
+                                    })
+                                }))
                             } else {
-                                RedditSession.sharedSession.saveLink(link, completion: { (error) -> () in
-                                    self.hud.hide(true)
-                                    link.saveLink()
-                                })
+                                alertController.addAction(UIAlertAction(title: "save", style: .Default, handler: { (action) -> Void in
+                                    RedditSession.sharedSession.saveLink(link, completion: { (error) -> () in
+                                        self.hud.hide(true)
+                                        link.saveLink()
+                                    })
+                                }))
                             }
-                        } else {
-                            // Hide
-                            if link.isHidden() {
-                                RedditSession.sharedSession.unHideLink(link, completion: { (error) -> () in
-                                    self.hud.hide(true)
-                                    link.unHideink()
-                                })
-                            } else {
+                            
+                            alertController.addAction(UIAlertAction(title: "hide", style: .Default, handler: { (action) -> Void in
                                 RedditSession.sharedSession.hideLink(link, completion: { (error) -> () in
                                     self.hud.hide(true)
-                                    link.hideLink()
+                                    link.saveLink()
+                                    
                                     self.links.removeAtIndex(indexPath.row)
                                     dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                                        self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+                                        self.tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: .Fade)
                                     })
                                 })
-                            }
+                            }))
+                            
+                            alertController.addAction(UIAlertAction(title: "see comments", style: .Default, handler: { (action) -> Void in
+                                self.performSegueWithIdentifier("CommentsSegue", sender: link)
+                            }))
+                            
+                            alertController.addAction(UIAlertAction(title: "cancel", style: .Cancel, handler: nil))
+                            alertController.present(animated: true, completion: nil)
+                            
+                        } else {
+                            LocalyticsSession.shared().tagEvent("Swipe share")
+                            // Share
+                            self.hud.hide(true)
+                            self.optionsController = LinkShareOptionsViewController(link: link)
+                            self.optionsController.showInView(self.view)
                         }
                     }
                 }
-
             }
         }
     }

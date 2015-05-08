@@ -7,7 +7,7 @@
 //
 
 import Foundation
-extension UIAlertController {
+extension UIViewController {
     
     func show() {
         present(animated: true, completion: nil)

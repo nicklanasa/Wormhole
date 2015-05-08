@@ -20,6 +20,7 @@ PODS:
   - AFNetworking/UIKit (2.5.3):
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
+  - Appirater (2.0.4)
   - BDGInAppPurchase (0.0.2)
   - Bolts (1.1.5):
     - Bolts/AppLinks (= 1.1.5)
@@ -48,6 +49,7 @@ PODS:
   - ImgurSession (1.2):
     - AFNetworking
   - JZSwipeCell (1.1)
+  - Localytics-AMP (2.71.0)
   - Mantle (1.5.4):
     - Mantle/extobjc (= 1.5.4)
   - Mantle/extobjc (1.5.4)
@@ -66,12 +68,14 @@ PODS:
   - XNGMarkdownParser (0.3.2)
 
 DEPENDENCIES:
+  - Appirater
   - BDGInAppPurchase
   - Facebook-iOS-SDK
   - ImgurAnonymousAPIClient (from `https://github.com/nolanw/ImgurAnonymousAPIClient.git`,
     tag `v0.1.1`)
   - ImgurSession
   - JZSwipeCell (~> 1.1)
+  - Localytics-AMP (~> 2.0)
   - MBProgressHUD
   - NSDate+Calendar
   - NSDate+TimeAgo
@@ -92,12 +96,14 @@ CHECKOUT OPTIONS:
 
 SPEC CHECKSUMS:
   AFNetworking: e1d86c2a96bb5d2e7408da36149806706ee122fe
+  Appirater: 8783318c36414e8de3ea023443028df94c1b784b
   BDGInAppPurchase: 9f466e82a4a3e1d8b744268280748c1d91ddda67
   Bolts: aac24961496d504aa56fc267cde95162a71bac39
   Facebook-iOS-SDK: f42dfb27283bf5f05e3a9edc88459a75b9892d99
   ImgurAnonymousAPIClient: 3e5f9b8782e300743ed167d62b775a7f248fa218
   ImgurSession: 3ded7eec93121fcf8d1e9f3f1783b8d764c846d3
   JZSwipeCell: 662d75e1ed6805abbd977dee70e7dac807853109
+  Localytics-AMP: 8cc9eba1d63fa50c5ec780451dfe00b4fbad4fb9
   Mantle: 60acd0cd363e27d945bda0a6b8e90577112d28f3
   MBProgressHUD: c47f2c166c126cf2ce36498d80f33e754d4e93ad
   NSDate+Calendar: 30747b15cbeda4d835c39f5d597d8eaa2ddc3942

@@ -59,6 +59,11 @@ class AddCommentViewController: UIViewController, UITextViewDelegate {
         })
     }
     
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        LocalyticsSession.shared().tagScreen("AddComment")
+    }
+    
     @IBAction func doneButtonTapped(sender: AnyObject) {
         textView.resignFirstResponder()
         

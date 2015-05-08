@@ -55,12 +55,16 @@ JZSwipeCellDelegate {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
+        LocalyticsSession.shared().tagScreen("Messages")
+        
         self.fetchMessages()
     }
     
     @IBOutlet weak var tableView: UITableView!
 
     private func fetchMessages() {
+        
+        LocalyticsSession.shared().tagEvent("Fetch Messages")
         
         if let messageCategory = self.category {
             switch messageCategory {
@@ -155,6 +159,8 @@ JZSwipeCellDelegate {
             }
             
             header.stopAnimating()
+            
+            LocalyticsSession.shared().tagEvent("Fetch Messages")
         }
     }
     
@@ -194,8 +200,8 @@ JZSwipeCellDelegate {
                     if let message = self.messages[indexPath.row] as? RKMessage {
                         self.performSegueWithIdentifier("ReplyToMessageSegue", sender: message)
                     }
-                } else {
                     
+                    LocalyticsSession.shared().tagEvent("Reply to message")
                 }
             }
         }

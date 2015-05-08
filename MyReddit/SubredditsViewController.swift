@@ -20,6 +20,7 @@ class SubredditsViewController: UIViewController, UITableViewDataSource, UITable
     }
     
     @IBAction func editButtonTApped(sender: AnyObject) {
+        LocalyticsSession.shared().tagEvent("Subreddits edit button tapped")
         self.tableView.setEditing(true, animated: true)
         
         if let barButton = sender as? UIBarButtonItem {
@@ -42,10 +43,12 @@ class SubredditsViewController: UIViewController, UITableViewDataSource, UITable
         get {
             var alert = UIAlertController(title: "Search", message: "Would you like to go to search now to add subreddit's to your multireddits?", preferredStyle: .Alert)
             alert.addAction(UIAlertAction(title: "Sure", style: .Default, handler: { (a) -> Void in
+                LocalyticsSession.shared().tagEvent("Subreddit search after creating multireddit")
                 self.performSegueWithIdentifier("SearchSegue", sender: self)
             }))
             
             alert.addAction(UIAlertAction(title: "No", style: .Cancel, handler: { (a) -> Void in
+                LocalyticsSession.shared().tagEvent("Cancelled subreddit search after creating multireddit")
             }))
             
             return alert
@@ -69,6 +72,8 @@ class SubredditsViewController: UIViewController, UITableViewDataSource, UITable
             let subredditsData = NSKeyedArchiver.archivedDataWithRootObject(self.subreddits)
             
             NSUserDefaults.standardUserDefaults().setObject(subredditsData, forKey: "subreddits")
+            
+            LocalyticsSession.shared().tagEvent("Updated subreddits")
         }
     }
     
@@ -89,6 +94,8 @@ class SubredditsViewController: UIViewController, UITableViewDataSource, UITable
             let subredditsData = NSKeyedArchiver.archivedDataWithRootObject(self.multiSubreddits)
             
             NSUserDefaults.standardUserDefaults().setObject(subredditsData, forKey: "multiSubreddits")
+            
+            LocalyticsSession.shared().tagEvent("Updated multireddits")
         }
     }
     
@@ -99,6 +106,8 @@ class SubredditsViewController: UIViewController, UITableViewDataSource, UITable
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        
+        LocalyticsSession.shared().tagScreen("Subreddits")
         
         for item in self.toolbarItems as! [UIBarButtonItem] {
             item.tintColor = MyRedditLabelColor
@@ -176,6 +185,7 @@ class SubredditsViewController: UIViewController, UITableViewDataSource, UITable
     }
     
     func finishEditing(sender: AnyObject) {
+        LocalyticsSession.shared().tagEvent("Finished editing subreddits")
         self.tableView.setEditing(false, animated: true)
         
         if let barButton = sender as? UIBarButtonItem {
@@ -270,21 +280,24 @@ class SubredditsViewController: UIViewController, UITableViewDataSource, UITable
                         
                         if count(multiRedditName) == 0 || multiRedditName.componentsSeparatedByString(" ").count > 1 {
                             UIAlertView(title: "Error!", message: "You must enter in a multireddit name!", delegate: self, cancelButtonTitle: "Ok").show()
+                            LocalyticsSession.shared().tagEvent("Invalid multireddit name")
                         } else {
                             
                             if count(multiRedditName) < 3 {
+                                LocalyticsSession.shared().tagEvent("Invalid multireddit name")
                                 UIAlertView(title: "Error!", message: "Multireddit name must be greater than 3 characters!", delegate: self, cancelButtonTitle: "Ok").show()
                             } else {
                                 var visibilityAlert = UIAlertController(title: "Visibility", message: "Please select the visibility for the multireddit.", preferredStyle: .Alert)
                                 visibilityAlert.addAction(UIAlertAction(title: "Public", style: .Default, handler: { (a) -> Void in
+                                    LocalyticsSession.shared().tagEvent("Created public multireddit")
                                     RedditSession.sharedSession.createMultiReddit(multiRedditName, visibility: .Public, completion: { (error) -> () in
                                         self.syncMultiReddits()
-                                        
                                         self.presentViewController(self.addSubredditsToMultiRedditAlert, animated: true, completion: nil)
                                     })
                                 }))
                                 
                                 visibilityAlert.addAction(UIAlertAction(title: "Private", style: .Default, handler: { (a) -> Void in
+                                    LocalyticsSession.shared().tagEvent("Created private multireddit")
                                     RedditSession.sharedSession.createMultiReddit(multiRedditName, visibility: .Private, completion: { (error) -> () in
                                         self.syncMultiReddits()
                                         
@@ -322,8 +335,10 @@ class SubredditsViewController: UIViewController, UITableViewDataSource, UITable
                             RedditSession.sharedSession.deleteMultiReddit(multiReddit, completion: { (error) -> () in
                                 if error != nil {
                                     UIAlertView(title: "Error!", message: "Unable to delete MultiReddit! Please make sure you're connected to the internets.", delegate: self, cancelButtonTitle: "Ok").show()
+                                    LocalyticsSession.shared().tagEvent("Delete multireddit failed")
                                 } else {
                                     self.multiSubreddits.removeAtIndex(indexPath.row - 1)
+                                    LocalyticsSession.shared().tagEvent("Deleted multireddit")
                                 }
                             })
                         }
@@ -332,8 +347,10 @@ class SubredditsViewController: UIViewController, UITableViewDataSource, UITable
                             RedditSession.sharedSession.unsubscribe(subreddit, completion: { (error) -> () in
                                 if error != nil {
                                     UIAlertView(title: "Error!", message: "Unable to unsubscribe to Subreddit! Please make sure you're connected to the internets.", delegate: self, cancelButtonTitle: "Ok").show()
+                                    LocalyticsSession.shared().tagEvent("Subreddit Unsubscribe failed")
                                 } else {
                                     self.subreddits.removeAtIndex(indexPath.row-1)
+                                    LocalyticsSession.shared().tagEvent("Subreddit unsubscribe")
                                 }
                             })
                         }

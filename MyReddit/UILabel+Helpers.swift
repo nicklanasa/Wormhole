@@ -17,4 +17,14 @@ extension UILabel {
         heightConstraint.constant = rect.height
         setNeedsLayout()
     }
+    
+    func heightText() -> CGFloat {
+        let label: UILabel = UILabel(frame: CGRectMake(0, 0, self.frame.size.width, CGFloat.max))
+        label.numberOfLines = 0
+        label.lineBreakMode = NSLineBreakMode.ByWordWrapping
+        label.font = font
+        label.text = text
+        label.sizeToFit()
+        return label.frame.height + 20
+    }
 }

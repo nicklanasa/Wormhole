@@ -14,6 +14,7 @@ let MyRedditDownvoteColor = UIColor(red: 255.0/255.0, green: 87.0/255.0, blue: 8
 let MyRedditReplyColor = UIColor(red: 94.0/255.0, green: 227.0/255.0, blue: 255.0/255.0, alpha: 1.0)
 let MyRedditFont = UIFont(name: "AvenirNext-Regular", size: 13)!
 let MyRedditCommentInfoFont = UIFont(name: "AvenirNext-Regular", size: 11)!
+let MyRedditCommentInfoMediumFont = UIFont(name: "AvenirNext-Medium", size: 11)!
 let MyRedditTitleFont = UIFont(name: "AvenirNext-Medium", size: 18)!
 let MyRedditSelfTextFont = UIFont(name: "AvenirNext-Medium", size: 16)!
 let MyRedditCommentTextFont = UIFont(name: "AvenirNext-Regular", size: 14)!
@@ -30,7 +31,7 @@ var MyRedditDarkBackgroundColor = UIColor.groupTableViewBackgroundColor()
 class AppDelegate: UIResponder, UIApplicationDelegate, IMGSessionDelegate {
 
     var window: UIWindow?
-
+    
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         
         NSUserDefaults.standardUserDefaults().setObject(true, forKey: "purchased")
@@ -49,6 +50,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate, IMGSessionDelegate {
                 })
             }
         }
+        
+        LocalyticsSession.shared().integrateLocalytics("fda6cd374a0e9cec3f11237-09533afc-9cc5-11e3-974b-005cf8cbabd8",
+            launchOptions: launchOptions)
+        
+        Appirater.setAppId("544533053")
+        Appirater.setCustomAlertTitle("Rate MyReddit")
+        Appirater.setCustomAlertMessage("If you enjoy using MyReddit, would you mind taking a moment to rate it? It won't take more than a minute. Thanks for your support!")
+        Appirater.setCustomAlertRateButtonTitle("Rate MyReddit")
+        Appirater.setDaysUntilPrompt(2)
+        Appirater.setUsesUntilPrompt(5)
+        Appirater.appLaunched(true)
         
         return FBSDKApplicationDelegate .sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
     }
@@ -78,6 +90,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, IMGSessionDelegate {
 
     func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject?) -> Bool {
         return FBSDKApplicationDelegate.sharedInstance().application(application, openURL: url, sourceApplication: sourceApplication, annotation: annotation)
+    }
+    
+    func applicationDidReceiveMemoryWarning(application: UIApplication) {
+        SDImageCache.sharedImageCache().clearMemory()
+        SDImageCache.sharedImageCache().cleanDisk()
+        SDImageCache.sharedImageCache().clearDisk()
+        SDImageCache.sharedImageCache().setValue(nil, forKey: "memCache")
     }
 }
 

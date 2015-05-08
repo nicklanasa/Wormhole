@@ -69,9 +69,11 @@ class CommentCell: JZSwipeCell, UITextViewDelegate {
             
             var replies = link.totalComments == 1 ? "reply" : "replies"
             
-            var infoString = NSMutableAttributedString(string: "\(link.author) - \(timeAgo) - \(link.totalComments) \(replies)")
+            var infoString = NSMutableAttributedString(string: "/r/\(self.link.subreddit) | \(link.author) | \(timeAgo)")
             var attrs = [NSForegroundColorAttributeName : MyRedditLabelColor]
-            infoString.addAttributes(attrs, range: NSMakeRange(0, count(link.author)))
+            var subAttrs = [NSForegroundColorAttributeName : MyRedditColor, NSFontAttributeName : MyRedditCommentInfoMediumFont]
+            infoString.addAttributes(subAttrs, range: NSMakeRange(0, count("/r/\(self.link.subreddit)")))
+            infoString.addAttributes(attrs, range: NSMakeRange(count("/r/\(self.link.subreddit) | "), count(link.author)))
             
             self.infoLabel.attributedText = infoString
             self.scoreLabel.text = link.score.description

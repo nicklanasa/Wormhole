@@ -20,6 +20,11 @@ class PurchaseViewController: UIViewController, BDGIAPDelegate {
         }
     }
     
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        LocalyticsSession.shared().tagScreen("Purchase")
+    }
+    
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         
@@ -45,9 +50,9 @@ class PurchaseViewController: UIViewController, BDGIAPDelegate {
                 
                 var completion: SLComposeViewControllerCompletionHandler = { (result) -> Void in
                     if result == .Done {
+                        LocalyticsSession.shared().tagEvent("Facebook share to unlock")
                         NSUserDefaults.standardUserDefaults().setObject(true, forKey: "purchased")
                         NSUserDefaults.standardUserDefaults().setObject(NSDate().dateByAddingMonth(1), forKey: "expirationDate")
-                        
                         self.cancelButtonTapped(self)
                     }
                 }
@@ -60,6 +65,8 @@ class PurchaseViewController: UIViewController, BDGIAPDelegate {
                     message: "Please make sure you are logged in to facebook in the Settings app on your device.",
                     delegate: self,
                     cancelButtonTitle: "Ok").show()
+                
+                LocalyticsSession.shared().tagEvent("Facebook unavailable")
             }
         }))
         alert.addAction(UIAlertAction(title: "twitter", style: .Default, handler: { (action) -> Void in
@@ -69,9 +76,9 @@ class PurchaseViewController: UIViewController, BDGIAPDelegate {
                 
                 var completion: SLComposeViewControllerCompletionHandler = { (result) -> Void in
                     if result == .Done {
+                        LocalyticsSession.shared().tagEvent("Twitter share to unlock")
                         NSUserDefaults.standardUserDefaults().setObject(true, forKey: "purchased")
                         NSUserDefaults.standardUserDefaults().setObject(NSDate().dateByAddingMonth(1), forKey: "expirationDate")
-                        
                         self.cancelButtonTapped(self)
                     }
                 }
@@ -84,6 +91,7 @@ class PurchaseViewController: UIViewController, BDGIAPDelegate {
                     message: "Please make sure you are logged in to twitter in the Settings app on your device.",
                     delegate: self,
                     cancelButtonTitle: "Ok").show()
+                LocalyticsSession.shared().tagEvent("Twitter unavailable")
             }
         }))
         
@@ -98,30 +106,42 @@ class PurchaseViewController: UIViewController, BDGIAPDelegate {
     
     func didFailIAP() {
         self.hud.hide(true)
-        UIAlertView(title: "Error!", message: "Unable to purchase! Please make sure you have an internet connection.", delegate: self, cancelButtonTitle: "Ok").show()
+        UIAlertView(title: "Error!",
+            message: "Unable to purchase! Please make sure you have an internet connection.",
+            delegate: self,
+            cancelButtonTitle: "Ok").show()
+        LocalyticsSession.shared().tagEvent("Unable to purchase")
     }
     
     func didEndIAS() {
         self.hud.hide(true)
+        LocalyticsSession.shared().tagEvent("Cancelled purchase")
     }
     
     func didFailIAS() {
         self.hud.hide(true)
-        UIAlertView(title: "Error!", message: "Unable to purchase! Please make sure you have an internet connection.", delegate: self, cancelButtonTitle: "Ok").show()
+        UIAlertView(title: "Error!",
+            message: "Unable to purchase! Please make sure you have an internet connection.",
+            delegate: self,
+            cancelButtonTitle: "Ok").show()
+        LocalyticsSession.shared().tagEvent("Unable to purchase")
     }
     
     func didCancelIAP() {
         self.hud.hide(true)
+        LocalyticsSession.shared().tagEvent("Cancelled purchase")
     }
     
     func didPurchaseIAP() {
         self.hud.hide(true)
+        LocalyticsSession.shared().tagEvent("Purchased premium")
         NSUserDefaults.standardUserDefaults().setObject(true, forKey: "purchased")
         NSUserDefaults.standardUserDefaults().setObject(nil, forKey: "expirationDate")
         self.cancelButtonTapped(self)
     }
     
     func didRestoreIAP(productID: String!) {
+        LocalyticsSession.shared().tagEvent("Restored premium")
         NSUserDefaults.standardUserDefaults().setObject(true, forKey: "purchased")
         NSUserDefaults.standardUserDefaults().setObject(nil, forKey: "expirationDate")
         self.cancelButtonTapped(self)

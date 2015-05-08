@@ -39,7 +39,12 @@ class LoginViewController: UIViewController, UITableViewDataSource, UITableViewD
                             message: "Unable to login. Please try again.",
                             delegate: self,
                             cancelButtonTitle: "Ok").show()
+                        
+                        LocalyticsSession.shared().tagEvent("Login failed")
                     } else {
+                        
+                        LocalyticsSession.shared().tagEvent("Login success")
+                        
                         self.hud.hide(true)
                         self.cancelButtonPressed(sender)
                     }
@@ -59,6 +64,11 @@ class LoginViewController: UIViewController, UITableViewDataSource, UITableViewD
         self.tableView.reloadData()
         var emailCell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) as! EmailCell
         emailCell.usernameTextField.becomeFirstResponder()
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        LocalyticsSession.shared().tagScreen("Login")
     }
     
     @IBAction func cancelButtonPressed(sender: AnyObject) {

@@ -21,6 +21,7 @@
 		01D664721AC33D9100BE56EA /* UIImageView+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01D664711AC33D9100BE56EA /* UIImageView+Helpers.swift */; };
 		01E39F431AF5271200C544EA /* AccountsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01E39F421AF5271200C544EA /* AccountsViewController.swift */; };
 		01E39F451AF52E9900C544EA /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01E39F441AF52E9900C544EA /* User.swift */; };
+		01F07F4D1AFC573500EBE0B8 /* OCExpandableButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 01F07F4C1AFC573500EBE0B8 /* OCExpandableButton.m */; };
 		01F9654D1AC4F12000DE0CD6 /* MessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01F9654C1AC4F12000DE0CD6 /* MessagesViewController.swift */; };
 		01F965531AC4F4B500DE0CD6 /* MessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01F965521AC4F4B500DE0CD6 /* MessageCell.swift */; };
 		01F965551AC4FB4E00DE0CD6 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01F965541AC4FB4E00DE0CD6 /* Message.swift */; };
@@ -82,6 +83,8 @@
 		CEC59EB21AF2629100D0D62B /* PasswordCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC59EB11AF2629100D0D62B /* PasswordCell.swift */; };
 		CEC5DE751AF2A66F002012DC /* GHContextMenuView.m in Sources */ = {isa = PBXBuildFile; fileRef = CEC5DE741AF2A66F002012DC /* GHContextMenuView.m */; };
 		CEF4E2601AF2B508001CFB69 /* JZSwipeCell+Reset.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF4E25F1AF2B508001CFB69 /* JZSwipeCell+Reset.swift */; };
+		CEF88E0D1AFCEE0B00AF8B87 /* UIimage+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF88E0C1AFCEE0B00AF8B87 /* UIimage+Helpers.swift */; };
+		CEF88E0F1AFD036D00AF8B87 /* LinkShareOptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF88E0E1AFD036D00AF8B87 /* LinkShareOptionsViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -110,6 +113,8 @@
 		01D664711AC33D9100BE56EA /* UIImageView+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImageView+Helpers.swift"; sourceTree = "<group>"; };
 		01E39F421AF5271200C544EA /* AccountsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountsViewController.swift; sourceTree = "<group>"; };
 		01E39F441AF52E9900C544EA /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		01F07F4B1AFC573500EBE0B8 /* OCExpandableButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCExpandableButton.h; sourceTree = "<group>"; };
+		01F07F4C1AFC573500EBE0B8 /* OCExpandableButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCExpandableButton.m; sourceTree = "<group>"; };
 		01F9654C1AC4F12000DE0CD6 /* MessagesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessagesViewController.swift; sourceTree = "<group>"; };
 		01F965521AC4F4B500DE0CD6 /* MessageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageCell.swift; sourceTree = "<group>"; };
 		01F965541AC4FB4E00DE0CD6 /* Message.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Message.swift; path = ../Message.swift; sourceTree = "<group>"; };
@@ -180,6 +185,8 @@
 		CEC5DE731AF2A66F002012DC /* GHContextMenuView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GHContextMenuView.h; sourceTree = "<group>"; };
 		CEC5DE741AF2A66F002012DC /* GHContextMenuView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GHContextMenuView.m; sourceTree = "<group>"; };
 		CEF4E25F1AF2B508001CFB69 /* JZSwipeCell+Reset.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "JZSwipeCell+Reset.swift"; sourceTree = "<group>"; };
+		CEF88E0C1AFCEE0B00AF8B87 /* UIimage+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIimage+Helpers.swift"; sourceTree = "<group>"; };
+		CEF88E0E1AFD036D00AF8B87 /* LinkShareOptionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LinkShareOptionsViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -260,6 +267,8 @@
 		CE1007301AF2FDF6000ED144 /* Library */ = {
 			isa = PBXGroup;
 			children = (
+				01F07F4B1AFC573500EBE0B8 /* OCExpandableButton.h */,
+				01F07F4C1AFC573500EBE0B8 /* OCExpandableButton.m */,
 				CE73F2431AFBD1B70094DCB8 /* SNTextView.h */,
 				CE73F2441AFBD1B70094DCB8 /* SNTextView.m */,
 				CE4B9E9A1AE1957200018742 /* UIImage+ImageEffects.h */,
@@ -327,6 +336,7 @@
 				CE10072F1AF2FDE8000ED144 /* Subreddits */,
 				CE1007311AF2FE1A000ED144 /* Comments */,
 				CEC59EAD1AF25AFF00D0D62B /* PurchaseViewController.swift */,
+				CEF88E0E1AFD036D00AF8B87 /* LinkShareOptionsViewController.swift */,
 				CEB866111AF01FC200BE850F /* WebViewController.swift */,
 				CE769F261AF5A6CB00031657 /* SettingsTableViewController.swift */,
 				CE25FBD11AF9411A00A40C3B /* PostTableViewController.swift */,
@@ -371,7 +381,6 @@
 				01E39F441AF52E9900C544EA /* User.swift */,
 				01F965541AC4FB4E00DE0CD6 /* Message.swift */,
 				CE35881D1AC305E700294684 /* RedditSession.swift */,
-				01D664711AC33D9100BE56EA /* UIImageView+Helpers.swift */,
 				CE712F061AC2F7200042B071 /* MyReddit.xcdatamodeld */,
 				CE41E5DB1AC70BDB00D963BE /* Link.swift */,
 				CE3588231AC34C2200294684 /* Link+Helpers.swift */,
@@ -379,7 +388,6 @@
 				CE712F261AC304610042B071 /* Comment.swift */,
 				CE712F221AC303A60042B071 /* MultiReddit.swift */,
 				CE712F1E1AC303A50042B071 /* Media.swift */,
-				CE73F2461AFBDC170094DCB8 /* UILabel+Helpers.swift */,
 				018E40271AC39C1C0055384D /* User+Helpers.swift */,
 				CE712F021AC2F7090042B071 /* DataManager.swift */,
 				CE712F031AC2F7090042B071 /* Datastore.swift */,
@@ -389,10 +397,13 @@
 				CE046ED21AC4336500DF59B4 /* String+Helpers.swift */,
 				01F965561AC4FB9200DE0CD6 /* Message+Helpers.swift */,
 				CE538FAD1AF3F19B008050B6 /* RKClient+Search.swift */,
-				CE769F301AF6F64800031657 /* UIAlertController+Helpers.swift */,
 				CE25FBCF1AF93E0600A40C3B /* RKLink+Helpers.swift */,
+				CE73F2461AFBDC170094DCB8 /* UILabel+Helpers.swift */,
+				01D664711AC33D9100BE56EA /* UIImageView+Helpers.swift */,
 				CE25FBDD1AF9667000A40C3B /* UITableViewCell+Helpers.swift */,
 				CE8F25E21AFAB8EA001C78B7 /* UINavigationBar+Helpers.swift */,
+				CE769F301AF6F64800031657 /* UIAlertController+Helpers.swift */,
+				CEF88E0C1AFCEE0B00AF8B87 /* UIimage+Helpers.swift */,
 			);
 			name = Data;
 			sourceTree = "<group>";
@@ -564,6 +575,7 @@
 				CE712F1F1AC303A50042B071 /* Media.swift in Sources */,
 				CEC59EB01AF2628800D0D62B /* EmailCell.swift in Sources */,
 				0195D6BC1AF31C5B004FA3EC /* UserInfoCell.swift in Sources */,
+				01F07F4D1AFC573500EBE0B8 /* OCExpandableButton.m in Sources */,
 				CE3588241AC34C2200294684 /* Link+Helpers.swift in Sources */,
 				CE25FBDE1AF9667000A40C3B /* UITableViewCell+Helpers.swift in Sources */,
 				CEB866121AF01FC200BE850F /* WebViewController.swift in Sources */,
@@ -576,6 +588,7 @@
 				CE712F271AC304610042B071 /* Comment.swift in Sources */,
 				CE73F2471AFBDC170094DCB8 /* UILabel+Helpers.swift in Sources */,
 				CE3588201AC30DEE00294684 /* SubredditViewController.swift in Sources */,
+				CEF88E0F1AFD036D00AF8B87 /* LinkShareOptionsViewController.swift in Sources */,
 				01F965531AC4F4B500DE0CD6 /* MessageCell.swift in Sources */,
 				CE25FBD01AF93E0600A40C3B /* RKLink+Helpers.swift in Sources */,
 				CE538FAE1AF3F19B008050B6 /* RKClient+Search.swift in Sources */,
@@ -605,6 +618,7 @@
 				CEC59EAE1AF25AFF00D0D62B /* PurchaseViewController.swift in Sources */,
 				CE046ECD1AC3587900DF59B4 /* Subreddit.swift in Sources */,
 				CEC59EB21AF2629100D0D62B /* PasswordCell.swift in Sources */,
+				CEF88E0D1AFCEE0B00AF8B87 /* UIimage+Helpers.swift in Sources */,
 				0195D6BE1AF31CE1004FA3EC /* ProfileViewController.swift in Sources */,
 				CE25FBD41AF9483D00A40C3B /* LinkCell.swift in Sources */,
 				CE538FAA1AF3B02E008050B6 /* UserContentViewController.swift in Sources */,

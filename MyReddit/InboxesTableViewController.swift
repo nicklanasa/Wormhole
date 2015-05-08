@@ -36,14 +36,14 @@ class InboxesTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         self.tableView.backgroundColor = MyRedditDarkBackgroundColor
-        
         self.refreshControl = self.inboxRefreshControl
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        
         self.fetchUnread()
+        
+        LocalyticsSession.shared().tagScreen("Inboxes")
     }
     
     private func fetchUnread() {

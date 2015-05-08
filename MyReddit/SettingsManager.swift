@@ -34,12 +34,14 @@ class SettingsManager {
         switch setting {
         case .Flair:
             if let flair = NSUserDefaults.standardUserDefaults().objectForKey("Flair") as? NSNumber {
+                LocalyticsSession.shared().tagEvent("Flair toggled")
                 return flair.boolValue
             }
             
             return false
         case .NSFW:
             if let nsfw = NSUserDefaults.standardUserDefaults().objectForKey("NSFW") as? NSNumber {
+                LocalyticsSession.shared().tagEvent("NSFW toggled")
                 return nsfw.boolValue
             }
             
@@ -47,6 +49,7 @@ class SettingsManager {
             
         case .SubredditLogos:
             if let logos = NSUserDefaults.standardUserDefaults().objectForKey("SubredditLogos") as? NSNumber {
+                LocalyticsSession.shared().tagEvent("Subreddit logos toggled")
                 return logos.boolValue
             }
             
@@ -54,6 +57,7 @@ class SettingsManager {
             
         case .NightMode:
             if let nightMode = NSUserDefaults.standardUserDefaults().objectForKey("NightMode") as? NSNumber {
+                LocalyticsSession.shared().tagEvent("Night mode toggled")
                 return nightMode.boolValue
             }
             
@@ -61,6 +65,7 @@ class SettingsManager {
             
         case .InfiniteScrolling:
             if let scrolling = NSUserDefaults.standardUserDefaults().objectForKey("InfiniteScrolling") as? NSNumber {
+                LocalyticsSession.shared().tagEvent("Infinite scrolling toggled")
                 return scrolling.boolValue
             }
             
@@ -75,12 +80,14 @@ class SettingsManager {
         switch setting {
         case .Small:
             if let textSize = NSUserDefaults.standardUserDefaults().objectForKey("TextSize") as? String {
+                LocalyticsSession.shared().tagEvent("Small text toggled")
                 return textSize
             }
             
             return "Medium"
         case .Medium:
             if let textSize = NSUserDefaults.standardUserDefaults().objectForKey("TextSize") as? String {
+                LocalyticsSession.shared().tagEvent("Medium text toggled")
                 return textSize
             }
             
@@ -88,6 +95,7 @@ class SettingsManager {
             
         case .Large:
             if let textSize = NSUserDefaults.standardUserDefaults().objectForKey("TextSize") as? String {
+                LocalyticsSession.shared().tagEvent("Large text toggled")
                 return textSize
             }
             
