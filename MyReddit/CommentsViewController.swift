@@ -19,6 +19,8 @@ class CommentsViewController: UITableViewController, CommentCellDelegate, JZSwip
         
     var comments: [AnyObject]? {
         didSet {
+            self.navigationItem.title =  !self.forComment ? "\(self.link.totalComments) comments" :
+            "\(self.comment.author) | \(self.comment.replies.count) replies"
             self.tableView.reloadData()
         }
     }
@@ -120,7 +122,13 @@ class CommentsViewController: UITableViewController, CommentCellDelegate, JZSwip
             cell.comment = comment
         } else {
             if indexPath.row == 0 {
-                cell.link = self.link
+                if self.link.isImageLink() || self.link.media != nil || self.link.domain == "imgur.com" {
+                    var imageCell = tableView.dequeueReusableCellWithIdentifier("PostImageCell") as! PostImageCell
+                    imageCell.link = self.link
+                    return imageCell
+                } else {
+                    cell.link = self.link
+                }
             } else {
                 comment = self.comments?[indexPath.row - 1] as! RKComment
                 cell.comment = comment

@@ -26,8 +26,6 @@ UITableViewDelegate,
 NSFetchedResultsControllerDelegate,
 LoadMoreHeaderDelegate,
 UIGestureRecognizerDelegate,
-GHContextOverlayViewDataSource,
-GHContextOverlayViewDelegate,
 JZSwipeCellDelegate,
 SearchViewControllerDelegate {
     
@@ -38,7 +36,6 @@ SearchViewControllerDelegate {
     var selectedLink: RKLink!
     var pageIndex: Int!
     var currentCategory: RKSubredditCategory?
-    var contextMenu: GHContextMenuView!
     var optionsController: LinkShareOptionsViewController!
     
     var expandButton: OCExpandableButton!
@@ -134,6 +131,8 @@ SearchViewControllerDelegate {
                 self.tableView.addSubview(self.headerImage)
                 self.headerImage.frame = CGRectMake(0, -HeaderHeight, UIScreen.mainScreen().bounds.size.width, HeaderHeight)
                 
+                self.tableView.setContentOffset(CGPointMake(0, -HeaderHeight), animated: true)
+                
                 var tap = UITapGestureRecognizer(target: self, action: "headerImageTapped:")
                 tap.numberOfTapsRequired = 1
                 self.headerImage.gestureRecognizers = [tap]
@@ -148,16 +147,19 @@ SearchViewControllerDelegate {
         LocalyticsSession.shared().tagEvent("Subreddit Header image tapped")
     }
     
+    override func didReceiveMemoryWarning() {
+        SDImageCache.sharedImageCache().clearMemory()
+        SDImageCache.sharedImageCache().cleanDisk()
+        SDImageCache.sharedImageCache().clearDisk()
+        SDImageCache.sharedImageCache().setValue(nil, forKey: "memCache")
+    }
+    
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
         LocalyticsSession.shared().tagScreen("Subreddit")
         
         self.updateSubscribeButton()
-        
-        if self.links.count > 0 {
-            self.tableView.reloadData()
-        }
         
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
             self.filterButton.tintColor = MyRedditLabelColor
@@ -181,40 +183,11 @@ SearchViewControllerDelegate {
         super.viewDidLoad()
         self.syncLinks()
         
-        self.contextMenu = GHContextMenuView()
-        self.contextMenu.delegate = self
-        self.contextMenu.dataSource = self
-        
-        var long = UILongPressGestureRecognizer(target: self.contextMenu,
-            action: "longPressDetected:")
-        self.view.gestureRecognizers = [long]
-        
         var rightBarButtons = self.navigationItem.rightBarButtonItems
         var postBarButton = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: "")
         rightBarButtons?.append(postBarButton)
         
         self.tableView.tableFooterView = UIView()
-    }
-    
-    func setupExpandButton() {
-//        var list = UIImageView(frame: CGRectMake(5, 5, 30, 30))
-//        list.image = UIImage(named: "List")
-//        list.contentMode = UIViewContentMode.ScaleAspectFit
-//        var listView = UIView(frame: CGRectMake(0, 0, 45, 45))
-//        listView.backgroundColor = UIColor.clearColor()
-//        listView.addSubview(list)
-//        var search = UIImageView(image: UIImage(named: "Search"))
-//        var messages = UIImageView(image: UIImage(named: "Messages"))
-//        var filter = UIImageView(image: UIImage(named: "Filter"))
-//        var add = UIImageView(image: UIImage(named: "Add"))
-
-//        self.expandButton = OCExpandableButton(frame: CGRect(x: UIScreen.mainScreen().bounds.size.width - 100,
-//            y: UIScreen.mainScreen().bounds.size.height - 200,
-//            width: 45,
-//            height: 45),
-//            subviews: [listView, listView])
-//        self.expandButton.alignment = OCExpandableButtonAlignmentRight
-//        self.view.addSubview(self.expandButton)
     }
     
     private func fetchUnread() {
@@ -312,7 +285,8 @@ SearchViewControllerDelegate {
                             UIAlertView(title: "Error!", message: "Unable to subscribe to Subreddit. Please make sure you are connected to the internets.", delegate: self, cancelButtonTitle: "Ok").show()
                         } else {
                             dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                                RedditSession.sharedSession.subredditWithSubredditName(self.subreddit.name, completion: { (pagination, results, error) -> () in
+                                RedditSession.sharedSession.subredditWithSubredditName(self.subreddit.name,
+                                    completion: { (pagination, results, error) -> () in
                                     if let subreddit = results?.first as? RKSubreddit {
                                         self.subreddit = subreddit
                                         self.updateSubscribeButton()
@@ -346,22 +320,6 @@ SearchViewControllerDelegate {
             self.subscribeButton.action = nil
             self.subscribeButton.target = self
         }
-    }
-    
-    func imageForItemAtIndex(index: Int) -> UIImage! {
-        if index == 0 {
-            return UIImage(named: "SavedMenuItem")
-        } else {
-            return UIImage(named: "Down")
-        }
-    }
-    
-    func numberOfMenuItems() -> Int {
-        return 2
-    }
-    
-    func didSelectItemAtIndex(selectedIndex: Int, forMenuAtPoint point: CGPoint) {
-        
     }
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
@@ -506,6 +464,7 @@ SearchViewControllerDelegate {
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         self.tableView.deselectRowAtIndexPath(indexPath, animated: true)
         if indexPath.section == 0 {
+            self.hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
             if let link = self.links[indexPath.row] as? RKLink {
                 self.selectedLink = link
                 if link.selfPost {
@@ -578,6 +537,7 @@ SearchViewControllerDelegate {
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "SubredditImageLink" || segue.identifier == "SubredditLink" {
+            self.hud.hide(true)
             if let link = sender as? RKLink {
                 if let controller = segue.destinationViewController as? LinkViewController {
                     controller.link = link
@@ -591,6 +551,7 @@ SearchViewControllerDelegate {
                 }
             }
         } else if segue.identifier == "GallerySegue" {
+            self.hud.hide(true)
             if let controller = segue.destinationViewController as? GalleryController {
                 if let images = sender as? [AnyObject] {
                     controller.images = images
@@ -599,6 +560,7 @@ SearchViewControllerDelegate {
             }
         } else {
             if let link = sender as? RKLink {
+                self.hud.hide(true)
                 if let nav = segue.destinationViewController as? UINavigationController {
                     if let controller = nav.viewControllers[0] as? CommentsViewController {
                         controller.link = link
@@ -647,7 +609,7 @@ SearchViewControllerDelegate {
                                         delegate: self,
                                         cancelButtonTitle: "Ok").show()
                                 } else {
-                                    self.syncLinks()
+                                    self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
                                 }
                             })
                         } else if swipeType.value == JZSwipeTypeShortRight.value {
@@ -662,7 +624,7 @@ SearchViewControllerDelegate {
                                         delegate: self,
                                         cancelButtonTitle: "Ok").show()
                                 } else {
-                                    self.syncLinks()
+                                    self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
                                 }
                             })
                         } else if swipeType.value == JZSwipeTypeLongLeft.value {
@@ -692,9 +654,9 @@ SearchViewControllerDelegate {
                                     self.hud.hide(true)
                                     link.saveLink()
                                     
-                                    self.links.removeAtIndex(indexPath.row)
                                     dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                                        self.tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: .Fade)
+                                        self.links.removeAtIndex(indexPath.row)
+                                        self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
                                     })
                                 })
                             }))

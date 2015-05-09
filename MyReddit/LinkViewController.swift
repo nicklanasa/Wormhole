@@ -76,7 +76,9 @@ class LinkViewController: UIViewController {
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
-        self.seeMoreButtonTapped(self)
+        if self.postTitleView.frame.size.height > 35 {
+            self.seeMoreButtonTapped(self)
+        }
     }
     
     override func viewDidLoad() {
@@ -180,7 +182,9 @@ class LinkViewController: UIViewController {
     }
     
     private func updateVoteButtons() {
-        self.seeMoreButtonTapped(self)
+        if self.postTitleView.frame.size.height > 35 {
+            self.seeMoreButtonTapped(self)
+        }
         if self.link.upvoted() {
             self.upvoteButton.tintColor = MyRedditUpvoteColor
             self.downvoteButton.tintColor = MyRedditLabelColor
