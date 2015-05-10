@@ -157,6 +157,8 @@ SearchViewControllerDelegate {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
+        self.tableView.reloadData()
+        
         LocalyticsSession.shared().tagScreen("Subreddit")
         
         self.updateSubscribeButton()
@@ -605,7 +607,7 @@ SearchViewControllerDelegate {
                                 
                                 if error != nil {
                                     UIAlertView(title: "Error!",
-                                        message: "Unable to upvote! Please try again!",
+                                        message: error!.localizedDescription,
                                         delegate: self,
                                         cancelButtonTitle: "Ok").show()
                                 } else {
@@ -620,7 +622,7 @@ SearchViewControllerDelegate {
                                 
                                 if error != nil {
                                     UIAlertView(title: "Error!",
-                                        message: "Unable to downvote! Please try again!",
+                                        message: error!.localizedDescription,
                                         delegate: self,
                                         cancelButtonTitle: "Ok").show()
                                 } else {

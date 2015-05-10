@@ -776,7 +776,7 @@
                             </toolbar>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="TopLeft" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.70000000000000018" translatesAutoresizingMaskIntoConstraints="NO" id="7EO-1f-duY">
                                 <rect key="frame" x="16" y="72" width="568" height="332"/>
-                                <mutableString key="text">Unlock all of MyReddit's premium features with one purchase:  - Use your reddit.com account w/ multiple account support - Voting, posting, hide, saving, and sharing - Manage multireddits - Subscribed subreddits - Messages - Night mode - Support the development of MyReddit.</mutableString>
+                                <string key="text">Unlock all of MyReddit's premium features with one purchase:  - Use your reddit.com account w/ multiple account support - Voting, posting, hide, saving, and sharing - Manage multireddits - Subscribed subreddits - Messages - Night mode - Support the development of MyReddit.</string>
                                 <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="15"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>

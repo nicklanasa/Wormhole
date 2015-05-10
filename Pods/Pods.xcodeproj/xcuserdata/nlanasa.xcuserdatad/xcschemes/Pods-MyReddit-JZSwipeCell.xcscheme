@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "0A245AA60E52B5967CC895C3"
+               BlueprintIdentifier = "A0B92122B5DDF4E5D7B4D4F6"
                BuildableName = "libPods-MyReddit-JZSwipeCell.a"
                BlueprintName = "Pods-MyReddit-JZSwipeCell"
                ReferencedContainer = "container:Pods.xcodeproj">

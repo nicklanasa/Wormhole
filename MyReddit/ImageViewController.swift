@@ -31,6 +31,8 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         LocalyticsSession.shared().tagScreen("GalleryImage")
+        
+        self.view.backgroundColor = MyRedditBackgroundColor
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -43,8 +45,6 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
             }
             self.indicator.stopAnimating()
         }
-        
-        self.view.backgroundColor = MyRedditBackgroundColor
         self.scrollView.contentSize = self.parentViewController!.view.frame.size
         
         var tap = UITapGestureRecognizer(target: self, action: "imageViewTapped:")

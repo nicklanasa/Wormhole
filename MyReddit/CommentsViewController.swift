@@ -125,6 +125,7 @@ class CommentsViewController: UITableViewController, CommentCellDelegate, JZSwip
                 if self.link.isImageLink() || self.link.media != nil || self.link.domain == "imgur.com" {
                     var imageCell = tableView.dequeueReusableCellWithIdentifier("PostImageCell") as! PostImageCell
                     imageCell.link = self.link
+                    imageCell.delegate = self
                     return imageCell
                 } else {
                     cell.link = self.link
@@ -136,7 +137,6 @@ class CommentsViewController: UITableViewController, CommentCellDelegate, JZSwip
         }
         
         cell.delegate = self
-        
         cell.commentDelegate = self
         
         return cell
@@ -236,12 +236,13 @@ class CommentsViewController: UITableViewController, CommentCellDelegate, JZSwip
                         if indexPath.row == 0 {
                             votedable = self.link
                         } else {
+                            LocalyticsSession.shared().tagEvent("Swipe downvote comment")
                             votedable = self.comments?[indexPath.row - 1] as? RKComment
                         }
                     }
                     
                     if let object = votedable {
-                        if swipeType.value == JZSwipeTypeShortRight.value || swipeType.value == JZSwipeTypeLongRight.value {
+                        if swipeType.value == JZSwipeTypeShortRight.value {
                             // Downvote
                             LocalyticsSession.shared().tagEvent("Swipe downvote comment")
                             RedditSession.sharedSession.downvote(object, completion: { (error) -> () in
@@ -249,14 +250,14 @@ class CommentsViewController: UITableViewController, CommentCellDelegate, JZSwip
                                 
                                 if error != nil {
                                     UIAlertView(title: "Error!",
-                                        message: "Unable to downvote! Please try again!",
+                                        message: error!.localizedDescription,
                                         delegate: self,
                                         cancelButtonTitle: "Ok").show()
                                 } else {
                                     self.tableView.reloadData()
                                 }
                             })
-                        } else if swipeType.value == JZSwipeTypeShortLeft.value || swipeType.value == JZSwipeTypeLongLeft.value {
+                        } else if swipeType.value == JZSwipeTypeShortLeft.value {
                             // Upvote
                             LocalyticsSession.shared().tagEvent("Swipe upvote comment")
                             RedditSession.sharedSession.upvote(object, completion: { (error) -> () in
@@ -264,15 +265,77 @@ class CommentsViewController: UITableViewController, CommentCellDelegate, JZSwip
                                 
                                 if error != nil {
                                     UIAlertView(title: "Error!",
-                                        message: "Unable to upvote! Please try again!",
+                                        message: error!.localizedDescription,
                                         delegate: self,
                                         cancelButtonTitle: "Ok").show()
                                 } else {
                                     self.tableView.reloadData()
                                 }
                             })
+                        } else if swipeType.value == JZSwipeTypeLongLeft.value {
+                            if indexPath.row != 0 || self.forComment {
+                                // Upvote
+                                LocalyticsSession.shared().tagEvent("Swipe upvote comment")
+                                RedditSession.sharedSession.upvote(object, completion: { (error) -> () in
+                                    self.hud.hide(true)
+                                    
+                                    if error != nil {
+                                        UIAlertView(title: "Error!",
+                                            message: error!.localizedDescription,
+                                            delegate: self,
+                                            cancelButtonTitle: "Ok").show()
+                                    } else {
+                                        self.tableView.reloadData()
+                                    }
+                                })
+                            } else {
+                                LocalyticsSession.shared().tagEvent("Swipe more")
+                                // More
+                                self.hud.hide(true)
+                                var alertController = UIAlertController(title: "Select option", message: nil, preferredStyle: .ActionSheet)
+                                
+                                if link.saved() {
+                                    alertController.addAction(UIAlertAction(title: "unsave", style: .Default, handler: { (action) -> Void in
+                                        RedditSession.sharedSession.unSaveLink(self.link, completion: { (error) -> () in
+                                            self.hud.hide(true)
+                                            self.link.unSaveLink()
+                                        })
+                                    }))
+                                } else {
+                                    alertController.addAction(UIAlertAction(title: "save", style: .Default, handler: { (action) -> Void in
+                                        RedditSession.sharedSession.saveLink(self.link, completion: { (error) -> () in
+                                            self.hud.hide(true)
+                                            self.link.saveLink()
+                                        })
+                                    }))
+                                }
+                                
+                                alertController.addAction(UIAlertAction(title: "cancel", style: .Cancel, handler: nil))
+                                alertController.present(animated: true, completion: nil)
+                            }
                         } else {
-                            self.hud.hide(true)
+                            if indexPath.row != 0 || self.forComment {
+                                // Downvote
+                                LocalyticsSession.shared().tagEvent("Swipe downvote comment")
+                                RedditSession.sharedSession.downvote(object, completion: { (error) -> () in
+                                    self.hud.hide(true)
+                                    
+                                    if error != nil {
+                                        UIAlertView(title: "Error!",
+                                            message: error!.localizedDescription,
+                                            delegate: self,
+                                            cancelButtonTitle: "Ok").show()
+                                    } else {
+                                        self.tableView.reloadData()
+                                    }
+                                })
+                            } else {
+                                LocalyticsSession.shared().tagEvent("Swipe share")
+                                // Share
+                                self.hud.hide(true)
+                                self.optionsController = LinkShareOptionsViewController(link: link)
+                                self.optionsController.showInView(self.view)
+                            }
                         }
                     }
                 }

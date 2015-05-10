@@ -46,7 +46,7 @@ class PurchaseViewController: UIViewController, BDGIAPDelegate {
         alert.addAction(UIAlertAction(title: "facebook", style: .Default, handler: { (action) -> Void in
             if SLComposeViewController.isAvailableForServiceType(SLServiceTypeFacebook) {
                 var socialVC = SLComposeViewController(forServiceType: SLServiceTypeFacebook)
-                socialVC.addImage(UIImage(named: "MyReddit"))
+                socialVC.addImage(UIImage(named: "MyRedditShare"))
                 
                 var completion: SLComposeViewControllerCompletionHandler = { (result) -> Void in
                     if result == .Done {
@@ -72,7 +72,7 @@ class PurchaseViewController: UIViewController, BDGIAPDelegate {
         alert.addAction(UIAlertAction(title: "twitter", style: .Default, handler: { (action) -> Void in
             if SLComposeViewController.isAvailableForServiceType(SLServiceTypeTwitter) {
                 var socialVC = SLComposeViewController(forServiceType: SLServiceTypeTwitter)
-                socialVC.addImage(UIImage(named: "MyReddit"))
+                socialVC.addImage(UIImage(named: "MyRedditShare"))
                 
                 var completion: SLComposeViewControllerCompletionHandler = { (result) -> Void in
                     if result == .Done {
