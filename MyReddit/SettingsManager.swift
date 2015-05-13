@@ -14,6 +14,7 @@ enum Setting: NSInteger {
     case SubredditLogos
     case NightMode
     case InfiniteScrolling
+    case FullWidthImages
 }
 
 enum TextSizeSetting: NSInteger {
@@ -59,6 +60,14 @@ class SettingsManager {
             if let nightMode = NSUserDefaults.standardUserDefaults().objectForKey("NightMode") as? NSNumber {
                 LocalyticsSession.shared().tagEvent("Night mode toggled")
                 return nightMode.boolValue
+            }
+            
+            return false
+            
+        case .FullWidthImages:
+            if let fullWidthMode = NSUserDefaults.standardUserDefaults().objectForKey("FullWidthImages") as? NSNumber {
+                LocalyticsSession.shared().tagEvent("Full Width Images mode toggled")
+                return fullWidthMode.boolValue
             }
             
             return false
@@ -118,6 +127,8 @@ class SettingsManager {
             NSUserDefaults.standardUserDefaults().setObject(value, forKey: "NightMode")
         case .InfiniteScrolling:
             NSUserDefaults.standardUserDefaults().setObject(value, forKey: "InfiniteScrolling")
+        case .FullWidthImages:
+            NSUserDefaults.standardUserDefaults().setObject(value, forKey: "FullWidthImages")
         default: break
             
         }

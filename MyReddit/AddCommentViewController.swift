@@ -15,7 +15,8 @@ protocol AddCommentViewControllerDelegate {
 
 class AddCommentViewController: UIViewController, UITextViewDelegate {
     
-    @IBOutlet weak var textViewContainerView: UIView!
+    @IBOutlet weak var textView: UITextView!
+    @IBOutlet weak var verticalSpaceConstraint: NSLayoutConstraint!
     
     var delegate: AddCommentViewControllerDelegate?
     
@@ -31,16 +32,8 @@ class AddCommentViewController: UIViewController, UITextViewDelegate {
         }
     }
     
-    var textView: RFMarkdownTextView! {
-        didSet {
-            self.textView.delegate = self
-            self.textViewContainerView.addSubview(self.textView)
-            self.textView.font = MyRedditSelfTextFont
-        }
-    }
-    
     override func viewDidLoad() {
-        self.textView = RFMarkdownTextView(frame: CGRectMake(0, 0, self.textViewContainerView.frame.size.width, self.textViewContainerView.frame.size.height))
+        self.textView.font = MyRedditSelfTextFont
         
         if let replyMessage = self.message {
             if replyMessage.commentReply {
@@ -114,5 +107,17 @@ class AddCommentViewController: UIViewController, UITextViewDelegate {
     
     @IBAction func cancelButtonTapped(sender: AnyObject) {
         self.dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    override func didRotateFromInterfaceOrientation(fromInterfaceOrientation: UIInterfaceOrientation) {
+        if fromInterfaceOrientation == .Portrait || fromInterfaceOrientation == .PortraitUpsideDown {
+            self.verticalSpaceConstraint.constant = 200
+        } else {
+            self.verticalSpaceConstraint.constant = 272
+        }
+        
+        UIView.animateWithDuration(0.3, animations: { () -> Void in
+            self.view.layoutIfNeeded()
+        })
     }
 }

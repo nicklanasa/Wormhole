@@ -14,6 +14,7 @@ class SubredditsViewController: UIViewController, UITableViewDataSource, UITable
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var savedButton: UIBarButtonItem!
+    @IBOutlet weak var cancelButton: UIBarButtonItem!
     
     @IBAction func cancelButtonTapped(sender: AnyObject) {
         self.dismissViewControllerAnimated(true, completion: nil)
@@ -393,6 +394,37 @@ class SubredditsViewController: UIViewController, UITableViewDataSource, UITable
         } else {
             self.performSegueWithIdentifier("AccountsSegue", sender: self)
         }
+    }
+    
+    override func shouldPerformSegueWithIdentifier(identifier: String?, sender: AnyObject?) -> Bool {
+        if identifier == "SubredditPosts" && UIDevice.currentDevice().userInterfaceIdiom == .Pad {
+            if let controller = self.splitViewController?.viewControllers[1] as? NavBarController {
+                if let subredditViewController = controller.viewControllers[0] as? SubredditViewController {
+                    if let cell = sender as? UITableViewCell {
+                        
+                        var indexPath: NSIndexPath = self.tableView.indexPathForCell(cell)!
+                        
+                        if indexPath.section == 0 {
+                            if indexPath.row != 0 {
+                                if let subreddit = self.multiSubreddits[indexPath.row - 1] as? RKMultireddit {
+                                    subredditViewController.multiReddit = subreddit
+                                    subredditViewController.front = false
+                                }
+                            }
+                        } else {
+                            if indexPath.row != 0 {
+                                if let subreddit = self.subreddits[indexPath.row - 1] as? RKSubreddit {
+                                    subredditViewController.subreddit = subreddit
+                                    subredditViewController.front = false
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            return false
+        }
+        return true
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {

@@ -15,6 +15,7 @@ class SettingsTableViewController: UITableViewController, BDGIAPDelegate {
     @IBOutlet weak var showNSFWSwitch: UISwitch!
     @IBOutlet weak var showSubredditLogosSwitch: UISwitch!
     @IBOutlet weak var nightModeSwitch: UISwitch!
+    @IBOutlet weak var fullWidthImagesSwitch: UISwitch!
     @IBOutlet weak var infiniteScrollingSwitch: UISwitch!
     @IBOutlet weak var textSizeLabel: UILabel!
     
@@ -33,6 +34,7 @@ class SettingsTableViewController: UITableViewController, BDGIAPDelegate {
     @IBOutlet weak var nickolasLanasaCreatorCell: UserInfoCell!
     @IBOutlet weak var samanthaLanasaCreatorCell: UserInfoCell!
     @IBOutlet weak var otherAppMuzCell: UserInfoCell!
+    @IBOutlet weak var hideFullWidthImagesCell: UserInfoCell!
     
     var hud: MBProgressHUD! {
         didSet {
@@ -57,6 +59,7 @@ class SettingsTableViewController: UITableViewController, BDGIAPDelegate {
             self.showFlairSwitch.on = SettingsManager.defaultManager.valueForSetting(.Flair)
             self.showNSFWSwitch.on = SettingsManager.defaultManager.valueForSetting(.NSFW)
             self.showSubredditLogosSwitch.on = SettingsManager.defaultManager.valueForSetting(.SubredditLogos)
+            self.fullWidthImagesSwitch.on = SettingsManager.defaultManager.valueForSetting(.FullWidthImages)
             self.nightModeSwitch.on = SettingsManager.defaultManager.valueForSetting(.NightMode)
             self.infiniteScrollingSwitch.on = SettingsManager.defaultManager.valueForSetting(.InfiniteScrolling)
             self.textSizeLabel.text = SettingsManager.defaultManager.valueForTextSizeSetting(currentTextSize)
@@ -92,6 +95,9 @@ class SettingsTableViewController: UITableViewController, BDGIAPDelegate {
             self.otherAppMuzCell.titleLabel.textColor = MyRedditLabelColor
             self.otherAppMuzCell.backgroundColor = MyRedditBackgroundColor
             
+            self.hideFullWidthImagesCell.titleLabel.textColor = MyRedditLabelColor
+            self.hideFullWidthImagesCell.backgroundColor = MyRedditBackgroundColor
+            
             self.tableView.backgroundColor = MyRedditDarkBackgroundColor
             self.navigationController?.navigationBar.barTintColor = MyRedditBackgroundColor
             self.navigationController?.navigationBar.tintColor = MyRedditLabelColor
@@ -109,6 +115,10 @@ class SettingsTableViewController: UITableViewController, BDGIAPDelegate {
         }
         
         self.updateTable()
+    }
+    
+    @IBAction func hideFullWidthImagesValueChanged(sender: AnyObject) {
+        SettingsManager.defaultManager.updateValueForSetting(.FullWidthImages, value: self.fullWidthImagesSwitch.on)
     }
     
     @IBAction func showSubredditLogosValueChanged(sender: AnyObject) {
@@ -181,7 +191,7 @@ class SettingsTableViewController: UITableViewController, BDGIAPDelegate {
                 self.performSegueWithIdentifier("WebViewSegue", sender: url)
             case 3:
                 LocalyticsSession.shared().tagEvent("Settings share button tapped")
-                var url = NSURL(string: "https://www.facebook.com/pages/MyReddit/442141645823510?ref=hl")
+                var url = NSURL(string: "http://nytekproductions.com/myreddit/")
                 var shareText = "Check out MyReddit - A Reddit client for iOS that rocks!"
                 let objectsToShare = [shareText, url!]
                 let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)

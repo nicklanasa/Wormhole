@@ -99,7 +99,7 @@ class UserContentViewController: UIViewController, UITableViewDelegate, UITableV
             if link.isImageLink() || link.media != nil || link.domain == "imgur.com" {
                 cell = tableView.dequeueReusableCellWithIdentifier("PostImageCell") as! PostImageCell
                 
-                if indexPath.row == 0 {
+                if indexPath.row == 0 || SettingsManager.defaultManager.valueForSetting(.FullWidthImages) {
                     cell = tableView.dequeueReusableCellWithIdentifier("TitleCell") as! TitleCell
                 }
                 

@@ -29,8 +29,31 @@ UIGestureRecognizerDelegate,
 JZSwipeCellDelegate,
 SearchViewControllerDelegate {
     
-    var subreddit: RKSubreddit!
-    var multiReddit: RKMultireddit!
+    var subreddit: RKSubreddit! {
+        didSet {
+            if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
+                self.links = Array<AnyObject>()
+                self.currentCategory = nil
+                self.pagination = nil
+                self.update()
+                self.syncLinks()
+            }
+        }
+    }
+    
+    var multiReddit: RKMultireddit! {
+        didSet {
+            if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
+                self.links = Array<AnyObject>()
+                self.updateSubscribeButton()
+                self.currentCategory = nil
+                self.pagination = nil
+                self.update()
+                self.syncLinks()
+            }
+        }
+    }
+    
     var front = true
     var pagination: RKPagination?
     var selectedLink: RKLink!
@@ -131,11 +154,13 @@ SearchViewControllerDelegate {
                 self.tableView.addSubview(self.headerImage)
                 self.headerImage.frame = CGRectMake(0, -HeaderHeight, UIScreen.mainScreen().bounds.size.width, HeaderHeight)
                 
-                self.tableView.setContentOffset(CGPointMake(0, -HeaderHeight), animated: true)
-                
-                var tap = UITapGestureRecognizer(target: self, action: "headerImageTapped:")
-                tap.numberOfTapsRequired = 1
-                self.headerImage.gestureRecognizers = [tap]
+                if self.links.count <= 25 {
+                    self.tableView.setContentOffset(CGPointMake(0, -HeaderHeight), animated: true)
+                    
+                    var tap = UITapGestureRecognizer(target: self, action: "headerImageTapped:")
+                    tap.numberOfTapsRequired = 1
+                    self.headerImage.gestureRecognizers = [tap]
+                }
             }
         })
     }
@@ -156,7 +181,10 @@ SearchViewControllerDelegate {
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        
+        self.update()
+    }
+    
+    func update() {
         self.tableView.reloadData()
         
         LocalyticsSession.shared().tagScreen("Subreddit")
@@ -190,6 +218,26 @@ SearchViewControllerDelegate {
         rightBarButtons?.append(postBarButton)
         
         self.tableView.tableFooterView = UIView()
+     
+        switch UIDevice.currentDevice().userInterfaceIdiom {
+        case .Pad:
+            configureForPad()
+        case .Phone:
+            configureForPhone()
+        default:
+            println("Unsupported user interface idiom")
+        }
+    }
+    
+    private func configureForPad() {
+        let width: CGFloat = 500
+        let height: CGFloat = 350
+        
+        preferredContentSize = CGSizeMake(width, height)
+    }
+    
+    private func configureForPhone() {
+        
     }
     
     private func fetchUnread() {
@@ -447,7 +495,7 @@ SearchViewControllerDelegate {
             if link.isImageLink() || link.media != nil || link.domain == "imgur.com" {
                 cell = tableView.dequeueReusableCellWithIdentifier("PostImageCell") as! PostImageCell
                 
-                if indexPath.row == 0 {
+                if indexPath.row == 0 || SettingsManager.defaultManager.valueForSetting(.FullWidthImages) {
                     cell = tableView.dequeueReusableCellWithIdentifier("TitleCell") as! TitleCell
                 }
                 

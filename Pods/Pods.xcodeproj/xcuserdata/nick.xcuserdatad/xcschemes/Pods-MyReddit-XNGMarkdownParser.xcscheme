@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "577839EC10125C8EDA528387"
+               BlueprintIdentifier = "B8E0EC766B42EA0D85D099C0"
                BuildableName = "libPods-MyReddit-XNGMarkdownParser.a"
                BlueprintName = "Pods-MyReddit-XNGMarkdownParser"
                ReferencedContainer = "container:Pods.xcodeproj">

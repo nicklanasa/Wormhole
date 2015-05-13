@@ -16,6 +16,17 @@ class CommentsViewController: UITableViewController, CommentCellDelegate, JZSwip
     var optionsController: LinkShareOptionsViewController!
     
     var forComment = false
+    
+    var filter: RKCommentSort! {
+        didSet {
+            self.hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
+            RedditSession.sharedSession.fetchCommentsWithFilter(filter, pagination: nil, link: self.link, completion: { (pagination, results, error) -> () in
+                self.comments = results
+                self.refreshCommentsControl.endRefreshing()
+                self.hud.hide(true)
+            })
+        }
+    }
         
     var comments: [AnyObject]? {
         didSet {
@@ -92,6 +103,40 @@ class CommentsViewController: UITableViewController, CommentCellDelegate, JZSwip
         }
     }
     
+    @IBAction func filterButtonTapped(sender: AnyObject) {
+        if !self.forComment {
+            var actionSheet = UIAlertController(title: "Select sort", message: nil, preferredStyle: .ActionSheet)
+            actionSheet.addAction(UIAlertAction(title: "Top", style: .Default, handler: { (action) -> Void in
+                self.filter = RKCommentSort.Top
+            }))
+            
+            actionSheet.addAction(UIAlertAction(title: "Hot", style: .Default, handler: { (action) -> Void in
+                self.filter = RKCommentSort.Hot
+            }))
+            
+            actionSheet.addAction(UIAlertAction(title: "New", style: .Default, handler: { (action) -> Void in
+                self.filter = RKCommentSort.New
+            }))
+            
+            actionSheet.addAction(UIAlertAction(title: "Controversial", style: .Default, handler: { (action) -> Void in
+                self.filter = RKCommentSort.Controversial
+            }))
+            
+            actionSheet.addAction(UIAlertAction(title: "Old", style: .Default, handler: { (action) -> Void in
+                self.filter = RKCommentSort.Old
+            }))
+            
+            actionSheet.addAction(UIAlertAction(title: "Top", style: .Default, handler: { (action) -> Void in
+                self.filter = RKCommentSort.Best
+            }))
+            
+            actionSheet.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: { (action) -> Void in
+            }))
+            
+            actionSheet.present(animated: true, completion: nil)
+        }
+    }
+    
     override func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         return 107
     }
@@ -122,7 +167,7 @@ class CommentsViewController: UITableViewController, CommentCellDelegate, JZSwip
             cell.comment = comment
         } else {
             if indexPath.row == 0 {
-                if self.link.isImageLink() || self.link.media != nil || self.link.domain == "imgur.com" {
+                if (self.link.isImageLink() || self.link.media != nil || self.link.domain == "imgur.com") && !SettingsManager.defaultManager.valueForSetting(.FullWidthImages)  {
                     var imageCell = tableView.dequeueReusableCellWithIdentifier("PostImageCell") as! PostImageCell
                     imageCell.link = self.link
                     imageCell.delegate = self

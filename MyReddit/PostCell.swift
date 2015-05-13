@@ -17,7 +17,11 @@ class PostCell: JZSwipeCell {
         super.awakeFromNib()
         
         self.shortSwipeLength = 150
-        self.imageSet = SwipeCellImageSetMake(UIImage(named: "Down"), UIImage(named: "ShareWhite"), UIImage(named: "Up"), UIImage(named: "moreWhite"))
+        
+        var upVoteImage = UIImage(named: "Up")!.imageWithRenderingMode(.AlwaysOriginal)
+        var downVoteImage = UIImage(named: "Down")!.imageWithRenderingMode(.AlwaysOriginal)
+        
+        self.imageSet = SwipeCellImageSetMake(downVoteImage, UIImage(named: "ShareWhite"), upVoteImage, UIImage(named: "moreWhite"))
         self.colorSet = SwipeCellColorSetMake(MyRedditDownvoteColor, MyRedditColor, MyRedditUpvoteColor, MyRedditReplyColor)
     }
 }

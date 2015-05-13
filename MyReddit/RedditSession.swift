@@ -180,6 +180,16 @@ class RedditSession {
         })
     }
     
+    func fetchCommentsWithFilter(filter: RKCommentSort, pagination: RKPagination?, link: RKLink, completion: PaginationCompletion) {
+        UIApplication.sharedApplication().networkActivityIndicatorVisible = true
+        LocalyticsSession.shared().tagEvent("Fetched comments")
+        
+        RKClient.sharedClient().commentsForLinkWithIdentifier(link.identifier, sort: filter) { (results, pagination, error) -> Void in
+            UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+            completion(pagination: pagination, results: results, error: error)
+        }
+    }
+    
     func fetchCommentsForComment(comment: RKComment, pagination: RKPagination?, completion: PaginationCompletion) {
         UIApplication.sharedApplication().networkActivityIndicatorVisible = true
         LocalyticsSession.shared().tagEvent("Fetched comments for comment")

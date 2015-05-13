@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "3A8931128C9C17FFEA0F4DF5"
+               BlueprintIdentifier = "A4912FC15881E19F337D2D78"
                BuildableName = "libPods-MyReddit-NSDate+Calendar.a"
                BlueprintName = "Pods-MyReddit-NSDate+Calendar"
                ReferencedContainer = "container:Pods.xcodeproj">

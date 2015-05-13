@@ -86,28 +86,30 @@ class LinkViewController: UIViewController {
         self.seeMoreButton.hidden = false
         self.seeLessButton.hidden = true
         
-        let request = NSURLRequest(URL: link.URL)
-        self.webView.loadRequest(request)
-        self.webView.backgroundColor = MyRedditDarkBackgroundColor
-        self.webView.hidden = false
-        
-        self.updateVoteButtons()
-        
-        self.navigationController?.navigationBar.tintColor = MyRedditLabelColor
-        
-        RedditSession.sharedSession.markLinkAsViewed(self.link, completion: { (error) -> () in
+        if let link = self.link {
+            let request = NSURLRequest(URL: link.URL)
+            self.webView.loadRequest(request)
+            self.webView.backgroundColor = MyRedditDarkBackgroundColor
+            self.webView.hidden = false
             
-        })
-        
-        NSUserDefaults.standardUserDefaults().setObject(true, forKey: self.link.identifier)
-        
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "Saved"), style: .Plain, target: self, action: "saveLink")
-        
-        if self.link.saved {
-            self.navigationItem.rightBarButtonItem?.tintColor = MyRedditColor
+            self.updateVoteButtons()
+            
+            self.navigationController?.navigationBar.tintColor = MyRedditLabelColor
+            
+            RedditSession.sharedSession.markLinkAsViewed(self.link, completion: { (error) -> () in
+                
+            })
+            
+            NSUserDefaults.standardUserDefaults().setObject(true, forKey: self.link.identifier)
+            
+            self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "Saved"), style: .Plain, target: self, action: "saveLink")
+            
+            if self.link.saved {
+                self.navigationItem.rightBarButtonItem?.tintColor = MyRedditColor
+            }
+            
+            self.configureNav()
         }
-        
-        self.configureNav()
     }
     
     private func configureNav() {
