@@ -22,6 +22,7 @@ class LinkViewController: UIViewController {
     @IBOutlet weak var toolbar: UIToolbar!
     @IBOutlet weak var seeMoreButton: UIButton!
     @IBOutlet weak var seeLessButton: UIButton!
+    @IBOutlet weak var shareButton: UIBarButtonItem!
     
     @IBAction func seeMoreButtonTapped(sender: AnyObject) {
         
@@ -211,6 +212,7 @@ class LinkViewController: UIViewController {
     
     @IBAction func shareButtonTapped(sender: AnyObject) {
         self.optionsController = LinkShareOptionsViewController(link: self.link)
+        self.optionsController.barbuttonItem = self.shareButton
         self.optionsController.showInView(self.view)
     }
     

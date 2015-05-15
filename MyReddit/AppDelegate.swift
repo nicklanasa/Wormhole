@@ -49,7 +49,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, IMGSessionDelegate {
             }
         }
         
-        LocalyticsSession.shared().integrateLocalytics("fda6cd374a0e9cec3f11237-09533afc-9cc5-11e3-974b-005cf8cbabd8",
+    LocalyticsSession.shared().integrateLocalytics("fda6cd374a0e9cec3f11237-09533afc-9cc5-11e3-974b-005cf8cbabd8",
             launchOptions: launchOptions)
         
         Appirater.setAppId("544533053")

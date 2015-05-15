@@ -37,7 +37,7 @@ class PurchaseViewController: UIViewController, BDGIAPDelegate {
     @IBAction func purchaseButtonTapped(sender: AnyObject) {
         self.hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
         BDGInAppPurchase.sharedBDGInAppPurchase().delegate = self
-        BDGInAppPurchase.sharedBDGInAppPurchase().productID = "myreddit.premium"
+        BDGInAppPurchase.sharedBDGInAppPurchase().productID = SettingsManager.defaultManager.productID
         BDGInAppPurchase.sharedBDGInAppPurchase().purchaseIAP()
     }
     
@@ -97,6 +97,12 @@ class PurchaseViewController: UIViewController, BDGIAPDelegate {
         
         alert.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
         
+        if let popoverController = alert.popoverPresentationController {
+            var button = sender as! UIButton
+            popoverController.sourceView = button
+            popoverController.sourceRect = button.bounds
+        }
+        
         self.presentViewController(alert, animated: true, completion: nil)
     }
     
@@ -134,7 +140,7 @@ class PurchaseViewController: UIViewController, BDGIAPDelegate {
     
     func didPurchaseIAP() {
         self.hud.hide(true)
-        LocalyticsSession.shared().tagEvent("Purchased premium")
+        LocalyticsSession.shared().tagEvent("Purchased premium with pID: \(SettingsManager.defaultManager.productID)")
         NSUserDefaults.standardUserDefaults().setObject(true, forKey: "purchased")
         NSUserDefaults.standardUserDefaults().setObject(nil, forKey: "expirationDate")
         self.cancelButtonTapped(self)

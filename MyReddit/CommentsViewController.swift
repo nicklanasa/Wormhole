@@ -11,6 +11,8 @@ import UIKit
 
 class CommentsViewController: UITableViewController, CommentCellDelegate, JZSwipeCellDelegate, UITextFieldDelegate, AddCommentViewControllerDelegate {
     
+    @IBOutlet weak var filterButton: UIBarButtonItem!
+    @IBOutlet weak var shareButton: UIBarButtonItem!
     var link: RKLink!
     var comment: RKComment!
     var optionsController: LinkShareOptionsViewController!
@@ -59,6 +61,12 @@ class CommentsViewController: UITableViewController, CommentCellDelegate, JZSwip
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         LocalyticsSession.shared().tagScreen("Comments")
+        
+        if !forComment {
+            self.filterButton.enabled = true
+        } else {
+            self.filterButton.enabled = false
+        }
     }
     
     override func viewDidLoad() {
@@ -126,12 +134,16 @@ class CommentsViewController: UITableViewController, CommentCellDelegate, JZSwip
                 self.filter = RKCommentSort.Old
             }))
             
-            actionSheet.addAction(UIAlertAction(title: "Top", style: .Default, handler: { (action) -> Void in
+            actionSheet.addAction(UIAlertAction(title: "Best", style: .Default, handler: { (action) -> Void in
                 self.filter = RKCommentSort.Best
             }))
             
             actionSheet.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: { (action) -> Void in
             }))
+            
+            if let popoverController = actionSheet.popoverPresentationController {
+                popoverController.barButtonItem = self.filterButton
+            }
             
             actionSheet.present(animated: true, completion: nil)
         }
@@ -356,6 +368,13 @@ class CommentsViewController: UITableViewController, CommentCellDelegate, JZSwip
                                 }
                                 
                                 alertController.addAction(UIAlertAction(title: "cancel", style: .Cancel, handler: nil))
+                                
+                                
+                                if let popoverController = alertController.popoverPresentationController {
+                                    popoverController.sourceView = cell
+                                    popoverController.sourceRect = cell.bounds
+                                }
+                                
                                 alertController.present(animated: true, completion: nil)
                             }
                         } else {
@@ -379,6 +398,7 @@ class CommentsViewController: UITableViewController, CommentCellDelegate, JZSwip
                                 // Share
                                 self.hud.hide(true)
                                 self.optionsController = LinkShareOptionsViewController(link: link)
+                                self.optionsController.sourceView = cell
                                 self.optionsController.showInView(self.view)
                             }
                         }

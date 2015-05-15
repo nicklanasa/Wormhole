@@ -28,6 +28,7 @@ class UserContentViewController: UIViewController, UITableViewDelegate, UITableV
     }
     
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var listButton: UIBarButtonItem!
     
     override func viewDidLoad() {
         self.tableView.rowHeight = UITableViewAutomaticDimension
@@ -38,13 +39,17 @@ class UserContentViewController: UIViewController, UITableViewDelegate, UITableV
         self.tableView.backgroundColor = MyRedditBackgroundColor
         
         self.tableView.tableFooterView = UIView()
+        
+        if let splitViewController = self.splitViewController {
+            self.listButton.action = splitViewController.displayModeButtonItem().action
+        }
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         LocalyticsSession.shared().tagScreen("UserContent")
     }
-    
+
     private func syncContent() {
         if let cell =  self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 1)) as? LoadMoreHeader {
             cell.startAnimating()
@@ -321,11 +326,18 @@ class UserContentViewController: UIViewController, UITableViewDelegate, UITableV
                         }))
                         
                         alertController.addAction(UIAlertAction(title: "cancel", style: .Cancel, handler: nil))
+                        
+                        if let popoverController = alertController.popoverPresentationController {
+                            popoverController.sourceView = cell
+                            popoverController.sourceRect = cell.bounds
+                        }
+                        
                         alertController.present(animated: true, completion: nil)
                     } else {
                         // Share
                         self.hud.hide(true)
                         self.optionsController = LinkShareOptionsViewController(link: link)
+                        self.optionsController.sourceView = cell
                         self.optionsController.showInView(self.view)
                     }
                 } else if let comment = self.content[indexPath.row] as? RKComment {

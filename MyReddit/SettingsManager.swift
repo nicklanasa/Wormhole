@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 enum Setting: NSInteger {
     case Flair
@@ -35,14 +36,12 @@ class SettingsManager {
         switch setting {
         case .Flair:
             if let flair = NSUserDefaults.standardUserDefaults().objectForKey("Flair") as? NSNumber {
-                LocalyticsSession.shared().tagEvent("Flair toggled")
                 return flair.boolValue
             }
             
             return false
         case .NSFW:
             if let nsfw = NSUserDefaults.standardUserDefaults().objectForKey("NSFW") as? NSNumber {
-                LocalyticsSession.shared().tagEvent("NSFW toggled")
                 return nsfw.boolValue
             }
             
@@ -50,7 +49,6 @@ class SettingsManager {
             
         case .SubredditLogos:
             if let logos = NSUserDefaults.standardUserDefaults().objectForKey("SubredditLogos") as? NSNumber {
-                LocalyticsSession.shared().tagEvent("Subreddit logos toggled")
                 return logos.boolValue
             }
             
@@ -58,7 +56,6 @@ class SettingsManager {
             
         case .NightMode:
             if let nightMode = NSUserDefaults.standardUserDefaults().objectForKey("NightMode") as? NSNumber {
-                LocalyticsSession.shared().tagEvent("Night mode toggled")
                 return nightMode.boolValue
             }
             
@@ -66,7 +63,6 @@ class SettingsManager {
             
         case .FullWidthImages:
             if let fullWidthMode = NSUserDefaults.standardUserDefaults().objectForKey("FullWidthImages") as? NSNumber {
-                LocalyticsSession.shared().tagEvent("Full Width Images mode toggled")
                 return fullWidthMode.boolValue
             }
             
@@ -74,7 +70,6 @@ class SettingsManager {
             
         case .InfiniteScrolling:
             if let scrolling = NSUserDefaults.standardUserDefaults().objectForKey("InfiniteScrolling") as? NSNumber {
-                LocalyticsSession.shared().tagEvent("Infinite scrolling toggled")
                 return scrolling.boolValue
             }
             
@@ -119,16 +114,22 @@ class SettingsManager {
         switch setting {
         case .Flair:
             NSUserDefaults.standardUserDefaults().setObject(value, forKey: "Flair")
+            LocalyticsSession.shared().tagEvent("Flair toggled")
         case .NSFW:
             NSUserDefaults.standardUserDefaults().setObject(value, forKey: "NSFW")
+            LocalyticsSession.shared().tagEvent("NSFW toggled")
         case .SubredditLogos:
             NSUserDefaults.standardUserDefaults().setObject(value, forKey: "SubredditLogos")
+            LocalyticsSession.shared().tagEvent("Subreddit logos toggled")
         case .NightMode:
             NSUserDefaults.standardUserDefaults().setObject(value, forKey: "NightMode")
+            LocalyticsSession.shared().tagEvent("Night mode toggled")
         case .InfiniteScrolling:
             NSUserDefaults.standardUserDefaults().setObject(value, forKey: "InfiniteScrolling")
+            LocalyticsSession.shared().tagEvent("Infinite scrolling toggled")
         case .FullWidthImages:
             NSUserDefaults.standardUserDefaults().setObject(value, forKey: "FullWidthImages")
+            LocalyticsSession.shared().tagEvent("Full Width Images mode toggled")
         default: break
             
         }
@@ -181,6 +182,16 @@ class SettingsManager {
                 } else {
                     return true
                 }
+            }
+        }
+    }
+    
+    var productID: String! {
+        get {
+            if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
+                return "myreddit.premium.ipad"
+            } else {
+                return "myreddit.premium"
             }
         }
     }

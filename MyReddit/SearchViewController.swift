@@ -34,6 +34,7 @@ MultiRedditsViewControllerDelegate {
     @IBOutlet weak var segmentationControl: UISegmentedControl!
     @IBOutlet weak var restrictToSubredditSwitch: UIBarButtonItem!
     @IBOutlet weak var restrictSubreddit: UISwitch!
+    @IBOutlet weak var listButton: UIBarButtonItem!
     
     var subreddits = Array<AnyObject>() {
         didSet {
@@ -185,16 +186,19 @@ MultiRedditsViewControllerDelegate {
     }
     
     override func viewDidAppear(animated: Bool) {
-        self.tableView.tableHeaderView = self.searchController.searchBar
+        
+        if let splitViewController = self.splitViewController {
+            self.navigationItem.titleView = self.searchController.searchBar
+        } else {
+            self.tableView.tableHeaderView = self.searchController.searchBar
+        }
         
         self.tableView.rowHeight = UITableViewAutomaticDimension
         self.tableView.backgroundColor = MyRedditBackgroundColor
         
-        for subView in self.searchController.searchBar.subviews {
-            if let textField = subView as? UITextField {
-                textField.textColor = MyRedditLabelColor
-            }
-        }
+        var textFieldInsideSearchBar = self.searchController.searchBar.valueForKey("searchField") as? UITextField
+        
+        textFieldInsideSearchBar?.textColor = MyRedditLabelColor
         
         self.tableView.tableFooterView = UIView()
         
@@ -223,6 +227,10 @@ MultiRedditsViewControllerDelegate {
             }
             
             self.navigationItem.rightBarButtonItems = [restrictToSubredditSwitch, restrictToSubreddit]
+        }
+        
+        if let splitViewController = self.splitViewController {
+            self.listButton.action = self.splitViewController!.displayModeButtonItem().action
         }
     }
     
@@ -318,10 +326,14 @@ MultiRedditsViewControllerDelegate {
                     }))
                     
                     alert.addAction(UIAlertAction(title: "See posts", style: .Cancel, handler: { (a) -> Void in
-                        self.searchController.active = false
-                        self.dismissViewControllerAnimated(true, completion: { () -> Void in
-                            self.delegate?.searchViewController(self, didTapSubreddit: subreddit)
-                        })
+                        if let splitViewController = self.splitViewController {
+                            self.performSegueWithIdentifier("SearchSubredditSegue", sender: subreddit)
+                        } else {
+                            self.searchController.active = false
+                            self.dismissViewControllerAnimated(true, completion: { () -> Void in
+                                self.delegate?.searchViewController(self, didTapSubreddit: subreddit)
+                            })
+                        }
                     }))
                     
                     alert.present(animated: true, completion: { () -> Void in
@@ -354,6 +366,15 @@ MultiRedditsViewControllerDelegate {
             if let link = sender as? RKLink {
                 if let controller = segue.destinationViewController as? LinkViewController {
                     controller.link = link
+                }
+            }
+        } else if segue.identifier == "SearchSubredditSegue" {
+            if let controller = segue.destinationViewController as? NavBarController {
+                if let subredditViewController = controller.viewControllers[0] as? SubredditViewController {
+                    if let subreddit = sender as? RKSubreddit {
+                        subredditViewController.subreddit = subreddit
+                        subredditViewController.front = false
+                    }
                 }
             }
         } else if segue.identifier == "MultiRedditSegue" {
@@ -465,6 +486,13 @@ MultiRedditsViewControllerDelegate {
                             }))
                             
                             alertController.addAction(UIAlertAction(title: "cancel", style: .Cancel, handler: nil))
+                            
+                            
+                            if let popoverController = alertController.popoverPresentationController {
+                                popoverController.sourceView = cell
+                                popoverController.sourceRect = cell.bounds
+                            }
+                            
                             alertController.present(animated: true, completion: nil)
                             
                         } else {
@@ -472,6 +500,7 @@ MultiRedditsViewControllerDelegate {
                             // Share
                             self.hud.hide(true)
                             self.optionsController = LinkShareOptionsViewController(link: link)
+                            self.optionsController.sourceView = cell
                             self.optionsController.showInView(self.view)
                         }
                     }

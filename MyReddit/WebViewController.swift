@@ -12,7 +12,7 @@ import UIKit
 class WebViewController: UIViewController, UIWebViewDelegate {
     
     @IBOutlet weak var webView: UIWebView!
-    @IBOutlet weak var linkLabel: UILabel!
+    @IBOutlet weak var shareButton: UIBarButtonItem!
     
     var url: NSURL!
 
@@ -38,6 +38,10 @@ class WebViewController: UIViewController, UIWebViewDelegate {
         
         let activityVC = UIActivityViewController(activityItems: objectsToShare,
             applicationActivities: nil)
+        
+        if let popoverController = activityVC.popoverPresentationController {
+            popoverController.barButtonItem = self.shareButton
+        }
         
         self.presentViewController(activityVC, animated: true, completion: nil)
         

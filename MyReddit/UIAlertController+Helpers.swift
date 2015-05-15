@@ -20,7 +20,7 @@ extension UIViewController {
     }
     
     private func presentFromController(controller: UIViewController, animated: Bool, completion: (() -> Void)?) {
-        if  let navVC = controller as? UINavigationController,
+        if let navVC = controller as? UINavigationController,
             let visibleVC = navVC.visibleViewController {
                 presentFromController(visibleVC, animated: animated, completion: completion)
         } else

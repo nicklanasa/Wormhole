@@ -19,6 +19,7 @@ class InboxesTableViewController: UITableViewController {
     @IBOutlet weak var postRepliesCell: UserInfoCell!
     @IBOutlet weak var mentionsCell: UserInfoCell!
     @IBOutlet weak var moderatorCell: UserInfoCell!
+    @IBOutlet weak var listButton: UIBarButtonItem!
     
     var selectedCategory: RKMessageCategory!
     
@@ -37,6 +38,10 @@ class InboxesTableViewController: UITableViewController {
     override func viewDidLoad() {
         self.tableView.backgroundColor = MyRedditDarkBackgroundColor
         self.refreshControl = self.inboxRefreshControl
+        
+        if let splitViewController = self.splitViewController {
+            self.listButton.action = splitViewController.displayModeButtonItem().action
+        }
     }
     
     override func viewWillAppear(animated: Bool) {

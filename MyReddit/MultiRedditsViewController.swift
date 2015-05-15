@@ -151,6 +151,11 @@ class MultiRedditsViewController: UIViewController, UITableViewDelegate, UITable
                                 })
                             }))
                             
+                            if let popoverController = visibilityAlert.popoverPresentationController {
+                                popoverController.sourceView = self.view
+                                popoverController.sourceRect = self.view.bounds
+                            }
+                            
                             self.presentViewController(visibilityAlert, animated: true, completion: nil)
                         }
                     }
@@ -158,6 +163,12 @@ class MultiRedditsViewController: UIViewController, UITableViewDelegate, UITable
             }))
             
             alert.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
+            
+            if let popoverController = alert.popoverPresentationController {
+                
+                popoverController.sourceView = self.view
+                popoverController.sourceRect = self.view.frame
+            }
             
             if UserSession.sharedSession.isSignedIn {
                 self.presentViewController(alert, animated: true, completion: nil)

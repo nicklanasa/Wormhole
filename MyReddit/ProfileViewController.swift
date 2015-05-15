@@ -20,15 +20,23 @@ class ProfileViewController: UIViewController, UITableViewDataSource, UITableVie
     var user: RKUser?
     
     @IBAction func cancelButtonTapped(sender: AnyObject) {
-        self.dismissViewControllerAnimated(true, completion: nil)
+        if let splitViewController = self.splitViewController {
+            self.navigationController?.popViewControllerAnimated(true)
+        } else {
+            self.dismissViewControllerAnimated(true, completion: nil)
+        }
     }
     
     @IBAction func logoutButtonTapped(sender: AnyObject) {
         UserSession.sharedSession.logout()
         
-        DataManager.manager.datastore.removeAllSubreddits { (error) -> () in
-            self.cancelButtonTapped(sender)
+        if let splitViewController = self.splitViewController {
+            NSNotificationCenter.defaultCenter().postNotificationName("RefreshSubreddits", object: nil)
         }
+        
+        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            self.cancelButtonTapped(sender)
+        })
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -82,9 +90,9 @@ class ProfileViewController: UIViewController, UITableViewDataSource, UITableVie
                 cell.titleLabel.text = title
                 
                 if indexPath.row == 0 {
-                    cell.infoLabel.text = searchedUser.commentKarma.description
-                } else {
                     cell.infoLabel.text = searchedUser.linkKarma.description
+                } else {
+                    cell.infoLabel.text = searchedUser.commentKarma.description
                 }
                 
                 cell.selectionStyle = .None

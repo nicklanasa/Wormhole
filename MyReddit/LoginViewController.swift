@@ -45,6 +45,10 @@ class LoginViewController: UIViewController, UITableViewDataSource, UITableViewD
                         
                         LocalyticsSession.shared().tagEvent("Login success")
                         
+                        if let splitViewController = self.splitViewController {
+                            NSNotificationCenter.defaultCenter().postNotificationName("RefreshSubreddits", object: nil)
+                        }
+                        
                         self.hud.hide(true)
                         self.cancelButtonPressed(sender)
                     }
@@ -72,7 +76,11 @@ class LoginViewController: UIViewController, UITableViewDataSource, UITableViewD
     }
     
     @IBAction func cancelButtonPressed(sender: AnyObject) {
-        self.dismissViewControllerAnimated(true, completion: nil)
+        if let splitViewController = self.splitViewController {
+            self.navigationController?.popViewControllerAnimated(true)
+        } else {
+            self.dismissViewControllerAnimated(true, completion: nil)
+        }
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

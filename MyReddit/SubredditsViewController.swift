@@ -103,6 +103,11 @@ class SubredditsViewController: UIViewController, UITableViewDataSource, UITable
     override func viewDidLoad() {
         super.viewDidLoad()
         self.tableView.addSubview(self.refreshControl)
+        
+        NSNotificationCenter.defaultCenter().addObserver(self,
+            selector: "fetchSubreddits",
+            name: "RefreshSubreddits",
+            object: nil)
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -122,25 +127,27 @@ class SubredditsViewController: UIViewController, UITableViewDataSource, UITable
     
     func fetchSubreddits() {
         
-        self.syncSubreddits = Array<AnyObject>()
-        self.syncMultiSubreddits = Array<AnyObject>()
-        
-        if let subredditsData = NSUserDefaults.standardUserDefaults().objectForKey("subreddits") as? NSData {
-            if let subreddits = NSKeyedUnarchiver.unarchiveObjectWithData(subredditsData) as? [RKSubreddit] {
-                self.subreddits = subreddits
+        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            self.syncSubreddits = Array<AnyObject>()
+            self.syncMultiSubreddits = Array<AnyObject>()
+            
+            if let subredditsData = NSUserDefaults.standardUserDefaults().objectForKey("subreddits") as? NSData {
+                if let subreddits = NSKeyedUnarchiver.unarchiveObjectWithData(subredditsData) as? [RKSubreddit] {
+                    self.subreddits = subreddits
+                }
             }
-        }
-        
-        if let subredditsData = NSUserDefaults.standardUserDefaults().objectForKey("multiSubreddits") as? NSData {
-            if let subreddits = NSKeyedUnarchiver.unarchiveObjectWithData(subredditsData) as? [RKMultireddit] {
-                self.multiSubreddits = subreddits
+            
+            if let subredditsData = NSUserDefaults.standardUserDefaults().objectForKey("multiSubreddits") as? NSData {
+                if let subreddits = NSKeyedUnarchiver.unarchiveObjectWithData(subredditsData) as? [RKMultireddit] {
+                    self.multiSubreddits = subreddits
+                }
             }
-        }
-        
-        self.syncSubreddits(nil)
-        self.syncMultiReddits()
-        
-        self.refreshControl.endRefreshing()
+            
+            self.syncSubreddits(nil)
+            self.syncMultiReddits()
+            
+            self.refreshControl.endRefreshing()
+        })
     }
     
     func syncSubreddits(pagination: RKPagination?) {
@@ -397,33 +404,6 @@ class SubredditsViewController: UIViewController, UITableViewDataSource, UITable
     }
     
     override func shouldPerformSegueWithIdentifier(identifier: String?, sender: AnyObject?) -> Bool {
-        if identifier == "SubredditPosts" && UIDevice.currentDevice().userInterfaceIdiom == .Pad {
-            if let controller = self.splitViewController?.viewControllers[1] as? NavBarController {
-                if let subredditViewController = controller.viewControllers[0] as? SubredditViewController {
-                    if let cell = sender as? UITableViewCell {
-                        
-                        var indexPath: NSIndexPath = self.tableView.indexPathForCell(cell)!
-                        
-                        if indexPath.section == 0 {
-                            if indexPath.row != 0 {
-                                if let subreddit = self.multiSubreddits[indexPath.row - 1] as? RKMultireddit {
-                                    subredditViewController.multiReddit = subreddit
-                                    subredditViewController.front = false
-                                }
-                            }
-                        } else {
-                            if indexPath.row != 0 {
-                                if let subreddit = self.subreddits[indexPath.row - 1] as? RKSubreddit {
-                                    subredditViewController.subreddit = subreddit
-                                    subredditViewController.front = false
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            return false
-        }
         return true
     }
     
@@ -450,6 +430,8 @@ class SubredditsViewController: UIViewController, UITableViewDataSource, UITable
                                 }
                             }
                         }
+                        
+                        self.toggleMaster()
                     }
                 }
             }
@@ -459,8 +441,24 @@ class SubredditsViewController: UIViewController, UITableViewDataSource, UITable
                     controller.category = .Saved
                     controller.categoryTitle = "Saved"
                     controller.user = RKClient.sharedClient().currentUser
+                    
+                    self.toggleMaster()
                 }
             }
+        } else if segue.identifier == "AccountsSegue" {
+            self.toggleMaster()
+        } else if segue.identifier == "FrontSegue" {
+            self.toggleMaster()
+        }
+    }
+    
+    private func toggleMaster() {
+        if let splitViewController = self.splitViewController {
+            let barButtonItem = splitViewController.displayModeButtonItem()
+            UIApplication.sharedApplication().sendAction(barButtonItem.action,
+                to: barButtonItem.target,
+                from: nil,
+                forEvent: nil)
         }
     }
 }

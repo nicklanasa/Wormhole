@@ -13,6 +13,7 @@ import CoreData
 class AccountsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, NSFetchedResultsControllerDelegate {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var editButton: UIBarButtonItem!
+    @IBOutlet weak var listButton: UIBarButtonItem!
     
     lazy var usersController: NSFetchedResultsController! = {
        var controller = DataManager.manager.datastore.usersController("username",
@@ -32,6 +33,10 @@ class AccountsViewController: UIViewController, UITableViewDelegate, UITableView
         self.tableView.backgroundColor = MyRedditDarkBackgroundColor
         
         LocalyticsSession.shared().tagScreen("Accounts")
+        
+        if let splitViewController = self.splitViewController {
+            self.listButton.action = splitViewController.displayModeButtonItem().action
+        }
     }
     
     // MARK: Sectors NSFetchedResultsControllerDelegate
@@ -101,7 +106,11 @@ class AccountsViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     @IBAction func cancelButtonTapped(sender: AnyObject) {
-        self.dismissViewControllerAnimated(true, completion: nil)
+        if let splitViewController = self.splitViewController {
+            self.navigationController?.popViewControllerAnimated(true)
+        } else {
+            self.dismissViewControllerAnimated(true, completion: nil)
+        }
     }
     
     @IBAction func editButtonTapped(sender: AnyObject) {

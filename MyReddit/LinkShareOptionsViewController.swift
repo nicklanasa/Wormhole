@@ -10,9 +10,13 @@ import Foundation
 import UIKit
 
 class LinkShareOptionsViewController: UIViewController {
-    private var alertController: UIAlertController!
+    
+    var alertController: UIAlertController!
     
     let link: RKLink!
+    
+    var barbuttonItem: UIBarButtonItem?
+    var sourceView: UIView?
     
     init(link: RKLink) {
         self.link = link
@@ -34,6 +38,23 @@ class LinkShareOptionsViewController: UIViewController {
     */
     private func configureActionSheet() {
         self.alertController = UIAlertController(title: "Select source", message: nil, preferredStyle: .ActionSheet)
+    }
+    
+    /**
+    Shows the action view in the given view.
+    
+    :param: view The view you want the show the action sheet in.
+    */
+    func showInView(view: UIView) {
+        
+        if let popoverController = alertController.popoverPresentationController {
+            if let item = barbuttonItem {
+                popoverController.barButtonItem = item
+            } else if let view = self.sourceView {
+                popoverController.sourceView = view
+                popoverController.sourceRect = view.bounds
+            }
+        }
         
         self.alertController.addAction(UIAlertAction(title: "open in Safari", style: .Default, handler: { (action) -> Void in
             UIApplication.sharedApplication().openURL(self.link.URL)
@@ -46,20 +67,22 @@ class LinkShareOptionsViewController: UIViewController {
             
             let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
             
+            if let popoverController = activityVC.popoverPresentationController {
+                if let view = self.sourceView {
+                    popoverController.sourceView = view
+                    popoverController.sourceRect = view.bounds
+                } else if let item = self.barbuttonItem {
+                    popoverController.barButtonItem = item
+                }
+            }
+            
             activityVC.present(animated: true, completion: nil)
             
             LocalyticsSession.shared().tagEvent("Share tapped")
         }))
         
         self.alertController.addAction(UIAlertAction(title: "cancel", style: .Cancel, handler: nil))
-    }
-    
-    /**
-    Shows the action view in the given view.
-    
-    :param: view The view you want the show the action sheet in.
-    */
-    func showInView(view: UIView) {
+        
         self.alertController.present(animated: true, completion: nil)
     }
 }

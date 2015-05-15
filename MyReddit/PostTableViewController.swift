@@ -43,6 +43,8 @@ UINavigationControllerDelegate {
         }
     }
     
+    @IBOutlet weak var listButton: UIBarButtonItem!
+    
     override func viewDidLoad() {
         self.tableView.backgroundColor = MyRedditBackgroundColor
         
@@ -65,6 +67,10 @@ UINavigationControllerDelegate {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         LocalyticsSession.shared().tagScreen("Post")
+        
+        if let splitViewController = self.splitViewController {
+            self.listButton.action = self.splitViewController!.displayModeButtonItem().action
+        }
     }
     
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {

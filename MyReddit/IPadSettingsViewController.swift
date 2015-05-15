@@ -1,20 +1,19 @@
 //
-//  SettingsTableViewController.swift
+//  IPadSettingsViewController.swift
 //  MyReddit
 //
-//  Created by Nick Lanasa on 5/2/15.
+//  Created by Nick Lanasa on 5/15/15.
 //  Copyright (c) 2015 Nytek Production. All rights reserved.
 //
 
 import Foundation
 import UIKit
 
-class SettingsTableViewController: UITableViewController, BDGIAPDelegate {
+class IPadSettingsViewController: UITableViewController, BDGIAPDelegate {
     
     @IBOutlet weak var showFlairSwitch: UISwitch!
     @IBOutlet weak var showNSFWSwitch: UISwitch!
     @IBOutlet weak var showSubredditLogosSwitch: UISwitch!
-    @IBOutlet weak var nightModeSwitch: UISwitch!
     @IBOutlet weak var fullWidthImagesSwitch: UISwitch!
     @IBOutlet weak var infiniteScrollingSwitch: UISwitch!
     @IBOutlet weak var textSizeLabel: UILabel!
@@ -22,7 +21,6 @@ class SettingsTableViewController: UITableViewController, BDGIAPDelegate {
     @IBOutlet weak var showFlairCell: UserInfoCell!
     @IBOutlet weak var showNSFWCell: UserInfoCell!
     @IBOutlet weak var hideSubredditLogosCell: UserInfoCell!
-    @IBOutlet weak var nightModeCell: UserInfoCell!
     @IBOutlet weak var textSizeCell: UserInfoCell!
     @IBOutlet weak var infinitePostScrollingCell: UserInfoCell!
     @IBOutlet weak var goToMyRedditCell: UserInfoCell!
@@ -60,7 +58,6 @@ class SettingsTableViewController: UITableViewController, BDGIAPDelegate {
             self.showNSFWSwitch.on = SettingsManager.defaultManager.valueForSetting(.NSFW)
             self.showSubredditLogosSwitch.on = SettingsManager.defaultManager.valueForSetting(.SubredditLogos)
             self.fullWidthImagesSwitch.on = SettingsManager.defaultManager.valueForSetting(.FullWidthImages)
-            self.nightModeSwitch.on = SettingsManager.defaultManager.valueForSetting(.NightMode)
             self.infiniteScrollingSwitch.on = SettingsManager.defaultManager.valueForSetting(.InfiniteScrolling)
             self.textSizeLabel.text = SettingsManager.defaultManager.valueForTextSizeSetting(currentTextSize)
             
@@ -70,8 +67,6 @@ class SettingsTableViewController: UITableViewController, BDGIAPDelegate {
             self.showNSFWCell.backgroundColor = MyRedditBackgroundColor
             self.hideSubredditLogosCell.titleLabel.textColor = MyRedditLabelColor
             self.hideSubredditLogosCell.backgroundColor = MyRedditBackgroundColor
-            self.nightModeCell.titleLabel.textColor = MyRedditLabelColor
-            self.nightModeCell.backgroundColor = MyRedditBackgroundColor
             self.textSizeCell.titleLabel.textColor = MyRedditLabelColor
             self.textSizeCell.backgroundColor = MyRedditBackgroundColor
             self.infinitePostScrollingCell.titleLabel.textColor = MyRedditLabelColor
@@ -105,18 +100,6 @@ class SettingsTableViewController: UITableViewController, BDGIAPDelegate {
         })
     }
     
-    @IBAction func nightModeValueChanged(sender: AnyObject) {
-        SettingsManager.defaultManager.updateValueForSetting(.NightMode, value: self.nightModeSwitch.on)
-        
-        if SettingsManager.defaultManager.valueForSetting(.NightMode) {
-            UserSession.sharedSession.nightMode()
-        } else {
-            UserSession.sharedSession.dayMode()
-        }
-        
-        self.updateTable()
-    }
-    
     @IBAction func hideFullWidthImagesValueChanged(sender: AnyObject) {
         SettingsManager.defaultManager.updateValueForSetting(.FullWidthImages, value: self.fullWidthImagesSwitch.on)
     }
@@ -140,7 +123,7 @@ class SettingsTableViewController: UITableViewController, BDGIAPDelegate {
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
         if indexPath.section == 1 {
-            if indexPath.row == 1 {
+            if indexPath.row == 0 {
                 // Text Size
                 var alert = UIAlertController(title: "Text Size",
                     message: "Please select the text size. This will change the text size for both comments and posts.",

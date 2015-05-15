@@ -10,7 +10,10 @@ import Foundation
 import UIKit
 import CoreData
 
-let HeaderHeight: CGFloat = 300.0
+let HeaderIphoneHeight: CGFloat = 300.0
+let HeaderIphoneThreshold: CGFloat = -400
+let HeaderIpadHeight: CGFloat = 500.0
+let HeaderIpadThreshold: CGFloat = -600
 
 enum FilterSwitchType: Int {
     case Hot
@@ -27,32 +30,11 @@ NSFetchedResultsControllerDelegate,
 LoadMoreHeaderDelegate,
 UIGestureRecognizerDelegate,
 JZSwipeCellDelegate,
-SearchViewControllerDelegate {
+SearchViewControllerDelegate,
+UISplitViewControllerDelegate {
     
-    var subreddit: RKSubreddit! {
-        didSet {
-            if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
-                self.links = Array<AnyObject>()
-                self.currentCategory = nil
-                self.pagination = nil
-                self.update()
-                self.syncLinks()
-            }
-        }
-    }
-    
-    var multiReddit: RKMultireddit! {
-        didSet {
-            if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
-                self.links = Array<AnyObject>()
-                self.updateSubscribeButton()
-                self.currentCategory = nil
-                self.pagination = nil
-                self.update()
-                self.syncLinks()
-            }
-        }
-    }
+    var subreddit: RKSubreddit!
+    var multiReddit: RKMultireddit!
     
     var front = true
     var pagination: RKPagination?
@@ -145,17 +127,24 @@ SearchViewControllerDelegate {
     }
     
     private func displayHeader(foundImage: Bool) {
+        
+        var headerHeight = HeaderIphoneHeight
+        
+        if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
+            headerHeight = HeaderIpadHeight
+        }
+        
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
             if !foundImage {
                 self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0)
                 self.headerImage.removeFromSuperview()
             } else {
-                self.tableView.contentInset = UIEdgeInsetsMake(HeaderHeight, 0, 0, 0)
+                self.tableView.contentInset = UIEdgeInsetsMake(headerHeight, 0, 0, 0)
                 self.tableView.addSubview(self.headerImage)
-                self.headerImage.frame = CGRectMake(0, -HeaderHeight, UIScreen.mainScreen().bounds.size.width, HeaderHeight)
+                self.headerImage.frame = CGRectMake(0, -headerHeight, UIScreen.mainScreen().bounds.size.width, headerHeight)
                 
                 if self.links.count <= 25 {
-                    self.tableView.setContentOffset(CGPointMake(0, -HeaderHeight), animated: true)
+                    self.tableView.setContentOffset(CGPointMake(0, -headerHeight), animated: true)
                     
                     var tap = UITapGestureRecognizer(target: self, action: "headerImageTapped:")
                     tap.numberOfTapsRequired = 1
@@ -188,10 +177,9 @@ SearchViewControllerDelegate {
         self.tableView.reloadData()
         
         LocalyticsSession.shared().tagScreen("Subreddit")
-        
-        self.updateSubscribeButton()
-        
+
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            self.updateSubscribeButton()
             self.filterButton.tintColor = MyRedditLabelColor
             self.listButton.tintColor = MyRedditLabelColor
             self.postButton.tintColor = MyRedditLabelColor
@@ -234,6 +222,10 @@ SearchViewControllerDelegate {
         let height: CGFloat = 350
         
         preferredContentSize = CGSizeMake(width, height)
+        self.splitViewController?.presentsWithGesture = false
+        self.listButton.action = self.splitViewController!.displayModeButtonItem().action
+        
+        self.splitViewController?.delegate = self
     }
     
     private func configureForPhone() {
@@ -278,6 +270,10 @@ SearchViewControllerDelegate {
         
         alert.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
         
+        if let popoverController = alert.popoverPresentationController {
+            popoverController.barButtonItem = self.filterButton
+        }
+        
         self.presentViewController(alert, animated: true, completion: nil)
     }
     
@@ -290,9 +286,7 @@ SearchViewControllerDelegate {
         self.currentCategory = RKSubredditCategory(rawValue: UInt(filterSwtichType.rawValue))
         self.syncLinks()
     }
-    
-    
-    
+
     @IBAction func messagesButtonTapped(sender: AnyObject) {
         
         LocalyticsSession.shared().tagEvent("Subreddit message button tapped")
@@ -373,14 +367,23 @@ SearchViewControllerDelegate {
     }
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
+        
+        var headerHeight = HeaderIphoneHeight
+        var threshold = HeaderIphoneThreshold
+        
+        if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
+            headerHeight = HeaderIpadHeight
+            threshold = HeaderIpadThreshold
+        }
+        
         var yOffset: CGFloat = scrollView.contentOffset.y
-        if yOffset < -HeaderHeight {
+        if yOffset < -headerHeight {
             var f = self.headerImage.frame
             f.origin.y = yOffset
             f.size.height =  -yOffset
             self.headerImage.frame = f
             
-            if yOffset <= -400 {
+            if yOffset <= threshold {
                 self.refresh(nil)
             }
         }
@@ -474,7 +477,7 @@ SearchViewControllerDelegate {
     }
     
     func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return 500
+        return 700
     }
 
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -716,6 +719,12 @@ SearchViewControllerDelegate {
                             }))
                             
                             alertController.addAction(UIAlertAction(title: "cancel", style: .Cancel, handler: nil))
+                            
+                            if let popoverController = alertController.popoverPresentationController {
+                                popoverController.sourceView = cell
+                                popoverController.sourceRect = cell.bounds
+                            }
+                            
                             alertController.present(animated: true, completion: nil)
                             
                         } else {
@@ -723,6 +732,7 @@ SearchViewControllerDelegate {
                             // Share
                             self.hud.hide(true)
                             self.optionsController = LinkShareOptionsViewController(link: link)
+                            self.optionsController.sourceView = cell
                             self.optionsController.showInView(self.view)
                         }
                     }
