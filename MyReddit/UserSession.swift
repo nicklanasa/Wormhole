@@ -171,5 +171,5 @@ class UserSession {
         
         UIRefreshControl.appearance().tintColor = MyRedditColor
         UISegmentedControl.appearance().setTitleTextAttributes([NSFontAttributeName: MyRedditSelfTextFont, NSForegroundColorAttributeName : MyRedditLabelColor], forState: .Normal)
-        }
+    }
 }

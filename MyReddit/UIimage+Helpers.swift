@@ -10,10 +10,13 @@ import Foundation
 
 extension UIImage {
     func resize(toSize: CGSize) -> UIImage {
-        let scale: CGFloat = 0.0
-        UIGraphicsBeginImageContextWithOptions(toSize, true, scale)
-        self.drawInRect(CGRect(origin: CGPointZero, size: toSize))
-        let scaledImage = UIGraphicsGetImageFromCurrentImageContext()
-        return scaledImage
+        let scale = toSize.height / self.size.height
+        let newWidth = self.size.width * scale
+        UIGraphicsBeginImageContext(CGSizeMake(newWidth, toSize.height))
+        self.drawInRect(CGRectMake(0, 0, newWidth, toSize.height))
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        return newImage
     }
 }

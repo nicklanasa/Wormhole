@@ -19,13 +19,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "MyReddit/UserContentViewController.swift"
-            timestampString = "453386729.619598"
+            filePath = "Pods/AsyncImageView/AsyncImageView/AsyncImageView.m"
+            timestampString = "453493200.82958"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "335"
-            endingLineNumber = "335"
-            landmarkName = "swipeCell(_:triggeredSwipeWithType:)"
+            startingLineNumber = "627"
+            endingLineNumber = "627"
+            landmarkName = "-setImageURL:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -36,12 +36,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MyReddit/UserContentViewController.swift"
-            timestampString = "453386730.700303"
+            timestampString = "453577757.660897"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "330"
-            endingLineNumber = "330"
-            landmarkName = "swipeCell(_:triggeredSwipeWithType:)"
+            startingLineNumber = "130"
+            endingLineNumber = "130"
+            landmarkName = "tableView(_:didSelectRowAtIndexPath:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

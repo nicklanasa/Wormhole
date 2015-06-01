@@ -23,12 +23,13 @@ class PurchaseViewController: UIViewController, BDGIAPDelegate {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         LocalyticsSession.shared().tagScreen("Purchase")
+        
+        self.view.backgroundColor = MyRedditBackgroundColor
+        self.purchaseLabel.textColor = MyRedditLabelColor
     }
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        
-        self.view.backgroundColor = MyRedditBackgroundColor
     }
 
     @IBOutlet weak var purchaseButton: UIButton!

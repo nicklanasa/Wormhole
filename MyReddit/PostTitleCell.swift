@@ -12,4 +12,9 @@ import UIKit
 class PostTitleCell: UITableViewCell {
     
     @IBOutlet weak var titleTextField: UITextField!
+    
+    override func awakeFromNib() {
+        self.titleTextField.attributedPlaceholder = NSAttributedString(string: "enter title...",
+            attributes: [NSForegroundColorAttributeName : UIColor.lightGrayColor()])
+    }
 }

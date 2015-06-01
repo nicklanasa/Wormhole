@@ -26,30 +26,57 @@ class PostImageCell: PostCell {
     
     override var link: RKLink! {
         didSet {
-            if link.isImageLink() {
-                self.postImageView.sd_setImageWithURL(link.URL, placeholderImage: nil, options: .RefreshCached )
-            } else if let media = link.media {
-                if let thumbnailURL = media.thumbnailURL {
-                    self.postImageView.sd_setImageWithURL(thumbnailURL, placeholderImage: nil, options: .RefreshCached )
-                }
-            } else if link.domain == "imgur.com" {
-                if let absoluteString = link.URL.absoluteString {
-                    var stringURL = absoluteString + ".jpg"
-                    var imageURL = NSURL(string: stringURL)
-                    
-                    SDWebImageDownloader.sharedDownloader().downloadImageWithURL(imageURL, options: SDWebImageDownloaderOptions.ContinueInBackground, progress: { (rSize, eSize) -> Void in
-                        
-                    }, completed: { (image, data, error, success) -> Void in
-                        if error != nil {
-                            self.postImageView.image = UIImage(named: "Reddit")
-                            self.postImageView.contentMode = UIViewContentMode.ScaleAspectFit
-                        } else {
-                            self.postImageView.image = image
+            self.postImageView.alpha = 0.0
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                UIView.animateWithDuration(0.3, animations: { () -> Void in
+                    if self.link.isImageLink() {
+                        SDWebImageDownloader.sharedDownloader().downloadImageWithURL(self.link.URL, options: SDWebImageDownloaderOptions.ContinueInBackground, progress: { (rSize, eSize) -> Void in
+                            
+                            }, completed: { (image, data, error, success) -> Void in
+                                self.postImageView.alpha = 1.0
+                                if error != nil {
+                                    self.postImageView.image = UIImage(named: "Reddit")
+                                    self.postImageView.contentMode = UIViewContentMode.ScaleAspectFit
+                                } else {
+                                    self.postImageView.image = image.resize(self.postImageView.frame.size)
+                                    self.postImageView.contentMode = UIViewContentMode.ScaleAspectFill
+                                }
+                        })
+                    } else if let media = self.link.media {
+                        if let thumbnailURL = media.thumbnailURL {
+                            self.postImageView.sd_setImageWithURL(thumbnailURL, completed: { (image, error, cacheType, url) -> Void in
+                                self.postImageView.alpha = 1.0
+                                if error != nil {
+                                    self.postImageView.image = UIImage(named: "Reddit")
+                                    self.postImageView.contentMode = UIViewContentMode.ScaleAspectFit
+                                } else {
+                                    self.postImageView.image = image.resize(self.postImageView.frame.size)
+                                    self.postImageView.contentMode = UIViewContentMode.ScaleAspectFill
+                                }
+                            })
                         }
-                    })
-                }
-            }
-            
+                    } else if self.link.domain == "imgur.com" {
+                        if let absoluteString = self.link.URL.absoluteString {
+                            var stringURL = absoluteString + ".jpg"
+                            var imageURL = NSURL(string: stringURL)
+                            
+                            SDWebImageDownloader.sharedDownloader().downloadImageWithURL(imageURL, options: SDWebImageDownloaderOptions.ContinueInBackground, progress: { (rSize, eSize) -> Void in
+                                
+                                }, completed: { (image, data, error, success) -> Void in
+                                    self.postImageView.alpha = 1.0
+                                    if error != nil {
+                                        self.postImageView.image = UIImage(named: "Reddit")
+                                        self.postImageView.contentMode = UIViewContentMode.ScaleAspectFit
+                                    } else {
+                                        self.postImageView.image = image.resize(self.postImageView.frame.size)
+                                        self.postImageView.contentMode = UIViewContentMode.ScaleAspectFill
+                                    }
+                            })
+                        }
+                    }
+                })
+            })
+
             if self.link.upvoted() {
                 self.scoreLabel.textColor = MyRedditUpvoteColor
             } else if self.link.downvoted() {

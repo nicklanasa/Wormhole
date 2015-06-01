@@ -12,6 +12,7 @@ import UIKit
 class ProfileViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var toolbar: UIToolbar!
     
     var userTitles = ["Overview", "Comments", "Submitted", "Gilded", "Liked", "Disliked", "Hidden", "Saved"]
     var karmaTitles = ["Link Karma", "Comment Karma"]
@@ -45,9 +46,9 @@ class ProfileViewController: UIViewController, UITableViewDataSource, UITableVie
     }
     
     override func viewDidLoad() {
-        
         if let searchedUser = user {
             self.userTitles =  ["Overview", "Comments", "Submitted", "Gilded"]
+            self.toolbar.hidden = true
         } else {
             if let user = UserSession.sharedSession.currentUser {
                 self.navigationItem.title = user.username

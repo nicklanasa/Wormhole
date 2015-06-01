@@ -41,11 +41,7 @@ class MessageCell: JZSwipeCell, UITextViewDelegate {
     var message: RKMessage! {
         didSet {
             
-            if !message.unread.boolValue {
-                self.readLabel.hidden = true
-            }
-            
-            self.titleLabel.text = message.subject
+            self.titleLabel.text = message.subject.stringByReplacingOccurrencesOfString("&gt;", withString: ">", options: nil, range: nil)
             
             var parser = XNGMarkdownParser()
             parser.paragraphFont = MyRedditSelfTextFont
@@ -54,7 +50,7 @@ class MessageCell: JZSwipeCell, UITextViewDelegate {
             parser.italicFontName = MyRedditCommentTextItalicFont.familyName
             parser.linkFontName = MyRedditCommentTextBoldFont.familyName
             
-            var parsedString = NSMutableAttributedString(attributedString: parser.attributedStringFromMarkdownString(message.messageBody))
+            var parsedString = NSMutableAttributedString(attributedString: parser.attributedStringFromMarkdownString(message.messageBody.stringByReplacingOccurrencesOfString("&gt;", withString: ">", options: nil, range: nil)))
             var titleAttr = [NSForegroundColorAttributeName : MyRedditLabelColor]
             var selfTextAttr = [NSForegroundColorAttributeName : UIColor.darkGrayColor()]
             parsedString.addAttributes(selfTextAttr, range: NSMakeRange(0, count(parsedString.string)))

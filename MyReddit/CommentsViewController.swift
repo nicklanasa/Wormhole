@@ -48,7 +48,7 @@ class CommentsViewController: UITableViewController, CommentCellDelegate, JZSwip
     
     lazy var refreshCommentsControl: UIRefreshControl! = {
         var control = UIRefreshControl()
-        control.attributedTitle = NSAttributedString(string: "Pull to refresh", attributes: [NSFontAttributeName : MyRedditCommentTextBoldFont, NSForegroundColorAttributeName : MyRedditLabelColor])
+        control.attributedTitle = NSAttributedString(string: "", attributes: [NSFontAttributeName : MyRedditCommentTextBoldFont, NSForegroundColorAttributeName : MyRedditLabelColor])
         control.addTarget(self, action: "refresh:", forControlEvents: UIControlEvents.ValueChanged)
         return control
     }()
@@ -456,6 +456,7 @@ class CommentsViewController: UITableViewController, CommentCellDelegate, JZSwip
     
     @IBAction func shareButtonTapped(sender: AnyObject) {
         var linkOptions = LinkShareOptionsViewController(link: self.link)
+        linkOptions.barbuttonItem = self.shareButton
         linkOptions.showInView(self.view)
     }
 }

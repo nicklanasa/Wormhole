@@ -103,7 +103,10 @@ class LinkViewController: UIViewController {
             
             NSUserDefaults.standardUserDefaults().setObject(true, forKey: self.link.identifier)
             
-            self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "Saved"), style: .Plain, target: self, action: "saveLink")
+            self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "Saved"),
+                style: .Plain,
+                target: self,
+                action: "saveLink")
             
             if self.link.saved {
                 self.navigationItem.rightBarButtonItem?.tintColor = MyRedditColor
@@ -128,7 +131,8 @@ class LinkViewController: UIViewController {
         var comments = Int(self.link.totalComments).abbreviateNumber()
         
         var titleString = NSMutableAttributedString(string: "\(score) | \(comments) comments")
-        var fontAttrs = [NSFontAttributeName : MyRedditTitleFont]
+        var fontAttrs = [NSFontAttributeName : MyRedditTitleFont,
+            NSForegroundColorAttributeName : MyRedditLabelColor]
         var scoreAttrs = [NSForegroundColorAttributeName : MyRedditUpvoteColor]
         var commentsAttr = [NSForegroundColorAttributeName : MyRedditColor]
         titleString.addAttributes(fontAttrs, range: NSMakeRange(0, count(titleString.string)))
@@ -143,36 +147,44 @@ class LinkViewController: UIViewController {
     }
     
     func saveLink() {
-        RedditSession.sharedSession.saveLink(self.link, completion: { (error) -> () in
-            if error != nil {
-                UIAlertView(title: "Error!",
-                    message: error!.localizedDescription,
-                    delegate: self,
-                    cancelButtonTitle: "Ok").show()
-                
-                LocalyticsSession.shared().tagEvent("Save failed")
-            } else {
-                self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "Saved"), style: .Plain, target: self, action: "unSaveLink")
-                self.navigationItem.rightBarButtonItem?.tintColor = MyRedditColor
-            }
-        })
+        if !SettingsManager.defaultManager.purchased {
+            self.performSegueWithIdentifier("PurchaseSegue", sender: self)
+        } else {
+            RedditSession.sharedSession.saveLink(self.link, completion: { (error) -> () in
+                if error != nil {
+                    UIAlertView(title: "Error!",
+                        message: error!.localizedDescription,
+                        delegate: self,
+                        cancelButtonTitle: "Ok").show()
+                    
+                    LocalyticsSession.shared().tagEvent("Save failed")
+                } else {
+                    self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "Saved"), style: .Plain, target: self, action: "unSaveLink")
+                    self.navigationItem.rightBarButtonItem?.tintColor = MyRedditColor
+                }
+            })
+        }
     }
     
     func unSaveLink() {
         // unsave
-        RedditSession.sharedSession.unSaveLink(self.link, completion: { (error) -> () in
-            if error != nil {
-                UIAlertView(title: "Error!",
-                    message: error!.localizedDescription,
-                    delegate: self,
-                    cancelButtonTitle: "Ok").show()
-                
-                LocalyticsSession.shared().tagEvent("Unsave failed")
-            } else {
-                 self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "Saved"), style: .Plain, target: self, action: "saveLink")
-                self.navigationItem.rightBarButtonItem?.tintColor = MyRedditLabelColor
-            }
-        })
+        if !SettingsManager.defaultManager.purchased {
+            self.performSegueWithIdentifier("PurchaseSegue", sender: self)
+        } else {
+            RedditSession.sharedSession.unSaveLink(self.link, completion: { (error) -> () in
+                if error != nil {
+                    UIAlertView(title: "Error!",
+                        message: error!.localizedDescription,
+                        delegate: self,
+                        cancelButtonTitle: "Ok").show()
+                    
+                    LocalyticsSession.shared().tagEvent("Unsave failed")
+                } else {
+                    self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "Saved"), style: .Plain, target: self, action: "saveLink")
+                    self.navigationItem.rightBarButtonItem?.tintColor = MyRedditLabelColor
+                }
+            })
+        }
     }
     
     func refreshLink() {

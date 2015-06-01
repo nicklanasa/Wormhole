@@ -225,156 +225,160 @@ class UserContentViewController: UIViewController, UITableViewDelegate, UITableV
     func swipeCell(cell: JZSwipeCell!, triggeredSwipeWithType swipeType: JZSwipeType) {
         if swipeType.value != JZSwipeTypeNone.value {
             cell.reset()
-            if let indexPath = self.tableView.indexPathForCell(cell) {
-                if let link = self.content[indexPath.row] as? RKLink  {
-                    self.hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
-                    if swipeType.value == JZSwipeTypeShortLeft.value {
-                        // Upvote
-                        LocalyticsSession.shared().tagEvent("Swipe Upvote")
-                        RedditSession.sharedSession.upvote(link, completion: { (error) -> () in
-                            self.hud.hide(true)
+            if !SettingsManager.defaultManager.purchased {
+                self.performSegueWithIdentifier("PurchaseSegue", sender: self)
+            } else {
+                if let indexPath = self.tableView.indexPathForCell(cell) {
+                    if let link = self.content[indexPath.row] as? RKLink  {
+                        self.hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
+                        if swipeType.value == JZSwipeTypeShortLeft.value {
+                            // Upvote
+                            LocalyticsSession.shared().tagEvent("Swipe Upvote")
+                            RedditSession.sharedSession.upvote(link, completion: { (error) -> () in
+                                self.hud.hide(true)
+                                
+                                if error != nil {
+                                    UIAlertView(title: "Error!",
+                                        message: error!.localizedDescription,
+                                        delegate: self,
+                                        cancelButtonTitle: "Ok").show()
+                                } else {
+                                    self.syncContent()
+                                }
+                            })
+                        } else if swipeType.value == JZSwipeTypeShortRight.value {
+                            // Downvote
+                            LocalyticsSession.shared().tagEvent("Swipe Downvote")
+                            RedditSession.sharedSession.downvote(link, completion: { (error) -> () in
+                                self.hud.hide(true)
+                                
+                                if error != nil {
+                                    UIAlertView(title: "Error!",
+                                        message: error!.localizedDescription,
+                                        delegate: self,
+                                        cancelButtonTitle: "Ok").show()
+                                } else {
+                                    self.syncContent()
+                                }
+                            })
+                        } else if swipeType.value == JZSwipeTypeLongLeft.value {
+                            // More
                             
-                            if error != nil {
-                                UIAlertView(title: "Error!",
-                                    message: error!.localizedDescription,
-                                    delegate: self,
-                                    cancelButtonTitle: "Ok").show()
-                            } else {
-                                self.syncContent()
-                            }
-                        })
-                    } else if swipeType.value == JZSwipeTypeShortRight.value {
-                        // Downvote
-                        LocalyticsSession.shared().tagEvent("Swipe Downvote")
-                        RedditSession.sharedSession.downvote(link, completion: { (error) -> () in
-                            self.hud.hide(true)
+                            LocalyticsSession.shared().tagEvent("Swipe more")
                             
-                            if error != nil {
-                                UIAlertView(title: "Error!",
-                                    message: error!.localizedDescription,
-                                    delegate: self,
-                                    cancelButtonTitle: "Ok").show()
-                            } else {
-                                self.syncContent()
-                            }
-                        })
-                    } else if swipeType.value == JZSwipeTypeLongLeft.value {
-                        // More
-                        
-                        LocalyticsSession.shared().tagEvent("Swipe more")
-                        
-                        self.hud.hide(true)
-                        var alertController = UIAlertController(title: "Select option", message: nil, preferredStyle: .ActionSheet)
-                        
-                        if link.saved() {
-                            alertController.addAction(UIAlertAction(title: "unsave", style: .Default, handler: { (action) -> Void in
-                                RedditSession.sharedSession.unSaveLink(link, completion: { (error) -> () in
-                                    self.hud.hide(true)
-                                    link.unSaveLink()
-                                })
-                            }))
-                        } else {
-                            alertController.addAction(UIAlertAction(title: "save", style: .Default, handler: { (action) -> Void in
-                                LocalyticsSession.shared().tagEvent("Save")
-                                RedditSession.sharedSession.saveLink(link, completion: { (error) -> () in
-                                    self.hud.hide(true)
-                                    link.saveLink()
-                                })
-                            }))
-                        }
-        
-                        if link.isHidden() {
-                            if self.category != .Submissions {
-                                RedditSession.sharedSession.unHideLink(link, completion: { (error) -> () in
-                                    self.hud.hide(true)
-                                    link.unHideink()
-                                    
-                                    if self.category == .Hidden {
-                                        alertController.addAction(UIAlertAction(title: "unhide", style: .Default, handler: { (action) -> Void in
-                                            RedditSession.sharedSession.unHideLink(link, completion: { (error) -> () in
-                                                self.hud.hide(true)
-                                                link.unHideink()
-                                                
-                                                self.content.removeAtIndex(indexPath.row)
-                                                dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                                                    self.tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: .Fade)
-                                                })
-                                            })
-                                        }))
-                                    }
-                                })
-                            }
-                        } else {
-                            if self.category != .Submissions {
-                                alertController.addAction(UIAlertAction(title: "hide", style: .Default, handler: { (action) -> Void in
-                                    RedditSession.sharedSession.hideLink(link, completion: { (error) -> () in
+                            self.hud.hide(true)
+                            var alertController = UIAlertController(title: "Select option", message: nil, preferredStyle: .ActionSheet)
+                            
+                            if link.saved() {
+                                alertController.addAction(UIAlertAction(title: "unsave", style: .Default, handler: { (action) -> Void in
+                                    RedditSession.sharedSession.unSaveLink(link, completion: { (error) -> () in
                                         self.hud.hide(true)
-                                        link.hideLink()
-                                        
-                                        self.content.removeAtIndex(indexPath.row)
-                                        dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                                            self.tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: .Fade)
-                                        })
+                                        link.unSaveLink()
+                                    })
+                                }))
+                            } else {
+                                alertController.addAction(UIAlertAction(title: "save", style: .Default, handler: { (action) -> Void in
+                                    LocalyticsSession.shared().tagEvent("Save")
+                                    RedditSession.sharedSession.saveLink(link, completion: { (error) -> () in
+                                        self.hud.hide(true)
+                                        link.saveLink()
                                     })
                                 }))
                             }
-                        }
-                        
-                        alertController.addAction(UIAlertAction(title: "see comments", style: .Default, handler: { (action) -> Void in
-                            LocalyticsSession.shared().tagEvent("Swipe comments")
-                            self.performSegueWithIdentifier("CommentsSegue", sender: link)
-                        }))
-                        
-                        alertController.addAction(UIAlertAction(title: "cancel", style: .Cancel, handler: nil))
-                        
-                        if let popoverController = alertController.popoverPresentationController {
-                            popoverController.sourceView = cell
-                            popoverController.sourceRect = cell.bounds
-                        }
-                        
-                        alertController.present(animated: true, completion: nil)
-                    } else {
-                        // Share
-                        self.hud.hide(true)
-                        self.optionsController = LinkShareOptionsViewController(link: link)
-                        self.optionsController.sourceView = cell
-                        self.optionsController.showInView(self.view)
-                    }
-                } else if let comment = self.content[indexPath.row] as? RKComment {
-                    self.hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
-                    
-                    if swipeType.value == JZSwipeTypeShortRight.value || swipeType.value == JZSwipeTypeLongRight.value {
-                        LocalyticsSession.shared().tagEvent("Swipe downvote comment")
-                        // Downvote
-                        RedditSession.sharedSession.downvote(comment, completion: { (error) -> () in
-                            self.hud.hide(true)
                             
-                            if error != nil {
-                                UIAlertView(title: "Error!",
-                                    message: error!.localizedDescription,
-                                    delegate: self,
-                                    cancelButtonTitle: "Ok").show()
+                            if link.isHidden() {
+                                if self.category != .Submissions {
+                                    RedditSession.sharedSession.unHideLink(link, completion: { (error) -> () in
+                                        self.hud.hide(true)
+                                        link.unHideink()
+                                        
+                                        if self.category == .Hidden {
+                                            alertController.addAction(UIAlertAction(title: "unhide", style: .Default, handler: { (action) -> Void in
+                                                RedditSession.sharedSession.unHideLink(link, completion: { (error) -> () in
+                                                    self.hud.hide(true)
+                                                    link.unHideink()
+                                                    
+                                                    self.content.removeAtIndex(indexPath.row)
+                                                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                                                        self.tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: .Fade)
+                                                    })
+                                                })
+                                            }))
+                                        }
+                                    })
+                                }
                             } else {
-                                self.tableView.reloadData()
+                                if self.category != .Submissions {
+                                    alertController.addAction(UIAlertAction(title: "hide", style: .Default, handler: { (action) -> Void in
+                                        RedditSession.sharedSession.hideLink(link, completion: { (error) -> () in
+                                            self.hud.hide(true)
+                                            link.hideLink()
+                                            
+                                            self.content.removeAtIndex(indexPath.row)
+                                            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                                                self.tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: .Fade)
+                                            })
+                                        })
+                                    }))
+                                }
                             }
-                        })
-                    } else if swipeType.value == JZSwipeTypeShortLeft.value || swipeType.value == JZSwipeTypeLongLeft.value {
-                        // Upvote
-                        LocalyticsSession.shared().tagEvent("Swipe upvote comment")
-                        RedditSession.sharedSession.upvote(comment, completion: { (error) -> () in
-                            self.hud.hide(true)
                             
-                            if error != nil {
-                                UIAlertView(title: "Error!",
-                                    message: error!.localizedDescription,
-                                    delegate: self,
-                                    cancelButtonTitle: "Ok").show()
-                            } else {
-                                self.tableView.reloadData()
+                            alertController.addAction(UIAlertAction(title: "see comments", style: .Default, handler: { (action) -> Void in
+                                LocalyticsSession.shared().tagEvent("Swipe comments")
+                                self.performSegueWithIdentifier("CommentsSegue", sender: link)
+                            }))
+                            
+                            alertController.addAction(UIAlertAction(title: "cancel", style: .Cancel, handler: nil))
+                            
+                            if let popoverController = alertController.popoverPresentationController {
+                                popoverController.sourceView = cell
+                                popoverController.sourceRect = cell.bounds
                             }
-                        })
-                    } else {
-                        self.hud.hide(true)
+                            
+                            alertController.present(animated: true, completion: nil)
+                        } else {
+                            // Share
+                            self.hud.hide(true)
+                            self.optionsController = LinkShareOptionsViewController(link: link)
+                            self.optionsController.sourceView = cell
+                            self.optionsController.showInView(self.view)
+                        }
+                    } else if let comment = self.content[indexPath.row] as? RKComment {
+                        self.hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
+                        
+                        if swipeType.value == JZSwipeTypeShortRight.value || swipeType.value == JZSwipeTypeLongRight.value {
+                            LocalyticsSession.shared().tagEvent("Swipe downvote comment")
+                            // Downvote
+                            RedditSession.sharedSession.downvote(comment, completion: { (error) -> () in
+                                self.hud.hide(true)
+                                
+                                if error != nil {
+                                    UIAlertView(title: "Error!",
+                                        message: error!.localizedDescription,
+                                        delegate: self,
+                                        cancelButtonTitle: "Ok").show()
+                                } else {
+                                    self.tableView.reloadData()
+                                }
+                            })
+                        } else if swipeType.value == JZSwipeTypeShortLeft.value || swipeType.value == JZSwipeTypeLongLeft.value {
+                            // Upvote
+                            LocalyticsSession.shared().tagEvent("Swipe upvote comment")
+                            RedditSession.sharedSession.upvote(comment, completion: { (error) -> () in
+                                self.hud.hide(true)
+                                
+                                if error != nil {
+                                    UIAlertView(title: "Error!",
+                                        message: error!.localizedDescription,
+                                        delegate: self,
+                                        cancelButtonTitle: "Ok").show()
+                                } else {
+                                    self.tableView.reloadData()
+                                }
+                            })
+                        } else {
+                            self.hud.hide(true)
+                        }
                     }
                 }
             }

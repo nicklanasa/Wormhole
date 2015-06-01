@@ -50,7 +50,7 @@ class CommentCell: JZSwipeCell, UITextViewDelegate {
             var selfText = ""
             
             if link.selfPost && count(link.selfText) > 0 {
-                selfText = "\n\n\(link.selfText))"
+                selfText = "\n\n\(link.selfText))".stringByReplacingOccurrencesOfString("&gt;", withString: ">", options: nil, range: nil)
             }
             
             var parser = XNGMarkdownParser()
@@ -60,7 +60,9 @@ class CommentCell: JZSwipeCell, UITextViewDelegate {
             parser.italicFontName = MyRedditCommentTextItalicFont.familyName
             parser.linkFontName = MyRedditCommentTextBoldFont.familyName
             
-            var parsedString = NSMutableAttributedString(attributedString: parser.attributedStringFromMarkdownString("\(link.title)\(selfText)"))
+            var title = link.title.stringByReplacingOccurrencesOfString("&gt;", withString: ">", options: nil, range: nil)
+            
+            var parsedString = NSMutableAttributedString(attributedString: parser.attributedStringFromMarkdownString("\(title)\(selfText)"))
             var titleAttr = [NSForegroundColorAttributeName : MyRedditLabelColor]
             var selfTextAttr = [NSForegroundColorAttributeName : UIColor.darkGrayColor()]
             parsedString.addAttributes(selfTextAttr, range: NSMakeRange(0, count(parsedString.string)))
@@ -113,7 +115,7 @@ class CommentCell: JZSwipeCell, UITextViewDelegate {
             parser.italicFontName = MyRedditCommentTextItalicFont.familyName
             parser.linkFontName = MyRedditCommentTextBoldFont.familyName
             
-            var parsedString = NSMutableAttributedString(attributedString: parser.attributedStringFromMarkdownString(comment.body.stringByReplacingPercentEscapesUsingEncoding(NSUTF8StringEncoding)))
+            var parsedString = NSMutableAttributedString(attributedString: parser.attributedStringFromMarkdownString(comment.body.stringByReplacingOccurrencesOfString("&gt;", withString: ">", options: nil, range: nil)))
             self.commentTextView.attributedText = parsedString
             
             var timeAgo = comment.created.timeAgo()

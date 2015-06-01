@@ -20,6 +20,7 @@ class LoadMoreHeader: UITableViewCell {
     var delegate: LoadMoreHeaderDelegate?
     
     override func awakeFromNib() {
+        self.activityIndicator.tintColor = UIColor.lightGrayColor()
         self.loadMoreButton.setTitleColor(MyRedditLabelColor, forState: .Normal)
     }
     
@@ -28,12 +29,10 @@ class LoadMoreHeader: UITableViewCell {
     }
     
     func startAnimating() {
-        self.loadMoreButton.hidden = true
-        self.activityIndicator.startAnimating()
+        self.loadMoreButton.setTitle("loading...", forState: .Normal)
     }
     
     func stopAnimating() {
-        self.loadMoreButton.hidden = false
-        self.activityIndicator.stopAnimating()
+        self.loadMoreButton.setTitle("load more...", forState: .Normal)
     }
 }

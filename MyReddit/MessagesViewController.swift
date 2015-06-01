@@ -30,7 +30,7 @@ JZSwipeCellDelegate {
     
     lazy var refreshControl: UIRefreshControl! = {
         var control = UIRefreshControl()
-        control.attributedTitle = NSAttributedString(string: "Pull to refresh",
+        control.attributedTitle = NSAttributedString(string: "",
             attributes: [NSFontAttributeName : MyRedditCommentTextBoldFont, NSForegroundColorAttributeName : MyRedditLabelColor])
         control.addTarget(self, action: "refresh:", forControlEvents: UIControlEvents.ValueChanged)
         return control
@@ -50,14 +50,15 @@ JZSwipeCellDelegate {
         self.tableView.backgroundColor = MyRedditBackgroundColor
         
         self.tableView.tableFooterView = UIView()
+        
+        self.tableView.reloadData()
+        self.fetchMessages()
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
         LocalyticsSession.shared().tagScreen("Messages")
-        
-        self.fetchMessages()
     }
     
     @IBOutlet weak var tableView: UITableView!
@@ -78,7 +79,6 @@ JZSwipeCellDelegate {
             default: self.navigationItem.title = "Inbox"
             }
         }
-        
         
         RedditSession.sharedSession.fetchMessages(self.pagination, category: self.category, read: true) { (pagination, results, error) -> () in
             self.pagination = pagination
@@ -108,8 +108,6 @@ JZSwipeCellDelegate {
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        
-        
         if indexPath.row == self.messages.count {
             var header = tableView.dequeueReusableCellWithIdentifier("LoadMoreHeader") as! LoadMoreHeader
             header.delegate = self
@@ -150,9 +148,8 @@ JZSwipeCellDelegate {
         header.startAnimating()
         
         RedditSession.sharedSession.fetchMessages(self.pagination, category: self.category, read: false) { (pagination, results, error) -> () in
-            self.pagination = pagination
-            
             if self.pagination != nil {
+                self.pagination = pagination
                 if let messages = results {
                     self.messages.extend(messages)
                 }
@@ -196,12 +193,56 @@ JZSwipeCellDelegate {
                 cell.reset()
                 
                 if swipeType.value == JZSwipeTypeLongLeft.value || swipeType.value == JZSwipeTypeShortLeft.value {
-                    
-                    if let message = self.messages[indexPath.row] as? RKMessage {
-                        self.performSegueWithIdentifier("ReplyToMessageSegue", sender: message)
+                    if !SettingsManager.defaultManager.purchased {
+                        self.performSegueWithIdentifier("PurchaseSegue", sender: self)
+                    } else {
+                        if let message = self.messages[indexPath.row] as? RKMessage {
+                            self.performSegueWithIdentifier("ReplyToMessageSegue", sender: message)
+                        }
+                        
+                        LocalyticsSession.shared().tagEvent("Reply to message")
                     }
-                    
-                    LocalyticsSession.shared().tagEvent("Reply to message")
+                } else {
+                    if !SettingsManager.defaultManager.purchased {
+                        self.performSegueWithIdentifier("PurchaseSegue", sender: self)
+                    } else {
+                        LocalyticsSession.shared().tagEvent("Swipe more")
+                        
+                        var alertController = UIAlertController(title: "Select option", message: nil, preferredStyle: .ActionSheet)
+                        
+                        if self.category == .Unread {
+                            alertController.addAction(UIAlertAction(title: "mark read", style: .Default, handler: { (action) -> Void in
+                                
+                                if let message = self.messages[indexPath.row] as? RKMessage {
+                                    // Mark unread
+                                    RedditSession.sharedSession.markMessagesAsRead([message], completion: { (error) -> () in
+                                        self.messages.removeAtIndex(indexPath.row)
+                                        self.tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: .Fade)
+                                    })
+                                }
+                            }))
+                        } else {
+                            alertController.addAction(UIAlertAction(title: "mark unread", style: .Default, handler: { (action) -> Void in
+                                
+                                if let message = self.messages[indexPath.row] as? RKMessage {
+                                    // Mark unread
+                                    RedditSession.sharedSession.markMessagesAsUnRead([message], completion: { (error) -> () in
+                                        self.messages.removeAtIndex(indexPath.row)
+                                        self.tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: .Fade)
+                                    })
+                                }
+                            }))
+                        }
+                        
+                        alertController.addAction(UIAlertAction(title: "cancel", style: .Cancel, handler: nil))
+                        
+                        if let popoverController = alertController.popoverPresentationController {
+                            popoverController.sourceView = cell
+                            popoverController.sourceRect = cell.bounds
+                        }
+                        
+                        alertController.present(animated: true, completion: nil)
+                    }
                 }
             }
         }

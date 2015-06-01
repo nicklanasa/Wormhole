@@ -17,6 +17,19 @@ class PostSubredditCell: UITableViewCell {
     
     var delegate: PostSubredditCellDelegate?
     
+    override func awakeFromNib() {
+        self.subredditTextField.attributedPlaceholder = NSAttributedString(string: "enter subreddit...",
+            attributes: [NSForegroundColorAttributeName : UIColor.lightGrayColor()])
+        
+        if SettingsManager.defaultManager.valueForSetting(.NightMode) {
+            var image = UIImage(named: "CircleAddWhite")?.imageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal)
+            self.addbutton.setImage(image, forState: .Normal)
+        } else {
+            var image = UIImage(named: "CircleAdd")?.imageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal)
+            self.addbutton.setImage(image, forState: .Normal)
+        }
+    }
+    
     @IBOutlet weak var subredditTextField: UITextField!
     @IBOutlet weak var addbutton: UIButton!
     

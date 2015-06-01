@@ -35,7 +35,7 @@ class SubredditsViewController: UIViewController, UITableViewDataSource, UITable
     
     lazy var refreshControl: UIRefreshControl! = {
         var control = UIRefreshControl()
-        control.attributedTitle = NSAttributedString(string: "Pull to refresh", attributes: [NSFontAttributeName : MyRedditCommentTextBoldFont, NSForegroundColorAttributeName : MyRedditLabelColor])
+        control.attributedTitle = NSAttributedString(string: "", attributes: [NSFontAttributeName : MyRedditCommentTextBoldFont, NSForegroundColorAttributeName : MyRedditLabelColor])
         control.addTarget(self, action: "refresh:", forControlEvents: UIControlEvents.ValueChanged)
         return control
     }()
@@ -105,7 +105,7 @@ class SubredditsViewController: UIViewController, UITableViewDataSource, UITable
         self.tableView.addSubview(self.refreshControl)
         
         NSNotificationCenter.defaultCenter().addObserver(self,
-            selector: "fetchSubreddits",
+            selector: "didUpdateSubreddits",
             name: "RefreshSubreddits",
             object: nil)
     }
@@ -113,41 +113,44 @@ class SubredditsViewController: UIViewController, UITableViewDataSource, UITable
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
+        self.fetchSubreddits()
+        
         LocalyticsSession.shared().tagScreen("Subreddits")
         
         for item in self.toolbarItems as! [UIBarButtonItem] {
             item.tintColor = MyRedditLabelColor
         }
         
-        self.fetchSubreddits()
-        
         self.tableView.backgroundColor = MyRedditDarkBackgroundColor
         
     }
     
-    func fetchSubreddits() {
-        
+    func didUpdateSubreddits() {
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
-            self.syncSubreddits = Array<AnyObject>()
-            self.syncMultiSubreddits = Array<AnyObject>()
-            
-            if let subredditsData = NSUserDefaults.standardUserDefaults().objectForKey("subreddits") as? NSData {
-                if let subreddits = NSKeyedUnarchiver.unarchiveObjectWithData(subredditsData) as? [RKSubreddit] {
-                    self.subreddits = subreddits
-                }
-            }
-            
-            if let subredditsData = NSUserDefaults.standardUserDefaults().objectForKey("multiSubreddits") as? NSData {
-                if let subreddits = NSKeyedUnarchiver.unarchiveObjectWithData(subredditsData) as? [RKMultireddit] {
-                    self.multiSubreddits = subreddits
-                }
-            }
-            
-            self.syncSubreddits(nil)
-            self.syncMultiReddits()
-            
-            self.refreshControl.endRefreshing()
+            self.fetchSubreddits()
         })
+    }
+    
+    func fetchSubreddits() {
+        self.syncSubreddits = Array<AnyObject>()
+        self.syncMultiSubreddits = Array<AnyObject>()
+        
+        if let subredditsData = NSUserDefaults.standardUserDefaults().objectForKey("subreddits") as? NSData {
+            if let subreddits = NSKeyedUnarchiver.unarchiveObjectWithData(subredditsData) as? [RKSubreddit] {
+                self.subreddits = subreddits
+            }
+        }
+        
+        if let subredditsData = NSUserDefaults.standardUserDefaults().objectForKey("multiSubreddits") as? NSData {
+            if let subreddits = NSKeyedUnarchiver.unarchiveObjectWithData(subredditsData) as? [RKMultireddit] {
+                self.multiSubreddits = subreddits
+            }
+        }
+        
+        self.syncSubreddits(nil)
+        self.syncMultiReddits()
+        
+        self.refreshControl.endRefreshing()
     }
     
     func syncSubreddits(pagination: RKPagination?) {
@@ -189,6 +192,8 @@ class SubredditsViewController: UIViewController, UITableViewDataSource, UITable
                     }
                 })
             })
+        } else {
+            self.multiSubreddits = Array<AnyObject>()
         }
     }
     
@@ -211,7 +216,7 @@ class SubredditsViewController: UIViewController, UITableViewDataSource, UITable
         if section == 0 {
             return self.multiSubreddits.count + 1
         }
-        return self.subreddits.count + 1
+        return self.subreddits.count + 2
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -243,8 +248,19 @@ class SubredditsViewController: UIViewController, UITableViewDataSource, UITable
                 }
                 
                 return cell
+            } else if indexPath.row == 1 {
+                var cell = tableView.dequeueReusableCellWithIdentifier("AllCell") as! FrontCell
+                cell.frontLabel.textColor = MyRedditLabelColor
+                
+                if SettingsManager.defaultManager.valueForSetting(.NightMode) {
+                    cell.starImageView.image = UIImage(named: "starWhite")
+                } else {
+                    cell.starImageView.image = UIImage(named: "Star")
+                }
+                
+                return cell
             } else {
-                if let subreddit = self.subreddits[indexPath.row - 1] as? RKSubreddit {
+                if let subreddit = self.subreddits[indexPath.row - 2] as? RKSubreddit {
                     cell.rkSubreddit = subreddit
                 }
             }
@@ -256,12 +272,21 @@ class SubredditsViewController: UIViewController, UITableViewDataSource, UITable
     func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
         if indexPath.row == 0 {
             return false
+        } else if indexPath.row == 1 && indexPath.section == 1 {
+            return false
         }
-        return true
+        
+        if UserSession.sharedSession.isSignedIn {
+            return true
+        } else {
+            return false
+        }
     }
     
     func tableView(tableView: UITableView, editingStyleForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCellEditingStyle {
         if indexPath.row == 0 {
+            return .None
+        } else if indexPath.row == 1 && indexPath.section == 1 {
             return .None
         }
         return .Delete
@@ -275,59 +300,14 @@ class SubredditsViewController: UIViewController, UITableViewDataSource, UITable
         self.tableView.deselectRowAtIndexPath(indexPath, animated: true)
         if indexPath.section == 0 {
             if indexPath.row == 0 {
-                var alert = UIAlertController(title: "New", message: "Please enter the multireddit name.", preferredStyle: .Alert)
-                
-                alert.addTextFieldWithConfigurationHandler({ (textField) -> Void in
-                    
-                })
-                
-                alert.addAction(UIAlertAction(title: "Ok", style: .Default, handler: { (action) -> Void in
-                    if let textfield = alert.textFields?.first as? UITextField {
-                        
-                        var multiRedditName = textfield.text.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
-                        
-                        if count(multiRedditName) == 0 || multiRedditName.componentsSeparatedByString(" ").count > 1 {
-                            UIAlertView(title: "Error!", message: "You must enter in a multireddit name!", delegate: self, cancelButtonTitle: "Ok").show()
-                            LocalyticsSession.shared().tagEvent("Invalid multireddit name")
-                        } else {
-                            
-                            if count(multiRedditName) < 3 {
-                                LocalyticsSession.shared().tagEvent("Invalid multireddit name")
-                                UIAlertView(title: "Error!", message: "Multireddit name must be greater than 3 characters!", delegate: self, cancelButtonTitle: "Ok").show()
-                            } else {
-                                var visibilityAlert = UIAlertController(title: "Visibility", message: "Please select the visibility for the multireddit.", preferredStyle: .Alert)
-                                visibilityAlert.addAction(UIAlertAction(title: "Public", style: .Default, handler: { (a) -> Void in
-                                    LocalyticsSession.shared().tagEvent("Created public multireddit")
-                                    RedditSession.sharedSession.createMultiReddit(multiRedditName, visibility: .Public, completion: { (error) -> () in
-                                        self.syncMultiReddits()
-                                        self.presentViewController(self.addSubredditsToMultiRedditAlert, animated: true, completion: nil)
-                                    })
-                                }))
-                                
-                                visibilityAlert.addAction(UIAlertAction(title: "Private", style: .Default, handler: { (a) -> Void in
-                                    LocalyticsSession.shared().tagEvent("Created private multireddit")
-                                    RedditSession.sharedSession.createMultiReddit(multiRedditName, visibility: .Private, completion: { (error) -> () in
-                                        self.syncMultiReddits()
-                                        
-                                        self.presentViewController(self.addSubredditsToMultiRedditAlert, animated: true, completion: nil)
-                                    })
-                                }))
-                                
-                                self.presentViewController(visibilityAlert, animated: true, completion: nil)
-                            }
-                        }
-                    }
-                }))
-                
-                alert.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
-                
-                if UserSession.sharedSession.isSignedIn {
-                    self.presentViewController(alert, animated: true, completion: nil)
+                if !SettingsManager.defaultManager.purchased {
+                    self.performSegueWithIdentifier("PurchaseSegue", sender: self)
                 } else {
-                    UIAlertView(title: "Error!",
-                        message: "You must logged in to do that!",
-                        delegate: self,
-                        cancelButtonTitle: "Ok").show()
+                    if UserSession.sharedSession.isSignedIn {
+                        self.showMultiRedditDialog()
+                    } else {
+                        self.performSegueWithIdentifier("AccountsSegue", sender: self)
+                    }
                 }
             }
         }
@@ -351,13 +331,13 @@ class SubredditsViewController: UIViewController, UITableViewDataSource, UITable
                             })
                         }
                     } else {
-                        if let subreddit = self.subreddits[indexPath.row - 1] as? RKSubreddit {
+                        if let subreddit = self.subreddits[indexPath.row - 2] as? RKSubreddit {
                             RedditSession.sharedSession.unsubscribe(subreddit, completion: { (error) -> () in
                                 if error != nil {
                                     UIAlertView(title: "Error!", message: "Unable to unsubscribe to Subreddit! Please make sure you're connected to the internets.", delegate: self, cancelButtonTitle: "Ok").show()
                                     LocalyticsSession.shared().tagEvent("Subreddit Unsubscribe failed")
                                 } else {
-                                    self.subreddits.removeAtIndex(indexPath.row-1)
+                                    self.subreddits.removeAtIndex(indexPath.row - 2)
                                     LocalyticsSession.shared().tagEvent("Subreddit unsubscribe")
                                 }
                             })
@@ -381,6 +361,55 @@ class SubredditsViewController: UIViewController, UITableViewDataSource, UITable
         } else {
             return "Popular"
         }
+    }
+    
+    func showMultiRedditDialog() {
+        var alert = UIAlertController(title: "New", message: "Please enter the multireddit name.", preferredStyle: .Alert)
+        
+        alert.addTextFieldWithConfigurationHandler({ (textField) -> Void in
+            
+        })
+        
+        alert.addAction(UIAlertAction(title: "Ok", style: .Default, handler: { (action) -> Void in
+            if let textfield = alert.textFields?.first as? UITextField {
+                
+                var multiRedditName = textfield.text.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
+                
+                if count(multiRedditName) == 0 || multiRedditName.componentsSeparatedByString(" ").count > 1 {
+                    UIAlertView(title: "Error!", message: "You must enter in a multireddit name!", delegate: self, cancelButtonTitle: "Ok").show()
+                    LocalyticsSession.shared().tagEvent("Invalid multireddit name")
+                } else {
+                    
+                    if count(multiRedditName) < 3 {
+                        LocalyticsSession.shared().tagEvent("Invalid multireddit name")
+                        UIAlertView(title: "Error!", message: "Multireddit name must be greater than 3 characters!", delegate: self, cancelButtonTitle: "Ok").show()
+                    } else {
+                        var visibilityAlert = UIAlertController(title: "Visibility", message: "Please select the visibility for the multireddit.", preferredStyle: .Alert)
+                        visibilityAlert.addAction(UIAlertAction(title: "Public", style: .Default, handler: { (a) -> Void in
+                            LocalyticsSession.shared().tagEvent("Created public multireddit")
+                            RedditSession.sharedSession.createMultiReddit(multiRedditName, visibility: .Public, completion: { (error) -> () in
+                                self.syncMultiReddits()
+                                self.presentViewController(self.addSubredditsToMultiRedditAlert, animated: true, completion: nil)
+                            })
+                        }))
+                        
+                        visibilityAlert.addAction(UIAlertAction(title: "Private", style: .Default, handler: { (a) -> Void in
+                            LocalyticsSession.shared().tagEvent("Created private multireddit")
+                            RedditSession.sharedSession.createMultiReddit(multiRedditName, visibility: .Private, completion: { (error) -> () in
+                                self.syncMultiReddits()
+                                
+                                self.presentViewController(self.addSubredditsToMultiRedditAlert, animated: true, completion: nil)
+                            })
+                        }))
+                        
+                        self.presentViewController(visibilityAlert, animated: true, completion: nil)
+                    }
+                }
+            }
+        }))
+        
+        alert.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
+        self.presentViewController(alert, animated: true, completion: nil)
     }
     
     @IBAction func savedButtonTapped(sender: AnyObject) {
@@ -424,7 +453,7 @@ class SubredditsViewController: UIViewController, UITableViewDataSource, UITable
                             }
                         } else {
                             if indexPath.row != 0 {
-                                if let subreddit = self.subreddits[indexPath.row - 1] as? RKSubreddit {
+                                if let subreddit = self.subreddits[indexPath.row - 2] as? RKSubreddit {
                                     subredditViewController.subreddit = subreddit
                                     subredditViewController.front = false
                                 }
@@ -449,6 +478,14 @@ class SubredditsViewController: UIViewController, UITableViewDataSource, UITable
             self.toggleMaster()
         } else if segue.identifier == "FrontSegue" {
             self.toggleMaster()
+        } else if segue.identifier == "AllSegue" {
+            if let controller = segue.destinationViewController as? NavBarController {
+                if let subredditViewController = controller.viewControllers[0] as? SubredditViewController {
+                    subredditViewController.front = false
+                    subredditViewController.all = true
+                    self.toggleMaster()
+                }
+            }
         }
     }
     

@@ -29,6 +29,11 @@ class ComposeTableViewController: UITableViewController, UITextViewDelegate {
         self.textView.backgroundColor = MyRedditBackgroundColor
         
         self.tableView.tableFooterView = UIView()
+        
+        self.toTextField.attributedPlaceholder = NSAttributedString(string: "to:",
+            attributes: [NSForegroundColorAttributeName : UIColor.lightGrayColor()])
+        self.subjectTextField.attributedPlaceholder = NSAttributedString(string: "subject:",
+            attributes: [NSForegroundColorAttributeName : UIColor.lightGrayColor()])
     }
     
     override func viewWillAppear(animated: Bool) {

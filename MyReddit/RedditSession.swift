@@ -39,6 +39,23 @@ class RedditSession {
         }
     }
     
+    func fetchAllPosts(pagination: RKPagination?, category: RKSubredditCategory?, completion: PaginationCompletion) {
+        UIApplication.sharedApplication().networkActivityIndicatorVisible = true
+        LocalyticsSession.shared().tagEvent("Fetched front page links")
+        
+        if let subredditCategory = category {
+            RKClient.sharedClient().linksInAllSubredditsWithCategory(subredditCategory, pagination: pagination, completion: { (results, pagination, error) -> Void in
+                UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+                completion(pagination: pagination, results: results, error: error)
+            })
+        } else {
+            RKClient.sharedClient().linksInAllSubredditsWithPagination(pagination, completion: { (results, pagination, error) -> Void in
+                UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+                completion(pagination: pagination, results: results, error: error)
+            })
+        }
+    }
+    
     func fetchPostsForMultiReddit(multiReddit: RKMultireddit, category: RKSubredditCategory?, pagination: RKPagination?, completion: PaginationCompletion) {
         UIApplication.sharedApplication().networkActivityIndicatorVisible = true
         LocalyticsSession.shared().tagEvent("Fetched multireddit links")
@@ -306,7 +323,11 @@ class RedditSession {
         UIApplication.sharedApplication().networkActivityIndicatorVisible = true
         RKClient.sharedClient().subredditWithName(name, completion: { (subreddit, error) -> Void in
             UIApplication.sharedApplication().networkActivityIndicatorVisible = false
-            completion(pagination: nil, results: [subreddit], error: error)
+            if subreddit != nil {
+                completion(pagination: nil, results: [subreddit], error: error)
+            } else {
+                completion(pagination: nil, results: [], error: error)
+            }
         })
     }
     

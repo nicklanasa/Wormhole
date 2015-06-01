@@ -33,7 +33,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, IMGSessionDelegate {
     var window: UIWindow?
     
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-        
+                
         IMGSession.anonymousSessionWithClientID("e97d1faf5a39e09", withDelegate: self)
         
         if SettingsManager.defaultManager.valueForSetting(.NightMode) {
@@ -49,10 +49,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, IMGSessionDelegate {
             }
         }
         
-    LocalyticsSession.shared().integrateLocalytics("fda6cd374a0e9cec3f11237-09533afc-9cc5-11e3-974b-005cf8cbabd8",
+        LocalyticsSession.shared().integrateLocalytics("fda6cd374a0e9cec3f11237-09533afc-9cc5-11e3-974b-005cf8cbabd8",
             launchOptions: launchOptions)
         
-        Appirater.setAppId("544533053")
+        if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
+            Appirater.setAppId("995067625")
+        } else {
+            Appirater.setAppId("544533053")
+        }
+        
         Appirater.setCustomAlertTitle("Rate MyReddit")
         Appirater.setCustomAlertMessage("If you enjoy using MyReddit, would you mind taking a moment to rate it? It won't take more than a minute. Thanks for your support!")
         Appirater.setCustomAlertRateButtonTitle("Rate MyReddit")

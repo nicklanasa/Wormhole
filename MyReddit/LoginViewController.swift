@@ -63,8 +63,6 @@ class LoginViewController: UIViewController, UITableViewDataSource, UITableViewD
     }
     
     override func viewDidAppear(animated: Bool) {
-        self.tableView.backgroundColor = MyRedditDarkBackgroundColor
-        
         self.tableView.reloadData()
         var emailCell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) as! EmailCell
         emailCell.usernameTextField.becomeFirstResponder()
@@ -73,6 +71,8 @@ class LoginViewController: UIViewController, UITableViewDataSource, UITableViewD
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         LocalyticsSession.shared().tagScreen("Login")
+        
+        self.tableView.backgroundColor = MyRedditDarkBackgroundColor
     }
     
     @IBAction func cancelButtonPressed(sender: AnyObject) {

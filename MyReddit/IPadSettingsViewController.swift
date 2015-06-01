@@ -146,6 +146,11 @@ class IPadSettingsViewController: UITableViewController, BDGIAPDelegate {
                 
                 alert.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
                 
+                if let popoverController = alert.popoverPresentationController {
+                    popoverController.sourceRect = textSizeCell.bounds
+                    popoverController.sourceView = textSizeCell
+                }
+                
                 self.presentViewController(alert, animated: true, completion: nil)
             }
         } else if indexPath.section == 2 {
@@ -167,7 +172,7 @@ class IPadSettingsViewController: UITableViewController, BDGIAPDelegate {
                 })
             case 1:
                 LocalyticsSession.shared().tagEvent("Rate app button tapped")
-                UIApplication.sharedApplication().openURL(NSURL(string: "itms://itunes.apple.com/us/app/apple-store/id544533053?mt=8")!)
+                UIApplication.sharedApplication().openURL(NSURL(string: "itms://itunes.apple.com/us/app/apple-store/id995067625?mt=8")!)
             case 2:
                 LocalyticsSession.shared().tagEvent("MyReddit Facebook button tapped")
                 var url = NSURL(string: "https://www.facebook.com/pages/MyReddit/442141645823510?ref=hl")

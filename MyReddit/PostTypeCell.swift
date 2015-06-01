@@ -17,6 +17,10 @@ class PostTypeCell: UITableViewCell {
     
     var delegate: PostTypeCellDelegate?
     
+    override func awakeFromNib() {
+        self.segmentationControl.tintColor = MyRedditLabelColor
+    }
+    
     @IBOutlet weak var segmentationControl: UISegmentedControl!
     
     @IBAction func segmentationControlValueChanged(sender: AnyObject) {

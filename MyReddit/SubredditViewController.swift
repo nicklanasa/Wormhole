@@ -37,6 +37,7 @@ UISplitViewControllerDelegate {
     var multiReddit: RKMultireddit!
     
     var front = true
+    var all = false
     var pagination: RKPagination?
     var selectedLink: RKLink!
     var pageIndex: Int!
@@ -71,7 +72,8 @@ UISplitViewControllerDelegate {
     var refreshControl: UIRefreshControl! {
         get {
             var control = UIRefreshControl()
-            control.attributedTitle = NSAttributedString(string: "Pull to refresh", attributes: [NSFontAttributeName : MyRedditCommentTextBoldFont, NSForegroundColorAttributeName : MyRedditLabelColor])
+            control.attributedTitle = NSAttributedString(string: "",
+                attributes: [NSFontAttributeName : MyRedditCommentTextBoldFont, NSForegroundColorAttributeName : MyRedditLabelColor])
             control.addTarget(self, action: "refresh:", forControlEvents: UIControlEvents.ValueChanged)
             return control
         }
@@ -162,6 +164,7 @@ UISplitViewControllerDelegate {
     }
     
     override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
         SDImageCache.sharedImageCache().clearMemory()
         SDImageCache.sharedImageCache().cleanDisk()
         SDImageCache.sharedImageCache().clearDisk()
@@ -198,7 +201,9 @@ UISplitViewControllerDelegate {
     }
     
     override func viewDidLoad() {
+        
         super.viewDidLoad()
+        
         self.syncLinks()
         
         var rightBarButtons = self.navigationItem.rightBarButtonItems
@@ -302,43 +307,73 @@ UISplitViewControllerDelegate {
         }
     }
     
+    @IBAction func postButtonTapped(sender: AnyObject) {
+        if !SettingsManager.defaultManager.purchased {
+            self.performSegueWithIdentifier("PurchaseSegue", sender: self)
+        } else {
+            if UserSession.sharedSession.isSignedIn {
+                self.performSegueWithIdentifier("PostSegue", sender: self)
+            } else {
+                self.performSegueWithIdentifier("AccountsSegue", sender: self)
+            }
+        }
+    }
+    
     @IBAction func subscribeButtonTapped(sender: AnyObject) {
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
             if self.subscribeButton.title != "" {
                 if self.subreddit.subscriber.boolValue {
-                    RedditSession.sharedSession.unsubscribe(self.subreddit, completion: { (error) -> () in
-                        print(error)
-                        if error != nil {
-                            UIAlertView(title: "Error!",
-                                message: "Unable to unsubscribe to Subreddit. Please make sure you are connected to the internets.",
-                                delegate: self,
-                                cancelButtonTitle: "Ok").show()
+                    if UserSession.sharedSession.isSignedIn {
+                        RedditSession.sharedSession.unsubscribe(self.subreddit, completion: { (error) -> () in
+                            print(error)
+                            if error != nil {
+                                UIAlertView(title: "Error!",
+                                    message: "Unable to unsubscribe to Subreddit. Please make sure you are connected to the internets.",
+                                    delegate: self,
+                                    cancelButtonTitle: "Ok").show()
+                            } else {
+                                self.links = Array<AnyObject>()
+                                self.pagination = nil
+                                self.front = true
+                                self.currentCategory = nil
+                                self.syncLinks()
+                                self.updateSubscribeButton()
+                            }
+                        })
+                    } else {
+                        if !SettingsManager.defaultManager.purchased {
+                            self.performSegueWithIdentifier("PurchaseSegue", sender: self)
                         } else {
-                            self.links = Array<AnyObject>()
-                            self.pagination = nil
-                            self.front = true
-                            self.currentCategory = nil
-                            self.syncLinks()
-                            self.updateSubscribeButton()
+                            self.performSegueWithIdentifier("LoginSegue", sender: self)
                         }
-                    })
+                    }
                 } else {
-                    RedditSession.sharedSession.subscribe(self.subreddit, completion: { (error) -> () in
-                        print(error)
-                        if error != nil {
-                            UIAlertView(title: "Error!", message: "Unable to subscribe to Subreddit. Please make sure you are connected to the internets.", delegate: self, cancelButtonTitle: "Ok").show()
-                        } else {
-                            dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                                RedditSession.sharedSession.subredditWithSubredditName(self.subreddit.name,
-                                    completion: { (pagination, results, error) -> () in
-                                    if let subreddit = results?.first as? RKSubreddit {
-                                        self.subreddit = subreddit
-                                        self.updateSubscribeButton()
-                                    }
+                    if UserSession.sharedSession.isSignedIn {
+                        RedditSession.sharedSession.subscribe(self.subreddit, completion: { (error) -> () in
+                            if error != nil {
+                                UIAlertView(title: "Error!",
+                                    message: "Unable to subscribe to Subreddit. Please make sure you are connected to the internets.",
+                                    delegate: self,
+                                    cancelButtonTitle: "Ok").show()
+                            } else {
+                                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                                    RedditSession.sharedSession.subredditWithSubredditName(self.subreddit.name,
+                                        completion: { (pagination, results, error) -> () in
+                                            if let subreddit = results?.first as? RKSubreddit {
+                                                self.subreddit = subreddit
+                                                self.updateSubscribeButton()
+                                            }
+                                    })
                                 })
-                            })
+                            }
+                        })
+                    } else {
+                        if !SettingsManager.defaultManager.purchased {
+                            self.performSegueWithIdentifier("PurchaseSegue", sender: self)
+                        } else {
+                            self.performSegueWithIdentifier("LoginSegue", sender: self)
                         }
-                    })
+                    }
                 }
             }
         })
@@ -348,6 +383,8 @@ UISplitViewControllerDelegate {
         if self.multiReddit == nil {
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
                 if self.front {
+                    self.subscribeButton.title = ""
+                } else if self.all {
                     self.subscribeButton.title = ""
                 } else {
                     if self.subreddit.subscriber.boolValue {
@@ -390,11 +427,13 @@ UISplitViewControllerDelegate {
     }
     
     func refresh(sender: AnyObject?) {
-        self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0)
-        self.headerImage.removeFromSuperview()
-        self.links = Array<AnyObject>()
-        self.pagination = nil
-        self.syncLinks()
+        UIView.animateWithDuration(0.3, animations: { () -> Void in
+            self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0)
+            self.headerImage.removeFromSuperview()
+            self.links = Array<AnyObject>()
+            self.pagination = nil
+            self.syncLinks()
+        })
     }
     
     private func syncLinks() {
@@ -404,7 +443,11 @@ UISplitViewControllerDelegate {
         if let multiReddit = self.multiReddit {
             title = multiReddit.name
         } else {
-            title = front ? "front" : "/r/\(subreddit.name.lowercaseString)"
+            if all {
+                title = "/r/all"
+            } else {
+                title = front ? "front" : "/r/\(subreddit.name.lowercaseString)"
+            }
         }
         
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: title,
@@ -417,13 +460,14 @@ UISplitViewControllerDelegate {
         self.navigationItem.title = ""
         
         self.tableView.reloadData()
-        if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forItem: 0, inSection: 1)) as? LoadMoreHeader {
-            cell.startAnimating()
-            
-            self.fetchLinks({ () -> () in
-                cell.stopAnimating()
-            })
-        }
+        
+        self.update()
+        
+        self.hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
+        
+        self.fetchLinks({ () -> () in
+            self.hud.hide(true)
+        })
     }
     
     private func fetchLinks(completion: () -> ()) {
@@ -440,10 +484,22 @@ UISplitViewControllerDelegate {
                 
                 completion()
             })
+        } else if all {
+            RedditSession.sharedSession.fetchAllPosts(self.pagination,
+                category: self.currentCategory, completion: { (pagination, results, error) -> () in
+                    self.pagination = pagination
+                    if let moreLinks = results {
+                        self.links.extend(moreLinks)
+                    }
+                    
+                    completion()
+            })
         } else {
             if let subreddit = self.subreddit {
                 RedditSession.sharedSession.fetchPostsForSubreddit(self.subreddit,
-                    category: self.currentCategory, pagination: self.pagination, completion: { (pagination, results, error) -> () in
+                    category: self.currentCategory,
+                    pagination: self.pagination,
+                    completion: { (pagination, results, error) -> () in
                         self.pagination = pagination
                         if let moreLinks = results {
                             self.links.extend(moreLinks)
@@ -452,7 +508,10 @@ UISplitViewControllerDelegate {
                         completion()
                 })
             } else {
-                RedditSession.sharedSession.fetchPostsForMultiReddit(self.multiReddit, category: self.currentCategory, pagination: self.pagination, completion: { (pagination, results, error) -> () in
+                RedditSession.sharedSession.fetchPostsForMultiReddit(self.multiReddit,
+                    category: self.currentCategory,
+                    pagination: self.pagination,
+                    completion: { (pagination, results, error) -> () in
                     self.pagination = pagination
                     if let moreLinks = results {
                         self.links.extend(moreLinks)

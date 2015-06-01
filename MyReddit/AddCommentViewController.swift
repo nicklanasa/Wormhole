@@ -44,6 +44,18 @@ class AddCommentViewController: UIViewController, UITextViewDelegate {
         } else {
             self.navigationItem.title = "new comment"
         }
+        
+        if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
+            if UIDevice.currentDevice().orientation == .LandscapeLeft || UIDevice.currentDevice().orientation == .LandscapeRight {
+                self.verticalSpaceConstraint.constant = 390
+            } else {
+                self.verticalSpaceConstraint.constant = 300
+            }
+            
+            UIView.animateWithDuration(0.3, animations: { () -> Void in
+                self.view.layoutIfNeeded()
+            })
+        }
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -55,6 +67,10 @@ class AddCommentViewController: UIViewController, UITextViewDelegate {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         LocalyticsSession.shared().tagScreen("AddComment")
+        
+        self.view.backgroundColor = MyRedditBackgroundColor
+        self.textView.backgroundColor = MyRedditBackgroundColor
+        self.textView.textColor = MyRedditLabelColor
     }
     
     @IBAction func doneButtonTapped(sender: AnyObject) {
@@ -111,9 +127,17 @@ class AddCommentViewController: UIViewController, UITextViewDelegate {
     
     override func didRotateFromInterfaceOrientation(fromInterfaceOrientation: UIInterfaceOrientation) {
         if fromInterfaceOrientation == .Portrait || fromInterfaceOrientation == .PortraitUpsideDown {
-            self.verticalSpaceConstraint.constant = 200
+            if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
+                self.verticalSpaceConstraint.constant = 390
+            } else {
+                self.verticalSpaceConstraint.constant = 200
+            }
         } else {
-            self.verticalSpaceConstraint.constant = 272
+            if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
+                self.verticalSpaceConstraint.constant = 300
+            } else {
+                self.verticalSpaceConstraint.constant = 272
+            }
         }
         
         UIView.animateWithDuration(0.3, animations: { () -> Void in

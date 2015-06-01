@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7702" systemVersion="14E17e" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="QFu-Tq-7C5">
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
         <capability name="Alignment constraints to the first baseline" minToolsVersion="6.0"/>
         <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
@@ -11,7 +10,7 @@
         <!--Subreddit ViewController-->
         <scene sceneID="atc-AJ-8d4">
             <objects>
-                <viewController storyboardIdentifier="SubredditViewController" title="Subreddit ViewController" id="yqo-vd-J8K" customClass="SubredditViewController" customModule="MyReddit_iPad" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SubredditViewController" title="Subreddit ViewController" id="yqo-vd-J8K" customClass="SubredditViewController" customModule="MyReddit" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="wg4-vp-5tp"/>
                         <viewControllerLayoutGuide type="bottom" id="Uzs-Ft-64O"/>
@@ -24,7 +23,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="556"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="PostImageCell" rowHeight="543" id="bCD-Aj-NFZ" customClass="PostImageCell" customModule="MyReddit_iPad" customModuleProvider="target">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="PostImageCell" rowHeight="543" id="bCD-Aj-NFZ" customClass="PostImageCell" customModule="MyReddit" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="108" width="600" height="385"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="bCD-Aj-NFZ" id="fQy-ma-bHq">
@@ -153,7 +152,7 @@
                                             <outlet property="titleLabel" destination="V7g-sP-Kyz" id="cSf-eW-twQ"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TitleCell" rowHeight="92" id="oFJ-dT-Uxj" customClass="TitleCell" customModule="MyReddit_iPad" customModuleProvider="target">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TitleCell" rowHeight="92" id="oFJ-dT-Uxj" customClass="TitleCell" customModule="MyReddit" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="108" width="600" height="385"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="oFJ-dT-Uxj" id="VqA-vq-ha0">
@@ -285,7 +284,7 @@
                                             <outlet property="titleLabel" destination="v4e-fR-fav" id="peh-Hg-Yjf"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="LoadMoreHeader" rowHeight="60" id="D2v-yA-f6j" customClass="LoadMoreHeader" customModule="MyReddit_iPad" customModuleProvider="target">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="LoadMoreHeader" rowHeight="60" id="D2v-yA-f6j" customClass="LoadMoreHeader" customModule="MyReddit" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="108" width="600" height="385"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="D2v-yA-f6j" id="4O9-PY-OqN">
@@ -338,7 +337,7 @@
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="Ss5-sQ-dMp"/>
                                     <barButtonItem image="Add" id="4CL-zW-GHL">
                                         <connections>
-                                            <segue destination="oc0-6V-RMu" kind="showDetail" identifier="PostSegue" id="vOy-5A-OfU"/>
+                                            <action selector="postButtonTapped:" destination="yqo-vd-J8K" id="ALF-rQ-Dfw"/>
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="yr6-VD-hul"/>
@@ -402,6 +401,7 @@
                         <segue destination="SEn-8E-jyR" kind="show" identifier="GallerySegue" id="pMg-rh-ZMv"/>
                         <segue destination="PTZ-wg-Lzy" kind="showDetail" identifier="MessagesSegue" id="Frn-gh-Q2i"/>
                         <segue destination="AVn-oL-g0d" kind="showDetail" identifier="AccountsSegue" id="nb3-Xk-rNn"/>
+                        <segue destination="oc0-6V-RMu" kind="showDetail" identifier="PostSegue" id="0W3-9r-9bo"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="J3o-0W-bFH" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -410,12 +410,12 @@
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 </imageView>
             </objects>
-            <point key="canvasLocation" x="608" y="-379"/>
+            <point key="canvasLocation" x="640" y="-413"/>
         </scene>
         <!--Link View Controller-->
         <scene sceneID="sbQ-IA-Mog">
             <objects>
-                <viewController storyboardIdentifier="LinkViewController" hidesBottomBarWhenPushed="YES" id="oWg-TP-L9t" customClass="LinkViewController" customModule="MyReddit_iPad" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="LinkViewController" hidesBottomBarWhenPushed="YES" id="oWg-TP-L9t" customClass="LinkViewController" customModule="MyReddit" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="jm1-xP-tTI"/>
                         <viewControllerLayoutGuide type="bottom" id="TiA-LT-D0m"/>
@@ -570,7 +570,7 @@
         <!--Login ViewController-->
         <scene sceneID="LVs-9w-lsR">
             <objects>
-                <viewController title="Login ViewController" id="Cxf-Qd-xoU" customClass="LoginViewController" customModule="MyReddit_iPad" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Login ViewController" id="Cxf-Qd-xoU" customClass="LoginViewController" customModule="MyReddit" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="iJD-QX-aQN"/>
                         <viewControllerLayoutGuide type="bottom" id="Lp7-1e-V41"/>
@@ -583,7 +583,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="556"/>
                                 <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
                                 <prototypes>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="EmailCell" id="aoH-FF-Hbg" customClass="EmailCell" customModule="MyReddit_iPad" customModuleProvider="target">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="EmailCell" id="aoH-FF-Hbg" customClass="EmailCell" customModule="MyReddit" customModuleProvider="target">
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="aoH-FF-Hbg" id="3X3-wu-QYC">
                                             <autoresizingMask key="autoresizingMask"/>
@@ -623,7 +623,7 @@
                                             <outlet property="usernameTextField" destination="9EY-rZ-N42" id="4Hf-sb-FEA"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="PasswordCell" id="Qsm-lL-wuW" customClass="PasswordCell" customModule="MyReddit_iPad" customModuleProvider="target">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="PasswordCell" id="Qsm-lL-wuW" customClass="PasswordCell" customModule="MyReddit" customModuleProvider="target">
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Qsm-lL-wuW" id="v0k-de-mL3">
                                             <autoresizingMask key="autoresizingMask"/>
@@ -712,7 +712,7 @@
         <!--unlock everything-->
         <scene sceneID="s62-b3-B7d">
             <objects>
-                <viewController id="Zov-bH-lU9" customClass="PurchaseViewController" customModule="MyReddit_iPad" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="Zov-bH-lU9" customClass="PurchaseViewController" customModule="MyReddit" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="4U6-0s-9UA"/>
                         <viewControllerLayoutGuide type="bottom" id="gc8-Y3-EIA"/>
@@ -948,7 +948,7 @@
         <!--multireddits-->
         <scene sceneID="0ar-2L-ITP">
             <objects>
-                <viewController id="Ifq-bj-txp" customClass="MultiRedditsViewController" customModule="MyReddit_iPad" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="Ifq-bj-txp" customClass="MultiRedditsViewController" customModule="MyReddit" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="olI-I8-lBG"/>
                         <viewControllerLayoutGuide type="bottom" id="F4N-xH-K5J"/>
@@ -961,7 +961,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
                                 <prototypes>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="NewMultiRedditCell" id="SpD-Xi-L6E" customClass="UserInfoCell" customModule="MyReddit_iPad" customModuleProvider="target">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="NewMultiRedditCell" id="SpD-Xi-L6E" customClass="UserInfoCell" customModule="MyReddit" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="273" width="600" height="55"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="SpD-Xi-L6E" id="M8X-AZ-tN5">
@@ -986,7 +986,7 @@
                                             <outlet property="titleLabel" destination="CH2-om-ADd" id="Fsa-k0-btc"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="SubredditCell" rowHeight="55" id="uxl-OU-p1P" customClass="SubredditCell" customModule="MyReddit_iPad" customModuleProvider="target">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="SubredditCell" rowHeight="55" id="uxl-OU-p1P" customClass="SubredditCell" customModule="MyReddit" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="273" width="600" height="55"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="uxl-OU-p1P" id="tdz-rY-gy6">
@@ -1091,7 +1091,7 @@
         <!--Subreddits-->
         <scene sceneID="RrG-Kg-SRP">
             <objects>
-                <viewController title="Subreddits" id="AYg-o0-LaT" customClass="SubredditsViewController" customModule="MyReddit_iPad" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Subreddits" id="AYg-o0-LaT" customClass="SubredditsViewController" customModule="MyReddit" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="A3n-24-DnV"/>
                         <viewControllerLayoutGuide type="bottom" id="AQ6-AW-GcF"/>
@@ -1106,7 +1106,7 @@
                                 <color key="sectionIndexColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="sectionIndexBackgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="NewMultiRedditCell" id="Ppe-Pf-1mz" customClass="UserInfoCell" customModule="MyReddit_iPad" customModuleProvider="target">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="NewMultiRedditCell" id="Ppe-Pf-1mz" customClass="UserInfoCell" customModule="MyReddit" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="278" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Ppe-Pf-1mz" id="vcE-uc-wew">
@@ -1131,7 +1131,7 @@
                                             <outlet property="titleLabel" destination="ql5-5f-C45" id="RST-zV-rFt"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="SubredditCell" rowHeight="55" id="zXc-1e-kGW" customClass="SubredditCell" customModule="MyReddit_iPad" customModuleProvider="target">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="SubredditCell" rowHeight="55" id="zXc-1e-kGW" customClass="SubredditCell" customModule="MyReddit" customModuleProvider="target">
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="zXc-1e-kGW" id="DZi-bC-uoU">
                                             <autoresizingMask key="autoresizingMask"/>
@@ -1201,7 +1201,7 @@
                                             <segue destination="Wuv-iQ-z1V" kind="showDetail" identifier="SubredditPosts" id="cxw-0o-NAI"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="FrontCell" rowHeight="55" id="5kl-Dv-IDE" customClass="FrontCell" customModule="MyReddit_iPad" customModuleProvider="target">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="FrontCell" rowHeight="55" id="5kl-Dv-IDE" customClass="FrontCell" customModule="MyReddit" customModuleProvider="target">
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="5kl-Dv-IDE" id="7Oo-3e-SIs">
                                             <autoresizingMask key="autoresizingMask"/>
@@ -1235,6 +1235,42 @@
                                             <outlet property="frontLabel" destination="Uki-4J-lxY" id="wJ7-6m-mOv"/>
                                             <outlet property="starImageView" destination="MSx-eA-CK8" id="Tnb-4b-aqA"/>
                                             <segue destination="Wuv-iQ-z1V" kind="showDetail" identifier="FrontSegue" id="NbF-9n-GP5"/>
+                                        </connections>
+                                    </tableViewCell>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="AllCell" rowHeight="55" id="wxf-wc-ZDa" customClass="FrontCell" customModule="MyReddit" customModuleProvider="target">
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="wxf-wc-ZDa" id="cgK-JK-iSS">
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Star" translatesAutoresizingMaskIntoConstraints="NO" id="E98-vn-RX5">
+                                                    <rect key="frame" x="21" y="12" width="25" height="25"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="25" id="MbC-c0-aVF"/>
+                                                    </constraints>
+                                                </imageView>
+                                                <label opaque="NO" clipsSubviews="YES" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="All" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Gn5-J7-Pdn">
+                                                    <rect key="frame" x="64" y="16" width="415" height="24"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="415" id="MNj-xJ-vvM"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="17"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="bottomMargin" secondItem="E98-vn-RX5" secondAttribute="bottom" constant="9" id="cMJ-CE-yW4"/>
+                                                <constraint firstItem="E98-vn-RX5" firstAttribute="top" secondItem="cgK-JK-iSS" secondAttribute="topMargin" constant="4" id="eEW-c1-7Ae"/>
+                                                <constraint firstItem="Gn5-J7-Pdn" firstAttribute="centerY" secondItem="cgK-JK-iSS" secondAttribute="centerY" constant="1" id="gib-bS-0tR"/>
+                                                <constraint firstItem="Gn5-J7-Pdn" firstAttribute="leading" secondItem="E98-vn-RX5" secondAttribute="trailing" constant="18" id="o51-Ia-aAD"/>
+                                                <constraint firstItem="Gn5-J7-Pdn" firstAttribute="top" secondItem="cgK-JK-iSS" secondAttribute="topMargin" constant="8" id="prr-ap-Ij2"/>
+                                                <constraint firstItem="E98-vn-RX5" firstAttribute="leading" secondItem="cgK-JK-iSS" secondAttribute="leadingMargin" constant="13" id="ycd-yj-HLx"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <connections>
+                                            <outlet property="frontLabel" destination="Gn5-J7-Pdn" id="7Lh-4B-Yf2"/>
+                                            <outlet property="starImageView" destination="E98-vn-RX5" id="kLA-EP-L0k"/>
+                                            <segue destination="Wuv-iQ-z1V" kind="showDetail" identifier="AllSegue" id="BaK-k1-yn3"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -1291,7 +1327,7 @@
                         <segue destination="Hdo-ax-c9X" kind="presentation" identifier="PurchaseSegue" modalTransitionStyle="crossDissolve" id="kaq-Nv-BbA"/>
                         <segue destination="7sL-pi-tiS" kind="presentation" identifier="ProfileSegue" modalTransitionStyle="crossDissolve" id="bxZ-6W-PbQ"/>
                         <segue destination="AVn-oL-g0d" kind="showDetail" identifier="AccountsSegue" id="sND-y2-DTj"/>
-                        <segue destination="EKU-QU-ihl" kind="presentation" identifier="SearchSegue" modalTransitionStyle="crossDissolve" id="FVR-U4-dim"/>
+                        <segue destination="EKU-QU-ihl" kind="showDetail" identifier="SearchSegue" id="FVR-U4-dim"/>
                         <segue destination="SpP-xf-ygO" kind="showDetail" identifier="SavedSegue" id="gh5-lw-0Sc"/>
                     </connections>
                 </viewController>
@@ -1302,7 +1338,7 @@
         <!--Messages ViewController-->
         <scene sceneID="ieU-a7-RXs">
             <objects>
-                <viewController title="Messages ViewController" hidesBottomBarWhenPushed="YES" id="EL8-G3-WsF" customClass="MessagesViewController" customModule="MyReddit_iPad" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Messages ViewController" hidesBottomBarWhenPushed="YES" id="EL8-G3-WsF" customClass="MessagesViewController" customModule="MyReddit" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="flb-yr-kyK"/>
                         <viewControllerLayoutGuide type="bottom" id="i8Z-cA-YhE"/>
@@ -1315,7 +1351,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="556"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="LoadMoreHeader" rowHeight="60" id="x1D-qs-6mY" customClass="LoadMoreHeader" customModule="MyReddit_iPad" customModuleProvider="target">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="LoadMoreHeader" rowHeight="60" id="x1D-qs-6mY" customClass="LoadMoreHeader" customModule="MyReddit" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="270" width="600" height="60"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="x1D-qs-6mY" id="BKv-iT-k1O">
@@ -1350,7 +1386,7 @@
                                             <outlet property="loadMoreButton" destination="MzB-Z8-jER" id="B6V-Ml-DVs"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="MessageCell" rowHeight="107" id="l0H-gQ-1ug" customClass="MessageCell" customModule="MyReddit_iPad" customModuleProvider="target">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="MessageCell" rowHeight="107" id="l0H-gQ-1ug" customClass="MessageCell" customModule="MyReddit" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="108" width="600" height="385"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="l0H-gQ-1ug" id="TRq-x4-wld">
@@ -1359,16 +1395,13 @@
                                                 <label opaque="NO" clipsSubviews="YES" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="I broke down today and admitted my addiction." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xQ1-LL-0y9">
                                                     <rect key="frame" x="25" y="14" width="542" height="23"/>
                                                     <constraints>
+                                                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="23" id="1q8-eg-h6a"/>
                                                         <constraint firstAttribute="width" constant="542" id="2g4-k5-Ubp"/>
+                                                        <constraint firstAttribute="height" constant="23" id="IQ1-az-TkU"/>
+                                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="542" id="rrE-8U-AQp"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="16"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="•" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="k7H-nT-SoM">
-                                                    <rect key="frame" x="9" y="16" width="8" height="21"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="30"/>
-                                                    <color key="textColor" red="1" green="0.72156862749999995" blue="0.23529411759999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" clipsSubviews="YES" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="12:02 PM | Kendyslice | Comment Reply" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="7" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="b3r-2H-CQe">
@@ -1394,25 +1427,23 @@
                                                 </textView>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="xQ1-LL-0y9" firstAttribute="leading" secondItem="k7H-nT-SoM" secondAttribute="trailing" constant="8" symbolic="YES" id="4Fy-zT-4gh"/>
-                                                <constraint firstItem="k7H-nT-SoM" firstAttribute="baseline" secondItem="xQ1-LL-0y9" secondAttribute="firstBaseline" id="4Qv-qU-xKW"/>
                                                 <constraint firstItem="fCz-ay-ySX" firstAttribute="leading" secondItem="TRq-x4-wld" secondAttribute="leadingMargin" constant="17" id="5un-rV-CP8"/>
                                                 <constraint firstItem="b3r-2H-CQe" firstAttribute="top" secondItem="fCz-ay-ySX" secondAttribute="bottom" constant="8" id="BOS-KP-bvQ"/>
-                                                <constraint firstItem="k7H-nT-SoM" firstAttribute="leading" secondItem="TRq-x4-wld" secondAttribute="leadingMargin" constant="1" id="Cpa-y2-WaW"/>
                                                 <constraint firstAttribute="bottomMargin" secondItem="b3r-2H-CQe" secondAttribute="bottom" constant="-2" id="IHl-FU-ONl"/>
-                                                <constraint firstItem="k7H-nT-SoM" firstAttribute="top" secondItem="TRq-x4-wld" secondAttribute="topMargin" constant="8" id="JV0-tU-qT0"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="xQ1-LL-0y9" secondAttribute="trailing" constant="25" id="LHQ-bo-wSZ"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="xQ1-LL-0y9" secondAttribute="trailing" constant="25" id="QTY-wY-9z0"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="fCz-ay-ySX" secondAttribute="trailing" constant="18" id="Ria-Jd-kkO"/>
+                                                <constraint firstItem="xQ1-LL-0y9" firstAttribute="leading" secondItem="TRq-x4-wld" secondAttribute="leadingMargin" constant="17" id="SzB-Nl-8Ty"/>
+                                                <constraint firstItem="xQ1-LL-0y9" firstAttribute="top" secondItem="TRq-x4-wld" secondAttribute="topMargin" constant="6" id="VEf-wT-x0c"/>
                                                 <constraint firstItem="xQ1-LL-0y9" firstAttribute="top" secondItem="TRq-x4-wld" secondAttribute="topMargin" constant="6" id="evy-42-Avy"/>
                                                 <constraint firstItem="fCz-ay-ySX" firstAttribute="top" secondItem="xQ1-LL-0y9" secondAttribute="bottom" id="mIs-0t-W5W"/>
-                                                <constraint firstItem="k7H-nT-SoM" firstAttribute="bottom" secondItem="xQ1-LL-0y9" secondAttribute="bottom" id="rIi-hN-lDh"/>
                                                 <constraint firstItem="b3r-2H-CQe" firstAttribute="leading" secondItem="TRq-x4-wld" secondAttribute="leadingMargin" constant="10" id="vws-n3-cjX"/>
+                                                <constraint firstItem="fCz-ay-ySX" firstAttribute="top" secondItem="xQ1-LL-0y9" secondAttribute="bottom" id="z01-u4-Gbh"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="bodyTextView" destination="fCz-ay-ySX" id="KRG-78-tK3"/>
                                             <outlet property="infoLabel" destination="b3r-2H-CQe" id="Nv3-bJ-iHL"/>
-                                            <outlet property="readLabel" destination="k7H-nT-SoM" id="4fS-a8-wPj"/>
                                             <outlet property="titleLabel" destination="xQ1-LL-0y9" id="vKD-3R-j9X"/>
                                         </connections>
                                     </tableViewCell>
@@ -1625,7 +1656,7 @@
         <!--Register-->
         <scene sceneID="qop-jU-Ris">
             <objects>
-                <viewController id="vln-Q7-7O7" customClass="RegisterViewController" customModule="MyReddit_iPad" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="vln-Q7-7O7" customClass="RegisterViewController" customModule="MyReddit" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="nak-wd-xuJ"/>
                         <viewControllerLayoutGuide type="bottom" id="z5U-Hd-FFl"/>
@@ -1698,7 +1729,7 @@
         <!--compose message-->
         <scene sceneID="Ili-gZ-paD">
             <objects>
-                <tableViewController title="compose message" id="AvG-a7-lzS" customClass="ComposeTableViewController" customModule="MyReddit_iPad" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController title="compose message" id="AvG-a7-lzS" customClass="ComposeTableViewController" customModule="MyReddit" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="lrV-OR-d0d">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1795,7 +1826,7 @@
         <!--Forgot Password-->
         <scene sceneID="wUm-Ca-5S4">
             <objects>
-                <viewController id="gI0-Le-QIL" customClass="ForgotPasswordViewController" customModule="MyReddit_iPad" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="gI0-Le-QIL" customClass="ForgotPasswordViewController" customModule="MyReddit" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="sTH-xZ-PfX"/>
                         <viewControllerLayoutGuide type="bottom" id="cWm-1S-FVN"/>
@@ -1860,7 +1891,7 @@
         <!--profile-->
         <scene sceneID="0YS-5C-Lvi">
             <objects>
-                <viewController id="Kaz-dN-C7r" customClass="ProfileViewController" customModule="MyReddit_iPad" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="Kaz-dN-C7r" customClass="ProfileViewController" customModule="MyReddit" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="UJN-rZ-g58"/>
                         <viewControllerLayoutGuide type="bottom" id="LRp-Qn-FTz"/>
@@ -1873,7 +1904,7 @@
                                 <rect key="frame" x="-5" y="0.0" width="600" height="556"/>
                                 <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
                                 <prototypes>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="UserInfoCell" id="8l4-Uo-dZV" customClass="UserInfoCell" customModule="MyReddit_iPad" customModuleProvider="target">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="UserInfoCell" id="8l4-Uo-dZV" customClass="UserInfoCell" customModule="MyReddit" customModuleProvider="target">
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="8l4-Uo-dZV" id="voe-U5-u67">
                                             <autoresizingMask key="autoresizingMask"/>
@@ -1942,6 +1973,7 @@
                     <navigationItem key="navigationItem" title="profile" id="3vD-yK-4bK"/>
                     <connections>
                         <outlet property="tableView" destination="tzE-is-hre" id="zZu-ip-lhl"/>
+                        <outlet property="toolbar" destination="0ud-5K-tEr" id="kTG-wF-9xy"/>
                         <segue destination="SpP-xf-ygO" kind="show" identifier="UserContentSegue" id="ym1-ru-k1R"/>
                     </connections>
                 </viewController>
@@ -1952,7 +1984,7 @@
         <!--User Content View Controller-->
         <scene sceneID="pol-Z6-PEw">
             <objects>
-                <viewController id="mxz-U6-d5C" customClass="UserContentViewController" customModule="MyReddit_iPad" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="mxz-U6-d5C" customClass="UserContentViewController" customModule="MyReddit" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="vgL-id-KgS"/>
                         <viewControllerLayoutGuide type="bottom" id="VBp-ke-dQX"/>
@@ -1961,11 +1993,11 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="jbe-cM-QBI">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="jbe-cM-QBI">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="PostImageCell" rowHeight="543" id="wIn-p6-gWk" customClass="PostImageCell" customModule="MyReddit_iPad" customModuleProvider="target">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="PostImageCell" rowHeight="543" id="wIn-p6-gWk" customClass="PostImageCell" customModule="MyReddit" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="29" width="600" height="543"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="wIn-p6-gWk" id="UmN-PW-ZyI">
@@ -2006,7 +2038,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Front" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tAw-Ka-mQ7">
-                                                    <rect key="frame" x="16" y="4" width="32" height="21"/>
+                                                    <rect key="frame" x="16" y="4" width="473" height="21"/>
                                                     <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="13"/>
                                                     <color key="textColor" red="0.96078431369999995" green="0.52156862749999999" blue="0.3921568627" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -2052,20 +2084,22 @@
                                                 <constraint firstItem="czK-0K-eZp" firstAttribute="trailing" secondItem="ltk-sE-hBC" secondAttribute="trailing" id="3mt-ej-QPc"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="ltk-sE-hBC" secondAttribute="trailing" id="5C0-9g-3T4"/>
                                                 <constraint firstItem="cnr-9t-luf" firstAttribute="leading" secondItem="8Iv-uB-7th" secondAttribute="trailing" constant="39" id="5XM-E4-cSc"/>
-                                                <constraint firstItem="czK-0K-eZp" firstAttribute="top" secondItem="tAw-Ka-mQ7" secondAttribute="top" id="5xf-jC-Yuz"/>
                                                 <constraint firstAttribute="bottom" secondItem="8Iv-uB-7th" secondAttribute="bottom" constant="10" id="7Cb-ES-gZU"/>
+                                                <constraint firstItem="tAw-Ka-mQ7" firstAttribute="leading" secondItem="UmN-PW-ZyI" secondAttribute="leadingMargin" constant="8" id="97x-V0-gMM"/>
+                                                <constraint firstItem="tAw-Ka-mQ7" firstAttribute="leading" secondItem="ltk-sE-hBC" secondAttribute="leading" id="9fY-lT-YvV"/>
                                                 <constraint firstAttribute="trailing" secondItem="KYt-pc-EXs" secondAttribute="trailing" id="9ov-Za-o9E"/>
-                                                <constraint firstItem="czK-0K-eZp" firstAttribute="baseline" secondItem="tAw-Ka-mQ7" secondAttribute="firstBaseline" id="Blh-E0-cYy"/>
-                                                <constraint firstItem="ltk-sE-hBC" firstAttribute="top" secondItem="tAw-Ka-mQ7" secondAttribute="bottom" id="Dgx-cl-t82"/>
+                                                <constraint firstItem="tAw-Ka-mQ7" firstAttribute="top" secondItem="GEN-Pa-AAF" secondAttribute="top" id="EIz-E3-kYF"/>
+                                                <constraint firstItem="tAw-Ka-mQ7" firstAttribute="firstBaseline" secondItem="czK-0K-eZp" secondAttribute="baseline" id="Ede-My-ek6"/>
                                                 <constraint firstAttribute="trailing" secondItem="ltk-sE-hBC" secondAttribute="trailing" constant="8" id="FHR-UP-yRz"/>
                                                 <constraint firstItem="YRO-JB-9z5" firstAttribute="leading" secondItem="cnr-9t-luf" secondAttribute="trailing" constant="5" id="Fxw-uy-Jzx"/>
-                                                <constraint firstItem="tAw-Ka-mQ7" firstAttribute="leading" secondItem="UmN-PW-ZyI" secondAttribute="leadingMargin" constant="8" id="H0B-H7-V8m"/>
+                                                <constraint firstItem="GEN-Pa-AAF" firstAttribute="leading" secondItem="tAw-Ka-mQ7" secondAttribute="trailing" constant="-59" id="HZs-gD-UV7"/>
                                                 <constraint firstItem="ltk-sE-hBC" firstAttribute="leading" secondItem="UmN-PW-ZyI" secondAttribute="leading" constant="16" id="K4X-Mx-Ez8"/>
                                                 <constraint firstAttribute="bottomMargin" secondItem="8Iv-uB-7th" secondAttribute="bottom" constant="2" id="Nwb-zl-caX"/>
                                                 <constraint firstItem="ltk-sE-hBC" firstAttribute="leading" secondItem="8Iv-uB-7th" secondAttribute="leading" id="Nxi-iO-sSZ"/>
                                                 <constraint firstItem="czK-0K-eZp" firstAttribute="leading" secondItem="GEN-Pa-AAF" secondAttribute="trailing" constant="8" symbolic="YES" id="OWj-FE-A6Z"/>
                                                 <constraint firstAttribute="bottomMargin" secondItem="YRO-JB-9z5" secondAttribute="bottom" constant="3" id="TOM-F9-lWB"/>
                                                 <constraint firstItem="8Iv-uB-7th" firstAttribute="leading" secondItem="UmN-PW-ZyI" secondAttribute="leading" constant="16" id="VQQ-cu-qEl"/>
+                                                <constraint firstItem="ltk-sE-hBC" firstAttribute="top" secondItem="tAw-Ka-mQ7" secondAttribute="bottom" id="VmN-Tg-BAg"/>
                                                 <constraint firstItem="KYt-pc-EXs" firstAttribute="top" secondItem="ltk-sE-hBC" secondAttribute="bottom" constant="7" id="YtH-Qe-bis"/>
                                                 <constraint firstAttribute="trailing" secondItem="ltk-sE-hBC" secondAttribute="trailing" constant="8" id="bLb-QW-gLH"/>
                                                 <constraint firstItem="ltk-sE-hBC" firstAttribute="leading" secondItem="UmN-PW-ZyI" secondAttribute="leading" constant="16" id="cDG-dI-wSf"/>
@@ -2080,7 +2114,6 @@
                                                 <constraint firstItem="cnr-9t-luf" firstAttribute="top" secondItem="KYt-pc-EXs" secondAttribute="bottom" constant="8" symbolic="YES" id="sZS-CE-AEY"/>
                                                 <constraint firstItem="ltk-sE-hBC" firstAttribute="top" secondItem="UmN-PW-ZyI" secondAttribute="top" constant="25" id="v9i-hF-7mm"/>
                                                 <constraint firstItem="czK-0K-eZp" firstAttribute="top" secondItem="GEN-Pa-AAF" secondAttribute="top" id="vJz-Ho-3c8"/>
-                                                <constraint firstItem="tAw-Ka-mQ7" firstAttribute="leading" secondItem="ltk-sE-hBC" secondAttribute="leading" id="x4q-Ml-H3X"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
@@ -2094,7 +2127,7 @@
                                             <outlet property="titleLabel" destination="ltk-sE-hBC" id="ac9-1v-kZU"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TitleCell" rowHeight="122" id="x1s-Wv-6jU" customClass="TitleCell" customModule="MyReddit_iPad" customModuleProvider="target">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TitleCell" rowHeight="122" id="x1s-Wv-6jU" customClass="TitleCell" customModule="MyReddit" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="239" width="600" height="122"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="x1s-Wv-6jU" id="pA3-IH-cEu">
@@ -2201,7 +2234,7 @@
                                             <outlet property="titleLabel" destination="XQP-xd-D7U" id="Pbu-p4-SBa"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="CommentCell" rowHeight="107" id="SGZ-0j-0Kl" customClass="CommentCell" customModule="MyReddit_iPad" customModuleProvider="target">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="CommentCell" rowHeight="107" id="SGZ-0j-0Kl" customClass="CommentCell" customModule="MyReddit" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="247" width="600" height="107"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="SGZ-0j-0Kl" id="ey2-gH-j6W">
@@ -2271,10 +2304,9 @@
                                             <outlet property="repliesLabel" destination="FT1-N5-qLl" id="d0G-u3-0cO"/>
                                             <outlet property="repliesLabelHeightConstraint" destination="i27-gG-x5a" id="kdm-1Y-Jmj"/>
                                             <outlet property="scoreLabel" destination="gn9-4g-5fi" id="rEr-XX-wvQ"/>
-                                            <segue destination="SEn-8E-jyR" kind="show" identifier="GallerySegue" id="WIn-QL-TOG"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="LoadMoreHeader" rowHeight="60" id="cvV-Zt-eWI" customClass="LoadMoreHeader" customModule="MyReddit_iPad" customModuleProvider="target">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="LoadMoreHeader" rowHeight="60" id="cvV-Zt-eWI" customClass="LoadMoreHeader" customModule="MyReddit" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="270" width="600" height="60"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="cvV-Zt-eWI" id="RCK-aL-0kP">
@@ -2320,7 +2352,7 @@
                         <constraints>
                             <constraint firstItem="jbe-cM-QBI" firstAttribute="top" secondItem="Z9L-Eh-LZc" secondAttribute="top" id="0sT-O8-gav"/>
                             <constraint firstAttribute="trailing" secondItem="jbe-cM-QBI" secondAttribute="trailing" id="jxT-RO-iD1"/>
-                            <constraint firstItem="jbe-cM-QBI" firstAttribute="bottom" secondItem="VBp-ke-dQX" secondAttribute="top" id="lZH-5P-0K0"/>
+                            <constraint firstItem="jbe-cM-QBI" firstAttribute="bottom" secondItem="VBp-ke-dQX" secondAttribute="top" constant="44" id="lZH-5P-0K0"/>
                             <constraint firstItem="jbe-cM-QBI" firstAttribute="leading" secondItem="Z9L-Eh-LZc" secondAttribute="leading" id="xbS-fs-djx"/>
                         </constraints>
                     </view>
@@ -2334,6 +2366,8 @@
                         <outlet property="tableView" destination="jbe-cM-QBI" id="tFm-qP-4br"/>
                         <segue destination="oWg-TP-L9t" kind="show" identifier="SubredditLink" id="aev-Tk-Wb5"/>
                         <segue destination="lwG-4j-KBB" kind="show" identifier="CommentsSegue" id="r0I-Qj-AXk"/>
+                        <segue destination="Hdo-ax-c9X" kind="presentation" identifier="PurchaseSegue" modalTransitionStyle="crossDissolve" id="L38-wg-UQF"/>
+                        <segue destination="SEn-8E-jyR" kind="show" identifier="GallerySegue" id="4dn-f2-g7W"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="TYI-rD-L9p" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -2343,13 +2377,13 @@
         <!--Comments View Controller-->
         <scene sceneID="vZ4-hp-7Rx">
             <objects>
-                <tableViewController storyboardIdentifier="CommentsViewController" id="qVg-dB-hBp" customClass="CommentsViewController" customModule="MyReddit_iPad" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="CommentsViewController" id="qVg-dB-hBp" customClass="CommentsViewController" customModule="MyReddit" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="116" sectionHeaderHeight="22" sectionFooterHeight="22" id="AT1-Vl-QAR">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="536"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="CommentCell" rowHeight="116" id="cAM-uv-HZU" customClass="CommentCell" customModule="MyReddit_iPad" customModuleProvider="target">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="CommentCell" rowHeight="116" id="cAM-uv-HZU" customClass="CommentCell" customModule="MyReddit" customModuleProvider="target">
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="cAM-uv-HZU" id="0fl-cW-8LI">
                                     <autoresizingMask key="autoresizingMask"/>
@@ -2423,7 +2457,7 @@
                                     <segue destination="qVg-dB-hBp" kind="show" identifier="RepliesSegue" id="ey1-XQ-4Y1"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="PostImageCell" rowHeight="543" id="JxK-2S-rQS" customClass="PostImageCell" customModule="MyReddit_iPad" customModuleProvider="target">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="PostImageCell" rowHeight="543" id="JxK-2S-rQS" customClass="PostImageCell" customModule="MyReddit" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="108" width="600" height="385"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="JxK-2S-rQS" id="I7u-DO-lMI">
@@ -2595,7 +2629,7 @@
         <!--add comment-->
         <scene sceneID="EIv-EM-tfT">
             <objects>
-                <viewController id="S2c-Ji-cZD" customClass="AddCommentViewController" customModule="MyReddit_iPad" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="S2c-Ji-cZD" customClass="AddCommentViewController" customModule="MyReddit" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="EyW-xy-kuf"/>
                         <viewControllerLayoutGuide type="bottom" id="Sw6-0V-Obd"/>
@@ -2644,7 +2678,7 @@
         <!--Web View Controller-->
         <scene sceneID="ePa-YU-F9g">
             <objects>
-                <viewController storyboardIdentifier="WebViewController" id="qj1-J1-q7z" customClass="WebViewController" customModule="MyReddit_iPad" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="WebViewController" id="qj1-J1-q7z" customClass="WebViewController" customModule="MyReddit" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="3UL-Eu-g1k"/>
                         <viewControllerLayoutGuide type="bottom" id="gjV-Lb-Zwy"/>
@@ -2717,7 +2751,7 @@
         <!--Search View Controller-->
         <scene sceneID="VhL-uT-cvd">
             <objects>
-                <viewController id="jpB-u1-7lM" customClass="SearchViewController" customModule="MyReddit_iPad" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="jpB-u1-7lM" customClass="SearchViewController" customModule="MyReddit" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="qBp-Sd-Kqm"/>
                         <viewControllerLayoutGuide type="bottom" id="ipZ-f6-zuK"/>
@@ -2730,7 +2764,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="556"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="PostImageCell" rowHeight="543" id="7cI-OJ-oN0" customClass="PostImageCell" customModule="MyReddit_iPad" customModuleProvider="target">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="PostImageCell" rowHeight="543" id="7cI-OJ-oN0" customClass="PostImageCell" customModule="MyReddit" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="29" width="600" height="543"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="7cI-OJ-oN0" id="W33-mq-z0n">
@@ -2857,7 +2891,7 @@
                                             <outlet property="titleLabel" destination="ihF-WL-m1Y" id="FUF-hE-4k8"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="AccountCell" id="PaZ-F8-tqK" customClass="UserInfoCell" customModule="MyReddit_iPad" customModuleProvider="target">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="AccountCell" id="PaZ-F8-tqK" customClass="UserInfoCell" customModule="MyReddit" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="278" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="PaZ-F8-tqK" id="zdR-8c-wbu">
@@ -2896,7 +2930,7 @@
                                             <outlet property="titleLabel" destination="z0h-Lr-oV2" id="zqc-8Q-Z2L"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TitleCell" rowHeight="122" id="He9-ev-QjY" customClass="TitleCell" customModule="MyReddit_iPad" customModuleProvider="target">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TitleCell" rowHeight="122" id="He9-ev-QjY" customClass="TitleCell" customModule="MyReddit" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="239" width="600" height="122"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="He9-ev-QjY" id="uKD-ad-prZ">
@@ -3003,7 +3037,7 @@
                                             <outlet property="titleLabel" destination="MbA-pI-ob5" id="AqJ-r2-rCj"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="LoadMoreHeader" rowHeight="12" id="Sfa-0R-RgZ" customClass="LoadMoreHeader" customModule="MyReddit_iPad" customModuleProvider="target">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="LoadMoreHeader" rowHeight="12" id="Sfa-0R-RgZ" customClass="LoadMoreHeader" customModule="MyReddit" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="270" width="600" height="60"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Sfa-0R-RgZ" id="e1P-fN-X9W">
@@ -3047,7 +3081,7 @@
                                             <outlet property="loadMoreButton" destination="Z2F-TX-1sH" id="7FV-4U-hwF"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="SubredditCell" rowHeight="55" id="gWe-Tz-KnT" customClass="SubredditCell" customModule="MyReddit_iPad" customModuleProvider="target">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="SubredditCell" rowHeight="55" id="gWe-Tz-KnT" customClass="SubredditCell" customModule="MyReddit" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="273" width="600" height="55"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="gWe-Tz-KnT" id="4DE-ng-QiN">
@@ -3179,6 +3213,7 @@
                         <segue destination="MbH-Gq-s0c" kind="presentation" identifier="MultiRedditSegue" modalTransitionStyle="crossDissolve" id="HuC-vd-ISD"/>
                         <segue destination="7sL-pi-tiS" kind="show" identifier="UserSegue" id="Udn-dz-6HG"/>
                         <segue destination="Wuv-iQ-z1V" kind="showDetail" identifier="SearchSubredditSegue" id="Eer-hR-feJ"/>
+                        <segue destination="Hdo-ax-c9X" kind="presentation" identifier="PurchaseSegue" modalTransitionStyle="crossDissolve" id="sq5-7f-uVx"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JKt-uO-kmL" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -3197,7 +3232,7 @@
         <!--settings-->
         <scene sceneID="XpE-gC-LoF">
             <objects>
-                <tableViewController title="settings" hidesBottomBarWhenPushed="YES" id="dzw-7J-5Ff" customClass="IPadSettingsViewController" customModule="MyReddit_iPad" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController title="settings" hidesBottomBarWhenPushed="YES" id="dzw-7J-5Ff" customClass="IPadSettingsViewController" customModule="MyReddit" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="se0-C6-l0D">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -3205,7 +3240,7 @@
                         <sections>
                             <tableViewSection id="t2s-hd-vRa">
                                 <cells>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="upY-42-zCz" customClass="UserInfoCell" customModule="MyReddit_iPad" customModuleProvider="target">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="upY-42-zCz" customClass="UserInfoCell" customModule="MyReddit" customModuleProvider="target">
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="upY-42-zCz" id="prB-P1-J4s">
                                             <autoresizingMask key="autoresizingMask"/>
@@ -3239,7 +3274,7 @@
                                             <outlet property="titleLabel" destination="cEQ-dp-uss" id="lUf-O7-2Qd"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="c4X-6y-LjI" customClass="UserInfoCell" customModule="MyReddit_iPad" customModuleProvider="target">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="c4X-6y-LjI" customClass="UserInfoCell" customModule="MyReddit" customModuleProvider="target">
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="c4X-6y-LjI" id="jvZ-wg-kIu">
                                             <autoresizingMask key="autoresizingMask"/>
@@ -3272,7 +3307,7 @@
                                             <outlet property="titleLabel" destination="I01-cK-CYO" id="X4Z-xE-Za7"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="QmW-dV-7d1" customClass="UserInfoCell" customModule="MyReddit_iPad" customModuleProvider="target">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="QmW-dV-7d1" customClass="UserInfoCell" customModule="MyReddit" customModuleProvider="target">
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="QmW-dV-7d1" id="YYc-j6-tNu">
                                             <autoresizingMask key="autoresizingMask"/>
@@ -3305,7 +3340,7 @@
                                             <outlet property="titleLabel" destination="9k6-f6-OxO" id="5fm-3y-Bkx"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="2QW-cs-ExR" customClass="UserInfoCell" customModule="MyReddit_iPad" customModuleProvider="target">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="2QW-cs-ExR" customClass="UserInfoCell" customModule="MyReddit" customModuleProvider="target">
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="2QW-cs-ExR" id="szS-MN-vw5">
                                             <autoresizingMask key="autoresizingMask"/>
@@ -3343,7 +3378,7 @@
                             </tableViewSection>
                             <tableViewSection id="Azh-hF-SNs">
                                 <cells>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="mbg-AU-7yY" customClass="UserInfoCell" customModule="MyReddit_iPad" customModuleProvider="target">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="mbg-AU-7yY" customClass="UserInfoCell" customModule="MyReddit" customModuleProvider="target">
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="mbg-AU-7yY" id="7pN-8y-olW">
                                             <autoresizingMask key="autoresizingMask"/>
@@ -3386,7 +3421,7 @@
                                             <outlet property="titleLabel" destination="Aji-uk-Hlo" id="xvQ-g2-Xy2"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="nbj-Ea-5Cf" customClass="UserInfoCell" customModule="MyReddit_iPad" customModuleProvider="target">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="nbj-Ea-5Cf" customClass="UserInfoCell" customModule="MyReddit" customModuleProvider="target">
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="nbj-Ea-5Cf" id="bzU-2m-93M">
                                             <autoresizingMask key="autoresizingMask"/>
@@ -3424,7 +3459,7 @@
                             </tableViewSection>
                             <tableViewSection id="j9r-pV-54K">
                                 <cells>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="Bis-Gr-TOr" customClass="UserInfoCell" customModule="MyReddit_iPad" customModuleProvider="target">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="Bis-Gr-TOr" customClass="UserInfoCell" customModule="MyReddit" customModuleProvider="target">
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Bis-Gr-TOr" id="o9V-lV-r6g">
                                             <autoresizingMask key="autoresizingMask"/>
@@ -3449,7 +3484,7 @@
                                             <outlet property="titleLabel" destination="1BA-yp-1qz" id="0v6-c5-cxm"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="fKF-VS-hJF" customClass="UserInfoCell" customModule="MyReddit_iPad" customModuleProvider="target">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="fKF-VS-hJF" customClass="UserInfoCell" customModule="MyReddit" customModuleProvider="target">
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="fKF-VS-hJF" id="nOf-k3-OBa">
                                             <autoresizingMask key="autoresizingMask"/>
@@ -3474,7 +3509,7 @@
                                             <outlet property="titleLabel" destination="HuQ-MQ-7IM" id="sog-bj-wQH"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="twe-Rs-mcc" customClass="UserInfoCell" customModule="MyReddit_iPad" customModuleProvider="target">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="twe-Rs-mcc" customClass="UserInfoCell" customModule="MyReddit" customModuleProvider="target">
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="twe-Rs-mcc" id="l05-gL-kXE">
                                             <autoresizingMask key="autoresizingMask"/>
@@ -3499,7 +3534,7 @@
                                             <outlet property="titleLabel" destination="Gwl-jv-Fv0" id="crb-lV-u72"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="nVn-BA-Ug3" customClass="UserInfoCell" customModule="MyReddit_iPad" customModuleProvider="target">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="nVn-BA-Ug3" customClass="UserInfoCell" customModule="MyReddit" customModuleProvider="target">
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="nVn-BA-Ug3" id="KLf-Jf-v7n">
                                             <autoresizingMask key="autoresizingMask"/>
@@ -3524,7 +3559,7 @@
                                             <outlet property="titleLabel" destination="eE4-Tx-NRc" id="QBL-9e-dIa"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="sDi-eD-WOi" customClass="UserInfoCell" customModule="MyReddit_iPad" customModuleProvider="target">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="sDi-eD-WOi" customClass="UserInfoCell" customModule="MyReddit" customModuleProvider="target">
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="sDi-eD-WOi" id="yfZ-lc-Tyy">
                                             <autoresizingMask key="autoresizingMask"/>
@@ -3553,7 +3588,7 @@
                             </tableViewSection>
                             <tableViewSection headerTitle="Creators" id="COZ-zW-OQs">
                                 <cells>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="Z0X-gH-QdM" customClass="UserInfoCell" customModule="MyReddit_iPad" customModuleProvider="target">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="Z0X-gH-QdM" customClass="UserInfoCell" customModule="MyReddit" customModuleProvider="target">
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Z0X-gH-QdM" id="Vjn-kQ-K6E">
                                             <autoresizingMask key="autoresizingMask"/>
@@ -3578,7 +3613,7 @@
                                             <outlet property="titleLabel" destination="CNA-9q-JT5" id="zcF-ZN-M3I"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="zMV-Nw-cEI" customClass="UserInfoCell" customModule="MyReddit_iPad" customModuleProvider="target">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="zMV-Nw-cEI" customClass="UserInfoCell" customModule="MyReddit" customModuleProvider="target">
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="zMV-Nw-cEI" id="U5A-UJ-e0a">
                                             <autoresizingMask key="autoresizingMask"/>
@@ -3603,7 +3638,7 @@
                                             <outlet property="titleLabel" destination="M19-0u-YvZ" id="O1H-JQ-myI"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="Zfo-MK-a7C" customClass="UserInfoCell" customModule="MyReddit_iPad" customModuleProvider="target">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="Zfo-MK-a7C" customClass="UserInfoCell" customModule="MyReddit" customModuleProvider="target">
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Zfo-MK-a7C" id="d2h-Y2-Qxx">
                                             <autoresizingMask key="autoresizingMask"/>
@@ -3632,7 +3667,7 @@
                             </tableViewSection>
                             <tableViewSection headerTitle="Other Apps" id="ce0-Df-ofw">
                                 <cells>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="tJZ-lD-bgb" customClass="UserInfoCell" customModule="MyReddit_iPad" customModuleProvider="target">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="tJZ-lD-bgb" customClass="UserInfoCell" customModule="MyReddit" customModuleProvider="target">
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="tJZ-lD-bgb" id="uw7-ib-9Ux">
                                             <autoresizingMask key="autoresizingMask"/>
@@ -3689,6 +3724,7 @@
                         <outlet property="showSubredditLogosSwitch" destination="ozS-tK-90o" id="rmi-6Y-P0a"/>
                         <outlet property="textSizeCell" destination="mbg-AU-7yY" id="xOh-vZ-Tqc"/>
                         <outlet property="textSizeLabel" destination="Kaj-QC-ywh" id="bsK-Wh-nyJ"/>
+                        <segue destination="BuP-V6-G2K" kind="presentation" identifier="WebViewSegue" modalTransitionStyle="crossDissolve" id="Diw-V8-n62"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4Eq-Je-PQ9" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -3698,7 +3734,7 @@
         <!--Nav Bar Controller-->
         <scene sceneID="vvg-Ai-v6Z">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" toolbarHidden="NO" id="tv5-Ge-XzH" customClass="NavBarController" customModule="MyReddit_iPad" customModuleProvider="target" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" toolbarHidden="NO" id="tv5-Ge-XzH" customClass="NavBarController" customModule="MyReddit" customModuleProvider="target" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="8W0-oV-IID">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -3721,7 +3757,7 @@
         <!--Nav Bar Controller-->
         <scene sceneID="dve-v0-0pQ">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Wuv-iQ-z1V" customClass="NavBarController" customModule="MyReddit_iPad" customModuleProvider="target" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Wuv-iQ-z1V" customClass="NavBarController" customModule="MyReddit" customModuleProvider="target" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="x7D-8d-zT7">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -3770,7 +3806,7 @@
         <!--Subreddits Page View Controller-->
         <scene sceneID="wC6-69-oxo">
             <objects>
-                <viewController id="f3g-9Q-T5z" customClass="SubredditsPageViewController" customModule="MyReddit_iPad" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="f3g-9Q-T5z" customClass="SubredditsPageViewController" customModule="MyReddit" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="WfT-Go-p89"/>
                         <viewControllerLayoutGuide type="bottom" id="ewN-hr-ZKJ"/>
@@ -3802,7 +3838,7 @@
         <!--messages-->
         <scene sceneID="oSc-L4-tsp">
             <objects>
-                <tableViewController id="61g-Ot-H3B" customClass="InboxesTableViewController" customModule="MyReddit_iPad" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController id="61g-Ot-H3B" customClass="InboxesTableViewController" customModule="MyReddit" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="WKc-br-dds">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -3810,7 +3846,7 @@
                         <sections>
                             <tableViewSection id="2wL-0H-j3o">
                                 <cells>
-                                    <tableViewCell tag="1" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="UserInfoCell" id="6Hg-WU-BEm" customClass="UserInfoCell" customModule="MyReddit_iPad" customModuleProvider="target">
+                                    <tableViewCell tag="1" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="UserInfoCell" id="6Hg-WU-BEm" customClass="UserInfoCell" customModule="MyReddit" customModuleProvider="target">
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="6Hg-WU-BEm" id="9kd-y0-kbW">
                                             <autoresizingMask key="autoresizingMask"/>
@@ -3849,7 +3885,7 @@
                             </tableViewSection>
                             <tableViewSection id="32l-7d-Dw9">
                                 <cells>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="UserInfoCell" id="flY-OR-Vwl" customClass="UserInfoCell" customModule="MyReddit_iPad" customModuleProvider="target">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="UserInfoCell" id="flY-OR-Vwl" customClass="UserInfoCell" customModule="MyReddit" customModuleProvider="target">
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="flY-OR-Vwl" id="E2p-R9-lWf">
                                             <autoresizingMask key="autoresizingMask"/>
@@ -3873,7 +3909,7 @@
                                             <outlet property="titleLabel" destination="glC-PL-Chj" id="OvX-Jq-ZyK"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell tag="2" contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="UserInfoCell" id="CYN-b6-oqh" customClass="UserInfoCell" customModule="MyReddit_iPad" customModuleProvider="target">
+                                    <tableViewCell tag="2" contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="UserInfoCell" id="CYN-b6-oqh" customClass="UserInfoCell" customModule="MyReddit" customModuleProvider="target">
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="CYN-b6-oqh" id="usj-NN-oxl">
                                             <autoresizingMask key="autoresizingMask"/>
@@ -3897,7 +3933,7 @@
                                             <outlet property="titleLabel" destination="R3j-GW-zcD" id="bpZ-eh-8fC"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell tag="3" contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="UserInfoCell" id="ZN8-UH-fZ9" customClass="UserInfoCell" customModule="MyReddit_iPad" customModuleProvider="target">
+                                    <tableViewCell tag="3" contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="UserInfoCell" id="ZN8-UH-fZ9" customClass="UserInfoCell" customModule="MyReddit" customModuleProvider="target">
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ZN8-UH-fZ9" id="Cia-r5-OKB">
                                             <autoresizingMask key="autoresizingMask"/>
@@ -3921,7 +3957,7 @@
                                             <outlet property="titleLabel" destination="7hD-m7-7I0" id="F3h-y9-PiT"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell tag="4" contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="UserInfoCell" id="jza-UU-Fy6" customClass="UserInfoCell" customModule="MyReddit_iPad" customModuleProvider="target">
+                                    <tableViewCell tag="4" contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="UserInfoCell" id="jza-UU-Fy6" customClass="UserInfoCell" customModule="MyReddit" customModuleProvider="target">
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="jza-UU-Fy6" id="27j-Fo-nWt">
                                             <autoresizingMask key="autoresizingMask"/>
@@ -3945,7 +3981,7 @@
                                             <outlet property="titleLabel" destination="QbT-h2-vRS" id="yoU-hf-y3X"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell tag="5" contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="UserInfoCell" id="cAt-9T-pXV" customClass="UserInfoCell" customModule="MyReddit_iPad" customModuleProvider="target">
+                                    <tableViewCell tag="5" contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="UserInfoCell" id="cAt-9T-pXV" customClass="UserInfoCell" customModule="MyReddit" customModuleProvider="target">
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="cAt-9T-pXV" id="1pS-qF-Nap">
                                             <autoresizingMask key="autoresizingMask"/>
@@ -3969,7 +4005,7 @@
                                             <outlet property="titleLabel" destination="5G1-k2-Hy0" id="h0I-Vw-Sro"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell tag="6" contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="UserInfoCell" id="Nqn-yJ-3hK" customClass="UserInfoCell" customModule="MyReddit_iPad" customModuleProvider="target">
+                                    <tableViewCell tag="6" contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="UserInfoCell" id="Nqn-yJ-3hK" customClass="UserInfoCell" customModule="MyReddit" customModuleProvider="target">
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Nqn-yJ-3hK" id="hEK-Q8-gMP">
                                             <autoresizingMask key="autoresizingMask"/>
@@ -3993,7 +4029,7 @@
                                             <outlet property="titleLabel" destination="2CT-Sq-C4S" id="WbQ-1T-Ggd"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell tag="7" contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="UserInfoCell" id="wWY-nZ-fXk" customClass="UserInfoCell" customModule="MyReddit_iPad" customModuleProvider="target">
+                                    <tableViewCell tag="7" contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="UserInfoCell" id="wWY-nZ-fXk" customClass="UserInfoCell" customModule="MyReddit" customModuleProvider="target">
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="wWY-nZ-fXk" id="PXv-a9-2bJ">
                                             <autoresizingMask key="autoresizingMask"/>
@@ -4101,7 +4137,7 @@
         <!--accounts-->
         <scene sceneID="FWh-Ho-pAc">
             <objects>
-                <viewController id="a2h-mb-3Wm" customClass="AccountsViewController" customModule="MyReddit_iPad" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="a2h-mb-3Wm" customClass="AccountsViewController" customModule="MyReddit" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="lJ2-No-nsZ"/>
                         <viewControllerLayoutGuide type="bottom" id="tk8-uN-cVp"/>
@@ -4114,7 +4150,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="556"/>
                                 <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
                                 <prototypes>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="AccountCell" id="CLk-6Q-cq6" customClass="UserInfoCell" customModule="MyReddit_iPad" customModuleProvider="target">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="AccountCell" id="CLk-6Q-cq6" customClass="UserInfoCell" customModule="MyReddit" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="278" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="CLk-6Q-cq6" id="Khm-xB-s5m">
@@ -4342,13 +4378,13 @@
         <!--new post-->
         <scene sceneID="EoG-CM-Zv9">
             <objects>
-                <tableViewController title="new post" id="fIZ-dE-5RV" customClass="PostTableViewController" customModule="MyReddit_iPad" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController title="new post" id="fIZ-dE-5RV" customClass="PostTableViewController" customModule="MyReddit" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="lcg-bD-c7c">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="PostTypeCell" id="aTU-Yp-hDZ" customClass="PostTypeCell" customModule="MyReddit_iPad" customModuleProvider="target">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="PostTypeCell" id="aTU-Yp-hDZ" customClass="PostTypeCell" customModule="MyReddit" customModuleProvider="target">
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="aTU-Yp-hDZ" id="DcH-g5-Riq">
                                     <autoresizingMask key="autoresizingMask"/>
@@ -4377,7 +4413,7 @@
                                     <outlet property="segmentationControl" destination="2p9-lj-jWq" id="kp1-8k-y5x"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="PostSubredditCell" id="X2A-OR-T2a" customClass="PostSubredditCell" customModule="MyReddit_iPad" customModuleProvider="target">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="PostSubredditCell" id="X2A-OR-T2a" customClass="PostSubredditCell" customModule="MyReddit" customModuleProvider="target">
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="X2A-OR-T2a" id="XNv-IN-GxM">
                                     <autoresizingMask key="autoresizingMask"/>
@@ -4423,7 +4459,7 @@
                                     <outlet property="subredditTextField" destination="TgW-gp-qge" id="jEP-YC-ag2"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="PostTitleCell" id="GbX-1w-RWa" customClass="PostTitleCell" customModule="MyReddit_iPad" customModuleProvider="target">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="PostTitleCell" id="GbX-1w-RWa" customClass="PostTitleCell" customModule="MyReddit" customModuleProvider="target">
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="GbX-1w-RWa" id="Lr7-fz-yZc">
                                     <autoresizingMask key="autoresizingMask"/>
@@ -4450,7 +4486,7 @@
                                     <outlet property="titleTextField" destination="kdz-qH-ccd" id="uzo-vX-iXR"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="LinkCell" id="Bm1-Vu-nfY" customClass="LinkCell" customModule="MyReddit_iPad" customModuleProvider="target">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="LinkCell" id="Bm1-Vu-nfY" customClass="LinkCell" customModule="MyReddit" customModuleProvider="target">
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Bm1-Vu-nfY" id="yHz-dV-BpS">
                                     <autoresizingMask key="autoresizingMask"/>
@@ -4491,7 +4527,7 @@
                                     <outlet property="linkTextField" destination="X3I-F2-Bwg" id="n3B-51-YWT"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="PostTextCell" rowHeight="400" id="7Vc-fC-OYC" customClass="PostTextCell" customModule="MyReddit_iPad" customModuleProvider="target">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="PostTextCell" rowHeight="400" id="7Vc-fC-OYC" customClass="PostTextCell" customModule="MyReddit" customModuleProvider="target">
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="7Vc-fC-OYC" id="EYR-M8-WWg">
                                     <autoresizingMask key="autoresizingMask"/>
@@ -4592,7 +4628,7 @@
         <!--Gallery Controller-->
         <scene sceneID="h7h-UE-1Pm">
             <objects>
-                <viewController hidesBottomBarWhenPushed="YES" id="SEn-8E-jyR" customClass="GalleryController" customModule="MyReddit_iPad" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController hidesBottomBarWhenPushed="YES" id="SEn-8E-jyR" customClass="GalleryController" customModule="MyReddit" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="GHH-8a-Brz"/>
                         <viewControllerLayoutGuide type="bottom" id="NK4-og-pqM"/>
@@ -4744,7 +4780,7 @@
         <!--Image View Controller-->
         <scene sceneID="s1c-fg-InK">
             <objects>
-                <viewController storyboardIdentifier="ImageViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="4EN-eS-jpX" customClass="ImageViewController" customModule="MyReddit_iPad" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ImageViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="4EN-eS-jpX" customClass="ImageViewController" customModule="MyReddit" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="g17-wt-g6D"/>
                         <viewControllerLayoutGuide type="bottom" id="t4w-8L-uEE"/>
@@ -4830,21 +4866,21 @@
         <image name="Up" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="FVR-U4-dim"/>
-        <segue reference="kaq-Nv-BbA"/>
-        <segue reference="SWo-82-5L3"/>
-        <segue reference="sND-y2-DTj"/>
-        <segue reference="NbF-9n-GP5"/>
-        <segue reference="gh5-lw-0Sc"/>
+        <segue reference="cxw-0o-NAI"/>
         <segue reference="bxZ-6W-PbQ"/>
+        <segue reference="kaq-Nv-BbA"/>
+        <segue reference="FVR-U4-dim"/>
+        <segue reference="SWo-82-5L3"/>
+        <segue reference="gh5-lw-0Sc"/>
+        <segue reference="sND-y2-DTj"/>
+        <segue reference="aev-Tk-Wb5"/>
+        <segue reference="r0I-Qj-AXk"/>
+        <segue reference="4dn-f2-g7W"/>
+        <segue reference="UM9-7d-Dnl"/>
+        <segue reference="Na3-yg-xfC"/>
+        <segue reference="MQa-bF-U0r"/>
         <segue reference="psA-tl-Zoj"/>
         <segue reference="O8K-LF-8mj"/>
-        <segue reference="pMg-rh-ZMv"/>
-        <segue reference="3tl-bC-neo"/>
-        <segue reference="cNt-ex-e8B"/>
-        <segue reference="aPe-Za-FV1"/>
-        <segue reference="USc-4p-Rgd"/>
-        <segue reference="UM9-7d-Dnl"/>
-        <segue reference="MQa-bF-U0r"/>
+        <segue reference="vvu-K9-HER"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -16,7 +16,11 @@ class PostCell: JZSwipeCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         
-        self.shortSwipeLength = 150
+        if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
+            self.shortSwipeLength = 300
+        } else {
+            self.shortSwipeLength = 150
+        }
         
         var upVoteImage = UIImage(named: "Up")!.imageWithRenderingMode(.AlwaysOriginal)
         var downVoteImage = UIImage(named: "Down")!.imageWithRenderingMode(.AlwaysOriginal)

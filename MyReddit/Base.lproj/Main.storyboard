@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7702" systemVersion="14E17e" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="Wuv-iQ-z1V">
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
         <capability name="Alignment constraints to the first baseline" minToolsVersion="6.0"/>
         <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
@@ -355,7 +354,7 @@
                                 <items>
                                     <barButtonItem image="Add" id="4CL-zW-GHL">
                                         <connections>
-                                            <segue destination="oc0-6V-RMu" kind="presentation" identifier="PostSegue" modalTransitionStyle="crossDissolve" id="vOy-5A-OfU"/>
+                                            <action selector="postButtonTapped:" destination="yqo-vd-J8K" id="Uyd-Nn-iIJ"/>
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="yr6-VD-hul"/>
@@ -425,6 +424,7 @@
                         <segue destination="SEn-8E-jyR" kind="show" identifier="GallerySegue" id="pMg-rh-ZMv"/>
                         <segue destination="PTZ-wg-Lzy" kind="presentation" identifier="MessagesSegue" modalTransitionStyle="crossDissolve" id="Frn-gh-Q2i"/>
                         <segue destination="AVn-oL-g0d" kind="presentation" identifier="AccountsSegue" modalTransitionStyle="crossDissolve" id="nb3-Xk-rNn"/>
+                        <segue destination="oc0-6V-RMu" kind="presentation" identifier="PostSegue" modalTransitionStyle="crossDissolve" id="ufm-OF-Ing"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="J3o-0W-bFH" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -450,7 +450,7 @@
                             <userLayoutGuide location="335" affinity="minY"/>
                         </userGuides>
                         <subviews>
-                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LAb-tP-3gA">
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" misplaced="YES" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LAb-tP-3gA">
                                 <rect key="frame" x="0.0" y="556" width="600" height="44"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
@@ -495,11 +495,11 @@
                                 </items>
                                 <color key="barTintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </toolbar>
-                            <webView contentMode="scaleToFill" scalesPageToFit="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1nH-9Q-fvO">
+                            <webView contentMode="scaleToFill" misplaced="YES" scalesPageToFit="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1nH-9Q-fvO">
                                 <rect key="frame" x="0.0" y="64" width="600" height="457"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                             </webView>
-                            <view alpha="0.95000001192092909" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qHT-Oo-Tty">
+                            <view alpha="0.95000001192092909" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qHT-Oo-Tty">
                                 <rect key="frame" x="0.0" y="521" width="600" height="35"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="This is a title that might be able to go in here." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xV6-T7-zgy">
@@ -778,7 +778,7 @@
                             </toolbar>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="TopLeft" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.70000000000000018" translatesAutoresizingMaskIntoConstraints="NO" id="7EO-1f-duY">
                                 <rect key="frame" x="16" y="72" width="568" height="332"/>
-                                <mutableString key="text">Unlock all of MyReddit's premium features with one purchase:  - Use your reddit.com account w/ multiple account support - Voting, posting, hide, saving, and sharing - Manage multireddits - Subscribed subreddits - Messages - Night mode - Support the development of MyReddit.</mutableString>
+                                <string key="text">Unlock all of MyReddit's premium features with one purchase:  - Use your reddit.com account w/ multiple account support - Voting, posting, hide, saving, and sharing - Manage multireddits - Subscribed subreddits - Messages - Night mode - Support the development of MyReddit.</string>
                                 <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="15"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
@@ -1268,6 +1268,42 @@
                                             <segue destination="Wuv-iQ-z1V" kind="presentation" identifier="SubredditPosts" modalTransitionStyle="crossDissolve" id="DlP-4C-Gw2"/>
                                         </connections>
                                     </tableViewCell>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="AllCell" rowHeight="55" id="Z5a-9o-oKW" customClass="FrontCell" customModule="MyReddit" customModuleProvider="target">
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Z5a-9o-oKW" id="1dv-8E-9Bf">
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Star" translatesAutoresizingMaskIntoConstraints="NO" id="osi-k3-b9w">
+                                                    <rect key="frame" x="21" y="12" width="25" height="25"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="25" id="y27-KK-T8O"/>
+                                                    </constraints>
+                                                </imageView>
+                                                <label opaque="NO" clipsSubviews="YES" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="All" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zep-QO-1Hq">
+                                                    <rect key="frame" x="64" y="16" width="415" height="24"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="415" id="R62-2A-n6I"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="17"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="zep-QO-1Hq" firstAttribute="centerY" secondItem="1dv-8E-9Bf" secondAttribute="centerY" constant="1" id="65L-0O-lxP"/>
+                                                <constraint firstItem="osi-k3-b9w" firstAttribute="top" secondItem="1dv-8E-9Bf" secondAttribute="topMargin" constant="4" id="AYh-as-BLT"/>
+                                                <constraint firstItem="osi-k3-b9w" firstAttribute="leading" secondItem="1dv-8E-9Bf" secondAttribute="leadingMargin" constant="13" id="MOt-Lw-BMd"/>
+                                                <constraint firstItem="zep-QO-1Hq" firstAttribute="top" secondItem="1dv-8E-9Bf" secondAttribute="topMargin" constant="8" id="YHb-tW-A4e"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="osi-k3-b9w" secondAttribute="bottom" constant="9" id="hR7-l5-c0y"/>
+                                                <constraint firstItem="zep-QO-1Hq" firstAttribute="leading" secondItem="osi-k3-b9w" secondAttribute="trailing" constant="18" id="lde-4e-qtC"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <connections>
+                                            <outlet property="frontLabel" destination="zep-QO-1Hq" id="zfI-wT-mdV"/>
+                                            <outlet property="starImageView" destination="osi-k3-b9w" id="InZ-r5-p8e"/>
+                                            <segue destination="Wuv-iQ-z1V" kind="presentation" identifier="AllSegue" modalTransitionStyle="crossDissolve" id="Ime-aU-g2b"/>
+                                        </connections>
+                                    </tableViewCell>
                                 </prototypes>
                                 <connections>
                                     <outlet property="dataSource" destination="AYg-o0-LaT" id="OJp-my-S7a"/>
@@ -1330,6 +1366,7 @@
                         <segue destination="AVn-oL-g0d" kind="presentation" identifier="AccountsSegue" modalTransitionStyle="crossDissolve" id="sND-y2-DTj"/>
                         <segue destination="EKU-QU-ihl" kind="presentation" identifier="SearchSegue" modalTransitionStyle="crossDissolve" id="FVR-U4-dim"/>
                         <segue destination="SpP-xf-ygO" kind="presentation" identifier="SavedSegue" modalTransitionStyle="crossDissolve" id="gh5-lw-0Sc"/>
+                        <segue destination="Wuv-iQ-z1V" kind="presentation" id="ryX-hT-yj2"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BRW-wG-3Pw" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1495,6 +1532,7 @@
                         <outlet property="tableView" destination="cYO-aZ-ouF" id="SGJ-u7-c7q"/>
                         <segue destination="BuP-V6-G2K" kind="presentation" identifier="MessageLinkSegue" modalTransitionStyle="crossDissolve" id="cNt-ex-e8B"/>
                         <segue destination="Rp1-52-6Wg" kind="presentation" identifier="ReplyToMessageSegue" modalTransitionStyle="crossDissolve" id="Bsu-Nf-8xk"/>
+                        <segue destination="qVg-dB-hBp" kind="show" identifier="RepliesSegue" id="1iV-Hy-GoQ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="CMA-Kn-jdl" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1909,6 +1947,8 @@
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" translatesAutoresizingMaskIntoConstraints="NO" id="tzE-is-hre">
                                 <rect key="frame" x="-5" y="0.0" width="600" height="556"/>
                                 <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="sectionIndexBackgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <color key="sectionIndexTrackingBackgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="UserInfoCell" id="8l4-Uo-dZV" customClass="UserInfoCell" customModule="MyReddit" customModuleProvider="target">
                                         <autoresizingMask key="autoresizingMask"/>
@@ -1984,6 +2024,7 @@
                     <navigationItem key="navigationItem" title="profile" id="3vD-yK-4bK"/>
                     <connections>
                         <outlet property="tableView" destination="tzE-is-hre" id="zZu-ip-lhl"/>
+                        <outlet property="toolbar" destination="0ud-5K-tEr" id="eRg-oa-78A"/>
                         <segue destination="SpP-xf-ygO" kind="show" identifier="UserContentSegue" id="ym1-ru-k1R"/>
                     </connections>
                 </viewController>
@@ -2161,10 +2202,10 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Front" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HDc-1r-vdJ">
-                                                    <rect key="frame" x="16" y="4" width="200" height="21"/>
+                                                    <rect key="frame" x="16" y="4" width="483" height="21"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="21" id="4ks-FN-zxw"/>
-                                                        <constraint firstAttribute="width" constant="200" id="7PI-As-FzI"/>
+                                                        <constraint firstAttribute="width" constant="483" id="7PI-As-FzI"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="13"/>
                                                     <color key="textColor" red="0.96078431369999995" green="0.52156862749999999" blue="0.3921568627" alpha="1" colorSpace="calibratedRGB"/>
@@ -2204,7 +2245,7 @@
                                                 <constraint firstAttribute="bottomMargin" secondItem="R5a-yY-w1z" secondAttribute="bottom" constant="4" id="7YH-Iz-WAB"/>
                                                 <constraint firstItem="HDc-1r-vdJ" firstAttribute="baseline" secondItem="fEF-s2-UaQ" secondAttribute="firstBaseline" constant="4" id="965-to-16e"/>
                                                 <constraint firstItem="R5a-yY-w1z" firstAttribute="top" secondItem="dwO-OJ-c6X" secondAttribute="bottom" constant="9" id="BgH-yO-Oxs"/>
-                                                <constraint firstItem="2zz-nm-LBg" firstAttribute="leading" secondItem="HDc-1r-vdJ" secondAttribute="trailing" constant="42" id="GfT-bx-TLe"/>
+                                                <constraint firstItem="2zz-nm-LBg" firstAttribute="leading" secondItem="HDc-1r-vdJ" secondAttribute="trailing" constant="-241" id="GfT-bx-TLe"/>
                                                 <constraint firstItem="dwO-OJ-c6X" firstAttribute="top" secondItem="Hzq-1t-WdS" secondAttribute="top" constant="62" id="L7m-ie-lUa"/>
                                                 <constraint firstAttribute="bottomMargin" secondItem="zIP-cE-YiO" secondAttribute="bottom" constant="4" id="PGH-kA-o1f"/>
                                                 <constraint firstItem="Hzq-1t-WdS" firstAttribute="top" secondItem="JPR-LH-ox0" secondAttribute="top" constant="25" id="Qwf-Gv-TeS"/>
@@ -2305,7 +2346,6 @@
                                             <outlet property="repliesLabel" destination="FT1-N5-qLl" id="d0G-u3-0cO"/>
                                             <outlet property="repliesLabelHeightConstraint" destination="i27-gG-x5a" id="kdm-1Y-Jmj"/>
                                             <outlet property="scoreLabel" destination="gn9-4g-5fi" id="rEr-XX-wvQ"/>
-                                            <segue destination="SEn-8E-jyR" kind="show" identifier="GallerySegue" id="WIn-QL-TOG"/>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="LoadMoreHeader" rowHeight="60" id="cvV-Zt-eWI" customClass="LoadMoreHeader" customModule="MyReddit" customModuleProvider="target">
@@ -2371,11 +2411,13 @@
                         <outlet property="tableView" destination="jbe-cM-QBI" id="tFm-qP-4br"/>
                         <segue destination="oWg-TP-L9t" kind="show" identifier="SubredditLink" id="aev-Tk-Wb5"/>
                         <segue destination="lwG-4j-KBB" kind="show" identifier="CommentsSegue" id="r0I-Qj-AXk"/>
+                        <segue destination="SEn-8E-jyR" kind="show" identifier="GallerySegue" id="xgG-eu-NoT"/>
+                        <segue destination="Hdo-ax-c9X" kind="presentation" identifier="PurchaseSegue" modalTransitionStyle="crossDissolve" id="Z8S-DA-q4b"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="TYI-rD-L9p" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="6332" y="-1921"/>
+            <point key="canvasLocation" x="4376" y="-1136"/>
         </scene>
         <!--Comments View Controller-->
         <scene sceneID="vZ4-hp-7Rx">
@@ -3220,6 +3262,7 @@
                         <segue destination="lwG-4j-KBB" kind="show" identifier="CommentsSegue" id="USc-4p-Rgd"/>
                         <segue destination="MbH-Gq-s0c" kind="presentation" identifier="MultiRedditSegue" modalTransitionStyle="crossDissolve" id="HuC-vd-ISD"/>
                         <segue destination="7sL-pi-tiS" kind="show" identifier="UserSegue" id="Udn-dz-6HG"/>
+                        <segue destination="Hdo-ax-c9X" kind="show" identifier="PurchaseSegue" id="lWs-ak-HDh"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JKt-uO-kmL" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -3766,6 +3809,7 @@
                         <outlet property="showSubredditLogosSwitch" destination="ozS-tK-90o" id="rmi-6Y-P0a"/>
                         <outlet property="textSizeCell" destination="mbg-AU-7yY" id="xOh-vZ-Tqc"/>
                         <outlet property="textSizeLabel" destination="Kaj-QC-ywh" id="bsK-Wh-nyJ"/>
+                        <segue destination="Hdo-ax-c9X" kind="presentation" identifier="PurchaseSegue" modalTransitionStyle="crossDissolve" id="7mV-eF-gvZ"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4Eq-Je-PQ9" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -4910,21 +4954,21 @@
         <image name="Up" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="FVR-U4-dim"/>
-        <segue reference="cxw-0o-NAI"/>
-        <segue reference="pMg-rh-ZMv"/>
-        <segue reference="3tl-bC-neo"/>
-        <segue reference="kaq-Nv-BbA"/>
         <segue reference="SWo-82-5L3"/>
-        <segue reference="gh5-lw-0Sc"/>
+        <segue reference="ryX-hT-yj2"/>
+        <segue reference="cNt-ex-e8B"/>
+        <segue reference="vvu-K9-HER"/>
+        <segue reference="1iV-Hy-GoQ"/>
+        <segue reference="Bsu-Nf-8xk"/>
+        <segue reference="FVR-U4-dim"/>
         <segue reference="bxZ-6W-PbQ"/>
         <segue reference="sND-y2-DTj"/>
+        <segue reference="gh5-lw-0Sc"/>
         <segue reference="MsL-gN-mnM"/>
         <segue reference="psA-tl-Zoj"/>
-        <segue reference="USc-4p-Rgd"/>
-        <segue reference="aPe-Za-FV1"/>
-        <segue reference="UM9-7d-Dnl"/>
-        <segue reference="MQa-bF-U0r"/>
-        <segue reference="Na3-yg-xfC"/>
+        <segue reference="r0I-Qj-AXk"/>
+        <segue reference="aev-Tk-Wb5"/>
+        <segue reference="xgG-eu-NoT"/>
+        <segue reference="Z8S-DA-q4b"/>
     </inferredMetricsTieBreakers>
 </document>

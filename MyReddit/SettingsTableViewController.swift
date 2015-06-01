@@ -106,15 +106,19 @@ class SettingsTableViewController: UITableViewController, BDGIAPDelegate {
     }
     
     @IBAction func nightModeValueChanged(sender: AnyObject) {
-        SettingsManager.defaultManager.updateValueForSetting(.NightMode, value: self.nightModeSwitch.on)
-        
-        if SettingsManager.defaultManager.valueForSetting(.NightMode) {
-            UserSession.sharedSession.nightMode()
+        if !SettingsManager.defaultManager.purchased {
+            self.performSegueWithIdentifier("PurchaseSegue", sender: self)
         } else {
-            UserSession.sharedSession.dayMode()
+            SettingsManager.defaultManager.updateValueForSetting(.NightMode, value: self.nightModeSwitch.on)
+            
+            if SettingsManager.defaultManager.valueForSetting(.NightMode) {
+                UserSession.sharedSession.nightMode()
+            } else {
+                UserSession.sharedSession.dayMode()
+            }
+            
+            self.updateTable()
         }
-        
-        self.updateTable()
     }
     
     @IBAction func hideFullWidthImagesValueChanged(sender: AnyObject) {

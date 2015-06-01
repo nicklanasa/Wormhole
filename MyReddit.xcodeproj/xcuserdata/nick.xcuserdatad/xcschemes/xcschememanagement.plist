@@ -4,6 +4,11 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
+		<key>MyReddit-iPad.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>21</integer>
+		</dict>
 		<key>MyReddit.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
@@ -12,6 +17,11 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>CE3AA4681B0549E9000DEDD2</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>CE712EDA1AC2F1A20042B071</key>
 		<dict>
 			<key>primary</key>

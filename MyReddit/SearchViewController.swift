@@ -105,7 +105,9 @@ MultiRedditsViewControllerDelegate {
         
         if count(searchTtext) > 0 {
             if self.segmentationControl.selectedSegmentIndex == 1 {
-                RedditSession.sharedSession.searchForSubredditByName(searchTtext, pagination: nil, completion: { (pagination, results, error) -> () in
+                RedditSession.sharedSession.searchForSubredditByName(searchTtext,
+                    pagination: nil,
+                    completion: { (pagination, results, error) -> () in
                     if error == nil {
                         if let subreddits = results {
                             self.subreddits = subreddits
@@ -116,7 +118,10 @@ MultiRedditsViewControllerDelegate {
             } else if self.segmentationControl.selectedSegmentIndex == 0 {
                 if self.restrictSubreddit.on {
                     if let subreddit = self.subreddit {
-                        RedditSession.sharedSession.searchForLinksInSubreddit(self.subreddit, searchText: searchController.searchBar.text, pagination: self.pagination, completion: { (pagination, results, error) -> () in
+                        RedditSession.sharedSession.searchForLinksInSubreddit(self.subreddit,
+                            searchText: searchController.searchBar.text,
+                            pagination: self.pagination,
+                            completion: { (pagination, results, error) -> () in
                             if error == nil {
                                 if let links = results {
                                     self.links = links
@@ -125,7 +130,9 @@ MultiRedditsViewControllerDelegate {
                             
                         })
                     } else {
-                        RedditSession.sharedSession.searchForLinks(searchTtext, pagination: self.pagination, completion: { (pagination, results, error) -> () in
+                        RedditSession.sharedSession.searchForLinks(searchTtext,
+                            pagination: self.pagination,
+                            completion: { (pagination, results, error) -> () in
                             if error == nil {
                                 if let links = results {
                                     self.links = links
@@ -135,7 +142,9 @@ MultiRedditsViewControllerDelegate {
                         })
                     }
                 } else {
-                    RedditSession.sharedSession.searchForLinks(searchTtext, pagination: self.pagination, completion: { (pagination, results, error) -> () in
+                    RedditSession.sharedSession.searchForLinks(searchTtext,
+                        pagination: self.pagination,
+                        completion: { (pagination, results, error) -> () in
                         if error == nil {
                             if let links = results {
                                 self.links = links
@@ -144,7 +153,8 @@ MultiRedditsViewControllerDelegate {
                     })
                 }
             } else {
-                RedditSession.sharedSession.searchForUser(searchTtext, completion: { (pagination, results, error) -> () in
+                RedditSession.sharedSession.searchForUser(searchTtext,
+                    completion: { (pagination, results, error) -> () in
                     if error == nil {
                         if let users = results {
                             self.users = users
@@ -322,7 +332,11 @@ MultiRedditsViewControllerDelegate {
                     alert.addAction(UIAlertAction(title: "Yes", style: .Default, handler: { (a) -> Void in
                         self.selectedSubreddit = subreddit
                         self.searchController.active = false
-                        self.performSegueWithIdentifier("MultiRedditSegue", sender: self)
+                        if !SettingsManager.defaultManager.purchased {
+                            self.performSegueWithIdentifier("PurchaseSegue", sender: self)
+                        } else {
+                            self.performSegueWithIdentifier("MultiRedditSegue", sender: self)
+                        }
                     }))
                     
                     alert.addAction(UIAlertAction(title: "See posts", style: .Cancel, handler: { (a) -> Void in

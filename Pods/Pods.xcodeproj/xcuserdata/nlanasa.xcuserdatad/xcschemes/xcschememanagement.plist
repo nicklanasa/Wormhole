@@ -8,241 +8,201 @@
 		<dict>
 			<key>isShown</key>
 			<false/>
-			<key>orderHint</key>
-			<integer>2</integer>
 		</dict>
 		<key>Pods-MyReddit-Appirater-Appirater.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
-			<key>orderHint</key>
-			<integer>4</integer>
 		</dict>
 		<key>Pods-MyReddit-Appirater.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
-			<key>orderHint</key>
-			<integer>3</integer>
 		</dict>
 		<key>Pods-MyReddit-BDGInAppPurchase.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
-			<key>orderHint</key>
-			<integer>5</integer>
 		</dict>
 		<key>Pods-MyReddit-Bolts.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
-			<key>orderHint</key>
-			<integer>6</integer>
 		</dict>
 		<key>Pods-MyReddit-Facebook-iOS-SDK.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
-			<key>orderHint</key>
-			<integer>7</integer>
 		</dict>
 		<key>Pods-MyReddit-ImgurAnonymousAPIClient.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
-			<key>orderHint</key>
-			<integer>8</integer>
 		</dict>
 		<key>Pods-MyReddit-ImgurSession.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
-			<key>orderHint</key>
-			<integer>9</integer>
 		</dict>
 		<key>Pods-MyReddit-JZSwipeCell.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
-			<key>orderHint</key>
-			<integer>10</integer>
 		</dict>
 		<key>Pods-MyReddit-Localytics-AMP.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
-			<key>orderHint</key>
-			<integer>11</integer>
 		</dict>
 		<key>Pods-MyReddit-MBProgressHUD.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
-			<key>orderHint</key>
-			<integer>13</integer>
 		</dict>
 		<key>Pods-MyReddit-Mantle.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
-			<key>orderHint</key>
-			<integer>12</integer>
 		</dict>
 		<key>Pods-MyReddit-NSDate+Calendar.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
-			<key>orderHint</key>
-			<integer>14</integer>
 		</dict>
 		<key>Pods-MyReddit-NSDate+TimeAgo.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
-			<key>orderHint</key>
-			<integer>15</integer>
 		</dict>
 		<key>Pods-MyReddit-RFKeyboardToolbar.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
-			<key>orderHint</key>
-			<integer>17</integer>
 		</dict>
 		<key>Pods-MyReddit-RFMarkdownTextView.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
-			<key>orderHint</key>
-			<integer>18</integer>
 		</dict>
 		<key>Pods-MyReddit-RedditKit.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
-			<key>orderHint</key>
-			<integer>16</integer>
 		</dict>
 		<key>Pods-MyReddit-SDWebImage.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
-			<key>orderHint</key>
-			<integer>19</integer>
 		</dict>
 		<key>Pods-MyReddit-XNGMarkdownParser.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
-			<key>orderHint</key>
-			<integer>20</integer>
 		</dict>
 		<key>Pods-MyReddit.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
-			<key>orderHint</key>
-			<integer>1</integer>
 		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>06C56C12C7B0DBA3A2C5C225</key>
+		<key>16FFDEBB29DD53A368363C79</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>0D5B12E927500481B9944D84</key>
+		<key>1733FA4B5B6138A6966FCED2</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>2266058D5C662BED63A38E32</key>
+		<key>2DEF674165037C8C59EE8D89</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>26535044C16A31B2ACD94140</key>
+		<key>34092351940279F55B42AAF6</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>3901018CE8B8BC82FF04737D</key>
+		<key>374CDEA3EBF5B30C9603E11B</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>5604A60E7ECFF385FBB78A5F</key>
+		<key>4267BF4E1549C5137DDE256E</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>56FBE6CD57FEFA7C9287B133</key>
+		<key>58DCA971A6C6C6FD0E499B23</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>612DBD335DB7054D414C5AA1</key>
+		<key>60F8347FD7F50BDFD7D40DF2</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>6DACB1082BE659136DC0642C</key>
+		<key>828BC0CD274F51798AF4FF1D</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>7E0F2915D3185A749EC42DC8</key>
+		<key>92C77D457907CEFC5B82E531</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>8346C84BE84B6A41A011BF51</key>
+		<key>BE15B9022CEFB7887A96B57E</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>85B069D30DB908E41F999F0F</key>
+		<key>C0B440240954512D8D105F63</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>937EC612C4412EB45CCB803F</key>
+		<key>C6BBE3A875599EC182305FAC</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>B87BE45F8A6FE5304EE671BC</key>
+		<key>C852A1F624A3C9C4E8DF5A95</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>BCEAA2A9394FC2F25FCF2680</key>
+		<key>D6183472960E3E3569C0F2D5</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>C03EE4C31320345F486C2089</key>
+		<key>E5B8CF465102DC71F14CC8EA</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>C0EE49F390E2ADD4489CBAF1</key>
+		<key>EAC2049F41DF5F3B2A880189</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>C3D2DCBAE7DDD6F5AC598FBC</key>
+		<key>EFE7F8EFFFC604467E56A1DC</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>C5817B21B7BEF9DC74D5FA78</key>
+		<key>F2CE159B5378F6735027FE0E</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>DB8E1C1C0A2C5AA4E8B8EF74</key>
+		<key>F5D1F9E277461E281300063C</key>
 		<dict>
 			<key>primary</key>
 			<true/>
