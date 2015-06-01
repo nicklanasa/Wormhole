@@ -1,5 +1,5 @@
 //
-//  LastFmBuyLinksViewController.swift
+//  LinkShareOptionsViewController.swift
 //  Muz
 //
 //  Created by Nick Lanasa on 12/16/14.

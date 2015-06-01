@@ -44,8 +44,6 @@ UISplitViewControllerDelegate {
     var currentCategory: RKSubredditCategory?
     var optionsController: LinkShareOptionsViewController!
     
-    var expandButton: OCExpandableButton!
-    
     @IBOutlet weak var tableView: UITableView!
     
     @IBOutlet var headerImage: UIImageView! {

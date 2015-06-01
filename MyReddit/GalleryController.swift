@@ -144,7 +144,8 @@ ImageViewControllerDelegate {
         navLabel.attributedText = titleString
         navLabel.textAlignment = .Center
         navLabel.sizeToFit()
-        self.navigationItem.titleView = navLabel    }
+        self.navigationItem.titleView = navLabel
+    }
     
     func pageViewController(pageViewController: UIPageViewController, willTransitionToViewControllers pendingViewControllers: [AnyObject]) {
         if self.postTitleView.frame.size.height > 35 {
