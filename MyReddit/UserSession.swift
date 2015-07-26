@@ -73,13 +73,24 @@ class UserSession {
     
     func nightMode() {
         
+        var backgroundColor = UIColor(red: 12/255,
+            green: 16/255,
+            blue: 33/255,
+            alpha: 1.0)
+        var foregroundColor = UIColor(red: 248/255,
+            green: 248/255,
+            blue: 248/255,
+            alpha: 1.0)
+        
         LocalyticsSession.shared().tagEvent("Night mode toggled")
         
         UIApplication.sharedApplication().setStatusBarStyle(.LightContent, animated: true)
         
-        MyRedditLabelColor = UIColor.whiteColor()
-        MyRedditBackgroundColor = UIColor.blackColor()
-        MyRedditDarkBackgroundColor = UIColor.blackColor()
+        MyRedditLabelColor = foregroundColor
+        MyRedditSelfTextLabelColor = foregroundColor.colorWithAlphaComponent(0.8)
+        MyRedditPostTitleTextLabelColor = UIColor.whiteColor()
+        MyRedditBackgroundColor = backgroundColor
+        MyRedditDarkBackgroundColor = backgroundColor
         
         UISwitch.appearance().onTintColor = MyRedditColor
         
@@ -129,6 +140,8 @@ class UserSession {
         UIApplication.sharedApplication().setStatusBarStyle(.Default, animated: true)
         
         MyRedditLabelColor = UIColor.blackColor()
+        MyRedditSelfTextLabelColor = UIColor.darkGrayColor()
+        MyRedditPostTitleTextLabelColor = UIColor.lightGrayColor()
         MyRedditBackgroundColor = UIColor.whiteColor()
         MyRedditDarkBackgroundColor = UIColor.groupTableViewBackgroundColor()
         

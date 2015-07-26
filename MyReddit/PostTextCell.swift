@@ -16,7 +16,7 @@ class PostTextCell: UITableViewCell, UITextViewDelegate {
     override func awakeFromNib() {
         self.textView.delegate = self
         self.textView.font = MyRedditSelfTextFont
-        self.textView.textColor = UIColor.lightGrayColor()
+        self.textView.textColor = MyRedditPostTitleTextLabelColor
         self.textView.backgroundColor = MyRedditBackgroundColor
         self.textView.scrollEnabled = false
     }

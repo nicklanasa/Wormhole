@@ -10,8 +10,13 @@ import Foundation
 
 extension JZSwipeCell {
     func reset() {
+        var indentPoints: CGFloat = CGFloat(self.indentationLevel) * self.indentationWidth
         UIView.animateWithDuration(0.3, animations: { () -> Void in
-            self.contentView.center = CGPointMake(self.contentView.frame.size.width / 2, self.contentView.center.y)
+            self.contentView.frame = CGRectMake(indentPoints,
+                self.contentView.frame.origin.y,
+                self.contentView.frame.size.width - indentPoints,
+                self.contentView.frame.size.height)
+            self.backgroundView?.backgroundColor = MyRedditBackgroundColor
         })
     }
 }

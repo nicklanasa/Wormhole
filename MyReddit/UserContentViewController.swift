@@ -207,15 +207,14 @@ class UserContentViewController: UIViewController, UITableViewDelegate, UITableV
             if let comment = sender as? RKComment {
                 if let nav = segue.destinationViewController as? UINavigationController {
                     if let controller = nav.viewControllers[0] as? CommentsViewController {
-                        controller.comment = comment
-                        controller.forComment = true
+                        // TODO: get link for comment
+                        //RedditSession.sharedSession.linkWithFullName(<#link: RKLink#>, completion: <#PaginationCompletion##(pagination: RKPagination?, results: [AnyObject]?, error: NSError?) -> ()#>)
                     }
                 }
             } else if let link = sender as? RKLink {
                 if let nav = segue.destinationViewController as? UINavigationController {
                     if let controller = nav.viewControllers[0] as? CommentsViewController {
                         controller.link = link
-                        controller.forComment = false
                     }
                 }
             }

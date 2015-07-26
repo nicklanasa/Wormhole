@@ -17,13 +17,15 @@ let MyRedditCommentInfoFont = UIFont(name: "AvenirNext-Regular", size: 11)!
 let MyRedditCommentInfoMediumFont = UIFont(name: "AvenirNext-Medium", size: 11)!
 let MyRedditTitleFont = UIFont(name: "AvenirNext-Medium", size: 18)!
 let MyRedditSelfTextFont = UIFont(name: "AvenirNext-Medium", size: 16)!
-let MyRedditCommentTextFont = UIFont(name: "AvenirNext-Regular", size: 14)!
+let MyRedditCommentTextFont = UIFont(name: "AvenirNext-Medium", size: 14)!
 let MyRedditCommentTextBoldFont = UIFont(name: "AvenirNext-Medium", size: 14)!
 let MyRedditCommentReplyBoldFont = UIFont(name: "AvenirNext-Medium", size: 11)!
 let MyRedditCommentTextItalicFont = UIFont(name: "AvenirNext-Italic", size: 14)!
 let MyRedditTitleBigFont = UIFont(name: "AvenirNext-Medium", size: 23)!
 
 var MyRedditLabelColor = UIColor.blackColor()
+var MyRedditSelfTextLabelColor = UIColor.darkGrayColor()
+var MyRedditPostTitleTextLabelColor = UIColor.lightGrayColor()
 var MyRedditBackgroundColor = UIColor.whiteColor()
 var MyRedditDarkBackgroundColor = UIColor.groupTableViewBackgroundColor()
 
