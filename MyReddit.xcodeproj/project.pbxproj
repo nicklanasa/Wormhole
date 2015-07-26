@@ -160,6 +160,8 @@
 		CEF88E0F1AFD036D00AF8B87 /* LinkShareOptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF88E0E1AFD036D00AF8B87 /* LinkShareOptionsViewController.swift */; };
 		E00B35DF1B646F9700AD096D /* ReadableContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = E00B35DE1B646F9700AD096D /* ReadableContent.swift */; };
 		E00B35E01B646F9700AD096D /* ReadableContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = E00B35DE1B646F9700AD096D /* ReadableContent.swift */; };
+		E00B35E21B648D6D00AD096D /* GalleryImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E00B35E11B648D6D00AD096D /* GalleryImageCollectionViewCell.swift */; };
+		E00B35E31B648D6D00AD096D /* GalleryImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E00B35E11B648D6D00AD096D /* GalleryImageCollectionViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -261,6 +263,7 @@
 		CEF88E0C1AFCEE0B00AF8B87 /* UIimage+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIimage+Helpers.swift"; sourceTree = "<group>"; };
 		CEF88E0E1AFD036D00AF8B87 /* LinkShareOptionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LinkShareOptionsViewController.swift; sourceTree = "<group>"; };
 		E00B35DE1B646F9700AD096D /* ReadableContent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReadableContent.swift; sourceTree = "<group>"; };
+		E00B35E11B648D6D00AD096D /* GalleryImageCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GalleryImageCollectionViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -330,6 +333,7 @@
 				CE25FBD71AF9484D00A40C3B /* PostSubredditCell.swift */,
 				CE25FBD91AF9485900A40C3B /* PostTextCell.swift */,
 				CE25FBDB1AF94D1900A40C3B /* PostTypeCell.swift */,
+				E00B35E11B648D6D00AD096D /* GalleryImageCollectionViewCell.swift */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -808,6 +812,7 @@
 				CE3AA4AB1B0549E9000DEDD2 /* Subreddit.swift in Sources */,
 				CE3AA4AC1B0549E9000DEDD2 /* PasswordCell.swift in Sources */,
 				CE3AA4AD1B0549E9000DEDD2 /* UIimage+Helpers.swift in Sources */,
+				E00B35E31B648D6D00AD096D /* GalleryImageCollectionViewCell.swift in Sources */,
 				CE3AA4AE1B0549E9000DEDD2 /* ProfileViewController.swift in Sources */,
 				CE3AA4AF1B0549E9000DEDD2 /* LinkCell.swift in Sources */,
 				CE3AA4B01B0549E9000DEDD2 /* UserContentViewController.swift in Sources */,
@@ -841,6 +846,7 @@
 				CEA3E2FE1AFAE635008323A6 /* ImageViewController.swift in Sources */,
 				CE712F231AC303A60042B071 /* MultiReddit.swift in Sources */,
 				CE046EC91AC3521100DF59B4 /* PostImageCell.swift in Sources */,
+				E00B35E21B648D6D00AD096D /* GalleryImageCollectionViewCell.swift in Sources */,
 				CE712F1F1AC303A50042B071 /* Media.swift in Sources */,
 				CEC59EB01AF2628800D0D62B /* EmailCell.swift in Sources */,
 				0195D6BC1AF31C5B004FA3EC /* UserInfoCell.swift in Sources */,

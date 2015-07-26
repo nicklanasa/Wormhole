@@ -12,7 +12,9 @@ import UIKit
 class GalleryController: UIViewController,
 UIPageViewControllerDataSource,
 UIPageViewControllerDelegate,
-ImageViewControllerDelegate {
+ImageViewControllerDelegate,
+UICollectionViewDataSource,
+UICollectionViewDelegate {
     
     @IBOutlet weak var upvoteButton: UIBarButtonItem!
     @IBOutlet weak var downvoteButton: UIBarButtonItem!
@@ -23,6 +25,8 @@ ImageViewControllerDelegate {
     @IBOutlet weak var seeMoreButton: UIButton!
     @IBOutlet weak var seeLessButton: UIButton!
     @IBOutlet weak var shareButton: UIBarButtonItem!
+    @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var containerView: UIView!
     
     var optionsController: LinkShareOptionsViewController!
    
@@ -87,6 +91,10 @@ ImageViewControllerDelegate {
     }
     
     override func viewDidLoad() {
+        
+        self.collectionView.hidden = true
+        self.collectionView.reloadData()
+        
         self.updateVoteButtons()
         
         self.seeMoreButton.hidden = false
@@ -103,10 +111,17 @@ ImageViewControllerDelegate {
         
         NSUserDefaults.standardUserDefaults().setObject(true, forKey: self.link.identifier)
         
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "Saved"),
+        var gridButton = UIBarButtonItem(image: UIImage(named: "Grid"),
+            style: .Plain,
+            target: self,
+            action: "showGrid")
+        
+        var bookmark = UIBarButtonItem(image: UIImage(named: "Saved"),
             style: .Plain,
             target: self,
             action: "saveLink")
+        
+        self.navigationItem.rightBarButtonItems = [gridButton, bookmark]
         
         if self.link.saved {
             self.navigationItem.rightBarButtonItem?.tintColor = MyRedditColor
@@ -115,6 +130,16 @@ ImageViewControllerDelegate {
         self.pagesBarbutton.title = "\(1)/\(self.images!.count)"
         
         self.configureNav()
+    }
+    
+    func showGrid() {
+        if self.collectionView.hidden {
+            self.collectionView.hidden = false
+            self.containerView.hidden = true
+        } else {
+            self.collectionView.hidden = true
+            self.containerView.hidden = false
+        }
     }
     
     private func configureNav() {
@@ -147,7 +172,8 @@ ImageViewControllerDelegate {
         self.navigationItem.titleView = navLabel
     }
     
-    func pageViewController(pageViewController: UIPageViewController, willTransitionToViewControllers pendingViewControllers: [AnyObject]) {
+    func pageViewController(pageViewController: UIPageViewController,
+        willTransitionToViewControllers pendingViewControllers: [AnyObject]) {
         if self.postTitleView.frame.size.height > 35 {
             self.seeMoreButtonTapped(self)
         }
@@ -171,7 +197,8 @@ ImageViewControllerDelegate {
     
     var images: [AnyObject]?
 
-    func pageViewController(pageViewController: UIPageViewController, viewControllerBeforeViewController viewController: UIViewController) -> UIViewController? {
+    func pageViewController(pageViewController: UIPageViewController,
+        viewControllerBeforeViewController viewController: UIViewController) -> UIViewController? {
         var controller = viewController as! ImageViewController
         var index: NSInteger = controller.pageIndex
         
@@ -186,7 +213,8 @@ ImageViewControllerDelegate {
         return self.viewControllerAtIndex(index)
     }
     
-    func pageViewController(pageViewController: UIPageViewController, viewControllerAfterViewController viewController: UIViewController) -> UIViewController? {
+    func pageViewController(pageViewController: UIPageViewController,
+        viewControllerAfterViewController viewController: UIViewController) -> UIViewController? {
         var controller = viewController as! ImageViewController
         var index: NSInteger = controller.pageIndex
         
@@ -358,5 +386,27 @@ ImageViewControllerDelegate {
                 self.toolbar.alpha = 0.0
             })
         }
+    }
+    
+    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return self.images?.count ?? 0
+    }
+    
+    // The cell that is returned must be retrieved from a call to -dequeueReusableCellWithReuseIdentifier:forIndexPath:
+    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+        var cell = collectionView.dequeueReusableCellWithReuseIdentifier("ImageCell", forIndexPath: indexPath) as! GalleryImageCollectionViewCell
+        var image = self.images?[indexPath.row] as? IMGImage
+        cell.imageView.sd_setImageWithURL(image?.url)
+        return cell
+    }
+    
+    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+        self.collectionView.hidden = true
+        self.containerView.hidden = false
+        
+        self.pageViewController.setViewControllers([self.viewControllerAtIndex(indexPath.row)!],
+            direction: UIPageViewControllerNavigationDirection.Forward,
+            animated: true,
+            completion: nil)
     }
 }
