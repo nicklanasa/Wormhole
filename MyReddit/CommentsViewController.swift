@@ -268,7 +268,8 @@ class CommentsViewController: UITableViewController, CommentCellDelegate, JZSwip
                             self.upVote(object)
                         } else if swipeType.value == JZSwipeTypeLongLeft.value {
                             if indexPath.section != 0 {
-                                self.upVote(object)
+                                self.performSegueWithIdentifier("AddCommentSegue",
+                                    sender: object)
                             } else {
                                 self.saveUnSaveLink(cell)
                             }
@@ -356,8 +357,10 @@ class CommentsViewController: UITableViewController, CommentCellDelegate, JZSwip
     }
     
     func addCommentViewController(controller: AddCommentViewController, didAddComment success: Bool) {
+        
+        self.hud.hide(true)
+        
         if success {
-            
             LocalyticsSession.shared().tagEvent("Added comment")
             
             RedditSession.sharedSession.fetchComments(nil, link: self.link) { (pagination, results, error) -> () in

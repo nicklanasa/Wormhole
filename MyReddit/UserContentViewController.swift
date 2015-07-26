@@ -9,7 +9,11 @@
 import Foundation
 import UIKit
 
-class UserContentViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, JZSwipeCellDelegate, LoadMoreHeaderDelegate {
+class UserContentViewController: UIViewController,
+UITableViewDelegate,
+UITableViewDataSource,
+JZSwipeCellDelegate,
+LoadMoreHeaderDelegate {
     
     var category: RKUserContentCategory!
     var categoryTitle: String!

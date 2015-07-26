@@ -80,11 +80,12 @@ class AddCommentViewController: UIViewController, UITextViewDelegate {
             if let replyMessage = self.message {
                 self.hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
                 
-                RedditSession.sharedSession.submitComment(self.textView.text, onThingWithFullName: replyMessage.fullName, completion: { (error) -> () in
+                RedditSession.sharedSession.submitComment(self.textView.text,
+                    onThingWithFullName: replyMessage.fullName, completion: { (error) -> () in
                     if error != nil {
                         self.hud.hide(true)
                         UIAlertView(title: "Error!",
-                            message: "Unable to submit reply!",
+                            message: error?.localizedDescription,
                             delegate: self,
                             cancelButtonTitle: "Ok").show()
                     } else {
@@ -102,7 +103,7 @@ class AddCommentViewController: UIViewController, UITextViewDelegate {
                         if error != nil {
                             self.hud.hide(true)
                             UIAlertView(title: "Error!",
-                                message: "Unable to submit comment!",
+                                message: error?.localizedDescription,
                                 delegate: self,
                                 cancelButtonTitle: "Ok").show()
                         } else {

@@ -9,10 +9,29 @@
 import Foundation
 import UIKit
 
-class LinkViewController: UIViewController {
+class LinkViewController: UIViewController, UITextViewDelegate {
     
     var link: RKLink!
     var optionsController: LinkShareOptionsViewController!
+    
+    var content: ReadableContent! {
+        didSet {
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                if self.content.content == nil {
+                    self.textView.removeFromSuperview()
+                    self.setupWebView()
+                } else {
+                    self.webView.hidden = true
+                    self.textView.hidden = false
+                    
+                    self.textView.attributedText = self.content!.content.html2AttributedString
+                    
+                    self.textView.textColor = MyRedditLabelColor
+                    self.textView.font = MyRedditSelfTextFont
+                }
+            })
+        }
+    }
     
     @IBOutlet weak var webView: UIWebView!
     @IBOutlet weak var upvoteButton: UIBarButtonItem!
@@ -23,6 +42,7 @@ class LinkViewController: UIViewController {
     @IBOutlet weak var seeMoreButton: UIButton!
     @IBOutlet weak var seeLessButton: UIButton!
     @IBOutlet weak var shareButton: UIBarButtonItem!
+    @IBOutlet weak var textView: UITextView!
     
     @IBAction func seeMoreButtonTapped(sender: AnyObject) {
         
@@ -87,6 +107,29 @@ class LinkViewController: UIViewController {
         self.seeMoreButton.hidden = false
         self.seeLessButton.hidden = true
         
+        self.postTitleView.backgroundColor = MyRedditBackgroundColor
+        self.postTitleLabel.textColor = MyRedditLabelColor
+        
+        self.webView.hidden = true
+        self.textView.hidden = true
+        self.textView.delegate = self
+        
+        RedditSession.sharedSession.readableContentWithURL(self.link.URL.absoluteString!, completion: { (content, error) -> () in
+            if error != nil {
+                self.setupWebView()
+            } else {
+                self.content = content
+            }
+        })
+        
+        self.configureNav()
+    }
+    
+    private func setupWebView() {
+        
+        self.webView.hidden = false
+        self.textView.hidden = false
+        
         if let link = self.link {
             let request = NSURLRequest(URL: link.URL)
             self.webView.loadRequest(request)
@@ -111,8 +154,6 @@ class LinkViewController: UIViewController {
             if self.link.saved {
                 self.navigationItem.rightBarButtonItem?.tintColor = MyRedditColor
             }
-            
-            self.configureNav()
         }
     }
     
@@ -219,6 +260,14 @@ class LinkViewController: UIViewController {
                     controller.link = link
                 }
             }
+        } else if segue.identifier == "WebSegue" {
+            if let nav = segue.destinationViewController as? UINavigationController {
+                if let controller = nav.viewControllers[0] as? WebViewController {
+                    if let url = sender as? NSURL {
+                        controller.url = url
+                    }
+                }
+            }
         }
     }
     
@@ -246,5 +295,10 @@ class LinkViewController: UIViewController {
                 self.refreshLink()
             })
         }
+    }
+    
+    func textView(textView: UITextView, shouldInteractWithURL URL: NSURL, inRange characterRange: NSRange) -> Bool {
+        self.performSegueWithIdentifier("WebSegue", sender: URL)
+        return false
     }
 }

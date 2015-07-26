@@ -39,11 +39,18 @@ class CommentCell: JZSwipeCell, UITextViewDelegate {
         
         super.awakeFromNib()
         
+        if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
+            self.shortSwipeLength = 300
+        } else {
+            self.shortSwipeLength = 150
+        }
+        
         var upVoteImage = UIImage(named: "Up")?.imageWithRenderingMode(.AlwaysOriginal)
         var downVoteImage = UIImage(named: "Down")?.imageWithRenderingMode(.AlwaysOriginal)
+        var replyImage = UIImage(named: "Reply")?.imageWithRenderingMode(.AlwaysOriginal)
         
-        self.imageSet = SwipeCellImageSetMake(downVoteImage, downVoteImage, upVoteImage, upVoteImage)
-        self.colorSet = SwipeCellColorSetMake(MyRedditDownvoteColor, MyRedditDownvoteColor, MyRedditUpvoteColor, MyRedditUpvoteColor)
+        self.imageSet = SwipeCellImageSetMake(downVoteImage, downVoteImage, upVoteImage, replyImage)
+        self.colorSet = SwipeCellColorSetMake(MyRedditDownvoteColor, MyRedditDownvoteColor, MyRedditUpvoteColor, MyRedditReplyColor)
         
         self.commentTextView.delegate = self
         

@@ -477,7 +477,7 @@
                             <userLayoutGuide location="335" affinity="minY"/>
                         </userGuides>
                         <subviews>
-                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" misplaced="YES" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LAb-tP-3gA">
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LAb-tP-3gA">
                                 <rect key="frame" x="0.0" y="556" width="600" height="44"/>
                                 <animations/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -523,12 +523,19 @@
                                 </items>
                                 <color key="barTintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </toolbar>
-                            <webView contentMode="scaleToFill" misplaced="YES" scalesPageToFit="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1nH-9Q-fvO">
+                            <webView contentMode="scaleToFill" scalesPageToFit="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1nH-9Q-fvO">
                                 <rect key="frame" x="0.0" y="64" width="600" height="457"/>
                                 <animations/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                             </webView>
-                            <view alpha="0.95000001192092909" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qHT-Oo-Tty">
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ST2-e2-98P">
+                                <rect key="frame" x="16" y="64" width="568" height="457"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                            <view alpha="0.95000001192092909" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qHT-Oo-Tty">
                                 <rect key="frame" x="0.0" y="521" width="600" height="35"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="This is a title that might be able to go in here." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xV6-T7-zgy">
@@ -597,13 +604,17 @@
                             <constraint firstItem="qHT-Oo-Tty" firstAttribute="leading" secondItem="LAb-tP-3gA" secondAttribute="leading" id="GtB-fe-Qpm"/>
                             <constraint firstItem="1nH-9Q-fvO" firstAttribute="top" secondItem="jm1-xP-tTI" secondAttribute="bottom" id="KGA-61-s9o"/>
                             <constraint firstItem="1nH-9Q-fvO" firstAttribute="leading" secondItem="RBY-wT-OJH" secondAttribute="leading" id="PMr-p7-ksc"/>
+                            <constraint firstItem="ST2-e2-98P" firstAttribute="top" secondItem="1nH-9Q-fvO" secondAttribute="top" id="Ryb-YC-NwU"/>
+                            <constraint firstItem="ST2-e2-98P" firstAttribute="bottom" secondItem="1nH-9Q-fvO" secondAttribute="bottom" id="UIQ-dU-Tmp"/>
                             <constraint firstItem="1nH-9Q-fvO" firstAttribute="trailing" secondItem="LAb-tP-3gA" secondAttribute="trailing" id="Ycn-u9-gQg"/>
                             <constraint firstItem="LAb-tP-3gA" firstAttribute="leading" secondItem="RBY-wT-OJH" secondAttribute="leadingMargin" constant="-16" id="dGB-8p-z9f"/>
                             <constraint firstAttribute="trailing" secondItem="LAb-tP-3gA" secondAttribute="trailing" id="hnB-ur-9Bn"/>
                             <constraint firstItem="LAb-tP-3gA" firstAttribute="bottom" secondItem="TiA-LT-D0m" secondAttribute="top" id="nid-AG-6wx"/>
                             <constraint firstAttribute="trailingMargin" secondItem="LAb-tP-3gA" secondAttribute="trailing" constant="-16" id="p3r-4e-hJ5"/>
+                            <constraint firstItem="ST2-e2-98P" firstAttribute="leading" secondItem="1nH-9Q-fvO" secondAttribute="leading" constant="16" id="rfW-I4-9Sh"/>
                             <constraint firstItem="TiA-LT-D0m" firstAttribute="top" secondItem="LAb-tP-3gA" secondAttribute="bottom" id="uZz-Hw-OdM"/>
                             <constraint firstItem="qHT-Oo-Tty" firstAttribute="bottom" secondItem="LAb-tP-3gA" secondAttribute="top" id="xin-87-Jj0"/>
+                            <constraint firstItem="ST2-e2-98P" firstAttribute="trailing" secondItem="1nH-9Q-fvO" secondAttribute="trailing" constant="-16" id="xlT-jA-Xd1"/>
                             <constraint firstItem="1nH-9Q-fvO" firstAttribute="leading" secondItem="LAb-tP-3gA" secondAttribute="leading" id="zeb-Yg-ns1"/>
                         </constraints>
                     </view>
@@ -613,10 +624,12 @@
                         <outlet property="postTitleView" destination="qHT-Oo-Tty" id="2uW-b7-HsB"/>
                         <outlet property="seeLessButton" destination="Ttg-BO-9t8" id="7Qm-Od-gAU"/>
                         <outlet property="seeMoreButton" destination="IWy-eu-rrp" id="mLH-Z2-xXj"/>
+                        <outlet property="textView" destination="ST2-e2-98P" id="yoz-65-tAu"/>
                         <outlet property="toolbar" destination="LAb-tP-3gA" id="jc0-cz-ykg"/>
                         <outlet property="upvoteButton" destination="MhD-B3-eMK" id="jUD-P4-f5r"/>
                         <outlet property="webView" destination="1nH-9Q-fvO" id="dgZ-96-Qv4"/>
                         <segue destination="Hdo-ax-c9X" kind="presentation" identifier="PurchaseSegue" modalTransitionStyle="crossDissolve" id="xsL-ln-a3I"/>
+                        <segue destination="BuP-V6-G2K" kind="presentation" identifier="WebSegue" modalTransitionStyle="crossDissolve" id="6WJ-xS-zTe"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="18G-al-FGR" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -5177,21 +5190,21 @@
         <image name="Up" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="FVR-U4-dim"/>
+        <segue reference="gh5-lw-0Sc"/>
         <segue reference="ryX-hT-yj2"/>
+        <segue reference="s4Y-Y8-M2P"/>
+        <segue reference="6WJ-xS-zTe"/>
+        <segue reference="xsL-ln-a3I"/>
+        <segue reference="tJz-SN-XxH"/>
         <segue reference="vvu-K9-HER"/>
         <segue reference="1iV-Hy-GoQ"/>
         <segue reference="MQa-bF-U0r"/>
-        <segue reference="Na3-yg-xfC"/>
-        <segue reference="iqb-h7-VjS"/>
-        <segue reference="bxZ-6W-PbQ"/>
         <segue reference="SWo-82-5L3"/>
-        <segue reference="gh5-lw-0Sc"/>
+        <segue reference="bxZ-6W-PbQ"/>
         <segue reference="sND-y2-DTj"/>
+        <segue reference="FVR-U4-dim"/>
         <segue reference="MsL-gN-mnM"/>
-        <segue reference="xgG-eu-NoT"/>
-        <segue reference="r0I-Qj-AXk"/>
-        <segue reference="aev-Tk-Wb5"/>
         <segue reference="psA-tl-Zoj"/>
+        <segue reference="xgG-eu-NoT"/>
     </inferredMetricsTieBreakers>
 </document>

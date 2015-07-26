@@ -13,6 +13,7 @@ let _sharedSession = RedditSession()
 class RedditSession {
     
     typealias PaginationCompletion = (pagination: RKPagination?, results: [AnyObject]?, error: NSError?) -> ()
+    typealias ReadableCompletion = (content: ReadableContent?, error: NSError?) -> ()
     typealias ErrorCompletion = (error: NSError?) -> ()
     
     init() {
@@ -460,5 +461,24 @@ class RedditSession {
             UIApplication.sharedApplication().networkActivityIndicatorVisible = false
             completion(pagination: nil, results: [link], error: error)
         })
+    }
+    
+    func readableContentWithURL(url: String, completion: ReadableCompletion) {
+        var token = "86d3dcc05ff4444f692ab168d4543084911ac9d6"
+        var url = "https://www.readability.com/api/content/v1/parser?url=\(url)&token=\(token)"
+        var request = NSURLRequest(URL: NSURL(string: url)!)
+        var queue = NSOperationQueue()
+        NSURLConnection.sendAsynchronousRequest(request, queue: queue) { (response, data, error) -> Void in
+            if let responseData = data {
+                var jsonError: NSError?
+                if let json = NSJSONSerialization.JSONObjectWithData(responseData,
+                    options: nil,
+                    error: &jsonError) as? [String : AnyObject] {
+                    completion(content: ReadableContent(json: json), error: nil)
+                }
+            } else {
+                completion(content: nil, error: error)
+            }
+        }
     }
 }
