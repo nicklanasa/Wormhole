@@ -464,7 +464,10 @@ UISplitViewControllerDelegate {
         self.hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
         
         self.fetchLinks({ () -> () in
-            self.hud.hide(true)
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                self.hud.hide(true)
+                self.refreshControl.endRefreshing()
+            })
         })
     }
     

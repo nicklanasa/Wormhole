@@ -111,10 +111,6 @@ class CommentCell: JZSwipeCell, UITextViewDelegate {
             
             self.commentTextView.backgroundColor = MyRedditBackgroundColor
             self.contentView.backgroundColor = MyRedditBackgroundColor
-            
-            var sizeThatFitsTextView = self.commentTextView.sizeThatFits(CGSizeMake(self.commentTextView.frame.size.width - (CGFloat(self.indentationLevel) * self.indentationWidth), CGFloat(MAXFLOAT)))
-            
-            self.textViewHeightConstraint.constant = sizeThatFitsTextView.height;
         }
     }
     
@@ -159,11 +155,6 @@ class CommentCell: JZSwipeCell, UITextViewDelegate {
         self.commentTextView.backgroundColor = MyRedditBackgroundColor
         self.commentTextView.textColor = MyRedditLabelColor
         self.contentView.backgroundColor = MyRedditBackgroundColor
-        
-        var sizeThatFitsTextView = self.commentTextView.sizeThatFits(CGSizeMake(self.commentTextView.frame.size.width - (CGFloat(self.indentationLevel) * self.indentationWidth), CGFloat(MAXFLOAT)))
-        
-        self.textViewHeightConstraint.constant = sizeThatFitsTextView.height
-        self.textViewWidthConstraint.constant = sizeThatFitsTextView.width
     }
     
     @IBOutlet weak var repliesLabel: UILabel!
@@ -183,5 +174,6 @@ class CommentCell: JZSwipeCell, UITextViewDelegate {
         self.backgroundView?.backgroundColor = MyRedditBackgroundColor
         self.indentationLevel = 0
         self.indentationWidth = 0
+        self.separatorInset = UIEdgeInsetsZero
     }
 }

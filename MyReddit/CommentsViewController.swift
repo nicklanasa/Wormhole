@@ -78,7 +78,8 @@ class CommentsViewController: UITableViewController, CommentCellDelegate, JZSwip
     
     lazy var refreshCommentsControl: UIRefreshControl! = {
         var control = UIRefreshControl()
-        control.attributedTitle = NSAttributedString(string: "", attributes: [NSFontAttributeName : MyRedditCommentTextBoldFont, NSForegroundColorAttributeName : MyRedditLabelColor])
+        control.attributedTitle = NSAttributedString(string: "",
+            attributes: [NSFontAttributeName : MyRedditCommentTextBoldFont, NSForegroundColorAttributeName : MyRedditLabelColor])
         control.addTarget(self, action: "refresh:", forControlEvents: UIControlEvents.ValueChanged)
         return control
     }()
@@ -156,8 +157,53 @@ class CommentsViewController: UITableViewController, CommentCellDelegate, JZSwip
         actionSheet.present(animated: true, completion: nil)
     }
     
-    override func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return 107
+    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        if indexPath.section == 0 {
+            return self.heightForLink()
+        }
+        
+        for closedIndexPath in self.closedIndexPaths {
+            if indexPath.section == closedIndexPath.section {
+                return 30
+            }
+        }
+        return self.heightForIndexPath(indexPath)
+    }
+    
+    private func heightForLink() -> CGFloat {
+        
+        var selfText = ""
+        
+        if link.selfPost && count(link.selfText) > 0 {
+            selfText = "\n\n\(link.selfText))".stringByReplacingOccurrencesOfString("&gt;",
+                withString: ">",
+                options: nil,
+                range: nil)
+        }
+        
+        var parser = XNGMarkdownParser()
+        parser.paragraphFont = MyRedditSelfTextFont
+        parser.boldFontName = MyRedditCommentTextBoldFont.familyName
+        parser.boldItalicFontName = MyRedditCommentTextItalicFont.familyName
+        parser.italicFontName = MyRedditCommentTextItalicFont.familyName
+        parser.linkFontName = MyRedditCommentTextBoldFont.familyName
+        
+        var title = link.title.stringByReplacingOccurrencesOfString("&gt;", withString: ">", options: nil, range: nil)
+        
+        var parsedString = NSMutableAttributedString(attributedString: parser.attributedStringFromMarkdownString("\(title)\(selfText)"))
+        var titleAttr = [NSForegroundColorAttributeName : MyRedditLabelColor]
+        var selfTextAttr = [NSForegroundColorAttributeName : MyRedditSelfTextLabelColor]
+        parsedString.addAttributes(selfTextAttr, range: NSMakeRange(0, count(parsedString.string)))
+        parsedString.addAttributes(titleAttr, range: NSMakeRange(0, count(link.title)))
+
+        var frame = CGRectMake(0, 0, self.tableView.frame.size.width - 60, CGFloat.max)
+        let label: UILabel = UILabel(frame: frame)
+        label.numberOfLines = 0
+        label.lineBreakMode = NSLineBreakMode.ByWordWrapping
+        label.attributedText = parsedString
+        label.sizeToFit()
+
+        return label.frame.size.height + 60
     }
     
     private func heightForIndexPath(indexPath: NSIndexPath) -> CGFloat {
@@ -189,20 +235,12 @@ class CommentsViewController: UITableViewController, CommentCellDelegate, JZSwip
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        
         var cell = tableView.dequeueReusableCellWithIdentifier("CommentCell") as! CommentCell
-        
+
         var comment: RKComment!
         
         if indexPath.section == 0 {
-            if (self.link.isImageLink() || self.link.media != nil || self.link.domain == "imgur.com") && !SettingsManager.defaultManager.valueForSetting(.FullWidthImages)  {
-                var imageCell = tableView.dequeueReusableCellWithIdentifier("PostImageCell") as! PostImageCell
-                imageCell.link = self.link
-                imageCell.delegate = self
-                return imageCell
-            } else {
-                cell.link = self.link
-            }
+            cell.link = self.link
         } else {
             var commentDictionary = self.self.commentsBySection?[indexPath.section - 1] as! [String : AnyObject]
             cell.indentationLevel = commentDictionary["level"] as! Int
@@ -213,7 +251,7 @@ class CommentsViewController: UITableViewController, CommentCellDelegate, JZSwip
                 isLinkAuthor: self.link.author == comment.author)
             
             cell.separatorInset = UIEdgeInsets(top: 0,
-                left: CGFloat(cell.indentationLevel) * cell.indentationWidth,
+                left: (CGFloat(cell.indentationLevel) * cell.indentationWidth) + 5,
                 bottom: 0,
                 right: 0)
         }
@@ -236,30 +274,37 @@ class CommentsViewController: UITableViewController, CommentCellDelegate, JZSwip
                 }
             }
             
-            var commentDictionary = self.self.commentsBySection?[indexPath.section - 1] as! [String : AnyObject]
+            var commentDictionary = self.commentsBySection?[indexPath.section - 1] as! [String : AnyObject]
             var collapsedIndexPaths = [NSIndexPath]()
             var collapsedIndent = commentDictionary["level"] as! Int
             
             if remove {
-                
-                var alreadyClosedIndexPaths = [NSIndexPath]()
+
+                var removedIndexPaths = [NSIndexPath]()
                 
                 for var i = 0; i < self.closedIndexPaths.count; i++ {
-                    var indexPath = self.closedIndexPaths[i]
-                    var commentDictionary = self.self.commentsBySection?[indexPath.section - 1] as! [String : AnyObject]
-                    var indent = commentDictionary["level"] as! Int
-                    if indent < collapsedIndent {
-                        alreadyClosedIndexPaths.append(indexPath)
+                    var existingIndexPath = self.closedIndexPaths[i]
+                    var existingCommentDictionary = self.commentsBySection?[existingIndexPath.section - 1] as! [String : AnyObject]
+                    var indent = existingCommentDictionary["level"] as! Int
+                    if indent >= collapsedIndent {
+                        removedIndexPaths.append(existingIndexPath)
                     }
-                    
-                    self.closedIndexPaths = alreadyClosedIndexPaths
+                }
+                
+                for removedIndexPath in removedIndexPaths {
+                    for var i = 0; i < self.closedIndexPaths.count; i++ {
+                        var existingIndexPath = self.closedIndexPaths[i]
+                        if removedIndexPath.section == existingIndexPath.section {
+                            self.closedIndexPaths.removeAtIndex(i)
+                        }
+                    }
                 }
             } else {
                 collapsedIndexPaths.append(indexPath)
                 
                 for var i = indexPath.section + 1; i < self.commentsBySection?.count; i++ {
                     if i < self.commentsBySection?.count {
-                        var commentDictionary = self.self.commentsBySection?[i] as! [String : AnyObject]
+                        var commentDictionary = self.commentsBySection?[i] as! [String : AnyObject]
                         var indent = commentDictionary["level"] as! Int
                         if indent > collapsedIndent {
                             collapsedIndexPaths.append(NSIndexPath(forRow: 0, inSection: i))
@@ -275,8 +320,16 @@ class CommentsViewController: UITableViewController, CommentCellDelegate, JZSwip
             self.tableView.beginUpdates()
             self.tableView.reloadRowsAtIndexPaths(self.closedIndexPaths, withRowAnimation: .Fade)
             self.tableView.endUpdates()
+            
+            if indexPath.section - 1 >= 0 {
+                self.tableView.beginUpdates()
+                self.tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: 0, inSection: indexPath.section - 1)],
+                    withRowAnimation: .Fade)
+                self.tableView.endUpdates()
+                self.tableView.reloadData()
+            }
         }
-
+        
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
     
