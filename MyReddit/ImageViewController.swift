@@ -45,6 +45,8 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
             }
             self.indicator.stopAnimating()
         }
+        
+        self.scrollView.minimumZoomScale = 0.5
         self.scrollView.contentSize = self.parentViewController!.view.frame.size
         
         var tap = UITapGestureRecognizer(target: self, action: "imageViewTapped:")
@@ -58,5 +60,11 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
     
     func viewForZoomingInScrollView(scrollView: UIScrollView) -> UIView? {
         return self.imageView
+    }
+    
+    func scrollViewDidZoom(scrollView: UIScrollView) {
+        var offsetX = max((scrollView.bounds.size.width - scrollView.contentSize.width) * 0.5, 0.0)
+        var offsetY = max((scrollView.bounds.size.height - scrollView.contentSize.height) * 0.4, 0.0)
+        self.scrollView.contentInset = UIEdgeInsetsMake(offsetY, offsetX, 0.0, 0.0)
     }
 }

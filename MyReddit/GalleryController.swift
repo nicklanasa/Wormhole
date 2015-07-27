@@ -92,7 +92,7 @@ UICollectionViewDelegate {
     
     override func viewDidLoad() {
         
-        self.collectionView.hidden = true
+        self.collectionView.alpha = 0.0
         self.collectionView.reloadData()
         
         self.updateVoteButtons()
@@ -133,12 +133,22 @@ UICollectionViewDelegate {
     }
     
     func showGrid() {
-        if self.collectionView.hidden {
-            self.collectionView.hidden = false
-            self.containerView.hidden = true
+        if self.collectionView.alpha == 0.0 {
+            UIView.animateWithDuration(0.3, animations: { () -> Void in
+                self.containerView.alpha = 0.0
+            }, completion: { (s) -> Void in
+                UIView.animateWithDuration(0.3, animations: { () -> Void in
+                    self.collectionView.alpha = 1.0
+                })
+            })
         } else {
-            self.collectionView.hidden = true
-            self.containerView.hidden = false
+            UIView.animateWithDuration(0.3, animations: { () -> Void in
+                self.collectionView.alpha = 0.0
+            }, completion: { (s) -> Void in
+                UIView.animateWithDuration(0.3, animations: { () -> Void in
+                    self.containerView.alpha = 1.0
+                })
+            })
         }
     }
     
@@ -157,17 +167,17 @@ UICollectionViewDelegate {
         var score = self.link.score.abbreviateNumber()
         var comments = Int(self.link.totalComments).abbreviateNumber()
         
-        var titleString = NSMutableAttributedString(string: "\(score) | \(comments) comments")
-        var fontAttrs = [NSFontAttributeName : MyRedditTitleFont, NSForegroundColorAttributeName : MyRedditLabelColor]
+        var titleString = NSMutableAttributedString(string: "\(score)\n\(comments) comments")
+        var fontAttrs = [NSFontAttributeName : MyRedditCommentTextFont,
+            NSForegroundColorAttributeName : MyRedditLabelColor]
         var scoreAttrs = [NSForegroundColorAttributeName : MyRedditUpvoteColor]
-        var commentsAttr = [NSForegroundColorAttributeName : MyRedditColor]
         titleString.addAttributes(fontAttrs, range: NSMakeRange(0, count(titleString.string)))
         titleString.addAttributes(scoreAttrs, range: NSMakeRange(0, count(score)))
-        titleString.addAttributes(commentsAttr, range: NSMakeRange(count("\(score) | "), count(comments)))
         
         var navLabel = UILabel(frame: CGRectZero)
         navLabel.attributedText = titleString
         navLabel.textAlignment = .Center
+        navLabel.numberOfLines = 2
         navLabel.sizeToFit()
         self.navigationItem.titleView = navLabel
     }
@@ -396,17 +406,24 @@ UICollectionViewDelegate {
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         var cell = collectionView.dequeueReusableCellWithReuseIdentifier("ImageCell", forIndexPath: indexPath) as! GalleryImageCollectionViewCell
         var image = self.images?[indexPath.row] as? IMGImage
-        cell.imageView.sd_setImageWithURL(image?.url)
+        var thumbnailImageURL = image?.URLWithSize(IMGSize(rawValue: IMGSize.MediumThumbnailSize.rawValue)!)
+        cell.imageView.sd_setImageWithURL(thumbnailImageURL)
         return cell
     }
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        self.collectionView.hidden = true
-        self.containerView.hidden = false
-        
-        self.pageViewController.setViewControllers([self.viewControllerAtIndex(indexPath.row)!],
-            direction: UIPageViewControllerNavigationDirection.Forward,
-            animated: true,
-            completion: nil)
+        UIView.animateWithDuration(0.3, animations: { () -> Void in
+            self.collectionView.alpha = 0.0
+            
+        }) { (s) -> Void in
+            UIView.animateWithDuration(0.3, animations: { () -> Void in
+                self.containerView.alpha = 1.0
+                
+                self.pageViewController.setViewControllers([self.viewControllerAtIndex(indexPath.row)!],
+                    direction: UIPageViewControllerNavigationDirection.Forward,
+                    animated: false,
+                    completion: nil)
+            })
+        }
     }
 }

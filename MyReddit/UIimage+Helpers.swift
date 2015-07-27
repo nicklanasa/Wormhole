@@ -10,13 +10,26 @@ import Foundation
 
 extension UIImage {
     func resize(toSize: CGSize) -> UIImage {
-        let scale = toSize.height / self.size.height
-        let newWidth = self.size.width * scale
-        UIGraphicsBeginImageContext(CGSizeMake(newWidth, toSize.height))
-        self.drawInRect(CGRectMake(0, 0, newWidth, toSize.height))
-        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        
+        var scaledImageRect = CGRectZero
+        
+        var aspectWidth = toSize.width / self.size.width
+        //var aspectHeight = toSize.height / self.size.height
+        //var aspectRatio = min(aspectWidth, aspectHeight)
+        
+        var aspectRatio = aspectWidth
+        
+        scaledImageRect.size.width = self.size.width * aspectRatio
+        scaledImageRect.size.height = self.size.height * aspectRatio
+        
+        scaledImageRect.origin.x = (toSize.width - scaledImageRect.size.width) / 2.0
+        scaledImageRect.origin.y = 0
+        
+        UIGraphicsBeginImageContextWithOptions(toSize, false, 0)
+        self.drawInRect(scaledImageRect)
+        var scaledImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         
-        return newImage
+        return scaledImage
     }
 }

@@ -162,7 +162,8 @@ class CommentCell: JZSwipeCell, UITextViewDelegate {
         
         var sizeThatFitsTextView = self.commentTextView.sizeThatFits(CGSizeMake(self.commentTextView.frame.size.width - (CGFloat(self.indentationLevel) * self.indentationWidth), CGFloat(MAXFLOAT)))
         
-        self.textViewHeightConstraint.constant = sizeThatFitsTextView.height;
+        self.textViewHeightConstraint.constant = sizeThatFitsTextView.height
+        self.textViewWidthConstraint.constant = sizeThatFitsTextView.width
     }
     
     @IBOutlet weak var repliesLabel: UILabel!
@@ -170,6 +171,7 @@ class CommentCell: JZSwipeCell, UITextViewDelegate {
     @IBOutlet weak var scoreLabel: UILabel!
     
     @IBOutlet weak var textViewHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var textViewWidthConstraint: NSLayoutConstraint!
     
     func textView(textView: UITextView, shouldInteractWithURL URL: NSURL, inRange characterRange: NSRange) -> Bool {
         self.currentTappedURL = URL
@@ -178,7 +180,8 @@ class CommentCell: JZSwipeCell, UITextViewDelegate {
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        
         self.backgroundView?.backgroundColor = MyRedditBackgroundColor
+        self.indentationLevel = 0
+        self.indentationWidth = 0
     }
 }

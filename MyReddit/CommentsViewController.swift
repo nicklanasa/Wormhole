@@ -14,6 +14,9 @@ class CommentsViewController: UITableViewController, CommentCellDelegate, JZSwip
     @IBOutlet weak var filterButton: UIBarButtonItem!
     @IBOutlet weak var shareButton: UIBarButtonItem!
     
+    var closedIndexPaths = [NSIndexPath]()
+    var collapsedIndexPaths = [NSIndexPath]()
+    
     var link: RKLink!
     var optionsController: LinkShareOptionsViewController!
     
@@ -157,8 +160,28 @@ class CommentsViewController: UITableViewController, CommentCellDelegate, JZSwip
         return 107
     }
     
+    private func heightForIndexPath(indexPath: NSIndexPath) -> CGFloat {
+        
+        var commentDictionary = self.self.commentsBySection?[indexPath.section - 1] as! [String : AnyObject]
+        var indentationLevel = commentDictionary["level"] as! Int
+        var indentationWidth = CGFloat(10)
+        var comment = commentDictionary["comment"] as! RKComment
+        var text = comment.body
+        
+        var frame = CGRectMake(0, 0, (self.tableView.frame.size.width - 40) - (CGFloat(indentationLevel) * indentationWidth), CGFloat.max)
+        let label: UILabel = UILabel(frame: frame)
+        label.numberOfLines = 0
+        label.lineBreakMode = NSLineBreakMode.ByWordWrapping
+        label.font = UIFont(name: MyRedditCommentInfoMediumFont.fontName,
+            size: SettingsManager.defaultManager.titleFontSizeForDefaultTextSize)
+        label.text = text
+        label.sizeToFit()
+        
+        return label.frame.height + 60
+    }
+    
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 1 + (self.commentsBySection?.count ?? 0)
+        return (self.commentsBySection?.count ?? 0) + 1
     }
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -166,8 +189,9 @@ class CommentsViewController: UITableViewController, CommentCellDelegate, JZSwip
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        
         var cell = tableView.dequeueReusableCellWithIdentifier("CommentCell") as! CommentCell
-
+        
         var comment: RKComment!
         
         if indexPath.section == 0 {
@@ -180,7 +204,6 @@ class CommentsViewController: UITableViewController, CommentCellDelegate, JZSwip
                 cell.link = self.link
             }
         } else {
-            
             var commentDictionary = self.self.commentsBySection?[indexPath.section - 1] as! [String : AnyObject]
             cell.indentationLevel = commentDictionary["level"] as! Int
             cell.indentationWidth = 10
@@ -202,6 +225,58 @@ class CommentsViewController: UITableViewController, CommentCellDelegate, JZSwip
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        
+        if indexPath.section != 0 {
+            var remove = false
+            
+            for collapsedIndexPath in self.closedIndexPaths {
+                if indexPath.section == collapsedIndexPath.section {
+                    remove = true
+                    break
+                }
+            }
+            
+            var commentDictionary = self.self.commentsBySection?[indexPath.section - 1] as! [String : AnyObject]
+            var collapsedIndexPaths = [NSIndexPath]()
+            var collapsedIndent = commentDictionary["level"] as! Int
+            
+            if remove {
+                
+                var alreadyClosedIndexPaths = [NSIndexPath]()
+                
+                for var i = 0; i < self.closedIndexPaths.count; i++ {
+                    var indexPath = self.closedIndexPaths[i]
+                    var commentDictionary = self.self.commentsBySection?[indexPath.section - 1] as! [String : AnyObject]
+                    var indent = commentDictionary["level"] as! Int
+                    if indent < collapsedIndent {
+                        alreadyClosedIndexPaths.append(indexPath)
+                    }
+                    
+                    self.closedIndexPaths = alreadyClosedIndexPaths
+                }
+            } else {
+                collapsedIndexPaths.append(indexPath)
+                
+                for var i = indexPath.section + 1; i < self.commentsBySection?.count; i++ {
+                    if i < self.commentsBySection?.count {
+                        var commentDictionary = self.self.commentsBySection?[i] as! [String : AnyObject]
+                        var indent = commentDictionary["level"] as! Int
+                        if indent > collapsedIndent {
+                            collapsedIndexPaths.append(NSIndexPath(forRow: 0, inSection: i))
+                        } else {
+                            break
+                        }
+                    }
+                }
+                
+                self.closedIndexPaths.extend(collapsedIndexPaths)
+            }
+            
+            self.tableView.beginUpdates()
+            self.tableView.reloadRowsAtIndexPaths(self.closedIndexPaths, withRowAnimation: .Fade)
+            self.tableView.endUpdates()
+        }
+
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
     

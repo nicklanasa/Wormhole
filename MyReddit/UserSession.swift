@@ -130,6 +130,8 @@ class UserSession {
         
         UIRefreshControl.appearance().tintColor = MyRedditColor
         
+        UIActivityIndicatorView.appearance().tintColor = MyRedditLabelColor
+        
         UISegmentedControl.appearance().setTitleTextAttributes([NSFontAttributeName: MyRedditSelfTextFont, NSForegroundColorAttributeName : MyRedditLabelColor], forState: .Normal)
     }
     
@@ -181,6 +183,8 @@ class UserSession {
         UIWebView.appearance().backgroundColor = MyRedditBackgroundColor
         
         UITextField.appearance().font = MyRedditSelfTextFont
+        
+        UIActivityIndicatorView.appearance().tintColor = UIColor.lightGrayColor()
         
         UIRefreshControl.appearance().tintColor = MyRedditColor
         UISegmentedControl.appearance().setTitleTextAttributes([NSFontAttributeName: MyRedditSelfTextFont, NSForegroundColorAttributeName : MyRedditLabelColor], forState: .Normal)

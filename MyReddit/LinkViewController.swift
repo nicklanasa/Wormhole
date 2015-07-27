@@ -171,18 +171,16 @@ class LinkViewController: UIViewController, UITextViewDelegate {
         var score = self.link.score.abbreviateNumber()
         var comments = Int(self.link.totalComments).abbreviateNumber()
         
-        var titleString = NSMutableAttributedString(string: "\(score) | \(comments) comments")
-        var fontAttrs = [NSFontAttributeName : MyRedditTitleFont,
-            NSForegroundColorAttributeName : MyRedditLabelColor]
+        var titleString = NSMutableAttributedString(string: "\(score)\n\(comments) comments")
+        var fontAttrs = [NSFontAttributeName : MyRedditCommentTextFont, NSForegroundColorAttributeName : MyRedditLabelColor]
         var scoreAttrs = [NSForegroundColorAttributeName : MyRedditUpvoteColor]
-        var commentsAttr = [NSForegroundColorAttributeName : MyRedditColor]
         titleString.addAttributes(fontAttrs, range: NSMakeRange(0, count(titleString.string)))
         titleString.addAttributes(scoreAttrs, range: NSMakeRange(0, count(score)))
-        titleString.addAttributes(commentsAttr, range: NSMakeRange(count("\(score) | "), count(comments)))
         
         var navLabel = UILabel(frame: CGRectZero)
         navLabel.attributedText = titleString
         navLabel.textAlignment = .Center
+        navLabel.numberOfLines = 2
         navLabel.sizeToFit()
         self.navigationItem.titleView = navLabel
     }
