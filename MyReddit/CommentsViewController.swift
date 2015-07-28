@@ -14,6 +14,7 @@ class CommentsViewController: UITableViewController, CommentCellDelegate, JZSwip
     @IBOutlet weak var filterButton: UIBarButtonItem!
     @IBOutlet weak var shareButton: UIBarButtonItem!
     
+    var hiddenIndexPaths = [NSIndexPath]()
     var closedIndexPaths = [NSIndexPath]()
     var collapsedIndexPaths = [NSIndexPath]()
     
@@ -167,6 +168,13 @@ class CommentsViewController: UITableViewController, CommentCellDelegate, JZSwip
                 return 30
             }
         }
+        
+        for hiddenIndexPath in self.hiddenIndexPaths {
+            if indexPath.section == hiddenIndexPath.section {
+                return 0
+            }
+        }
+        
         return self.heightForIndexPath(indexPath)
     }
     
@@ -276,49 +284,57 @@ class CommentsViewController: UITableViewController, CommentCellDelegate, JZSwip
             
             var commentDictionary = self.commentsBySection?[indexPath.section - 1] as! [String : AnyObject]
             var collapsedIndexPaths = [NSIndexPath]()
-            var collapsedIndent = commentDictionary["level"] as! Int
+            var hiddenIndexPaths = [NSIndexPath]()
+            
+            // Get comment to start collapse
+            var comment = commentDictionary["comment"] as! RKComment
+            
+            // Get replies for comment
+            var repliesForComment = self.repliesForComment(comment, level: 0)
+            
+            collapsedIndexPaths.append(indexPath)
             
             if remove {
 
-                var removedIndexPaths = [NSIndexPath]()
-                
-                for var i = 0; i < self.closedIndexPaths.count; i++ {
-                    var existingIndexPath = self.closedIndexPaths[i]
-                    var existingCommentDictionary = self.commentsBySection?[existingIndexPath.section - 1] as! [String : AnyObject]
-                    var indent = existingCommentDictionary["level"] as! Int
-                    if indent >= collapsedIndent {
-                        removedIndexPaths.append(existingIndexPath)
-                    }
+                var sectionCount = indexPath.section
+                for reply in repliesForComment {
+                    sectionCount += 1
+                    hiddenIndexPaths.append(NSIndexPath(forRow: 0, inSection: sectionCount))
                 }
                 
-                for removedIndexPath in removedIndexPaths {
+                for removedIndexPath in collapsedIndexPaths {
                     for var i = 0; i < self.closedIndexPaths.count; i++ {
-                        var existingIndexPath = self.closedIndexPaths[i]
-                        if removedIndexPath.section == existingIndexPath.section {
+                        var closedIndexPath = self.closedIndexPaths[i]
+                        if closedIndexPath.section == removedIndexPath.section {
                             self.closedIndexPaths.removeAtIndex(i)
                         }
                     }
                 }
-            } else {
-                collapsedIndexPaths.append(indexPath)
                 
-                for var i = indexPath.section + 1; i < self.commentsBySection?.count; i++ {
-                    if i < self.commentsBySection?.count {
-                        var commentDictionary = self.commentsBySection?[i] as! [String : AnyObject]
-                        var indent = commentDictionary["level"] as! Int
-                        if indent > collapsedIndent {
-                            collapsedIndexPaths.append(NSIndexPath(forRow: 0, inSection: i))
-                        } else {
-                            break
+                for hiddenIndexPath in hiddenIndexPaths {
+                    for var i = 0; i < self.hiddenIndexPaths.count; i++ {
+                        var closedIndexPath = self.hiddenIndexPaths[i]
+                        if closedIndexPath.section == hiddenIndexPath.section {
+                            self.hiddenIndexPaths.removeAtIndex(i)
                         }
                     }
                 }
+                
+            } else {
+            
+                var sectionCount = indexPath.section
+                for reply in repliesForComment {
+                    sectionCount += 1
+                    hiddenIndexPaths.append(NSIndexPath(forRow: 0, inSection: sectionCount))
+                }
+                
+                self.hiddenIndexPaths.extend(hiddenIndexPaths)
                 
                 self.closedIndexPaths.extend(collapsedIndexPaths)
             }
             
             self.tableView.beginUpdates()
-            self.tableView.reloadRowsAtIndexPaths(self.closedIndexPaths, withRowAnimation: .Fade)
+            self.tableView.reloadRowsAtIndexPaths(self.tableView.indexPathsForVisibleRows()!, withRowAnimation: .Automatic)
             self.tableView.endUpdates()
             
             if indexPath.section - 1 >= 0 {
