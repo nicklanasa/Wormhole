@@ -9,7 +9,11 @@
 import Foundation
 import UIKit
 
-class CommentsViewController: UITableViewController, CommentCellDelegate, JZSwipeCellDelegate, UITextFieldDelegate, AddCommentViewControllerDelegate {
+class CommentsViewController: UITableViewController,
+CommentCellDelegate,
+JZSwipeCellDelegate,
+UITextFieldDelegate,
+AddCommentViewControllerDelegate {
     
     @IBOutlet weak var filterButton: UIBarButtonItem!
     @IBOutlet weak var shareButton: UIBarButtonItem!
@@ -20,11 +24,15 @@ class CommentsViewController: UITableViewController, CommentCellDelegate, JZSwip
     
     var link: RKLink!
     var optionsController: LinkShareOptionsViewController!
+    lazy var parser: XNGMarkdownParser = {
+        return XNGMarkdownParser()
+    }()
     
     var filter: RKCommentSort! {
         didSet {
             self.hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
-            RedditSession.sharedSession.fetchCommentsWithFilter(filter, pagination: nil, link: self.link, completion: { (pagination, results, error) -> () in
+            RedditSession.sharedSession.fetchCommentsWithFilter(filter,
+                pagination: nil, link: self.link, completion: { (pagination, results, error) -> () in
                 self.comments = results
                 self.refreshCommentsControl.endRefreshing()
                 self.hud.hide(true)
@@ -80,8 +88,11 @@ class CommentsViewController: UITableViewController, CommentCellDelegate, JZSwip
     lazy var refreshCommentsControl: UIRefreshControl! = {
         var control = UIRefreshControl()
         control.attributedTitle = NSAttributedString(string: "",
-            attributes: [NSFontAttributeName : MyRedditCommentTextBoldFont, NSForegroundColorAttributeName : MyRedditLabelColor])
-        control.addTarget(self, action: "refresh:", forControlEvents: UIControlEvents.ValueChanged)
+            attributes: [NSFontAttributeName : MyRedditCommentTextBoldFont,
+                NSForegroundColorAttributeName : MyRedditLabelColor])
+        control.addTarget(self,
+            action: "refresh:",
+            forControlEvents: UIControlEvents.ValueChanged)
         return control
     }()
     
@@ -101,8 +112,6 @@ class CommentsViewController: UITableViewController, CommentCellDelegate, JZSwip
         self.syncComments()
         
         self.navigationItem.title =  "\(self.link.totalComments) comments"
-        
-        self.tableView.rowHeight = UITableViewAutomaticDimension
         
         self.navigationController?.navigationBar.tintColor = MyRedditLabelColor
         
@@ -189,7 +198,6 @@ class CommentsViewController: UITableViewController, CommentCellDelegate, JZSwip
                 range: nil)
         }
         
-        var parser = XNGMarkdownParser()
         parser.paragraphFont = MyRedditSelfTextFont
         parser.boldFontName = MyRedditCommentTextBoldFont.familyName
         parser.boldItalicFontName = MyRedditCommentTextItalicFont.familyName
@@ -198,7 +206,7 @@ class CommentsViewController: UITableViewController, CommentCellDelegate, JZSwip
         
         var title = link.title.stringByReplacingOccurrencesOfString("&gt;", withString: ">", options: nil, range: nil)
         
-        var parsedString = NSMutableAttributedString(attributedString: parser.attributedStringFromMarkdownString("\(title)\(selfText)"))
+        var parsedString = NSMutableAttributedString(attributedString: self.parser.attributedStringFromMarkdownString("\(title)\(selfText)"))
         var titleAttr = [NSForegroundColorAttributeName : MyRedditLabelColor]
         var selfTextAttr = [NSForegroundColorAttributeName : MyRedditSelfTextLabelColor]
         parsedString.addAttributes(selfTextAttr, range: NSMakeRange(0, count(parsedString.string)))
@@ -229,6 +237,7 @@ class CommentsViewController: UITableViewController, CommentCellDelegate, JZSwip
         label.font = UIFont(name: MyRedditCommentInfoMediumFont.fontName,
             size: SettingsManager.defaultManager.titleFontSizeForDefaultTextSize)
         label.text = text
+        
         label.sizeToFit()
         
         return label.frame.height + 60
@@ -319,9 +328,7 @@ class CommentsViewController: UITableViewController, CommentCellDelegate, JZSwip
                         }
                     }
                 }
-                
             } else {
-            
                 var sectionCount = indexPath.section
                 for reply in repliesForComment {
                     sectionCount += 1
@@ -329,7 +336,6 @@ class CommentsViewController: UITableViewController, CommentCellDelegate, JZSwip
                 }
                 
                 self.hiddenIndexPaths.extend(hiddenIndexPaths)
-                
                 self.closedIndexPaths.extend(collapsedIndexPaths)
             }
             

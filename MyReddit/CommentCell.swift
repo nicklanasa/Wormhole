@@ -16,6 +16,10 @@ protocol CommentCellDelegate {
 class CommentCell: JZSwipeCell, UITextViewDelegate {
     
     var commentDelegate: CommentCellDelegate?
+    let dateFormatter = NSDateFormatter()
+    lazy var parser: XNGMarkdownParser = {
+        return XNGMarkdownParser()
+    }()
     
     var currentTappedURL: NSURL! {
         didSet {
@@ -24,15 +28,10 @@ class CommentCell: JZSwipeCell, UITextViewDelegate {
     }
     
     override func layoutSubviews() {
-        
         super.layoutSubviews()
         
-        var indentPoints: CGFloat = CGFloat(self.indentationLevel) * self.indentationWidth
-        
-        self.contentView.frame = CGRectMake(indentPoints,
-            self.contentView.frame.origin.y,
-            self.contentView.frame.size.width - indentPoints,
-            self.contentView.frame.size.height)
+        self.contentView.setNeedsLayout()
+        self.contentView.layoutIfNeeded()
     }
     
     override func awakeFromNib() {
@@ -56,6 +55,7 @@ class CommentCell: JZSwipeCell, UITextViewDelegate {
         
         self.backgroundView?.backgroundColor = MyRedditBackgroundColor
         self.defaultBackgroundColor = MyRedditBackgroundColor
+        self.commentTextView.textColor = MyRedditLabelColor
     }
     
     var link: RKLink! {
@@ -70,7 +70,6 @@ class CommentCell: JZSwipeCell, UITextViewDelegate {
                     range: nil)
             }
             
-            var parser = XNGMarkdownParser()
             parser.paragraphFont = MyRedditSelfTextFont
             parser.boldFontName = MyRedditCommentTextBoldFont.familyName
             parser.boldItalicFontName = MyRedditCommentTextItalicFont.familyName
@@ -79,7 +78,7 @@ class CommentCell: JZSwipeCell, UITextViewDelegate {
             
             var title = link.title.stringByReplacingOccurrencesOfString("&gt;", withString: ">", options: nil, range: nil)
             
-            var parsedString = NSMutableAttributedString(attributedString: parser.attributedStringFromMarkdownString("\(title)\(selfText)"))
+            var parsedString = NSMutableAttributedString(attributedString: self.parser.attributedStringFromMarkdownString("\(title)\(selfText)"))
             var titleAttr = [NSForegroundColorAttributeName : MyRedditLabelColor]
             var selfTextAttr = [NSForegroundColorAttributeName : MyRedditSelfTextLabelColor]
             parsedString.addAttributes(selfTextAttr, range: NSMakeRange(0, count(parsedString.string)))
@@ -111,6 +110,9 @@ class CommentCell: JZSwipeCell, UITextViewDelegate {
             
             self.commentTextView.backgroundColor = MyRedditBackgroundColor
             self.contentView.backgroundColor = MyRedditBackgroundColor
+            
+            self.leadingTextViewConstraint.constant = 0
+            self.leadinginfoLabelConstraint.constant = 0
         }
     }
     
@@ -122,23 +124,23 @@ class CommentCell: JZSwipeCell, UITextViewDelegate {
         
         self.comment = comment
         
-        var parser = XNGMarkdownParser()
-        parser.paragraphFont = MyRedditCommentTextFont
-        parser.boldFontName = MyRedditCommentTextBoldFont.familyName
-        parser.boldItalicFontName = MyRedditCommentTextItalicFont.familyName
-        parser.italicFontName = MyRedditCommentTextItalicFont.familyName
-        parser.linkFontName = MyRedditCommentTextBoldFont.familyName
+        let body = comment.body.stringByReplacingOccurrencesOfString("&gt;", withString: ">", options: nil, range: nil)
+        self.commentTextView.text = body
         
-        var parsedString = NSMutableAttributedString(attributedString: parser.attributedStringFromMarkdownString(comment.body.stringByReplacingOccurrencesOfString("&gt;", withString: ">", options: nil, range: nil)))
-        self.commentTextView.attributedText = parsedString
+        self.dateFormatter.timeStyle = .ShortStyle
+        self.dateFormatter.dateStyle = .ShortStyle
+        var timeAgo = self.dateFormatter.stringFromDate(self.comment.created)
         
-        var timeAgo = comment.created.timeAgo()
-        
-        var infoString = NSMutableAttributedString(string: "\(comment.author) - \(timeAgo)")
-        var attrs = [NSForegroundColorAttributeName : isLinkAuthor ? MyRedditColor : MyRedditLabelColor]
-        infoString.addAttributes(attrs, range: NSMakeRange(0, count(comment.author)))
-        
-        self.infoLabel.attributedText = infoString
+        var info = "\(comment.author) - \(timeAgo)"
+       
+        if isLinkAuthor {
+            var infoString = NSMutableAttributedString(string: info)
+            var attrs = [NSForegroundColorAttributeName : isLinkAuthor ? MyRedditColor : MyRedditLabelColor]
+            infoString.addAttributes(attrs, range: NSMakeRange(0, count(comment.author)))
+            self.infoLabel.attributedText = infoString
+        } else {
+            self.infoLabel.text = info
+        }
         
         self.scoreLabel.text = comment.score.description
         
@@ -149,20 +151,23 @@ class CommentCell: JZSwipeCell, UITextViewDelegate {
         } else {
             self.scoreLabel.textColor = UIColor.lightGrayColor()
         }
-        
-        self.commentTextView.font = UIFont(name: self.commentTextView.font.fontName,
-            size: SettingsManager.defaultManager.titleFontSizeForDefaultTextSize)
+    
         self.commentTextView.backgroundColor = MyRedditBackgroundColor
-        self.commentTextView.textColor = MyRedditLabelColor
         self.contentView.backgroundColor = MyRedditBackgroundColor
+        
+        var indentPoints: CGFloat = CGFloat(self.indentationLevel) * self.indentationWidth
+        self.leadingTextViewConstraint.constant = indentPoints
+        self.leadinginfoLabelConstraint.constant = indentPoints
     }
     
     @IBOutlet weak var repliesLabel: UILabel!
     @IBOutlet weak var infoLabel: UILabel!
     @IBOutlet weak var scoreLabel: UILabel!
-    
-    @IBOutlet weak var textViewHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var leadingTextViewConstraint: NSLayoutConstraint!
+    @IBOutlet weak var trailingTextViewConstraint: NSLayoutConstraint!
     @IBOutlet weak var textViewWidthConstraint: NSLayoutConstraint!
+    @IBOutlet weak var leadinginfoLabelConstraint: NSLayoutConstraint!
+    
     
     func textView(textView: UITextView, shouldInteractWithURL URL: NSURL, inRange characterRange: NSRange) -> Bool {
         self.currentTappedURL = URL

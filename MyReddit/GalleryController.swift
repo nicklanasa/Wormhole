@@ -100,6 +100,7 @@ UICollectionViewDelegate {
         self.seeMoreButton.hidden = false
         self.seeLessButton.hidden = true
         
+        self.containerView.backgroundColor = MyRedditBackgroundColor
         self.postTitleView.backgroundColor = MyRedditBackgroundColor
         self.postTitleLabel.textColor = MyRedditLabelColor
         

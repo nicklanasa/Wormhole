@@ -23,7 +23,7 @@ extension UIImage {
         scaledImageRect.size.height = self.size.height * aspectRatio
         
         scaledImageRect.origin.x = (toSize.width - scaledImageRect.size.width) / 2.0
-        scaledImageRect.origin.y = 0
+        scaledImageRect.origin.y = (toSize.height - scaledImageRect.size.height) / 2
         
         UIGraphicsBeginImageContextWithOptions(toSize, false, 0)
         self.drawInRect(scaledImageRect)

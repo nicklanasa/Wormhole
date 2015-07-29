@@ -10,11 +10,36 @@ import Foundation
 import UIKit
 import CoreData
 
-class SubredditsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, NSFetchedResultsControllerDelegate {
+class SubredditsViewController: UIViewController,
+UITableViewDataSource,
+UITableViewDelegate,
+NSFetchedResultsControllerDelegate,
+UISearchDisplayDelegate,
+UISearchBarDelegate {
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var savedButton: UIBarButtonItem!
     @IBOutlet weak var cancelButton: UIBarButtonItem!
+    
+    var foundSubreddit: RKSubreddit? {
+        didSet {
+            self.performSegueWithIdentifier("SubredditPosts", sender: self.foundSubreddit)
+        }
+    }
+    
+    var categories = ["Animals",
+        "Apple Related",
+        "Ask Redditors",
+        "Books and Reading",
+        "Design", "Education",
+        "Entertainment", "Games",
+        "Gender and Relationships",
+        "Lifestyle", "Humor",
+        "Media and Art", "Money",
+        "Music", "News",
+        "Politics", "Reddit Related",
+        "Religion", "Science",
+        "Self Help", "Sports", "Technology"]
     
     @IBAction func cancelButtonTapped(sender: AnyObject) {
         self.dismissViewControllerAnimated(true, completion: nil)
@@ -30,19 +55,49 @@ class SubredditsViewController: UIViewController, UITableViewDataSource, UITable
         }
     }
     
+    lazy var searchController: UISearchController = {
+        var controller = UISearchController(searchResultsController: nil)
+        controller.dimsBackgroundDuringPresentation = false
+        controller.searchBar.delegate = self
+        controller.searchBar.setShowsCancelButton(false, animated: false)
+        controller.hidesNavigationBarDuringPresentation = false
+        controller.searchBar.sizeToFit()
+        controller.searchBar.searchBarStyle = .Minimal
+        controller.searchBar.returnKeyType = .Done
+        controller.searchBar.placeholder = "Search subreddits..."
+        
+        var textFieldInsideSearchBar = controller.searchBar.valueForKey("searchField") as? UITextField
+        textFieldInsideSearchBar?.textColor = MyRedditLabelColor
+        
+        for v in controller.searchBar.subviews {
+            if let textField = v as? UITextField {
+                textField.clearButtonMode = .Always
+                break;
+            }
+        }
+        
+        return controller
+    }()
+    
     var syncSubreddits = Array<AnyObject>()
     var syncMultiSubreddits = Array<AnyObject>()
     
     lazy var refreshControl: UIRefreshControl! = {
         var control = UIRefreshControl()
-        control.attributedTitle = NSAttributedString(string: "", attributes: [NSFontAttributeName : MyRedditCommentTextBoldFont, NSForegroundColorAttributeName : MyRedditLabelColor])
-        control.addTarget(self, action: "refresh:", forControlEvents: UIControlEvents.ValueChanged)
+        control.attributedTitle = NSAttributedString(string: "",
+            attributes: [NSFontAttributeName : MyRedditCommentTextBoldFont,
+                NSForegroundColorAttributeName : MyRedditLabelColor])
+        control.addTarget(self,
+            action: "refresh:",
+            forControlEvents: UIControlEvents.ValueChanged)
         return control
     }()
     
     var addSubredditsToMultiRedditAlert: UIAlertController! {
         get {
-            var alert = UIAlertController(title: "Search", message: "Would you like to go to search now to add subreddit's to your multireddits?", preferredStyle: .Alert)
+            var alert = UIAlertController(title: "Search",
+                message: "Would you like to go to search now to add subreddit's to your multireddits?",
+                preferredStyle: .Alert)
             alert.addAction(UIAlertAction(title: "Sure", style: .Default, handler: { (a) -> Void in
                 LocalyticsSession.shared().tagEvent("Subreddit search after creating multireddit")
                 self.performSegueWithIdentifier("SearchSegue", sender: self)
@@ -100,8 +155,24 @@ class SubredditsViewController: UIViewController, UITableViewDataSource, UITable
         }
     }
     
+    func searchBarSearchButtonClicked(searchBar: UISearchBar) {
+        RedditSession.sharedSession.searchForSubredditByName(searchBar.text, pagination: nil) { (pagination, results, error) -> () in
+            if let subreddits = results?.first as? [RKSubreddit] {
+                self.foundSubreddit = subreddits.first
+            } else {
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    UIAlertView(title: "Error!",
+                        message: "Unable to find subreddit by that name.", 
+                        delegate: self,
+                        cancelButtonTitle: "OK").show()
+                })
+            }
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         self.tableView.addSubview(self.refreshControl)
         
         NSNotificationCenter.defaultCenter().addObserver(self,
@@ -121,8 +192,10 @@ class SubredditsViewController: UIViewController, UITableViewDataSource, UITable
             item.tintColor = MyRedditLabelColor
         }
         
-        self.tableView.backgroundColor = MyRedditDarkBackgroundColor
-        
+        self.tableView.backgroundView = UIView()
+        self.tableView.tableHeaderView = self.searchController.searchBar
+        self.tableView.backgroundColor = MyRedditBackgroundColor
+        self.view.backgroundColor = MyRedditBackgroundColor
     }
     
     func didUpdateSubreddits() {
@@ -207,8 +280,7 @@ class SubredditsViewController: UIViewController, UITableViewDataSource, UITable
         }
     }
     
-    func refresh(sender: AnyObject)
-    {
+    func refresh(sender: AnyObject) {
         self.fetchSubreddits()
     }
     
@@ -461,6 +533,11 @@ class SubredditsViewController: UIViewController, UITableViewDataSource, UITable
                         }
                         
                         self.toggleMaster()
+                    } else {
+                        if let subreddit = sender as? RKSubreddit {
+                            subredditViewController.subreddit = subreddit
+                            subredditViewController.front = false
+                        }
                     }
                 }
             }

@@ -19,6 +19,7 @@ class PostImageCell: PostCell {
     @IBOutlet weak var subredditLabel: UILabel!
     @IBOutlet weak var stickyLabel: UILabel!
     @IBOutlet weak var commentImageView: UIImageView!
+    @IBOutlet weak var imageHeightConstraint: NSLayoutConstraint!
     
     override func awakeFromNib() {
         super.awakeFromNib()

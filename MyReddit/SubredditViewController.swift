@@ -30,7 +30,6 @@ NSFetchedResultsControllerDelegate,
 LoadMoreHeaderDelegate,
 UIGestureRecognizerDelegate,
 JZSwipeCellDelegate,
-SearchViewControllerDelegate,
 UISplitViewControllerDelegate {
     
     var subreddit: RKSubreddit!
@@ -387,10 +386,12 @@ UISplitViewControllerDelegate {
                 } else {
                     if self.subreddit.subscriber.boolValue {
                         self.subscribeButton.title = "Unsubscribe"
-                        self.subscribeButton.setTitleTextAttributes([NSForegroundColorAttributeName: MyRedditDownvoteColor], forState: .Normal)
+                        self.subscribeButton.setTitleTextAttributes([NSForegroundColorAttributeName: MyRedditDownvoteColor, NSFontAttributeName: MyRedditTitleFont],
+                            forState: .Normal)
                     } else {
                         self.subscribeButton.title = "Subscribe"
-                        self.subscribeButton.setTitleTextAttributes([NSForegroundColorAttributeName: MyRedditUpvoteColor], forState: .Normal)
+                        self.subscribeButton.setTitleTextAttributes([NSForegroundColorAttributeName: MyRedditUpvoteColor, NSFontAttributeName: MyRedditTitleFont],
+                            forState: .Normal)
                     }
                 }
             })
@@ -463,12 +464,18 @@ UISplitViewControllerDelegate {
         
         self.hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
         
-        self.fetchLinks({ () -> () in
+        if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 1)) as? LoadMoreHeader {
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                self.hud.hide(true)
-                self.refreshControl.endRefreshing()
+                cell.startAnimating()
+                self.fetchLinks({ () -> () in
+                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                        self.hud.hide(true)
+                        self.refreshControl.endRefreshing()
+                        cell.stopAnimating()
+                    })
+                })
             })
-        })
+        }
     }
     
     private func fetchLinks(completion: () -> ()) {
@@ -548,6 +555,7 @@ UISplitViewControllerDelegate {
             
             cell.activityIndicator.hidden = true
             cell.loadMoreButton.hidden = false
+            cell.activityIndicator.tintColor = MyRedditColor
             
             return cell
         }
@@ -659,7 +667,6 @@ UISplitViewControllerDelegate {
         } else if segue.identifier == "SearchSegue" {
             if let nav = segue.destinationViewController as? UINavigationController {
                 if let controller = nav.viewControllers[0] as? SearchViewController {
-                    controller.delegate = self
                     controller.subreddit = self.subreddit
                 }
             }
@@ -684,18 +691,16 @@ UISplitViewControllerDelegate {
     }
     
     func loadMoreHeader(header: LoadMoreHeader, didTapButton sender: AnyObject) {
-        if let button = sender as? UIButton {
-            button.hidden = true
-            header.activityIndicator.hidden = false
-            header.activityIndicator.startAnimating()
-            
-            if self.pagination != nil {
-                self.fetchLinks({ () -> () in
-                    
+        header.startAnimating()
+        if self.pagination != nil {
+            self.fetchLinks({ () -> () in
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    header.stopAnimating()
                 })
-            } else {
-                self.tableView.reloadData()
-            }
+            })
+        } else {
+            self.tableView.reloadData()
+            header.stopAnimating()
         }
     }
     
@@ -803,18 +808,5 @@ UISplitViewControllerDelegate {
     
     func swipeCell(cell: JZSwipeCell!, swipeTypeChangedFrom from: JZSwipeType, to: JZSwipeType) {
         
-    }
-    
-    func searchViewController(controller: SearchViewController, didTapSubreddit subreddit: RKSubreddit) {
-        LocalyticsSession.shared().tagEvent("Search subreddit loaded")
-        dispatch_async(dispatch_get_main_queue(), { () -> Void in
-            self.front = false
-            self.subreddit = subreddit
-            self.links = Array<AnyObject>()
-            self.updateSubscribeButton()
-            self.currentCategory = nil
-            self.pagination = nil
-            self.syncLinks()
-        })
     }
 }

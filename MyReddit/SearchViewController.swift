@@ -9,10 +9,6 @@
 import Foundation
 import UIKit
 
-protocol SearchViewControllerDelegate {
-    func searchViewController(controller: SearchViewController, didTapSubreddit subreddit: RKSubreddit)
-}
-
 class SearchViewController: UIViewController,
 UITableViewDelegate,
 UITableViewDataSource,
@@ -20,18 +16,14 @@ UISearchResultsUpdating,
 UISearchDisplayDelegate,
 UISearchBarDelegate,
 JZSwipeCellDelegate,
-MultiRedditsViewControllerDelegate {
+LoadMoreHeaderDelegate {
     
-    var delegate: SearchViewControllerDelegate?
     var pagination: RKPagination?
     var optionsController: LinkShareOptionsViewController!
-    var multiReddit: RKMultireddit!
     var subreddit: RKSubreddit!
     var selectedSubreddit: RKSubreddit!
-    var isFiltering = false
     
     @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var segmentationControl: UISegmentedControl!
     @IBOutlet weak var restrictToSubredditSwitch: UIBarButtonItem!
     @IBOutlet weak var restrictSubreddit: UISwitch!
     @IBOutlet weak var listButton: UIBarButtonItem!
@@ -52,14 +44,6 @@ MultiRedditsViewControllerDelegate {
         }
     }
     
-    var users = Array<AnyObject>() {
-        didSet {
-            dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                self.tableView.reloadData()
-            })
-        }
-    }
-    
     var hud: MBProgressHUD! {
         didSet {
             hud.labelFont = MyRedditSelfTextFont
@@ -73,11 +57,20 @@ MultiRedditsViewControllerDelegate {
         controller.searchResultsUpdater = self
         controller.dimsBackgroundDuringPresentation = false
         controller.searchBar.delegate = self
+        controller.searchBar.setShowsCancelButton(false, animated: false)
         controller.hidesNavigationBarDuringPresentation = false
         controller.searchBar.sizeToFit()
         controller.searchBar.searchBarStyle = .Minimal
         controller.searchBar.returnKeyType = .Done
-        controller.searchBar.placeholder = "Search links..."
+        controller.searchBar.placeholder = "Search posts..."
+        
+        for v in controller.searchBar.subviews {
+            if let textField = v as? UITextField {
+                textField.clearButtonMode = .Always
+                break;
+            }
+        }
+        
         return controller
     }()
     
@@ -88,111 +81,56 @@ MultiRedditsViewControllerDelegate {
         self.tableView.reloadData()
         
         if count(searchController.searchBar.text) == 0 {
-            self.isFiltering = false
             self.subreddits = Array<AnyObject>()
         } else {
-            self.isFiltering = true
             self.search()
         }
     }
     
-    func searchBarSearchButtonClicked(searchBar: UISearchBar) {
-        
-    }
-    
     func search() {
-        var searchTtext = self.searchController.searchBar.text.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
+        var searchText = self.searchController.searchBar.text.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
         
-        if count(searchTtext) > 0 {
-            if self.segmentationControl.selectedSegmentIndex == 1 {
-                RedditSession.sharedSession.searchForSubredditByName(searchTtext,
-                    pagination: nil,
-                    completion: { (pagination, results, error) -> () in
-                    if error == nil {
-                        if let subreddits = results {
-                            self.subreddits = subreddits
-                        }
-                    }
-                    
-                })
-            } else if self.segmentationControl.selectedSegmentIndex == 0 {
-                if self.restrictSubreddit.on {
-                    if let subreddit = self.subreddit {
-                        RedditSession.sharedSession.searchForLinksInSubreddit(self.subreddit,
-                            searchText: searchController.searchBar.text,
-                            pagination: self.pagination,
-                            completion: { (pagination, results, error) -> () in
-                            if error == nil {
-                                if let links = results {
-                                    self.links = links
-                                }
-                            }
-                            
-                        })
-                    } else {
-                        RedditSession.sharedSession.searchForLinks(searchTtext,
-                            pagination: self.pagination,
-                            completion: { (pagination, results, error) -> () in
-                            if error == nil {
-                                if let links = results {
-                                    self.links = links
-                                }
-                            }
-                            
-                        })
-                    }
-                } else {
-                    RedditSession.sharedSession.searchForLinks(searchTtext,
+        if count(searchText) > 0 {
+            if self.restrictSubreddit.on {
+                if let subreddit = self.subreddit {
+                    RedditSession.sharedSession.searchForLinksInSubreddit(self.subreddit,
+                        searchText: searchController.searchBar.text,
                         pagination: self.pagination,
                         completion: { (pagination, results, error) -> () in
-                        if error == nil {
-                            if let links = results {
-                                self.links = links
+                            if error == nil {
+                                if let links = results {
+                                    self.links.extend(links)
+                                    self.pagination = pagination
+                                }
                             }
-                        }
+                            
+                    })
+                } else {
+                    RedditSession.sharedSession.searchForLinks(searchText,
+                        pagination: self.pagination,
+                        completion: { (pagination, results, error) -> () in
+                            if error == nil {
+                                if let links = results {
+                                    self.links.extend(links)
+                                    self.pagination = pagination
+                                }
+                            }
+                            
                     })
                 }
             } else {
-                RedditSession.sharedSession.searchForUser(searchTtext,
+                RedditSession.sharedSession.searchForLinks(searchText,
+                    pagination: self.pagination,
                     completion: { (pagination, results, error) -> () in
-                    if error == nil {
-                        if let users = results {
-                            self.users = users
+                        if error == nil {
+                            if let links = results {
+                                self.links.extend(links)
+                                self.pagination = pagination
+                            }
                         }
-                    }
                 })
             }
         }
-    }
-    
-    @IBAction func segmentationControlValueChanged(sender: AnyObject) {
-        if self.segmentationControl.selectedSegmentIndex == 0 {
-            self.restrictToSubredditSwitch.enabled = true
-            self.searchController.searchBar.placeholder = "Search links..."
-            
-            LocalyticsSession.shared().tagEvent("Link search filter changed")
-            
-        } else if self.segmentationControl.selectedSegmentIndex == 1 {
-            self.restrictToSubredditSwitch.enabled = false
-            self.searchController.searchBar.placeholder = "Search subreddits..."
-            
-            LocalyticsSession.shared().tagEvent("Subreddit search filter changed")
-        } else {
-            self.restrictToSubredditSwitch.enabled = false
-            self.searchController.searchBar.placeholder = "Search users..."
-            
-            LocalyticsSession.shared().tagEvent("Users search filter changed")
-        }
-        
-        self.subreddits = Array<AnyObject>()
-        self.links = Array<AnyObject>()
-        self.tableView.reloadData()
-    }
-    
-    func searchBarCancelButtonClicked(searchBar: UISearchBar) {
-        self.isFiltering = false
-        
-        LocalyticsSession.shared().tagEvent("Search cancelled")
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -210,11 +148,7 @@ MultiRedditsViewControllerDelegate {
         
         textFieldInsideSearchBar?.textColor = MyRedditLabelColor
         
-        self.tableView.tableFooterView = UIView()
-        
-        dispatch_async(dispatch_get_main_queue(), { () -> Void in
-            self.searchController.searchBar.becomeFirstResponder()
-        })
+        self.view.backgroundColor = MyRedditBackgroundColor
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -222,26 +156,20 @@ MultiRedditsViewControllerDelegate {
         
         LocalyticsSession.shared().tagScreen("Search")
         
-        if let delegateObj = self.delegate as? PostTableViewController {
-            self.segmentationControl.selectedSegmentIndex = 1
-            self.segmentationControl.setEnabled(false, forSegmentAtIndex: 0)
-            self.segmentationControl.setEnabled(false, forSegmentAtIndex: 2)
-            self.searchController.active = true
-            self.searchController.searchBar.placeholder = "Search subreddits..."
+        var restrictToSubreddit: UIBarButtonItem!
+        if let subreddit = self.subreddit {
+            restrictToSubreddit = UIBarButtonItem(title: "/r/\(subreddit.name)", style: .Plain, target: self, action: nil)
         } else {
-            var restrictToSubreddit: UIBarButtonItem!
-            if let subreddit = self.subreddit {
-                restrictToSubreddit = UIBarButtonItem(title: "/r/\(subreddit.name)", style: .Plain, target: self, action: nil)
-            } else {
-                restrictToSubreddit = UIBarButtonItem(title: "front", style: .Plain, target: self, action: nil)
-            }
-            
-            self.navigationItem.rightBarButtonItems = [restrictToSubredditSwitch, restrictToSubreddit]
+            restrictToSubreddit = UIBarButtonItem(title: "front", style: .Plain, target: self, action: nil)
         }
+        
+        self.navigationItem.rightBarButtonItems = [restrictToSubredditSwitch, restrictToSubreddit]
         
         if let splitViewController = self.splitViewController {
             self.listButton.action = self.splitViewController!.displayModeButtonItem().action
         }
+        
+        self.tableView.tableFooterView = UIView()
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -257,19 +185,11 @@ MultiRedditsViewControllerDelegate {
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if self.segmentationControl.selectedSegmentIndex == 1 {
-            if self.subreddits.count > 0 {
-                if let searchedSubreddits = self.subreddits[0] as? Array<RKSubreddit> {
-                    return searchedSubreddits.count
-                }
-            }
-            
-            return self.subreddits.count ?? 0
-        } else if self.segmentationControl.selectedSegmentIndex == 0 {
-            return self.links.count ?? 0
-        } else {
-            return self.users.count ?? 0
+        if self.links.count > 0 {
+            return self.links.count + 1
         }
+        
+        return 0
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -278,99 +198,37 @@ MultiRedditsViewControllerDelegate {
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
-        if self.segmentationControl.selectedSegmentIndex == 1 {
-            var cell = tableView.dequeueReusableCellWithIdentifier("SubredditCell") as! SubredditCell
-            
-            if let subreddit = self.subreddits[0][indexPath.row] as? RKSubreddit {
-                cell.rkSubreddit = subreddit
-            }
-            
-            return cell
-        } else if self.segmentationControl.selectedSegmentIndex == 0 {
-            var cell = tableView.dequeueReusableCellWithIdentifier("PostImageCell") as! PostCell
-            
-            if let link = self.links[indexPath.row] as? RKLink {
-                if link.isImageLink() || link.media != nil || link.domain == "imgur.com" {
-                    cell = tableView.dequeueReusableCellWithIdentifier("PostImageCell") as! PostImageCell
-                    
-                    if indexPath.row == 0 {
-                        cell = tableView.dequeueReusableCellWithIdentifier("TitleCell") as! TitleCell
-                    }
-                    
-                } else {
-                    cell = tableView.dequeueReusableCellWithIdentifier("TitleCell") as! TitleCell
-                }
-                
-                cell.link = link
-            }
-            
+        if indexPath.row == self.links.count {
+            var cell =  tableView.dequeueReusableCellWithIdentifier("LoadMoreHeader") as! LoadMoreHeader
             cell.delegate = self
-            
-            return cell
-        } else {
-            var cell = tableView.dequeueReusableCellWithIdentifier("AccountCell") as! UserInfoCell
-            if let user = self.users[indexPath.row] as? RKUser {
-                cell.user = user
-            }
+            cell.stopAnimating()
             return cell
         }
+        
+        var cell = tableView.dequeueReusableCellWithIdentifier("PostImageCell") as! PostCell
+        
+        if let link = self.links[indexPath.row] as? RKLink {
+            if link.isImageLink() || link.media != nil || link.domain == "imgur.com" {
+                cell = tableView.dequeueReusableCellWithIdentifier("PostImageCell") as! PostImageCell
+            } else {
+                cell = tableView.dequeueReusableCellWithIdentifier("TitleCell") as! TitleCell
+            }
+            
+            cell.link = link
+        }
+        
+        cell.delegate = self
+        
+        return cell
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        if self.segmentationControl.selectedSegmentIndex == 1 {
-            if let subreddit = self.subreddits[0][indexPath.row] as? RKSubreddit {
-                
-                if let delegateObj = self.delegate as? PostTableViewController {
-                    self.searchController.active = false
-                    self.dismissViewControllerAnimated(true, completion: { () -> Void in
-                        self.delegate?.searchViewController(self, didTapSubreddit: subreddit)
-                    })
-                } else {
-                    var alert = UIAlertController(title: "Add subreddit",
-                        message: "Would you like to add this subreddit to a multireddit?",
-                        preferredStyle: .Alert)
-                    alert.addAction(UIAlertAction(title: "Yes", style: .Default, handler: { (a) -> Void in
-                        self.selectedSubreddit = subreddit
-                        self.searchController.active = false
-                        if !SettingsManager.defaultManager.purchased {
-                            self.performSegueWithIdentifier("PurchaseSegue", sender: self)
-                        } else {
-                            self.performSegueWithIdentifier("MultiRedditSegue", sender: self)
-                        }
-                    }))
-                    
-                    alert.addAction(UIAlertAction(title: "See posts", style: .Cancel, handler: { (a) -> Void in
-                        if let splitViewController = self.splitViewController {
-                            self.performSegueWithIdentifier("SearchSubredditSegue", sender: subreddit)
-                        } else {
-                            self.searchController.active = false
-                            self.dismissViewControllerAnimated(true, completion: { () -> Void in
-                                self.delegate?.searchViewController(self, didTapSubreddit: subreddit)
-                            })
-                        }
-                    }))
-                    
-                    alert.present(animated: true, completion: { () -> Void in
-                        
-                    })
-                }
-            }
-        } else if self.segmentationControl.selectedSegmentIndex == 0 {
-            self.tableView.deselectRowAtIndexPath(indexPath, animated: true)
-            if indexPath.section == 0 {
-                if let link = self.links[indexPath.row] as? RKLink {
-                    if link.selfPost {
-                        self.performSegueWithIdentifier("CommentsSegue", sender: link)
-                    } else {
-                        self.performSegueWithIdentifier("SubredditLink", sender: link)
-                    }
-                }
-            }
-        } else {
-            if indexPath.section == 0 {
-                if let user = self.users[indexPath.row] as? RKUser {
-                    self.performSegueWithIdentifier("UserSegue", sender: user)
-                }
+        self.tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        if let link = self.links[indexPath.row] as? RKLink {
+            if link.selfPost {
+                self.performSegueWithIdentifier("CommentsSegue", sender: link)
+            } else {
+                self.performSegueWithIdentifier("SubredditLink", sender: link)
             }
         }
     }
@@ -380,29 +238,6 @@ MultiRedditsViewControllerDelegate {
             if let link = sender as? RKLink {
                 if let controller = segue.destinationViewController as? LinkViewController {
                     controller.link = link
-                }
-            }
-        } else if segue.identifier == "SearchSubredditSegue" {
-            if let controller = segue.destinationViewController as? NavBarController {
-                if let subredditViewController = controller.viewControllers[0] as? SubredditViewController {
-                    if let subreddit = sender as? RKSubreddit {
-                        subredditViewController.subreddit = subreddit
-                        subredditViewController.front = false
-                    }
-                }
-            }
-        } else if segue.identifier == "MultiRedditSegue" {
-            if let controller = segue.destinationViewController as? UINavigationController {
-                if let subredditViewController = controller.viewControllers[0] as? MultiRedditsViewController {
-                    subredditViewController.delegate = self
-                }
-            }
-        } else if segue.identifier == "UserSegue" {
-            if let controller = segue.destinationViewController as? UINavigationController {
-                if let profileController = controller.viewControllers[0] as? ProfileViewController {
-                    if let user = sender as? RKUser {
-                        profileController.user = user
-                    }
                 }
             }
         } else {
@@ -541,5 +376,10 @@ MultiRedditsViewControllerDelegate {
                     cancelButtonTitle: "Ok").show()
             }
         })
+    }
+    
+    func loadMoreHeader(header: LoadMoreHeader, didTapButton sender: AnyObject) {
+        header.startAnimating()
+        self.search()
     }
 }

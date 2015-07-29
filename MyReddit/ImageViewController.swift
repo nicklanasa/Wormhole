@@ -42,6 +42,7 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
                 UIAlertView(title: "Error!", message: "Unable to load image.", delegate: self, cancelButtonTitle: "Ok").show()
             } else {
                 self.imageView.image = image
+                self.imageView.center = self.scrollView.center
             }
             self.indicator.stopAnimating()
         }

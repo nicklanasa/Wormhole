@@ -14,7 +14,11 @@ enum PostType: Int {
     case Text
 }
 
-class PostTableViewController: UITableViewController, PostTypeCellDelegate, PostSubredditCellDelegate, LinkCellDelegate, SearchViewControllerDelegate, UIImagePickerControllerDelegate,
+class PostTableViewController: UITableViewController,
+PostTypeCellDelegate,
+PostSubredditCellDelegate,
+LinkCellDelegate,
+UIImagePickerControllerDelegate,
 UINavigationControllerDelegate {
     
     var selectedImage: UIImage? {
@@ -54,6 +58,8 @@ UINavigationControllerDelegate {
         tableView.rowHeight = UITableViewAutomaticDimension
         
         self.tableView.reloadData()
+        
+        self.view.backgroundColor = MyRedditBackgroundColor
         
         if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 1, inSection: 0)) as? PostSubredditCell {
             cell.subredditTextField.becomeFirstResponder()
@@ -258,7 +264,7 @@ UINavigationControllerDelegate {
         if segue.identifier == "SearchSegue" {
             if let nav = segue.destinationViewController as? UINavigationController {
                 if let controller = nav.viewControllers[0] as? SearchViewController {
-                    controller.delegate = self
+                    //controller.delegate = self
                 }
             }
         }

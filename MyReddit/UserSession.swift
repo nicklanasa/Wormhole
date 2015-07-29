@@ -94,6 +94,7 @@ class UserSession {
         
         UISwitch.appearance().onTintColor = MyRedditColor
         
+        UINavigationBar.appearance().translucent = false
         UINavigationBar.appearance().tintColor = MyRedditLabelColor
         UINavigationBar.appearance().backgroundColor = MyRedditBackgroundColor
         UINavigationBar.appearance().barTintColor = MyRedditBackgroundColor
@@ -130,7 +131,7 @@ class UserSession {
         
         UIRefreshControl.appearance().tintColor = MyRedditColor
         
-        UIActivityIndicatorView.appearance().tintColor = MyRedditLabelColor
+        UIActivityIndicatorView.appearance().tintColor = MyRedditColor
         
         UISegmentedControl.appearance().setTitleTextAttributes([NSFontAttributeName: MyRedditSelfTextFont, NSForegroundColorAttributeName : MyRedditLabelColor], forState: .Normal)
     }
@@ -153,6 +154,7 @@ class UserSession {
         
         UISwitch.appearance().onTintColor = MyRedditColor
         
+        UINavigationBar.appearance().translucent = false
         UINavigationBar.appearance().tintColor = MyRedditLabelColor
         UINavigationBar.appearance().backgroundColor = MyRedditBackgroundColor
         UINavigationBar.appearance().barTintColor = MyRedditBackgroundColor
@@ -184,7 +186,7 @@ class UserSession {
         
         UITextField.appearance().font = MyRedditSelfTextFont
         
-        UIActivityIndicatorView.appearance().tintColor = UIColor.lightGrayColor()
+        UIActivityIndicatorView.appearance().tintColor = MyRedditColor
         
         UIRefreshControl.appearance().tintColor = MyRedditColor
         UISegmentedControl.appearance().setTitleTextAttributes([NSFontAttributeName: MyRedditSelfTextFont, NSForegroundColorAttributeName : MyRedditLabelColor], forState: .Normal)

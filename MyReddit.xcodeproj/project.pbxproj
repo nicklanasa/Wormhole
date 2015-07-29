@@ -162,6 +162,10 @@
 		E00B35E01B646F9700AD096D /* ReadableContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = E00B35DE1B646F9700AD096D /* ReadableContent.swift */; };
 		E00B35E21B648D6D00AD096D /* GalleryImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E00B35E11B648D6D00AD096D /* GalleryImageCollectionViewCell.swift */; };
 		E00B35E31B648D6D00AD096D /* GalleryImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E00B35E11B648D6D00AD096D /* GalleryImageCollectionViewCell.swift */; };
+		E0183FE01B6863C2008221CB /* DismissSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0183FDF1B6863C2008221CB /* DismissSegue.swift */; };
+		E0183FE11B6863C2008221CB /* DismissSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0183FDF1B6863C2008221CB /* DismissSegue.swift */; };
+		E0183FE31B686799008221CB /* UIApplication+RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0183FE21B686799008221CB /* UIApplication+RootViewController.swift */; };
+		E0183FE41B686799008221CB /* UIApplication+RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0183FE21B686799008221CB /* UIApplication+RootViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -264,6 +268,8 @@
 		CEF88E0E1AFD036D00AF8B87 /* LinkShareOptionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LinkShareOptionsViewController.swift; sourceTree = "<group>"; };
 		E00B35DE1B646F9700AD096D /* ReadableContent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReadableContent.swift; sourceTree = "<group>"; };
 		E00B35E11B648D6D00AD096D /* GalleryImageCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GalleryImageCollectionViewCell.swift; sourceTree = "<group>"; };
+		E0183FDF1B6863C2008221CB /* DismissSegue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DismissSegue.swift; sourceTree = "<group>"; };
+		E0183FE21B686799008221CB /* UIApplication+RootViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIApplication+RootViewController.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -450,6 +456,7 @@
 		CE712F171AC302EE0042B071 /* Data */ = {
 			isa = PBXGroup;
 			children = (
+				E0183FE21B686799008221CB /* UIApplication+RootViewController.swift */,
 				CE712F061AC2F7200042B071 /* MyReddit.xcdatamodeld */,
 				E00B35DE1B646F9700AD096D /* ReadableContent.swift */,
 				CE35881D1AC305E700294684 /* RedditSession.swift */,
@@ -464,6 +471,7 @@
 		CE8C9EFE1B1CDA8400DD2235 /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
+				E0183FDF1B6863C2008221CB /* DismissSegue.swift */,
 				CE4B9E961AE1858C00018742 /* NavBarController.swift */,
 				CEB866111AF01FC200BE850F /* WebViewController.swift */,
 				CE769F261AF5A6CB00031657 /* SettingsTableViewController.swift */,
@@ -750,6 +758,7 @@
 				CE3AA46C1B0549E9000DEDD2 /* NavBarController.swift in Sources */,
 				CE3AA46D1B0549E9000DEDD2 /* CommentsViewController.swift in Sources */,
 				CE3AA46E1B0549E9000DEDD2 /* String+Helpers.swift in Sources */,
+				E0183FE41B686799008221CB /* UIApplication+RootViewController.swift in Sources */,
 				CE3AA46F1B0549E9000DEDD2 /* JZSwipeCell+Reset.swift in Sources */,
 				CE3AA4701B0549E9000DEDD2 /* LoginViewController.swift in Sources */,
 				CE3AA4711B0549E9000DEDD2 /* UIAlertController+Helpers.swift in Sources */,
@@ -812,6 +821,7 @@
 				CE3AA4AB1B0549E9000DEDD2 /* Subreddit.swift in Sources */,
 				CE3AA4AC1B0549E9000DEDD2 /* PasswordCell.swift in Sources */,
 				CE3AA4AD1B0549E9000DEDD2 /* UIimage+Helpers.swift in Sources */,
+				E0183FE11B6863C2008221CB /* DismissSegue.swift in Sources */,
 				E00B35E31B648D6D00AD096D /* GalleryImageCollectionViewCell.swift in Sources */,
 				CE3AA4AE1B0549E9000DEDD2 /* ProfileViewController.swift in Sources */,
 				CE3AA4AF1B0549E9000DEDD2 /* LinkCell.swift in Sources */,
@@ -860,6 +870,7 @@
 				CEA3E3001AFAE65B008323A6 /* GalleryController.swift in Sources */,
 				CE769F291AF5A8BA00031657 /* SettingsManager.swift in Sources */,
 				CE712F271AC304610042B071 /* Comment.swift in Sources */,
+				E0183FE01B6863C2008221CB /* DismissSegue.swift in Sources */,
 				CE73F2471AFBDC170094DCB8 /* UILabel+Helpers.swift in Sources */,
 				CE3588201AC30DEE00294684 /* SubredditViewController.swift in Sources */,
 				CEF88E0F1AFD036D00AF8B87 /* LinkShareOptionsViewController.swift in Sources */,
@@ -880,6 +891,7 @@
 				01D6646E1AC33C6600BE56EA /* SubredditsViewController.swift in Sources */,
 				CEB866141AF05DDF00BE850F /* SubredditsPageViewController.swift in Sources */,
 				CE769F271AF5A6CB00031657 /* SettingsTableViewController.swift in Sources */,
+				E0183FE31B686799008221CB /* UIApplication+RootViewController.swift in Sources */,
 				CE25FBDA1AF9485900A40C3B /* PostTextCell.swift in Sources */,
 				CE538FAC1AF3E850008050B6 /* SearchViewController.swift in Sources */,
 				CEC59EAC1AF1B0B600D0D62B /* AddCommentViewController.swift in Sources */,
