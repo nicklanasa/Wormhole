@@ -405,10 +405,15 @@ UICollectionViewDelegate {
     
     // The cell that is returned must be retrieved from a call to -dequeueReusableCellWithReuseIdentifier:forIndexPath:
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        var cell = collectionView.dequeueReusableCellWithReuseIdentifier("ImageCell", forIndexPath: indexPath) as! GalleryImageCollectionViewCell
-        var image = self.images?[indexPath.row] as? IMGImage
-        var thumbnailImageURL = image?.URLWithSize(IMGSize(rawValue: IMGSize.MediumThumbnailSize.rawValue)!)
-        cell.imageView.sd_setImageWithURL(thumbnailImageURL)
+        var cell = collectionView.dequeueReusableCellWithReuseIdentifier("ImageCell",
+            forIndexPath: indexPath) as! GalleryImageCollectionViewCell
+        if let imgImage = self.images?[indexPath.row] as? IMGImage {
+            var thumbnailImageURL = imgImage.URLWithSize(IMGSize(rawValue: IMGSize.MediumThumbnailSize.rawValue)!)
+            cell.imageView.sd_setImageWithURL(thumbnailImageURL)
+        } else if let imageURL = self.images?[indexPath.row] as? NSURL {
+            cell.imageView.sd_setImageWithURL(imageURL)
+        }
+        
         return cell
     }
     

@@ -111,8 +111,8 @@ class CommentCell: JZSwipeCell, UITextViewDelegate {
             self.commentTextView.backgroundColor = MyRedditBackgroundColor
             self.contentView.backgroundColor = MyRedditBackgroundColor
             
-            self.leadingTextViewConstraint.constant = 0
-            self.leadinginfoLabelConstraint.constant = 0
+            self.leadingTextViewConstraint.constant = 15
+            self.leadinginfoLabelConstraint.constant = 15
         }
     }
     
@@ -132,15 +132,10 @@ class CommentCell: JZSwipeCell, UITextViewDelegate {
         var timeAgo = self.dateFormatter.stringFromDate(self.comment.created)
         
         var info = "\(comment.author) - \(timeAgo)"
-       
-        if isLinkAuthor {
-            var infoString = NSMutableAttributedString(string: info)
-            var attrs = [NSForegroundColorAttributeName : isLinkAuthor ? MyRedditColor : MyRedditLabelColor]
-            infoString.addAttributes(attrs, range: NSMakeRange(0, count(comment.author)))
-            self.infoLabel.attributedText = infoString
-        } else {
-            self.infoLabel.text = info
-        }
+        var infoString = NSMutableAttributedString(string: info)
+        var attrs = [NSForegroundColorAttributeName : isLinkAuthor ? MyRedditColor : MyRedditLabelColor]
+        infoString.addAttributes(attrs, range: NSMakeRange(0, count(comment.author)))
+        self.infoLabel.attributedText = infoString
         
         self.scoreLabel.text = comment.score.description
         
@@ -158,6 +153,9 @@ class CommentCell: JZSwipeCell, UITextViewDelegate {
         var indentPoints: CGFloat = CGFloat(self.indentationLevel) * self.indentationWidth
         self.leadingTextViewConstraint.constant = indentPoints
         self.leadinginfoLabelConstraint.constant = indentPoints
+        
+        self.commentTextView.font = UIFont(name: self.commentTextView.font.fontName,
+            size: SettingsManager.defaultManager.titleFontSizeForDefaultTextSize)
     }
     
     @IBOutlet weak var repliesLabel: UILabel!

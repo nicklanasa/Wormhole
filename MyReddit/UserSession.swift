@@ -119,6 +119,10 @@ class UserSession {
         UITableView.appearance().backgroundView = nil
         UITableView.appearance().sectionIndexBackgroundColor = UIColor.clearColor()
         
+        var backgroundView = UIView()
+        backgroundView.backgroundColor = UIColor.lightGrayColor().colorWithAlphaComponent(0.7)
+        UITableViewCell.appearance().selectedBackgroundView = backgroundView
+        
         UITableViewCell.appearance().backgroundColor = MyRedditBackgroundColor
         
         UIImageView.appearance().backgroundColor = UIColor.clearColor()
@@ -175,6 +179,10 @@ class UserSession {
         UITableView.appearance().separatorColor = UIColor.lightGrayColor()
         UITableView.appearance().backgroundView = nil
         UITableView.appearance().sectionIndexBackgroundColor = UIColor.clearColor()
+        
+        var backgroundView = UIView()
+        backgroundView.backgroundColor = UIColor.lightGrayColor().colorWithAlphaComponent(0.7)
+        UITableViewCell.appearance().selectedBackgroundView = backgroundView
         
         UIImageView.appearance().backgroundColor = UIColor.clearColor()
         

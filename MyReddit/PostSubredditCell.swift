@@ -28,6 +28,8 @@ class PostSubredditCell: UITableViewCell {
             var image = UIImage(named: "CircleAdd")?.imageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal)
             self.addbutton.setImage(image, forState: .Normal)
         }
+        
+        self.subredditTextField.textColor = MyRedditLabelColor
     }
     
     @IBOutlet weak var subredditTextField: UITextField!

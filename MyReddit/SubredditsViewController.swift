@@ -63,7 +63,7 @@ UISearchBarDelegate {
         controller.hidesNavigationBarDuringPresentation = false
         controller.searchBar.sizeToFit()
         controller.searchBar.searchBarStyle = .Minimal
-        controller.searchBar.returnKeyType = .Done
+        controller.searchBar.returnKeyType = .Search
         controller.searchBar.placeholder = "Search subreddits..."
         
         var textFieldInsideSearchBar = controller.searchBar.valueForKey("searchField") as? UITextField
@@ -416,6 +416,14 @@ UISearchBarDelegate {
                         }
                     }
             })
+            
+            if indexPath.section == 0 {
+                let editAction = UITableViewRowAction(style: UITableViewRowActionStyle.Normal, title: "Edit", handler: { (action, indexPath) -> Void in
+                       
+                })
+                
+                return [deleteAction, editAction]
+            }
             
             return [deleteAction]
         }

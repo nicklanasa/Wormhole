@@ -260,15 +260,16 @@ AddCommentViewControllerDelegate {
             cell.link = self.link
         } else {
             var commentDictionary = self.self.commentsBySection?[indexPath.section - 1] as! [String : AnyObject]
-            cell.indentationLevel = commentDictionary["level"] as! Int
-            cell.indentationWidth = 10
+            var indent = commentDictionary["level"] as! Int
+            cell.indentationLevel = indent + 1
+            cell.indentationWidth = 15
             comment = commentDictionary["comment"] as! RKComment
             
             cell.configueForComment(comment: comment,
                 isLinkAuthor: self.link.author == comment.author)
             
             cell.separatorInset = UIEdgeInsets(top: 0,
-                left: (CGFloat(cell.indentationLevel) * cell.indentationWidth) + 5,
+                left: self.tableView.frame.size.width,
                 bottom: 0,
                 right: 0)
         }
@@ -280,7 +281,9 @@ AddCommentViewControllerDelegate {
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        
+        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        })
         if indexPath.section != 0 {
             var remove = false
             
@@ -351,8 +354,6 @@ AddCommentViewControllerDelegate {
                 self.tableView.reloadData()
             }
         }
-        
-        tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
@@ -418,6 +419,7 @@ AddCommentViewControllerDelegate {
                             self.upVote(object)
                         } else if swipeType.value == JZSwipeTypeLongLeft.value {
                             if indexPath.section != 0 {
+                                self.hud.hide(true)
                                 self.performSegueWithIdentifier("AddCommentSegue",
                                     sender: object)
                             } else {

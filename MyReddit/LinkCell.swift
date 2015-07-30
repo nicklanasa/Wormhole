@@ -28,6 +28,8 @@ class LinkCell: UITableViewCell {
             var image = UIImage(named: "Camera")?.imageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal)
             self.addImageButton.setImage(image, forState: .Normal)
         }
+        
+        self.linkTextField.textColor = MyRedditLabelColor
     }
     
     @IBOutlet weak var linkTextField: UITextField!

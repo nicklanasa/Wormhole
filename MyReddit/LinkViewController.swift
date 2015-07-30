@@ -13,14 +13,21 @@ class LinkViewController: UIViewController, UITextViewDelegate {
     
     var link: RKLink!
     var optionsController: LinkShareOptionsViewController!
+    var readerBarButtonItem: UIBarButtonItem!
+    var saveButtonItem: UIBarButtonItem!
     
     var content: ReadableContent! {
         didSet {
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
                 if self.content.content == nil {
-                    self.textView.removeFromSuperview()
+                    UIAlertView(title: "Error!",
+                        message: "Unable to get readable content!",
+                        delegate: self,
+                        cancelButtonTitle: "OK").show()
+                    self.view.insertSubview(self.textView, belowSubview: self.webView)
                     self.setupWebView()
                 } else {
+                    self.view.insertSubview(self.webView, belowSubview: self.textView)
                     self.webView.hidden = true
                     self.textView.hidden = false
                     
@@ -28,6 +35,13 @@ class LinkViewController: UIViewController, UITextViewDelegate {
                     
                     self.textView.textColor = MyRedditLabelColor
                     self.textView.font = MyRedditSelfTextFont
+                    
+                    self.readerBarButtonItem = UIBarButtonItem(image: UIImage(named: "ReaderSelected"),
+                        style: .Plain,
+                        target: self,
+                        action: "hideReader")
+                    
+                    self.navigationItem.rightBarButtonItems = [self.readerBarButtonItem, self.saveButtonItem]
                 }
             })
         }
@@ -110,25 +124,19 @@ class LinkViewController: UIViewController, UITextViewDelegate {
         self.postTitleView.backgroundColor = MyRedditBackgroundColor
         self.postTitleLabel.textColor = MyRedditLabelColor
         
-        self.webView.hidden = true
         self.textView.hidden = true
         self.textView.delegate = self
         
-        RedditSession.sharedSession.readableContentWithURL(self.link.URL.absoluteString!, completion: { (content, error) -> () in
-            if error != nil {
-                self.setupWebView()
-            } else {
-                self.content = content
-            }
-        })
-        
         self.configureNav()
+        
+        self.setupWebView()
     }
     
     private func setupWebView() {
         
+        self.view.insertSubview(self.textView, belowSubview: self.webView)
         self.webView.hidden = false
-        self.textView.hidden = false
+        self.textView.hidden = true
         
         if let link = self.link {
             let request = NSURLRequest(URL: link.URL)
@@ -146,10 +154,17 @@ class LinkViewController: UIViewController, UITextViewDelegate {
             
             NSUserDefaults.standardUserDefaults().setObject(true, forKey: self.link.identifier)
             
-            self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "Saved"),
+            self.readerBarButtonItem = UIBarButtonItem(image: UIImage(named: "Reader"),
+                style: .Plain,
+                target: self,
+                action: "showReader")
+            
+            self.saveButtonItem = UIBarButtonItem(image: UIImage(named: "Saved"),
                 style: .Plain,
                 target: self,
                 action: "saveLink")
+            
+            self.navigationItem.rightBarButtonItems = [self.readerBarButtonItem, self.saveButtonItem]
             
             if self.link.saved {
                 self.navigationItem.rightBarButtonItem?.tintColor = MyRedditColor
@@ -183,6 +198,31 @@ class LinkViewController: UIViewController, UITextViewDelegate {
         navLabel.numberOfLines = 2
         navLabel.sizeToFit()
         self.navigationItem.titleView = navLabel
+    }
+    
+    func showReader() {
+        RedditSession.sharedSession.readableContentWithURL(self.link.URL.absoluteString!, completion: { (content, error) -> () in
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                if error != nil {
+                    UIAlertView(title: "Error!",
+                        message: "Unable to get readable content!",
+                        delegate: self,
+                        cancelButtonTitle: "OK").show()
+                    self.setupWebView()
+                } else {
+                    self.content = content
+                }
+            })
+        })
+    }
+    
+    func hideReader() {
+        self.readerBarButtonItem = UIBarButtonItem(image: UIImage(named: "Reader"),
+            style: .Plain,
+            target: self,
+            action: "showReader")
+        self.navigationItem.rightBarButtonItems = [self.readerBarButtonItem, self.saveButtonItem]
+        self.setupWebView()
     }
     
     func saveLink() {
