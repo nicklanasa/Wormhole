@@ -312,8 +312,8 @@ class RedditSession {
         UIApplication.sharedApplication().networkActivityIndicatorVisible = true
         RKClient.sharedClient().searchForSubredditsByName(name, pagination: pagination) { (result, pagination, error) -> Void in
             UIApplication.sharedApplication().networkActivityIndicatorVisible = false
-            if let subreddit = result {
-                completion(pagination: pagination, results: [subreddit], error: error)
+            if let subreddits = result {
+                completion(pagination: pagination, results: subreddits, error: error)
             } else {
                 completion(pagination: pagination, results: nil, error: error)
             }

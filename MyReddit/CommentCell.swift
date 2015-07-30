@@ -30,8 +30,8 @@ class CommentCell: JZSwipeCell, UITextViewDelegate {
     override func layoutSubviews() {
         super.layoutSubviews()
         
+        self.contentView.setNeedsUpdateConstraints()
         self.contentView.setNeedsLayout()
-        self.contentView.layoutIfNeeded()
     }
     
     override func awakeFromNib() {
@@ -70,20 +70,15 @@ class CommentCell: JZSwipeCell, UITextViewDelegate {
                     range: nil)
             }
             
-            parser.paragraphFont = MyRedditSelfTextFont
-            parser.boldFontName = MyRedditCommentTextBoldFont.familyName
-            parser.boldItalicFontName = MyRedditCommentTextItalicFont.familyName
-            parser.italicFontName = MyRedditCommentTextItalicFont.familyName
-            parser.linkFontName = MyRedditCommentTextBoldFont.familyName
-            
             var title = link.title.stringByReplacingOccurrencesOfString("&gt;", withString: ">", options: nil, range: nil)
             
-            var parsedString = NSMutableAttributedString(attributedString: self.parser.attributedStringFromMarkdownString("\(title)\(selfText)"))
+            var parsedString = NSMutableAttributedString(string: "\(title)\(selfText)")
             var titleAttr = [NSForegroundColorAttributeName : MyRedditLabelColor]
             var selfTextAttr = [NSForegroundColorAttributeName : MyRedditSelfTextLabelColor]
+            var fontAttr = [NSFontAttributeName : MyRedditSelfTextFont]
             parsedString.addAttributes(selfTextAttr, range: NSMakeRange(0, count(parsedString.string)))
             parsedString.addAttributes(titleAttr, range: NSMakeRange(0, count(link.title)))
-            
+            parsedString.addAttributes(fontAttr, range: NSMakeRange(0, count(parsedString.string)))
             self.commentTextView.attributedText = parsedString
             
             var timeAgo = link.created.timeAgo()
@@ -105,9 +100,6 @@ class CommentCell: JZSwipeCell, UITextViewDelegate {
                 self.scoreLabel.textColor = UIColor.lightGrayColor()
             }
             
-            self.commentTextView.font = UIFont(name: self.commentTextView.font.fontName,
-                size: SettingsManager.defaultManager.titleFontSizeForDefaultTextSize)
-            
             self.commentTextView.backgroundColor = MyRedditBackgroundColor
             self.contentView.backgroundColor = MyRedditBackgroundColor
             
@@ -123,7 +115,6 @@ class CommentCell: JZSwipeCell, UITextViewDelegate {
     func configueForComment(#comment: RKComment, isLinkAuthor: Bool) {
         
         self.comment = comment
-        
         let body = comment.body.stringByReplacingOccurrencesOfString("&gt;", withString: ">", options: nil, range: nil)
         self.commentTextView.text = body
         
@@ -132,10 +123,15 @@ class CommentCell: JZSwipeCell, UITextViewDelegate {
         var timeAgo = self.dateFormatter.stringFromDate(self.comment.created)
         
         var info = "\(comment.author) - \(timeAgo)"
-        var infoString = NSMutableAttributedString(string: info)
-        var attrs = [NSForegroundColorAttributeName : isLinkAuthor ? MyRedditColor : MyRedditLabelColor]
-        infoString.addAttributes(attrs, range: NSMakeRange(0, count(comment.author)))
-        self.infoLabel.attributedText = infoString
+       
+        if isLinkAuthor {
+            var infoString = NSMutableAttributedString(string: info)
+            var attrs = [NSForegroundColorAttributeName : isLinkAuthor ? MyRedditColor : MyRedditLabelColor]
+            infoString.addAttributes(attrs, range: NSMakeRange(0, count(comment.author)))
+            self.infoLabel.attributedText = infoString
+        } else {
+            self.infoLabel.text = info
+        }
         
         self.scoreLabel.text = comment.score.description
         
@@ -147,15 +143,14 @@ class CommentCell: JZSwipeCell, UITextViewDelegate {
             self.scoreLabel.textColor = UIColor.lightGrayColor()
         }
     
+        self.commentTextView.font = MyRedditCommentTextFont
         self.commentTextView.backgroundColor = MyRedditBackgroundColor
         self.contentView.backgroundColor = MyRedditBackgroundColor
+        self.infoLabel.backgroundColor = MyRedditBackgroundColor
         
         var indentPoints: CGFloat = CGFloat(self.indentationLevel) * self.indentationWidth
         self.leadingTextViewConstraint.constant = indentPoints
         self.leadinginfoLabelConstraint.constant = indentPoints
-        
-        self.commentTextView.font = UIFont(name: self.commentTextView.font.fontName,
-            size: SettingsManager.defaultManager.titleFontSizeForDefaultTextSize)
     }
     
     @IBOutlet weak var repliesLabel: UILabel!

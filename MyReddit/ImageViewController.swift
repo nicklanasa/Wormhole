@@ -25,13 +25,14 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
     var pageIndex: Int!
 
     override func viewDidDisappear(animated: Bool) {
+        self.imageView.backgroundColor = MyRedditBackgroundColor
         self.imageView.image = nil
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         LocalyticsSession.shared().tagScreen("GalleryImage")
-        
+        self.imageView.backgroundColor = MyRedditBackgroundColor
         self.view.backgroundColor = MyRedditBackgroundColor
     }
     

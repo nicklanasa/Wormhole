@@ -99,7 +99,9 @@ UICollectionViewDelegate {
         
         self.seeMoreButton.hidden = false
         self.seeLessButton.hidden = true
-        
+    
+        self.view.backgroundColor = MyRedditBackgroundColor
+        self.collectionView.backgroundColor = MyRedditBackgroundColor
         self.containerView.backgroundColor = MyRedditBackgroundColor
         self.postTitleView.backgroundColor = MyRedditBackgroundColor
         self.postTitleLabel.textColor = MyRedditLabelColor
@@ -424,7 +426,7 @@ UICollectionViewDelegate {
         }) { (s) -> Void in
             UIView.animateWithDuration(0.3, animations: { () -> Void in
                 self.containerView.alpha = 1.0
-                
+        
                 self.pageViewController.setViewControllers([self.viewControllerAtIndex(indexPath.row)!],
                     direction: UIPageViewControllerNavigationDirection.Forward,
                     animated: false,

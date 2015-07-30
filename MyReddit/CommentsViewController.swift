@@ -24,9 +24,6 @@ AddCommentViewControllerDelegate {
     
     var link: RKLink!
     var optionsController: LinkShareOptionsViewController!
-    lazy var parser: XNGMarkdownParser = {
-        return XNGMarkdownParser()
-    }()
     
     var filter: RKCommentSort! {
         didSet {
@@ -198,15 +195,9 @@ AddCommentViewControllerDelegate {
                 range: nil)
         }
         
-        parser.paragraphFont = MyRedditSelfTextFont
-        parser.boldFontName = MyRedditCommentTextBoldFont.familyName
-        parser.boldItalicFontName = MyRedditCommentTextItalicFont.familyName
-        parser.italicFontName = MyRedditCommentTextItalicFont.familyName
-        parser.linkFontName = MyRedditCommentTextBoldFont.familyName
-        
         var title = link.title.stringByReplacingOccurrencesOfString("&gt;", withString: ">", options: nil, range: nil)
         
-        var parsedString = NSMutableAttributedString(attributedString: self.parser.attributedStringFromMarkdownString("\(title)\(selfText)"))
+        var parsedString = NSMutableAttributedString(string: "\(title)\(selfText)")
         var titleAttr = [NSForegroundColorAttributeName : MyRedditLabelColor]
         var selfTextAttr = [NSForegroundColorAttributeName : MyRedditSelfTextLabelColor]
         parsedString.addAttributes(selfTextAttr, range: NSMakeRange(0, count(parsedString.string)))
@@ -235,7 +226,7 @@ AddCommentViewControllerDelegate {
         label.numberOfLines = 0
         label.lineBreakMode = NSLineBreakMode.ByWordWrapping
         label.font = UIFont(name: MyRedditCommentInfoMediumFont.fontName,
-            size: SettingsManager.defaultManager.titleFontSizeForDefaultTextSize)
+            size: 14)
         label.text = text
         
         label.sizeToFit()
@@ -265,8 +256,18 @@ AddCommentViewControllerDelegate {
             cell.indentationWidth = 15
             comment = commentDictionary["comment"] as! RKComment
             
-            cell.configueForComment(comment: comment,
-                isLinkAuthor: self.link.author == comment.author)
+            var hidden = false
+            
+            for hiddenIndexPath in self.hiddenIndexPaths {
+                if indexPath.section == hiddenIndexPath.section {
+                    hidden = true
+                }
+            }
+            
+            if !hidden {
+                cell.configueForComment(comment: comment,
+                    isLinkAuthor: self.link.author == comment.author)
+            }
             
             cell.separatorInset = UIEdgeInsets(top: 0,
                 left: self.tableView.frame.size.width,

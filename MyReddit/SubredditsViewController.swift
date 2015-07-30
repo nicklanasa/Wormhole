@@ -157,8 +157,22 @@ UISearchBarDelegate {
     
     func searchBarSearchButtonClicked(searchBar: UISearchBar) {
         RedditSession.sharedSession.searchForSubredditByName(searchBar.text, pagination: nil) { (pagination, results, error) -> () in
-            if let subreddits = results?.first as? [RKSubreddit] {
-                self.foundSubreddit = subreddits.first
+            if let subreddits = results as? [RKSubreddit] {
+                for subreddit in subreddits {
+                    if subreddit.name.lowercaseString == searchBar.text.lowercaseString {
+                        self.foundSubreddit = subreddit
+                        break
+                    }
+                }
+                
+                if self.foundSubreddit == nil {
+                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                        UIAlertView(title: "Error!",
+                            message: "Unable to find subreddit by that name.",
+                            delegate: self,
+                            cancelButtonTitle: "OK").show()
+                    })
+                }
             } else {
                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
                     UIAlertView(title: "Error!",
