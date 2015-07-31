@@ -43,12 +43,13 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
                 UIAlertView(title: "Error!", message: "Unable to load image.", delegate: self, cancelButtonTitle: "Ok").show()
             } else {
                 self.imageView.image = image
+                self.imageView.center = self.scrollView.center
             }
             self.indicator.stopAnimating()
         }
         
+        self.scrollView.contentSize = self.view.frame.size
         self.scrollView.minimumZoomScale = 0.5
-        self.scrollView.contentSize = self.parentViewController!.view.frame.size
         
         var tap = UITapGestureRecognizer(target: self, action: "imageViewTapped:")
         tap.numberOfTapsRequired = 1
@@ -64,8 +65,17 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
     }
     
     func scrollViewDidZoom(scrollView: UIScrollView) {
-        var offsetX = max((scrollView.bounds.size.width - scrollView.contentSize.width) * 0.5, 0.0)
-        var offsetY = max((scrollView.bounds.size.height - scrollView.contentSize.height) * 0.4, 0.0)
-        self.scrollView.contentInset = UIEdgeInsetsMake(offsetY, offsetX, 0.0, 0.0)
+        var top: CGFloat = 0
+        var left: CGFloat = 0
+        
+        if self.scrollView.contentSize.width < self.scrollView.bounds.size.width {
+            left = (self.scrollView.bounds.size.width - self.scrollView.contentSize.width) * 0.5
+        }
+        
+        if (self.scrollView.contentSize.height < self.scrollView.bounds.size.height) {
+            top = (self.scrollView.bounds.size.height - self.scrollView.contentSize.height) * 0.5
+        }
+        
+        self.scrollView.contentInset = UIEdgeInsetsMake(top, left, top, left)
     }
 }

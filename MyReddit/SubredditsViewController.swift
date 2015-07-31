@@ -92,25 +92,7 @@ UISearchBarDelegate {
             forControlEvents: UIControlEvents.ValueChanged)
         return control
     }()
-    
-    var addSubredditsToMultiRedditAlert: UIAlertController! {
-        get {
-            var alert = UIAlertController(title: "Search",
-                message: "Would you like to go to search now to add subreddit's to your multireddits?",
-                preferredStyle: .Alert)
-            alert.addAction(UIAlertAction(title: "Sure", style: .Default, handler: { (a) -> Void in
-                LocalyticsSession.shared().tagEvent("Subreddit search after creating multireddit")
-                self.performSegueWithIdentifier("SearchSegue", sender: self)
-            }))
-            
-            alert.addAction(UIAlertAction(title: "No", style: .Cancel, handler: { (a) -> Void in
-                LocalyticsSession.shared().tagEvent("Cancelled subreddit search after creating multireddit")
-            }))
-            
-            return alert
-        }
-    }
-    
+
     var subreddits = Array<AnyObject>() {
         didSet {
             self.subreddits.sort({ (first, second) -> Bool in
@@ -123,7 +105,7 @@ UISearchBarDelegate {
                 return false
             })
             
-            self.tableView.reloadSections(NSIndexSet(index: 1), withRowAnimation: .None)
+            self.tableView.reloadSections(NSIndexSet(index: 2), withRowAnimation: .None)
             
             let subredditsData = NSKeyedArchiver.archivedDataWithRootObject(self.subreddits)
             
@@ -145,7 +127,7 @@ UISearchBarDelegate {
                 return false
             })
             
-            self.tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: .None)
+            self.tableView.reloadSections(NSIndexSet(index: 1), withRowAnimation: .None)
             
             let subredditsData = NSKeyedArchiver.archivedDataWithRootObject(self.multiSubreddits)
             
@@ -299,20 +281,30 @@ UISearchBarDelegate {
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
         if section == 0 {
+            return 4
+        }
+        
+        if section == 1 {
             return self.multiSubreddits.count + 1
         }
         return self.subreddits.count + 2
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 2
+        return 3
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        
         var cell = tableView.dequeueReusableCellWithIdentifier("SubredditCell") as! SubredditCell
         
         if indexPath.section == 0 {
+            var cell = tableView.dequeueReusableCellWithIdentifier("ExploreCell") as! ExploreCell
+            cell.configureWithType(ExploreCellType(rawValue: indexPath.row)!)
+            return cell
+        } else if indexPath.section == 1 {
             if indexPath.row == 0 {
                 var cell = tableView.dequeueReusableCellWithIdentifier("NewMultiRedditCell") as! UserInfoCell
                 cell.titleLabel.textColor = MyRedditLabelColor
@@ -370,6 +362,9 @@ UISearchBarDelegate {
     }
     
     func tableView(tableView: UITableView, editingStyleForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCellEditingStyle {
+        if indexPath.section == 0 {
+            return .None
+        }
         if indexPath.row == 0 {
             return .None
         } else if indexPath.row == 1 && indexPath.section == 1 {
@@ -380,23 +375,6 @@ UISearchBarDelegate {
     
     func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
 
-    }
-    
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        self.tableView.deselectRowAtIndexPath(indexPath, animated: true)
-        if indexPath.section == 0 {
-            if indexPath.row == 0 {
-                if !SettingsManager.defaultManager.purchased {
-                    self.performSegueWithIdentifier("PurchaseSegue", sender: self)
-                } else {
-                    if UserSession.sharedSession.isSignedIn {
-                        self.showMultiRedditDialog()
-                    } else {
-                        self.performSegueWithIdentifier("AccountsSegue", sender: self)
-                    }
-                }
-            }
-        }
     }
     
     func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [AnyObject]? {
@@ -431,9 +409,11 @@ UISearchBarDelegate {
                     }
             })
             
-            if indexPath.section == 0 {
-                let editAction = UITableViewRowAction(style: UITableViewRowActionStyle.Normal, title: "Edit", handler: { (action, indexPath) -> Void in
-                       
+            if indexPath.section == 1 {
+                let editAction = UITableViewRowAction(style: UITableViewRowActionStyle.Normal,
+                    title: "Edit",
+                    handler: { (action, indexPath) -> Void in
+                        
                 })
                 
                 return [deleteAction, editAction]
@@ -447,14 +427,154 @@ UISearchBarDelegate {
     
     func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         if section == 0 {
-            return "MultiReddits"
+            return "explore"
+        }
+        
+        if section == 1 {
+            return "multireddits"
         }
         
         if UserSession.sharedSession.isSignedIn {
-            return "Subscribed"
+            return "subscribed"
         } else {
-            return "Popular"
+            return "popular"
         }
+    }
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        self.tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        if indexPath.section == 1 {
+            if indexPath.row == 0 {
+                if !SettingsManager.defaultManager.purchased {
+                    self.performSegueWithIdentifier("PurchaseSegue", sender: self)
+                } else {
+                    if UserSession.sharedSession.isSignedIn {
+                        self.showMultiRedditDialog()
+                    } else {
+                        self.performSegueWithIdentifier("AccountsSegue", sender: self)
+                    }
+                }
+            }
+        } else if indexPath.section == 0 {
+            if let type = ExploreCellType(rawValue: indexPath.row) {
+                switch type {
+                case .Manual:
+                    self.showManualSubredditDialog()
+                case .FindUser:
+                    self.showFindUserDialog()
+                case .MyReddit:
+                    self.showMyRedditSubreddit()
+                default: break
+                }
+            }
+        }
+    }
+    
+    func showMyRedditSubreddit() {
+        RedditSession.sharedSession.subredditWithSubredditName("myreddit_app", completion: { (pagination, results, error) -> () in
+            if error != nil {
+                UIAlertView(title: "Error!",
+                    message: "Unable to find that subreddit! Please check your internet connection.",
+                    delegate: self,
+                    cancelButtonTitle: "Ok").show()
+                LocalyticsSession.shared().tagEvent("Unable to load Myreddit subreddit")
+            } else {
+                if let subreddit = results?.first as? RKSubreddit {
+                    self.performSegueWithIdentifier("SubredditPosts", sender: subreddit)
+                    LocalyticsSession.shared().tagEvent("Loaded Myreddit subreddit")
+                }
+            }
+        })
+    }
+    
+    func showFindUserDialog() {
+        var alert = UIAlertController(title: "Find User",
+            message: "Please enter the username of the user.",
+            preferredStyle: .Alert)
+        
+        alert.addTextFieldWithConfigurationHandler({ (textField) -> Void in })
+        
+        alert.addAction(UIAlertAction(title: "Ok", style: .Default, handler: { (action) -> Void in
+            if let textfield = alert.textFields?.first as? UITextField {
+                
+                var username = textfield.text.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
+                
+                if count(username) == 0 {
+                    UIAlertView(title: "Error!",
+                        message: "You must enter in a username!",
+                        delegate: self,
+                        cancelButtonTitle: "Ok").show()
+                } else {
+                    RedditSession.sharedSession.searchForUser(username, completion: { (pagination, results, error) -> () in
+                        if let user = results?.first as? RKUser {
+                            self.performSegueWithIdentifier("UserSegue", sender: user)
+                        } else {
+                            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                                UIAlertView(title: "Error!",
+                                    message: "Unable to find subreddit by that name.",
+                                    delegate: self,
+                                    cancelButtonTitle: "OK").show()
+                            })
+                        }
+                    })
+                }
+            }
+        }))
+        
+        alert.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
+        self.presentViewController(alert, animated: true, completion: nil)
+    }
+    
+    func showManualSubredditDialog() {
+        var alert = UIAlertController(title: "Find Subreddit",
+            message: "Please enter the subreddit name.", 
+            preferredStyle: .Alert)
+        
+        alert.addTextFieldWithConfigurationHandler({ (textField) -> Void in })
+        
+        alert.addAction(UIAlertAction(title: "Ok", style: .Default, handler: { (action) -> Void in
+            if let textfield = alert.textFields?.first as? UITextField {
+                
+                var subredditName = textfield.text.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
+                
+                if count(subredditName) == 0 {
+                    UIAlertView(title: "Error!",
+                        message: "You must enter in a subreddit name!",
+                        delegate: self,
+                        cancelButtonTitle: "Ok").show()
+                } else {
+                    RedditSession.sharedSession.searchForSubredditByName(subredditName, pagination: nil) { (pagination, results, error) -> () in
+                        if let subreddits = results as? [RKSubreddit] {
+                            for subreddit in subreddits {
+                                if subreddit.name.lowercaseString == subredditName.lowercaseString {
+                                    self.foundSubreddit = subreddit
+                                    break
+                                }
+                            }
+                            
+                            if self.foundSubreddit == nil {
+                                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                                    UIAlertView(title: "Error!",
+                                        message: "Unable to find subreddit by that name.",
+                                        delegate: self,
+                                        cancelButtonTitle: "OK").show()
+                                })
+                            }
+                        } else {
+                            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                                UIAlertView(title: "Error!",
+                                    message: "Unable to find subreddit by that name.", 
+                                    delegate: self,
+                                    cancelButtonTitle: "OK").show()
+                            })
+                        }
+                    }
+                }
+            }
+        }))
+        
+        alert.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
+        self.presentViewController(alert, animated: true, completion: nil)
     }
     
     func showMultiRedditDialog() {
@@ -483,7 +603,6 @@ UISearchBarDelegate {
                             LocalyticsSession.shared().tagEvent("Created public multireddit")
                             RedditSession.sharedSession.createMultiReddit(multiRedditName, visibility: .Public, completion: { (error) -> () in
                                 self.syncMultiReddits()
-                                self.presentViewController(self.addSubredditsToMultiRedditAlert, animated: true, completion: nil)
                             })
                         }))
                         
@@ -491,8 +610,6 @@ UISearchBarDelegate {
                             LocalyticsSession.shared().tagEvent("Created private multireddit")
                             RedditSession.sharedSession.createMultiReddit(multiRedditName, visibility: .Private, completion: { (error) -> () in
                                 self.syncMultiReddits()
-                                
-                                self.presentViewController(self.addSubredditsToMultiRedditAlert, animated: true, completion: nil)
                             })
                         }))
                         
@@ -538,7 +655,7 @@ UISearchBarDelegate {
                         
                         var indexPath: NSIndexPath = self.tableView.indexPathForCell(cell)!
                         
-                        if indexPath.section == 0 {
+                        if indexPath.section == 1 {
                             if indexPath.row != 0 {
                                 if let subreddit = self.multiSubreddits[indexPath.row - 1] as? RKMultireddit {
                                     subredditViewController.multiReddit = subreddit
@@ -582,6 +699,13 @@ UISearchBarDelegate {
                 if let subredditViewController = controller.viewControllers[0] as? SubredditViewController {
                     subredditViewController.front = false
                     subredditViewController.all = true
+                    self.toggleMaster()
+                }
+            }
+        } else if segue.identifier == "UserSegue" {
+            if let controller = segue.destinationViewController as? ProfileViewController {
+                if let user = sender as? RKUser {
+                    controller.user = user
                     self.toggleMaster()
                 }
             }

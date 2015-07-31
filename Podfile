@@ -16,6 +16,7 @@ pod 'NSDate+Calendar'
 pod 'ImgurSession'
 pod 'Appirater'
 pod 'Localytics-AMP', '~> 2.0'
+pod 'NSDate+TimeAgo'
 
 end
 

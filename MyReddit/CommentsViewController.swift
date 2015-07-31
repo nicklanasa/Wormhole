@@ -214,7 +214,7 @@ AddCommentViewControllerDelegate {
         var comment = commentDictionary["comment"] as! RKComment
         var text = comment.body
         
-        var frame = CGRectMake(0, 0, (self.tableView.frame.size.width - 30) - (CGFloat(indentationLevel + 1) * indentationWidth), CGFloat.max)
+        var frame = CGRectMake(0, 0, (self.tableView.frame.size.width - 18) - (CGFloat(indentationLevel + 1) * indentationWidth), CGFloat.max)
         let label: UILabel = UILabel(frame: frame)
         label.numberOfLines = 0
         label.lineBreakMode = NSLineBreakMode.ByWordWrapping

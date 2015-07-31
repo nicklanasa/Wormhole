@@ -108,7 +108,7 @@ class PostImageCell: PostCell {
                 }
             }
             
-            var infoString = NSMutableAttributedString(string:"\(link.domain) | \(link.author)\(showFlair) | \(link.created.timeAgo)")
+            var infoString = NSMutableAttributedString(string:"\(link.domain) | \(link.author)\(showFlair) | \(link.created.timeAgoSimple())")
             var attrs = [NSForegroundColorAttributeName : MyRedditLabelColor]
             infoString.addAttributes(attrs, range: NSMakeRange(0, count(link.domain)))
             

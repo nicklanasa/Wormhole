@@ -30,7 +30,7 @@ class CommentCell: JZSwipeCell, UITextViewDelegate {
         self.contentView.setNeedsUpdateConstraints()
         self.contentView.setNeedsLayout()
         
-        for var i = 0; i < self.indentationLevel; i++ {
+        for var i = 1; i < self.indentationLevel; i++ {
             var lineView = UIView(frame: CGRectMake(CGFloat(i * 15), 5, 1, self.frame.size.height - 5))
             lineView.backgroundColor = MyRedditCommentLinesColor
             self.lines.append(lineView)
@@ -85,7 +85,7 @@ class CommentCell: JZSwipeCell, UITextViewDelegate {
             parsedString.addAttributes(fontAttr, range: NSMakeRange(0, count(parsedString.string)))
             self.commentTextView.attributedText = parsedString
             
-            var timeAgo = link.created.timeAgo
+            var timeAgo = link.created.timeAgoSimple()
             
             var infoString = NSMutableAttributedString(string: "/r/\(self.link.subreddit) | \(link.author) | \(timeAgo)")
             var attrs = [NSForegroundColorAttributeName : MyRedditLabelColor]
@@ -122,7 +122,7 @@ class CommentCell: JZSwipeCell, UITextViewDelegate {
         let body = comment.body.stringByReplacingOccurrencesOfString("&gt;", withString: ">", options: nil, range: nil).stringByReplacingOccurrencesOfString("&amp;", withString: "&", options: nil, range: nil)
         self.commentTextView.text = body
         
-        var timeAgo = self.comment.created.timeAgoSimple
+        var timeAgo = self.comment.created.timeAgoSimple()
         
         var info = "\(comment.author) - \(timeAgo)"
        
@@ -154,6 +154,10 @@ class CommentCell: JZSwipeCell, UITextViewDelegate {
         var indentPoints: CGFloat = CGFloat(self.indentationLevel) * self.indentationWidth
         self.leadingTextViewConstraint.constant = indentPoints
         self.leadinginfoLabelConstraint.constant = indentPoints
+        
+        for view in self.lines {
+            view.backgroundColor = MyRedditCommentLinesColor
+        }
     }
     
     @IBOutlet weak var infoLabel: UILabel!
