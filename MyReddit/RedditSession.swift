@@ -463,6 +463,14 @@ class RedditSession {
         })
     }
     
+    func subredditsForCategory(category: String, completion: PaginationCompletion) {
+        UIApplication.sharedApplication().networkActivityIndicatorVisible = true
+        RKClient.sharedClient().subredditsByTopic(category, completion: { (results, error) -> Void in
+            UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+            completion(pagination: nil, results: results, error: error)
+        })
+    }
+    
     func readableContentWithURL(url: String, completion: ReadableCompletion) {
         var token = "86d3dcc05ff4444f692ab168d4543084911ac9d6"
         var url = "https://www.readability.com/api/content/v1/parser?url=\(url)&token=\(token)"

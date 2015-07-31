@@ -28,6 +28,10 @@
 		051E172AEF0DB37075537CBF /* libPods-MyReddit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0018383D0F6A87E32BDC681A /* libPods-MyReddit.a */; };
 		795FD2851B6BD9F7008DF15C /* ExploreCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 795FD2841B6BD9F7008DF15C /* ExploreCell.swift */; };
 		795FD2861B6BD9F7008DF15C /* ExploreCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 795FD2841B6BD9F7008DF15C /* ExploreCell.swift */; };
+		795FD29F1B6BF904008DF15C /* SubredditCategoriesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 795FD29E1B6BF904008DF15C /* SubredditCategoriesTableViewController.swift */; };
+		795FD2A01B6BF904008DF15C /* SubredditCategoriesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 795FD29E1B6BF904008DF15C /* SubredditCategoriesTableViewController.swift */; };
+		795FD2A21B6C01BE008DF15C /* SubredditsByCategoryTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 795FD2A11B6C01BE008DF15C /* SubredditsByCategoryTableViewController.swift */; };
+		795FD2A31B6C01BE008DF15C /* SubredditsByCategoryTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 795FD2A11B6C01BE008DF15C /* SubredditsByCategoryTableViewController.swift */; };
 		CE046EC91AC3521100DF59B4 /* PostImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE046EC81AC3521100DF59B4 /* PostImageCell.swift */; };
 		CE046ECD1AC3587900DF59B4 /* Subreddit.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE046ECC1AC3587900DF59B4 /* Subreddit.swift */; };
 		CE046ECF1AC421EF00DF59B4 /* Int+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE046ECE1AC421EF00DF59B4 /* Int+Helpers.swift */; };
@@ -203,6 +207,8 @@
 		15EC45AB568566F68E59569F /* Pods-MyReddit.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyReddit.release.xcconfig"; path = "Pods/Target Support Files/Pods-MyReddit/Pods-MyReddit.release.xcconfig"; sourceTree = "<group>"; };
 		7047AFFBDD6CBEEDDCA19D07 /* Pods-MyReddit.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyReddit.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MyReddit/Pods-MyReddit.debug.xcconfig"; sourceTree = "<group>"; };
 		795FD2841B6BD9F7008DF15C /* ExploreCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreCell.swift; sourceTree = "<group>"; };
+		795FD29E1B6BF904008DF15C /* SubredditCategoriesTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubredditCategoriesTableViewController.swift; sourceTree = "<group>"; };
+		795FD2A11B6C01BE008DF15C /* SubredditsByCategoryTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubredditsByCategoryTableViewController.swift; sourceTree = "<group>"; };
 		CE046EC81AC3521100DF59B4 /* PostImageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostImageCell.swift; sourceTree = "<group>"; };
 		CE046ECC1AC3587900DF59B4 /* Subreddit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Subreddit.swift; sourceTree = "<group>"; };
 		CE046ECE1AC421EF00DF59B4 /* Int+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Int+Helpers.swift"; sourceTree = "<group>"; };
@@ -358,6 +364,8 @@
 				01D6646D1AC33C6600BE56EA /* SubredditsViewController.swift */,
 				CE538FAB1AF3E850008050B6 /* SearchViewController.swift */,
 				CE769F2E1AF6F19100031657 /* MultiRedditsViewController.swift */,
+				795FD29E1B6BF904008DF15C /* SubredditCategoriesTableViewController.swift */,
+				795FD2A11B6C01BE008DF15C /* SubredditsByCategoryTableViewController.swift */,
 			);
 			name = Subreddits;
 			sourceTree = "<group>";
@@ -781,6 +789,7 @@
 				CE3AA47E1B0549E9000DEDD2 /* PostImageCell.swift in Sources */,
 				CE3AA47F1B0549E9000DEDD2 /* Media.swift in Sources */,
 				CE3AA4801B0549E9000DEDD2 /* EmailCell.swift in Sources */,
+				795FD2A01B6BF904008DF15C /* SubredditCategoriesTableViewController.swift in Sources */,
 				CE3AA4811B0549E9000DEDD2 /* UserInfoCell.swift in Sources */,
 				CE3AA4831B0549E9000DEDD2 /* Link+Helpers.swift in Sources */,
 				CE3AA4841B0549E9000DEDD2 /* UITableViewCell+Helpers.swift in Sources */,
@@ -799,6 +808,7 @@
 				CE3AA4901B0549E9000DEDD2 /* MessageCell.swift in Sources */,
 				CE3AA4911B0549E9000DEDD2 /* RKLink+Helpers.swift in Sources */,
 				CE3AA4921B0549E9000DEDD2 /* RKClient+Search.swift in Sources */,
+				795FD2A31B6C01BE008DF15C /* SubredditsByCategoryTableViewController.swift in Sources */,
 				CE3AA4931B0549E9000DEDD2 /* PostTitleCell.swift in Sources */,
 				CE6E43831B07A387001D961F /* NSString+Helpers.swift in Sources */,
 				CE3AA4941B0549E9000DEDD2 /* LinkViewController.swift in Sources */,
@@ -843,6 +853,7 @@
 			files = (
 				CE4B9E971AE1858C00018742 /* NavBarController.swift in Sources */,
 				015E0D5B1AEF27BB00299B29 /* CommentsViewController.swift in Sources */,
+				795FD29F1B6BF904008DF15C /* SubredditCategoriesTableViewController.swift in Sources */,
 				CE046ED31AC4336500DF59B4 /* String+Helpers.swift in Sources */,
 				CEF4E2601AF2B508001CFB69 /* JZSwipeCell+Reset.swift in Sources */,
 				018E40241AC392700055384D /* LoginViewController.swift in Sources */,
@@ -885,6 +896,7 @@
 				CE538FAE1AF3F19B008050B6 /* RKClient+Search.swift in Sources */,
 				CE25FBD61AF9484400A40C3B /* PostTitleCell.swift in Sources */,
 				018E40221AC38A060055384D /* LinkViewController.swift in Sources */,
+				795FD2A21B6C01BE008DF15C /* SubredditsByCategoryTableViewController.swift in Sources */,
 				CE25FBD21AF9411A00A40C3B /* PostTableViewController.swift in Sources */,
 				CE25FBD81AF9484D00A40C3B /* PostSubredditCell.swift in Sources */,
 				E00B35DF1B646F9700AD096D /* ReadableContent.swift in Sources */,

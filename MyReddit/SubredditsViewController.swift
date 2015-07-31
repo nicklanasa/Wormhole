@@ -27,20 +27,6 @@ UISearchBarDelegate {
         }
     }
     
-    var categories = ["Animals",
-        "Apple Related",
-        "Ask Redditors",
-        "Books and Reading",
-        "Design", "Education",
-        "Entertainment", "Games",
-        "Gender and Relationships",
-        "Lifestyle", "Humor",
-        "Media and Art", "Money",
-        "Music", "News",
-        "Politics", "Reddit Related",
-        "Religion", "Science",
-        "Self Help", "Sports", "Technology"]
-    
     @IBAction func cancelButtonTapped(sender: AnyObject) {
         self.dismissViewControllerAnimated(true, completion: nil)
     }
@@ -192,6 +178,8 @@ UISearchBarDelegate {
         self.tableView.tableHeaderView = self.searchController.searchBar
         self.tableView.backgroundColor = MyRedditBackgroundColor
         self.view.backgroundColor = MyRedditBackgroundColor
+        
+        self.tableView.reloadData()
     }
     
     func didUpdateSubreddits() {
@@ -464,6 +452,8 @@ UISearchBarDelegate {
                     self.showFindUserDialog()
                 case .MyReddit:
                     self.showMyRedditSubreddit()
+                case .Discover:
+                    self.performSegueWithIdentifier("SubredditsCategoriesSegue", sender: self)
                 default: break
                 }
             }

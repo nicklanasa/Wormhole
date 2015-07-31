@@ -35,7 +35,7 @@ LoadMoreHeaderDelegate {
     @IBOutlet weak var listButton: UIBarButtonItem!
     
     override func viewDidLoad() {
-        self.tableView.rowHeight = UITableViewAutomaticDimension
+        
         self.tableView.reloadData()
         self.syncContent()
         
@@ -57,7 +57,10 @@ LoadMoreHeaderDelegate {
     private func syncContent() {
         if let cell =  self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 1)) as? LoadMoreHeader {
             cell.startAnimating()
-            UserSession.sharedSession.userContent(self.user, category: self.category, pagination: self.pagination, completion: { (pagination, results, error) -> () in
+            UserSession.sharedSession.userContent(self.user,
+                category: self.category,
+                pagination: self.pagination,
+                completion: { (pagination, results, error) -> () in
                 self.pagination = pagination
                 if let moreContent = results {
                     self.content.extend(moreContent)
@@ -86,8 +89,58 @@ LoadMoreHeaderDelegate {
         return content.count
     }
     
-    func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return 500
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        
+        if indexPath.section == 1 {
+            return 60
+        }
+        
+        if let link = self.content[indexPath.row] as? RKLink {
+            if link.isImageLink() || link.media != nil || link.domain == "imgur.com" {
+                
+                if indexPath.row == 0 || SettingsManager.defaultManager.valueForSetting(.FullWidthImages) {
+                    return self.heightForLink(link)
+                }
+                
+                return 392
+                
+            } else {
+                return self.heightForLink(link)
+            }
+        } else if let comment = self.content[indexPath.row] as? RKComment {
+            return self.heightForComment(comment)
+        }
+        
+        return 0
+    }
+    
+    private func heightForLink(link: RKLink) -> CGFloat {
+        
+        var title = link.title.stringByReplacingOccurrencesOfString("&gt;", withString: ">", options: nil, range: nil)
+        
+        var parsedString = NSMutableAttributedString(string: "\(title)")
+        var frame = CGRectMake(0, 0, self.tableView.frame.size.width - 30, CGFloat.max)
+        let label: UILabel = UILabel(frame: frame)
+        label.numberOfLines = 0
+        label.font = MyRedditSelfTextFont
+        label.lineBreakMode = NSLineBreakMode.ByWordWrapping
+        label.attributedText = parsedString
+        label.sizeToFit()
+        
+        return label.frame.size.height + 60
+    }
+    
+    private func heightForComment(comment: RKComment) -> CGFloat {
+ 
+        var frame = CGRectMake(0, 0, (self.tableView.frame.size.width - 18) - 15, CGFloat.max)
+        let label: UILabel = UILabel(frame: frame)
+        label.numberOfLines = 0
+        label.lineBreakMode = NSLineBreakMode.ByWordWrapping
+        label.font = MyRedditCommentTextFont
+        label.text = comment.body
+        label.sizeToFit()
+        
+        return label.frame.height + 60
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -95,10 +148,7 @@ LoadMoreHeaderDelegate {
         if indexPath.section == 1 {
             var cell =  tableView.dequeueReusableCellWithIdentifier("LoadMoreHeader") as! LoadMoreHeader
             cell.delegate = self
-            
-            cell.activityIndicator.hidden = true
             cell.loadMoreButton.hidden = false
-            
             return cell
         }
         
@@ -119,7 +169,9 @@ LoadMoreHeaderDelegate {
             cell.link = link
         } else if let comment = self.content[indexPath.row] as? RKComment {
             var cell = tableView.dequeueReusableCellWithIdentifier("CommentCell") as! CommentCell
-            cell.comment = comment
+            cell.indentationLevel = 1
+            cell.indentationWidth = 15
+            cell.configueForComment(comment: comment, isLinkAuthor: true)
             cell.delegate = self
             return cell
         }
@@ -393,18 +445,11 @@ LoadMoreHeaderDelegate {
     }
     
     func loadMoreHeader(header: LoadMoreHeader, didTapButton sender: AnyObject) {
-        if let button = sender as? UIButton {
-            
-            button.hidden = true
-            header.activityIndicator.hidden = false
-            header.activityIndicator.startAnimating()
-            
-            if self.pagination != nil {
-                LocalyticsSession.shared().tagEvent("Load more")
-                self.syncContent()
-            } else {
-                self.tableView.reloadData()
-            }
+        if self.pagination != nil {
+            self.syncContent()
+        } else {
+            self.tableView.reloadData()
+            header.stopAnimating()
         }
     }
 }
