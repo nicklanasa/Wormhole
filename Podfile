@@ -5,7 +5,6 @@ target 'MyReddit' do
 
 pod 'RedditKit', '~> 1.3'
 pod 'SDWebImage'
-pod 'NSDate+TimeAgo'
 pod 'XNGMarkdownParser'
 pod 'RFMarkdownTextView', '~> 1.4'
 pod 'BDGInAppPurchase'

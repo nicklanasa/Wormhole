@@ -15,11 +15,8 @@ protocol CommentCellDelegate {
 
 class CommentCell: JZSwipeCell, UITextViewDelegate {
     
+    var lines = [UIView]()
     var commentDelegate: CommentCellDelegate?
-    let dateFormatter = NSDateFormatter()
-    lazy var parser: XNGMarkdownParser = {
-        return XNGMarkdownParser()
-    }()
     
     var currentTappedURL: NSURL! {
         didSet {
@@ -32,6 +29,13 @@ class CommentCell: JZSwipeCell, UITextViewDelegate {
         
         self.contentView.setNeedsUpdateConstraints()
         self.contentView.setNeedsLayout()
+        
+        for var i = 0; i < self.indentationLevel; i++ {
+            var lineView = UIView(frame: CGRectMake(CGFloat(i * 15), 5, 1, self.frame.size.height - 5))
+            lineView.backgroundColor = MyRedditCommentLinesColor
+            self.lines.append(lineView)
+            self.contentView.addSubview(lineView)
+        }
     }
     
     override func awakeFromNib() {
@@ -81,7 +85,7 @@ class CommentCell: JZSwipeCell, UITextViewDelegate {
             parsedString.addAttributes(fontAttr, range: NSMakeRange(0, count(parsedString.string)))
             self.commentTextView.attributedText = parsedString
             
-            var timeAgo = link.created.timeAgo()
+            var timeAgo = link.created.timeAgo
             
             var infoString = NSMutableAttributedString(string: "/r/\(self.link.subreddit) | \(link.author) | \(timeAgo)")
             var attrs = [NSForegroundColorAttributeName : MyRedditLabelColor]
@@ -115,18 +119,16 @@ class CommentCell: JZSwipeCell, UITextViewDelegate {
     func configueForComment(#comment: RKComment, isLinkAuthor: Bool) {
         
         self.comment = comment
-        let body = comment.body.stringByReplacingOccurrencesOfString("&gt;", withString: ">", options: nil, range: nil)
+        let body = comment.body.stringByReplacingOccurrencesOfString("&gt;", withString: ">", options: nil, range: nil).stringByReplacingOccurrencesOfString("&amp;", withString: "&", options: nil, range: nil)
         self.commentTextView.text = body
         
-        self.dateFormatter.timeStyle = .ShortStyle
-        self.dateFormatter.dateStyle = .ShortStyle
-        var timeAgo = self.dateFormatter.stringFromDate(self.comment.created)
+        var timeAgo = self.comment.created.timeAgoSimple
         
         var info = "\(comment.author) - \(timeAgo)"
        
         if isLinkAuthor {
             var infoString = NSMutableAttributedString(string: info)
-            var attrs = [NSForegroundColorAttributeName : isLinkAuthor ? MyRedditColor : MyRedditLabelColor]
+            var attrs = [NSForegroundColorAttributeName : isLinkAuthor ? MyRedditColor : MyRedditLabelColor, NSFontAttributeName : MyRedditCommentInfoMediumFont]
             infoString.addAttributes(attrs, range: NSMakeRange(0, count(comment.author)))
             self.infoLabel.attributedText = infoString
         } else {
@@ -143,6 +145,7 @@ class CommentCell: JZSwipeCell, UITextViewDelegate {
             self.scoreLabel.textColor = UIColor.lightGrayColor()
         }
     
+        self.commentTextView.textColor = MyRedditLabelColor
         self.commentTextView.font = MyRedditCommentTextFont
         self.commentTextView.backgroundColor = MyRedditBackgroundColor
         self.contentView.backgroundColor = MyRedditBackgroundColor
@@ -153,7 +156,6 @@ class CommentCell: JZSwipeCell, UITextViewDelegate {
         self.leadinginfoLabelConstraint.constant = indentPoints
     }
     
-    @IBOutlet weak var repliesLabel: UILabel!
     @IBOutlet weak var infoLabel: UILabel!
     @IBOutlet weak var scoreLabel: UILabel!
     @IBOutlet weak var leadingTextViewConstraint: NSLayoutConstraint!
@@ -169,6 +171,12 @@ class CommentCell: JZSwipeCell, UITextViewDelegate {
     
     override func prepareForReuse() {
         super.prepareForReuse()
+        
+        for view in self.lines {
+            view.removeFromSuperview()
+        }
+        
+        self.lines = [UIView]()
         self.backgroundView?.backgroundColor = MyRedditBackgroundColor
         self.indentationLevel = 0
         self.indentationWidth = 0

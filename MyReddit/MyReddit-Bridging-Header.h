@@ -12,7 +12,6 @@
 #import "RedditKit.h"
 #import "RKCompletionBlocks.h"
 
-#import "NSDate+TimeAgo.h"
 #import "NSDate+Calendar.h"
 #import "XNGMarkdownParser.h"
 #import "RFMarkdownTextView.h"

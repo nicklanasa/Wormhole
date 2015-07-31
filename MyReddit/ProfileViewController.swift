@@ -81,7 +81,7 @@ class ProfileViewController: UIViewController, UITableViewDataSource, UITableVie
                 if indexPath.row == 0 {
                     cell.infoLabel.text = searchedUser.username
                 } else {
-                    cell.infoLabel.text = searchedUser.created.timeAgo()
+                    cell.infoLabel.text = searchedUser.created.timeAgo
                 }
                 
                 cell.selectionStyle = .None
@@ -113,7 +113,7 @@ class ProfileViewController: UIViewController, UITableViewDataSource, UITableVie
                     if indexPath.row == 0 {
                         cell.infoLabel.text = user.username
                     } else {
-                        cell.infoLabel.text = user.created.timeAgo()
+                        cell.infoLabel.text = user.created.timeAgo
                     }
                     
                     cell.selectionStyle = .None

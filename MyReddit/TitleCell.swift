@@ -46,7 +46,7 @@ class TitleCell: PostCell {
                 }
             }
             
-            var infoString = NSMutableAttributedString(string: "\(link.domain) | \(link.author)\(showFlair) | \(link.created.timeAgo())")
+            var infoString = NSMutableAttributedString(string: "\(link.domain) | \(link.author)\(showFlair) | \(link.created.timeAgo)")
             var attrs = [NSForegroundColorAttributeName : MyRedditLabelColor]
             infoString.addAttributes(attrs, range: NSMakeRange(0, count(link.domain)))
             
@@ -98,7 +98,7 @@ class TitleCell: PostCell {
             
             var replies = linkComment.replies?.count == 1 ? "reply" : "replies"
             
-            var infoString = NSMutableAttributedString(string: "\(linkComment.author) - \(linkComment.created.timeAgo()) - \(linkComment.replies?.count ?? 0) \(replies)")
+            var infoString = NSMutableAttributedString(string: "\(linkComment.author) - \(linkComment.created.timeAgo) - \(linkComment.replies?.count ?? 0) \(replies)")
 
             var attrs = [NSForegroundColorAttributeName : MyRedditLabelColor]
             infoString.addAttributes(attrs, range: NSMakeRange(0, count(linkComment.author)))

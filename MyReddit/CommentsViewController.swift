@@ -101,22 +101,19 @@ AddCommentViewControllerDelegate {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         LocalyticsSession.shared().tagScreen("Comments")
+        
+        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            self.navigationItem.title =  "\(self.link.totalComments) comments"
+            self.navigationController?.navigationBar.tintColor = MyRedditLabelColor
+            self.navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: MyRedditLabelColor]
+            self.tableView.backgroundColor = MyRedditBackgroundColor
+            self.tableView.tableFooterView = UIView()
+        })
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         self.syncComments()
-        
-        self.navigationItem.title =  "\(self.link.totalComments) comments"
-        
-        self.navigationController?.navigationBar.tintColor = MyRedditLabelColor
-        
-        self.navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: MyRedditLabelColor]
-        
-        self.tableView.backgroundColor = MyRedditBackgroundColor
-        
-        self.tableView.tableFooterView = UIView()
     }
     
     func syncComments() {
@@ -198,14 +195,10 @@ AddCommentViewControllerDelegate {
         var title = link.title.stringByReplacingOccurrencesOfString("&gt;", withString: ">", options: nil, range: nil)
         
         var parsedString = NSMutableAttributedString(string: "\(title)\(selfText)")
-        var titleAttr = [NSForegroundColorAttributeName : MyRedditLabelColor]
-        var selfTextAttr = [NSForegroundColorAttributeName : MyRedditSelfTextLabelColor]
-        parsedString.addAttributes(selfTextAttr, range: NSMakeRange(0, count(parsedString.string)))
-        parsedString.addAttributes(titleAttr, range: NSMakeRange(0, count(link.title)))
-
-        var frame = CGRectMake(0, 0, self.tableView.frame.size.width - 60, CGFloat.max)
+        var frame = CGRectMake(0, 0, self.tableView.frame.size.width - 30, CGFloat.max)
         let label: UILabel = UILabel(frame: frame)
         label.numberOfLines = 0
+        label.font = MyRedditSelfTextFont
         label.lineBreakMode = NSLineBreakMode.ByWordWrapping
         label.attributedText = parsedString
         label.sizeToFit()
@@ -217,18 +210,16 @@ AddCommentViewControllerDelegate {
         
         var commentDictionary = self.self.commentsBySection?[indexPath.section - 1] as! [String : AnyObject]
         var indentationLevel = commentDictionary["level"] as! Int
-        var indentationWidth = CGFloat(10)
+        var indentationWidth = CGFloat(15)
         var comment = commentDictionary["comment"] as! RKComment
         var text = comment.body
         
-        var frame = CGRectMake(0, 0, (self.tableView.frame.size.width - 40) - (CGFloat(indentationLevel) * indentationWidth), CGFloat.max)
+        var frame = CGRectMake(0, 0, (self.tableView.frame.size.width - 30) - (CGFloat(indentationLevel + 1) * indentationWidth), CGFloat.max)
         let label: UILabel = UILabel(frame: frame)
         label.numberOfLines = 0
         label.lineBreakMode = NSLineBreakMode.ByWordWrapping
-        label.font = UIFont(name: MyRedditCommentInfoMediumFont.fontName,
-            size: 14)
+        label.font = MyRedditCommentTextFont
         label.text = text
-        
         label.sizeToFit()
         
         return label.frame.height + 60
@@ -257,10 +248,17 @@ AddCommentViewControllerDelegate {
             comment = commentDictionary["comment"] as! RKComment
             
             var hidden = false
+            var collapsed = false
             
             for hiddenIndexPath in self.hiddenIndexPaths {
                 if indexPath.section == hiddenIndexPath.section {
                     hidden = true
+                }
+            }
+            
+            for closedIndexPath in self.closedIndexPaths {
+                if indexPath.section == closedIndexPath.section {
+                    collapsed = true
                 }
             }
             

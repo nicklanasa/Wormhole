@@ -57,9 +57,9 @@ class MessageCell: JZSwipeCell, UITextViewDelegate {
             
             self.bodyTextView.attributedText = parsedString
             
-            var infoString = NSMutableAttributedString(string:"\(message.created.timeAgo()) | \(message.author)")
+            var infoString = NSMutableAttributedString(string:"\(message.created.timeAgo) | \(message.author)")
             var attrs = [NSForegroundColorAttributeName : MyRedditColor]
-            infoString.addAttributes(attrs, range: NSMakeRange(0, count(message.created.timeAgo())))
+            infoString.addAttributes(attrs, range: NSMakeRange(0, count(message.created.timeAgo)))
             
             self.infoLabel.attributedText = infoString
             
