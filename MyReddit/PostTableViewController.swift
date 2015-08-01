@@ -21,6 +21,9 @@ LinkCellDelegate,
 UIImagePickerControllerDelegate,
 UINavigationControllerDelegate {
     
+    var captchaValue: String?
+    var captchaIdentifier: String?
+    
     var selectedImage: UIImage? {
         didSet {
             self.tableView.reloadData()
@@ -133,8 +136,138 @@ UINavigationControllerDelegate {
         self.dismissViewControllerAnimated(true, completion: nil)
     }
     
-    @IBAction func sendButtonTapped(sender: AnyObject) {
+    func postText(title: String, subredditName: String, text: String) {
+        self.showCaptchaDialog { (result, error) -> () in
+            if result {
+                self.hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
+                RedditSession.sharedSession.submitLink(title,
+                    subredditName: subredditName,
+                    text: text,
+                    url: nil,
+                    postType: .Text,
+                    captchaIdentifier: self.captchaIdentifier,
+                    captchaValue: self.captchaValue, completion: { (error) -> () in
+                        if error != nil {
+                            self.hud.hide(true)
+                            UIAlertView.showErrorWithError(error)
+                            LocalyticsSession.shared().tagEvent("Unable to text")
+                        } else {
+                            LocalyticsSession.shared().tagEvent("Posted text link")
+                            self.cancelButtonTapped(self)
+                        }
+                })
+            } else {
+                UIAlertView.showErrorWithError(error)
+            }
+        }
+    }
+    
+    func postImage(link: String, subredditName: String) {
+        self.showCaptchaDialog { (result, error) -> () in
+            if result {
+                var client = ImgurAnonymousAPIClient(clientID: "e97d1faf5a39e09")
+                client.uploadImage(self.selectedImage!, withFilename: "image.jpg", completionHandler: { (url, error) -> Void in
+                    if error != nil {
+                        self.hud.hide(true)
+                        UIAlertView.showErrorWithError(error)
+                        LocalyticsSession.shared().tagEvent("Unable to upload image")
+                    } else {
+                        RedditSession.sharedSession.submitLink(link, subredditName: subredditName, text: nil, url: url, postType: .Link, captchaIdentifier: self.captchaIdentifier, captchaValue: self.captchaValue, completion: { (error) -> () in
+                            if error != nil {
+                                self.hud.hide(true)
+                                UIAlertView.showErrorWithError(error)
+                                LocalyticsSession.shared().tagEvent("Unable to post link")
+                            } else {
+                                LocalyticsSession.shared().tagEvent("Posted link")
+                                self.cancelButtonTapped(self)
+                            }
+                        })
+                    }
+                })
+            } else {
+                UIAlertView.showErrorWithError(error)
+            }
+        }
+    }
+    
+    func postLink(link: String, subredditName: String, url: String) {
+        self.showCaptchaDialog { (result, error) -> () in
+            if result {
+                RedditSession.sharedSession.submitLink(link, subredditName: subredditName, text: nil, url: NSURL(string: url), postType: .Link, captchaIdentifier: self.captchaIdentifier, captchaValue: self.captchaValue, completion: { (error) -> () in
+                    if error != nil {
+                        self.hud.hide(true)
+                        UIAlertView.showErrorWithError(error)
+                        LocalyticsSession.shared().tagEvent("Unable to post link")
+                    } else {
+                        LocalyticsSession.shared().tagEvent("Posted link")
+                        self.cancelButtonTapped(self)
+                    }
+                })
+            } else {
+                UIAlertView.showErrorWithError(error)
+            }
+        }
+    }
+    
+    func showCaptchaDialog(completion: (result: Bool, error: NSError?) -> ()) {
         
+        RedditSession.sharedSession.needsCaptchaWithCompletion { (result, error) -> () in
+            if error != nil {
+                completion(result: false, error: error)
+            } else {
+                if !result {
+                    completion(result: true, error: error)
+                } else {
+                    RedditSession.sharedSession.newCaptchaIdWithCompletion { (pagination, results, error) -> () in
+                        if let identifier = results?.first as? String {
+                            self.captchaIdentifier = identifier
+                            RedditSession.sharedSession.imageForCaptchaId(identifier, completion: { (pagination, results, error) -> () in
+                                if error != nil {
+                                    completion(result: false, error: error)
+                                } else {
+                                    if let image = results?.first as? UIImage {
+                                        var alert = UIAlertController(title: "Enter Reddit captcha",
+                                            message: "                                         ",
+                                            preferredStyle: .Alert)
+                                        
+                                        alert.addTextFieldWithConfigurationHandler({ (textField) -> Void in })
+                                        
+                                        var okAction = UIAlertAction(title: "Ok", style: .Default, handler: { (action) -> Void in
+                                            if let textfield = alert.textFields?.first as? UITextField {
+                                                if count(textfield.text) != 0 {
+                                                    self.captchaValue = textfield.text
+                                                    completion(result: true, error: nil)
+                                                } else {
+                                                    completion(result: false, error: nil)
+                                                }
+                                            }
+                                        })
+                                        
+                                        var imageView = UIImageView(frame: CGRectMake(90, 40, 80, 40))
+                                        imageView.image = image
+                                        imageView.contentMode = .ScaleAspectFit
+                                        alert.view.addSubview(imageView)
+                                        
+                                        alert.addAction(okAction)
+                                        
+                                        alert.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
+                                        
+                                        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                                            self.presentViewController(alert, animated: true, completion: nil)
+                                        })
+                                    }
+                                }
+                            })
+                        } else {
+                            completion(result: false, error: error)
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    @IBAction func sendButtonTapped(sender: AnyObject) {
         if let subredditCell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 1, inSection: 0)) as? PostSubredditCell {
             if count(subredditCell.subredditTextField.text) > 0 {
                 if let postTitleCell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 2, inSection: 0)) as? PostTitleCell {
@@ -142,95 +275,38 @@ UINavigationControllerDelegate {
                         if self.postType == .Text {
                             if let postTextCell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 3, inSection: 0)) as? PostTextCell {
                                 if count(postTextCell.textView.text) > 0 {
-                                    // Submit
-                                    self.hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
-                                    RedditSession.sharedSession.submitLink(postTitleCell.titleTextField.text, subredditName: subredditCell.subredditTextField.text, text: postTextCell.textView.text, url: nil, postType: .Text, completion: { (error) -> () in
-                                        if error != nil {
-                                            self.hud.hide(true)
-                                            UIAlertView(title: "Error!",
-                                                message: error!.localizedDescription,
-                                                delegate: self,
-                                                cancelButtonTitle: "Ok").show()
-                                            LocalyticsSession.shared().tagEvent("Unable to text")
-                                        } else {
-                                            LocalyticsSession.shared().tagEvent("Posted text link")
-                                            self.cancelButtonTapped(self)
-                                        }
-                                    })
+                                    // Submit text
+                                    self.postText(postTitleCell.titleTextField.text,
+                                        subredditName: subredditCell.subredditTextField.text,
+                                        text: postTextCell.textView.text)
                                 } else {
-                                    UIAlertView(title: "Error!",
-                                        message: "You must supply text!",
-                                        delegate: self,
-                                        cancelButtonTitle: "Ok").show()
+                                    UIAlertView.showPostNoTextError()
                                 }
                             }
                         } else {
                             if let urlCell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 3, inSection: 0)) as? LinkCell {
                                 if count(urlCell.linkTextField.text) > 0 || self.selectedImage != nil {
-                                    // Submit
+                                    // Submit image
                                     self.hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
                                     if let image = self.selectedImage {
-                                        var client = ImgurAnonymousAPIClient(clientID: "e97d1faf5a39e09")
-                                        client.uploadImage(image, withFilename: "image.jpg", completionHandler: { (url, error) -> Void in
-                                            if error != nil {
-                                                self.hud.hide(true)
-                                                UIAlertView(title: "Error!",
-                                                    message: error.localizedDescription,
-                                                    delegate: self,
-                                                    cancelButtonTitle: "Ok").show()
-                                                
-                                                LocalyticsSession.shared().tagEvent("Unable to upload image")
-                                            } else {
-                                                RedditSession.sharedSession.submitLink(postTitleCell.titleTextField.text, subredditName: subredditCell.subredditTextField.text, text: nil, url: url, postType: .Link, completion: { (error) -> () in
-                                                    if error != nil {
-                                                        self.hud.hide(true)
-                                                        UIAlertView(title: "Error!",
-                                                            message: error!.localizedDescription,
-                                                            delegate: self,
-                                                            cancelButtonTitle: "Ok").show()
-                                                        LocalyticsSession.shared().tagEvent("Unable to post link")
-                                                    } else {
-                                                        LocalyticsSession.shared().tagEvent("Posted link")
-                                                        self.cancelButtonTapped(self)
-                                                    }
-                                                })
-                                            }
-                                        })
+                                        self.postImage(postTitleCell.titleTextField.text,
+                                            subredditName: subredditCell.subredditTextField.text)
                                     } else {
-                                        RedditSession.sharedSession.submitLink(postTitleCell.titleTextField.text, subredditName: subredditCell.subredditTextField.text, text: nil, url: NSURL(string: urlCell.linkTextField.text), postType: .Link, completion: { (error) -> () in
-                                            if error != nil {
-                                                self.hud.hide(true)
-                                                UIAlertView(title: "Error!",
-                                                    message: error!.localizedDescription,
-                                                    delegate: self,
-                                                    cancelButtonTitle: "Ok").show()
-                                                LocalyticsSession.shared().tagEvent("Unable to post link")
-                                            } else {
-                                                LocalyticsSession.shared().tagEvent("Posted link")
-                                                self.cancelButtonTapped(self)
-                                            }
-                                        })
+                                        self.postLink(postTitleCell.titleTextField.text,
+                                            subredditName: subredditCell.subredditTextField.text,
+                                            url: urlCell.linkTextField.text)
                                     }
                                 } else {
-                                    UIAlertView(title: "Error!",
-                                        message: "You must supply a link or an image!",
-                                        delegate: self,
-                                        cancelButtonTitle: "Ok").show()
+                                    UIAlertView.showPostNoLinkOrImageError()
                                 }
                             }
                         }
                     } else {
-                        UIAlertView(title: "Error!",
-                            message: "You must supply a title!",
-                            delegate: self,
-                            cancelButtonTitle: "Ok").show()
+                        UIAlertView.showPostNoTitleError()
                     }
                 }
             } else {
-                UIAlertView(title: "Error!",
-                    message: "You must supply a subreddit!",
-                    delegate: self,
-                    cancelButtonTitle: "Ok").show()
+                UIAlertView.showPostNoSubredditError()
             }
         }
     }

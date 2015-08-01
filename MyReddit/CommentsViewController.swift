@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-class CommentsViewController: UITableViewController,
+class CommentsViewController: RootTableViewController,
 CommentCellDelegate,
 JZSwipeCellDelegate,
 UITextFieldDelegate,
@@ -104,10 +104,6 @@ AddCommentViewControllerDelegate {
         
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
             self.navigationItem.title =  "\(self.link.totalComments) comments"
-            self.navigationController?.navigationBar.tintColor = MyRedditLabelColor
-            self.navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: MyRedditLabelColor]
-            self.tableView.backgroundColor = MyRedditBackgroundColor
-            self.tableView.tableFooterView = UIView()
         })
     }
     

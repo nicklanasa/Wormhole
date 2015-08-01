@@ -25,7 +25,6 @@ class EmailCell: UITableViewCell, UITextFieldDelegate {
     
     override func awakeFromNib() {
         self.usernameTextField.delegate = self
-        
         self.usernameLabel.textColor = MyRedditLabelColor
         self.usernameTextField.textColor = MyRedditLabelColor
     }
@@ -34,9 +33,7 @@ class EmailCell: UITableViewCell, UITextFieldDelegate {
     @IBOutlet weak var usernameTextField: UITextField!
     
     func textFieldShouldReturn(textField: UITextField) -> Bool {
-        
         self.delegate?.emailCell(self, didTapReturnButton: textField)
-        
         return true
     }
 }

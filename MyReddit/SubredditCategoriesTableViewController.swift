@@ -8,7 +8,7 @@
 
 import UIKit
 
-class SubredditCategoriesTableViewController: UITableViewController {
+class SubredditCategoriesTableViewController: RootTableViewController {
     
     let categories = ["Animals",
         "Apple Related",

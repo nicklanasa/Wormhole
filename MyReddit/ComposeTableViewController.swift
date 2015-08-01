@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-class ComposeTableViewController: UITableViewController, UITextViewDelegate {
+class ComposeTableViewController: RootTableViewController, UITextViewDelegate {
     
     @IBOutlet weak var toTextField: UITextField!
     @IBOutlet weak var subjectTextField: UITextField!
@@ -25,11 +25,7 @@ class ComposeTableViewController: UITableViewController, UITextViewDelegate {
     }
     
     override func viewDidLoad() {
-        self.tableView.backgroundColor = MyRedditBackgroundColor
-        self.textView.backgroundColor = MyRedditBackgroundColor
-        
-        self.tableView.tableFooterView = UIView()
-        
+        self.textView.backgroundColor = MyRedditBackgroundColor        
         self.toTextField.attributedPlaceholder = NSAttributedString(string: "to:",
             attributes: [NSForegroundColorAttributeName : UIColor.lightGrayColor()])
         self.subjectTextField.attributedPlaceholder = NSAttributedString(string: "subject:",

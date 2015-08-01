@@ -8,7 +8,7 @@
 
 import UIKit
 
-class SubredditsByCategoryTableViewController: UITableViewController {
+class SubredditsByCategoryTableViewController: RootTableViewController {
     
     var category: String!
     
@@ -20,9 +20,7 @@ class SubredditsByCategoryTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        self.tableView.tableFooterView = UIView()
-        
+            
         RedditSession.sharedSession.subredditsForCategory(self.category, completion: { (pagination, results, error) -> () in
             if let subreddits = results as? [String] {
                 self.subreddits = subreddits

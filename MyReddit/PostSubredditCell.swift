@@ -19,7 +19,7 @@ class PostSubredditCell: UITableViewCell {
     
     override func awakeFromNib() {
         self.subredditTextField.attributedPlaceholder = NSAttributedString(string: "enter subreddit...",
-            attributes: [NSForegroundColorAttributeName : MyRedditPostTitleTextLabelColor])
+            attributes: [NSForegroundColorAttributeName : UIColor.lightGrayColor()])
         
         if SettingsManager.defaultManager.valueForSetting(.NightMode) {
             var image = UIImage(named: "CircleAddWhite")?.imageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal)

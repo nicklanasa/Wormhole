@@ -66,7 +66,7 @@ class SubredditCell: UITableViewCell {
     
     var rkMultiSubreddit: RKMultireddit! {
         didSet {
-            self.nameLabel.text = rkMultiSubreddit.name.capitalizedString
+            self.nameLabel.text = rkMultiSubreddit.name
             
             self.subscribersLabel.hidden = true
             

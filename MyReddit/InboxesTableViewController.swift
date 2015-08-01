@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-class InboxesTableViewController: UITableViewController {
+class InboxesTableViewController: RootTableViewController {
     
     @IBOutlet weak var inboxCell: UserInfoCell!
     @IBOutlet weak var unreadCell: UserInfoCell!
@@ -36,7 +36,6 @@ class InboxesTableViewController: UITableViewController {
     }
     
     override func viewDidLoad() {
-        self.tableView.backgroundColor = MyRedditDarkBackgroundColor
         self.refreshControl = self.inboxRefreshControl
         
         if let splitViewController = self.splitViewController {

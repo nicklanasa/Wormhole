@@ -1191,7 +1191,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="apq-Yg-yEc" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1902" y="-1209"/>
+            <point key="canvasLocation" x="2756" y="-1955"/>
         </scene>
         <!--Subreddits-->
         <scene sceneID="RrG-Kg-SRP">
@@ -1483,6 +1483,7 @@
                         <segue destination="Wuv-iQ-z1V" kind="presentation" id="ryX-hT-yj2"/>
                         <segue destination="Kaz-dN-C7r" kind="show" identifier="UserSegue" id="nEx-7L-vW5"/>
                         <segue destination="gyN-2w-rHo" kind="show" identifier="SubredditsCategoriesSegue" id="LeZ-LV-2RG"/>
+                        <segue destination="RWX-Go-8QZ" kind="show" identifier="EditMultiRedditSegue" id="tv9-6d-xdk"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BRW-wG-3Pw" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -2009,9 +2010,6 @@
                                 <rect key="frame" x="0.0" y="556" width="600" height="44"/>
                                 <animations/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="600" id="dLu-hF-UoR"/>
-                                    <constraint firstAttribute="height" constant="44" id="jaP-iZ-4MQ"/>
-                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="600" id="sfj-Rc-GHj"/>
                                     <constraint firstAttribute="height" constant="44" id="uCt-Cn-z2v"/>
                                 </constraints>
                                 <items>
@@ -2035,13 +2033,9 @@
                                 </variation>
                             </toolbar>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" translatesAutoresizingMaskIntoConstraints="NO" id="tzE-is-hre">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="556"/>
                                 <animations/>
                                 <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="600" id="ZJC-fS-grR"/>
-                                    <constraint firstAttribute="height" constant="600" id="y2c-Mc-Kak"/>
-                                </constraints>
                                 <color key="sectionIndexBackgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <color key="sectionIndexTrackingBackgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <prototypes>
@@ -2095,18 +2089,15 @@
                         <animations/>
                         <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstItem="0ud-5K-tEr" firstAttribute="leading" secondItem="pCF-Vw-lmo" secondAttribute="leadingMargin" constant="-16" id="1P2-zk-CB4"/>
                             <constraint firstItem="0ud-5K-tEr" firstAttribute="bottom" secondItem="pCF-Vw-lmo" secondAttribute="bottomMargin" id="2Og-ZG-qJj"/>
-                            <constraint firstItem="0ud-5K-tEr" firstAttribute="top" secondItem="UJN-rZ-g58" secondAttribute="bottom" constant="492" id="51Y-vE-EZD"/>
-                            <constraint firstItem="tzE-is-hre" firstAttribute="leading" secondItem="pCF-Vw-lmo" secondAttribute="leadingMargin" constant="-16" id="BOW-Yg-mNU"/>
-                            <constraint firstItem="tzE-is-hre" firstAttribute="top" secondItem="pCF-Vw-lmo" secondAttribute="topMargin" id="F7L-6V-S8B"/>
-                            <constraint firstItem="tzE-is-hre" firstAttribute="bottom" secondItem="pCF-Vw-lmo" secondAttribute="bottomMargin" id="JyU-q1-kIZ"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="0ud-5K-tEr" secondAttribute="trailing" constant="-16" id="aJU-kJ-HsL"/>
-                            <constraint firstItem="0ud-5K-tEr" firstAttribute="leading" secondItem="pCF-Vw-lmo" secondAttribute="leadingMargin" constant="-16" id="ggC-ka-aH7"/>
+                            <constraint firstItem="tzE-is-hre" firstAttribute="trailing" secondItem="0ud-5K-tEr" secondAttribute="trailing" id="MEF-yC-EWE"/>
+                            <constraint firstAttribute="trailing" secondItem="tzE-is-hre" secondAttribute="trailing" id="Y8D-NJ-mYi"/>
+                            <constraint firstItem="0ud-5K-tEr" firstAttribute="top" secondItem="LRp-Qn-FTz" secondAttribute="top" id="gWn-KS-Dyc"/>
+                            <constraint firstItem="0ud-5K-tEr" firstAttribute="leading" secondItem="pCF-Vw-lmo" secondAttribute="leading" id="hTg-0R-dNs"/>
                             <constraint firstItem="0ud-5K-tEr" firstAttribute="top" secondItem="LRp-Qn-FTz" secondAttribute="bottom" id="hd0-qb-rTh"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="0ud-5K-tEr" secondAttribute="trailing" constant="-16" id="j4L-0V-n9S"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="tzE-is-hre" secondAttribute="trailing" constant="-16" id="saR-6w-83f"/>
-                            <constraint firstItem="LRp-Qn-FTz" firstAttribute="top" secondItem="0ud-5K-tEr" secondAttribute="bottom" id="xdN-MZ-qLP"/>
+                            <constraint firstItem="0ud-5K-tEr" firstAttribute="top" secondItem="tzE-is-hre" secondAttribute="bottom" id="jBU-tZ-ma6"/>
+                            <constraint firstItem="tzE-is-hre" firstAttribute="leading" secondItem="0ud-5K-tEr" secondAttribute="leading" id="vOR-nP-5HT"/>
+                            <constraint firstItem="tzE-is-hre" firstAttribute="top" secondItem="pCF-Vw-lmo" secondAttribute="top" id="z8b-9e-75h"/>
                         </constraints>
                         <variation key="default">
                             <mask key="constraints">
@@ -4370,7 +4361,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="GTM-nb-dzd" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1106" y="-1209"/>
+            <point key="canvasLocation" x="1960" y="-1955"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="CwV-9h-gth">
@@ -4960,6 +4951,122 @@
             </objects>
             <point key="canvasLocation" x="1127" y="-1955"/>
         </scene>
+        <!--edit multireddit-->
+        <scene sceneID="AQO-ku-Ndk">
+            <objects>
+                <tableViewController title="edit multireddit" id="RWX-Go-8QZ" customClass="EditMultiRedditTableViewController" customModule="MyReddit" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="nhA-yU-H3z">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
+                        <prototypes>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="AddSubredditCell" id="2j3-Yb-BHs" customClass="UserInfoCell" customModule="MyReddit" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="278" width="600" height="44"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="2j3-Yb-BHs" id="4VD-dl-T9y">
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="add new subreddit" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KGO-KR-2RD">
+                                            <rect key="frame" x="15" y="10" width="577" height="24"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="577" id="M4w-EM-nWm"/>
+                                                <constraint firstAttribute="height" constant="24" id="QhB-eJ-sDv"/>
+                                                <constraint firstAttribute="width" constant="577" id="qDa-KU-UZV"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="17"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="KGO-KR-2RD" firstAttribute="top" secondItem="4VD-dl-T9y" secondAttribute="topMargin" constant="2" id="3as-j4-fB1"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="KGO-KR-2RD" secondAttribute="bottom" constant="1" id="Mll-k7-zW3"/>
+                                        <constraint firstItem="KGO-KR-2RD" firstAttribute="top" secondItem="4VD-dl-T9y" secondAttribute="topMargin" constant="2" id="NXc-qo-kXn"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="KGO-KR-2RD" secondAttribute="bottom" constant="1" id="fyY-Qp-kyo"/>
+                                        <constraint firstItem="KGO-KR-2RD" firstAttribute="trailing" secondItem="4VD-dl-T9y" secondAttribute="trailingMargin" id="gpc-Gd-sfM"/>
+                                        <constraint firstItem="KGO-KR-2RD" firstAttribute="leading" secondItem="4VD-dl-T9y" secondAttribute="leadingMargin" constant="7" id="k0D-Uk-C8Z"/>
+                                        <constraint firstItem="KGO-KR-2RD" firstAttribute="leading" secondItem="4VD-dl-T9y" secondAttribute="leadingMargin" constant="7" id="t5i-PR-qTl"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="titleLabel" destination="KGO-KR-2RD" id="kuE-Eq-Glk"/>
+                                </connections>
+                            </tableViewCell>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="EditMultiredditNameCell" id="zy9-fY-D4O" customClass="EditMultiredditNameCell" customModule="MyReddit" customModuleProvider="target">
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="zy9-fY-D4O" id="4cN-mj-V2E">
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="enter multireddit name..." minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="Voi-Gd-HD7">
+                                            <rect key="frame" x="16" y="7" width="576" height="30"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="576" id="0th-U0-7jl"/>
+                                                <constraint firstAttribute="height" constant="30" id="15d-o4-JUj"/>
+                                            </constraints>
+                                            <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                            <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="14"/>
+                                            <textInputTraits key="textInputTraits" autocorrectionType="no" returnKeyType="done"/>
+                                        </textField>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="bottomMargin" secondItem="Voi-Gd-HD7" secondAttribute="bottom" constant="-2" id="6L9-QS-49O"/>
+                                        <constraint firstItem="Voi-Gd-HD7" firstAttribute="top" secondItem="4cN-mj-V2E" secondAttribute="topMargin" constant="-1" id="a15-38-2kK"/>
+                                        <constraint firstItem="Voi-Gd-HD7" firstAttribute="trailing" secondItem="4cN-mj-V2E" secondAttribute="trailingMargin" id="g1r-CD-9xk"/>
+                                        <constraint firstItem="Voi-Gd-HD7" firstAttribute="leading" secondItem="4cN-mj-V2E" secondAttribute="leadingMargin" constant="8" id="sKd-KC-Cgx"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="nameTextField" destination="Voi-Gd-HD7" id="YsQ-Rk-599"/>
+                                </connections>
+                            </tableViewCell>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="SubredditCell" rowHeight="55" id="h3u-OV-3dd" customClass="SubredditCell" customModule="MyReddit" customModuleProvider="target">
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="h3u-OV-3dd" id="dTd-KJ-Bc7">
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" clipsSubviews="YES" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Front" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SJ3-SB-iFI">
+                                            <rect key="frame" x="16" y="16" width="576" height="22"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="576" id="cNu-Oy-Am2"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="17"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="SJ3-SB-iFI" firstAttribute="leading" secondItem="dTd-KJ-Bc7" secondAttribute="leadingMargin" constant="8" id="4Md-u0-j4D"/>
+                                        <constraint firstItem="SJ3-SB-iFI" firstAttribute="top" secondItem="dTd-KJ-Bc7" secondAttribute="topMargin" constant="8" id="Xdj-JQ-FFh"/>
+                                        <constraint firstItem="SJ3-SB-iFI" firstAttribute="centerY" secondItem="dTd-KJ-Bc7" secondAttribute="centerY" id="mpm-VA-sc0"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <outlet property="nameLabel" destination="SJ3-SB-iFI" id="gAr-XO-N66"/>
+                                </connections>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="RWX-Go-8QZ" id="8u4-8v-1ks"/>
+                            <outlet property="delegate" destination="RWX-Go-8QZ" id="n0S-hP-h85"/>
+                        </connections>
+                    </tableView>
+                    <toolbarItems>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="YmF-wd-WpL"/>
+                        <barButtonItem title="delete" id="mJX-l6-ZPz">
+                            <color key="tintColor" red="1" green="0.0" blue="0.020100812990000001" alpha="1" colorSpace="calibratedRGB"/>
+                            <connections>
+                                <action selector="deleteButtonPressed:" destination="RWX-Go-8QZ" id="Mcq-69-GU2"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="gRI-Pw-jp3"/>
+                    </toolbarItems>
+                    <connections>
+                        <outlet property="deleteButton" destination="mJX-l6-ZPz" id="SG6-bj-rvi"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="whs-eb-tlu" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1127" y="-1209"/>
+        </scene>
         <!--subreddits-->
         <scene sceneID="tkQ-tA-fdI">
             <objects>
@@ -5029,20 +5136,20 @@
         <image name="Up" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="3dc-57-LvS"/>
+        <segue reference="ryX-hT-yj2"/>
+        <segue reference="SWo-82-5L3"/>
+        <segue reference="sND-y2-DTj"/>
+        <segue reference="gh5-lw-0Sc"/>
         <segue reference="bxZ-6W-PbQ"/>
-        <segue reference="MsL-gN-mnM"/>
-        <segue reference="ym1-ru-k1R"/>
-        <segue reference="Z8S-DA-q4b"/>
+        <segue reference="kaq-Nv-BbA"/>
+        <segue reference="nEx-7L-vW5"/>
+        <segue reference="FGX-NO-dra"/>
         <segue reference="r0I-Qj-AXk"/>
         <segue reference="xgG-eu-NoT"/>
         <segue reference="aev-Tk-Wb5"/>
         <segue reference="UM9-7d-Dnl"/>
         <segue reference="Na3-yg-xfC"/>
         <segue reference="MQa-bF-U0r"/>
-        <segue reference="nb3-Xk-rNn"/>
-        <segue reference="DoA-ah-cSI"/>
         <segue reference="vvu-K9-HER"/>
-        <segue reference="FGX-NO-dra"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -336,9 +336,7 @@ UISearchBarDelegate {
     }
     
     func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        if indexPath.row == 0 {
-            return false
-        } else if indexPath.row == 1 && indexPath.section == 1 {
+        if indexPath.row == 0 || (indexPath.row == 1 && indexPath.section == 2) || indexPath.section == 0 {
             return false
         }
         
@@ -353,9 +351,10 @@ UISearchBarDelegate {
         if indexPath.section == 0 {
             return .None
         }
+        
         if indexPath.row == 0 {
             return .None
-        } else if indexPath.row == 1 && indexPath.section == 1 {
+        } else if indexPath.row == 1 && indexPath.section == 2 {
             return .None
         }
         return .Delete
@@ -366,15 +365,18 @@ UISearchBarDelegate {
     }
     
     func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [AnyObject]? {
-        if indexPath.row != 0 {
+        if indexPath.section != 0 && indexPath.row != 0 {
             let deleteAction = UITableViewRowAction(style: UITableViewRowActionStyle.Default,
-                title: "Delete",
+                title: "delete",
                 handler: { (action, indexPath) -> Void in
-                    if indexPath.section == 0 {
+                    if indexPath.section == 1 {
                         if let multiReddit = self.multiSubreddits[indexPath.row - 1] as? RKMultireddit {
                             RedditSession.sharedSession.deleteMultiReddit(multiReddit, completion: { (error) -> () in
                                 if error != nil {
-                                    UIAlertView(title: "Error!", message: "Unable to delete MultiReddit! Please make sure you're connected to the internets.", delegate: self, cancelButtonTitle: "Ok").show()
+                                    UIAlertView(title: "Error!",
+                                        message: "Unable to delete MultiReddit! Please make sure you're connected to the internets.",
+                                        delegate: self,
+                                        cancelButtonTitle: "Ok").show()
                                     LocalyticsSession.shared().tagEvent("Delete multireddit failed")
                                 } else {
                                     self.multiSubreddits.removeAtIndex(indexPath.row - 1)
@@ -382,11 +384,14 @@ UISearchBarDelegate {
                                 }
                             })
                         }
-                    } else {
+                    } else if indexPath.section == 2 {
                         if let subreddit = self.subreddits[indexPath.row - 2] as? RKSubreddit {
                             RedditSession.sharedSession.unsubscribe(subreddit, completion: { (error) -> () in
                                 if error != nil {
-                                    UIAlertView(title: "Error!", message: "Unable to unsubscribe to Subreddit! Please make sure you're connected to the internets.", delegate: self, cancelButtonTitle: "Ok").show()
+                                    UIAlertView(title: "Error!",
+                                        message: "Unable to unsubscribe to Subreddit! Please make sure you're connected to the internets.",
+                                        delegate: self,
+                                        cancelButtonTitle: "Ok").show()
                                     LocalyticsSession.shared().tagEvent("Subreddit Unsubscribe failed")
                                 } else {
                                     self.subreddits.removeAtIndex(indexPath.row - 2)
@@ -399,9 +404,12 @@ UISearchBarDelegate {
             
             if indexPath.section == 1 {
                 let editAction = UITableViewRowAction(style: UITableViewRowActionStyle.Normal,
-                    title: "Edit",
+                    title: "edit",
                     handler: { (action, indexPath) -> Void in
-                        
+                    if let multiReddit = self.multiSubreddits[indexPath.row - 1] as? RKMultireddit {
+                        self.performSegueWithIdentifier("EditMultiRedditSegue",
+                            sender: multiReddit)
+                    }
                 })
                 
                 return [deleteAction, editAction]
@@ -577,10 +585,10 @@ UISearchBarDelegate {
         alert.addAction(UIAlertAction(title: "Ok", style: .Default, handler: { (action) -> Void in
             if let textfield = alert.textFields?.first as? UITextField {
                 
-                var multiRedditName = textfield.text.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
+                var multiRedditName = textfield.text.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet()).stringByTrimmingCharactersInSet(NSCharacterSet(charactersInString: " "))
                 
                 if count(multiRedditName) == 0 || multiRedditName.componentsSeparatedByString(" ").count > 1 {
-                    UIAlertView(title: "Error!", message: "You must enter in a multireddit name!", delegate: self, cancelButtonTitle: "Ok").show()
+                    UIAlertView(title: "Error!", message: "You must enter in a valid multireddit name! Make sure it doesn't have any spaces in it.", delegate: self, cancelButtonTitle: "Ok").show()
                     LocalyticsSession.shared().tagEvent("Invalid multireddit name")
                 } else {
                     
@@ -696,6 +704,13 @@ UISearchBarDelegate {
             if let controller = segue.destinationViewController as? ProfileViewController {
                 if let user = sender as? RKUser {
                     controller.user = user
+                    self.toggleMaster()
+                }
+            }
+        } else if segue.identifier == "EditMultiRedditSegue" {
+            if let controller = segue.destinationViewController as? EditMultiRedditTableViewController {
+                if let multireddit = sender as? RKMultireddit {
+                    controller.multireddit = multireddit
                     self.toggleMaster()
                 }
             }

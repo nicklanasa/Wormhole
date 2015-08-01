@@ -15,6 +15,7 @@ class RedditSession {
     typealias PaginationCompletion = (pagination: RKPagination?, results: [AnyObject]?, error: NSError?) -> ()
     typealias ReadableCompletion = (content: ReadableContent?, error: NSError?) -> ()
     typealias ErrorCompletion = (error: NSError?) -> ()
+    typealias BooleanCompletion = (result: Bool, error: NSError?) -> ()
     
     init() {
     }
@@ -141,6 +142,58 @@ class RedditSession {
         LocalyticsSession.shared().tagEvent("Added subreddit to multireddit")
         
         RKClient.sharedClient().addSubreddit(subreddit, toMultireddit: multiReddit) { (error) -> Void in
+            UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+            completion(error: error)
+        }
+    }
+    
+    func updateMultiredditWithName(multiReddit: RKMultireddit, subreddits: [AnyObject], completion: PaginationCompletion) {
+        UIApplication.sharedApplication().networkActivityIndicatorVisible = true
+        LocalyticsSession.shared().tagEvent("Update multireddit subreddits")
+        
+        RKClient.sharedClient().updateMultiredditWithName(multiReddit.name, subreddits: subreddits, visibility: multiReddit.visibility) { (result, error) -> Void in
+            UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+            if result == nil {
+                completion(pagination: nil, results: nil, error: error)
+            } else {
+                completion(pagination: nil, results: [result], error: error)
+            }
+        }
+    }
+    
+    func renameMultiredditWithName(name: String, multiReddit: RKMultireddit, completion: ErrorCompletion) {
+        UIApplication.sharedApplication().networkActivityIndicatorVisible = true
+        LocalyticsSession.shared().tagEvent("Rename multireddit")
+        
+        RKClient.sharedClient().renameMultireddit(multiReddit, to: name) { (error) -> Void in
+            UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+            completion(error: error)
+        }
+    }
+    
+    func multiredditWithName(name: String, completion: PaginationCompletion) {
+        UIApplication.sharedApplication().networkActivityIndicatorVisible = true
+        LocalyticsSession.shared().tagEvent("Fetch multireddit")
+        
+        if let user = UserSession.sharedSession.currentUser {
+            RKClient.sharedClient().multiredditWithName(name, user: RKClient.sharedClient().currentUser) { (result, error) -> Void in
+                UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+                if result == nil {
+                    completion(pagination: nil, results: nil, error: error)
+                } else {
+                    completion(pagination: nil, results: [result], error: error)
+                }
+            }
+        } else {
+            completion(pagination: nil, results: nil, error: NSError(domain: "Myreddit", code: -1, userInfo: nil))
+        }
+    }
+    
+    func removeSubredditFromMultireddit(multireddit: RKMultireddit, subreddit: RKSubreddit, completion: ErrorCompletion) {
+        UIApplication.sharedApplication().networkActivityIndicatorVisible = true
+        LocalyticsSession.shared().tagEvent("Remove subreddit from multireddit")
+        
+        RKClient.sharedClient().removeSubreddit(subreddit, fromMultireddit: multireddit) { (error) -> Void in
             UIApplication.sharedApplication().networkActivityIndicatorVisible = false
             completion(error: error)
         }
@@ -377,30 +430,51 @@ class RedditSession {
         }
     }
     
-    func submitLink(title: String, subredditName: String, text: String?, url: NSURL?, postType: PostType, completion: ErrorCompletion) {
+    func submitLink(title: String, subredditName: String, text: String?, url: NSURL?, postType: PostType, captchaIdentifier: String?, captchaValue: String?, completion: ErrorCompletion) {
         UIApplication.sharedApplication().networkActivityIndicatorVisible = true
-        RKClient.sharedClient().needsCaptchaWithCompletion({ (needsCaptcha, error) -> Void in
-            UIApplication.sharedApplication().networkActivityIndicatorVisible = false
-            if error != nil {
+        if postType == .Text {
+            RKClient.sharedClient().submitSelfPostWithTitle(title, subredditName: subredditName, text: text, captchaIdentifier: captchaIdentifier, captchaValue: captchaValue, completion: { (error) -> Void in
+                UIApplication.sharedApplication().networkActivityIndicatorVisible = false
                 completion(error: error)
+            })
+        } else {
+            RKClient.sharedClient().submitLinkPostWithTitle(title, subredditName: subredditName, URL: url, captchaIdentifier: captchaIdentifier, captchaValue: captchaValue, completion: { (error) -> Void in
+                UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+                completion(error: error)
+            })
+        }
+    }
+    
+    func newCaptchaIdWithCompletion(completion: PaginationCompletion) {
+        UIApplication.sharedApplication().networkActivityIndicatorVisible = true
+        RKClient.sharedClient().newCaptchaIdentifierWithCompletion { (identifier, error) -> Void in
+            UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+            if identifier != nil {
+                completion(pagination: nil, results: [identifier], error: error)
             } else {
-                if !needsCaptcha {
-                    if postType == .Text {
-                        RKClient.sharedClient().submitSelfPostWithTitle(title, subredditName: subredditName, text: text, captchaIdentifier: nil, captchaValue: nil, completion: { (error) -> Void in
-                            UIApplication.sharedApplication().networkActivityIndicatorVisible = false
-                            completion(error: error)
-                        })
-                    } else {
-                        RKClient.sharedClient().submitLinkPostWithTitle(title, subredditName: subredditName, URL: url, captchaIdentifier: nil, captchaValue: nil, completion: { (error) -> Void in
-                            UIApplication.sharedApplication().networkActivityIndicatorVisible = false
-                            completion(error: error)
-                        })
-                    }
-                } else {
-                    completion(error: error)
-                }
+                completion(pagination: nil, results: [], error: error)
+            }
+        }
+    }
+    
+    func imageForCaptchaId(identifier: String, completion: PaginationCompletion) {
+        UIApplication.sharedApplication().networkActivityIndicatorVisible = true
+        RKClient.sharedClient().imageForCaptchaIdentifier(identifier, completion: { (result, error) -> Void in
+            UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+            if result != nil {
+                completion(pagination: nil, results: [result], error: error)
+            } else {
+                completion(pagination: nil, results: [], error: error)
             }
         })
+    }
+    
+    func needsCaptchaWithCompletion(completion: BooleanCompletion) {
+        UIApplication.sharedApplication().networkActivityIndicatorVisible = true
+        RKClient.sharedClient().needsCaptchaWithCompletion { (result, error) -> Void in
+            UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+            completion(result: result, error: error)
+        }
     }
     
     func saveLink(link: RKLink, completion: ErrorCompletion) {
