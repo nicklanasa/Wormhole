@@ -44,16 +44,7 @@ UISearchBarDelegate {
     var syncSubreddits = Array<AnyObject>()
     var syncMultiSubreddits = Array<AnyObject>()
     
-    lazy var refreshControl: UIRefreshControl! = {
-        var control = UIRefreshControl()
-        control.attributedTitle = NSAttributedString(string: "",
-            attributes: [NSFontAttributeName : MyRedditCommentTextBoldFont,
-                NSForegroundColorAttributeName : MyRedditLabelColor])
-        control.addTarget(self,
-            action: "refresh:",
-            forControlEvents: UIControlEvents.ValueChanged)
-        return control
-    }()
+    var refreshControl = MyRedditRefreshControl()
 
     var subreddits = Array<AnyObject>() {
         didSet {
@@ -131,7 +122,9 @@ UISearchBarDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.tableView.addSubview(self.refreshControl)
+        self.refreshControl.addToScrollView(self.tableView, withRefreshBlock: { () -> Void in
+            self.refresh(self.tableView)
+        })
         
         NSNotificationCenter.defaultCenter().addObserver(self,
             selector: "didUpdateSubreddits",

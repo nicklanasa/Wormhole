@@ -50,7 +50,7 @@ class CommentCell: JZSwipeCell, UITextViewDelegate {
         
         var upVoteImage = UIImage(named: "Up")?.imageWithRenderingMode(.AlwaysOriginal)
         var downVoteImage = UIImage(named: "Down")?.imageWithRenderingMode(.AlwaysOriginal)
-        var replyImage = UIImage(named: "Reply")?.imageWithRenderingMode(.AlwaysOriginal)
+        var replyImage = UIImage(named: "moreWhite")?.imageWithRenderingMode(.AlwaysOriginal)
         
         self.imageSet = SwipeCellImageSetMake(downVoteImage, downVoteImage, upVoteImage, replyImage)
         self.colorSet = SwipeCellColorSetMake(MyRedditDownvoteColor, MyRedditDownvoteColor, MyRedditUpvoteColor, MyRedditReplyColor)

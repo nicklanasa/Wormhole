@@ -82,16 +82,7 @@ AddCommentViewControllerDelegate {
         }
     }
     
-    lazy var refreshCommentsControl: UIRefreshControl! = {
-        var control = UIRefreshControl()
-        control.attributedTitle = NSAttributedString(string: "",
-            attributes: [NSFontAttributeName : MyRedditCommentTextBoldFont,
-                NSForegroundColorAttributeName : MyRedditLabelColor])
-        control.addTarget(self,
-            action: "refresh:",
-            forControlEvents: UIControlEvents.ValueChanged)
-        return control
-    }()
+    var refreshCommentsControl = MyRedditRefreshControl()
     
     func refresh(sender: AnyObject)
     {
@@ -110,6 +101,10 @@ AddCommentViewControllerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.syncComments()
+        
+        self.refreshCommentsControl.addToScrollView(self.tableView, withRefreshBlock: { () -> Void in
+            self.syncComments()
+        })
     }
     
     func syncComments() {
@@ -365,6 +360,18 @@ AddCommentViewControllerDelegate {
                     controller.delegate = self
                 }
             }
+        } else if segue.identifier == "EditCommentSegue" {
+            if let nav = segue.destinationViewController as? UINavigationController {
+                if let controller = nav.viewControllers[0] as? AddCommentViewController {
+                    
+                    if let editComment = sender as? RKComment {
+                        controller.comment = editComment
+                        controller.edit =  true
+                    }
+                    
+                    controller.delegate = self
+                }
+            }
         } else {
             if let nav = segue.destinationViewController as? UINavigationController {
                 if let controller = nav.viewControllers[0] as? WebViewController {
@@ -415,10 +422,11 @@ AddCommentViewControllerDelegate {
                         } else if swipeType.value == JZSwipeTypeLongLeft.value {
                             if indexPath.section != 0 {
                                 self.hud.hide(true)
-                                self.performSegueWithIdentifier("AddCommentSegue",
-                                    sender: object)
+                                var commentDictionary = self.self.commentsBySection?[indexPath.section - 1] as! [String : AnyObject]
+                                var comment = commentDictionary["comment"] as! RKComment
+                                self.commentMoreActions(cell, comment: comment)
                             } else {
-                                self.saveUnSaveLink(cell)
+                                self.linkMoreActions(cell)
                             }
                         } else {
                             if indexPath.section != 0 {
@@ -438,11 +446,25 @@ AddCommentViewControllerDelegate {
         }
     }
     
-    private func saveUnSaveLink(sourceView: UIView) {
+    private func linkMoreActions(sourceView: UIView) {
         LocalyticsSession.shared().tagEvent("Swipe more")
         // More
         self.hud.hide(true)
-        var alertController = UIAlertController(title: "Select option", message: nil, preferredStyle: .ActionSheet)
+        var alertController = UIAlertController(title: "Select options", message: nil, preferredStyle: .ActionSheet)
+        
+        alertController.addAction(UIAlertAction(title: "add comment", style: .Default, handler: { (action) -> Void in
+            self.performSegueWithIdentifier("AddCommentSegue", sender: nil)
+        }))
+        
+        alertController.addAction(UIAlertAction(title: "report", style: .Default, handler: { (action) -> Void in
+            RedditSession.sharedSession.reportLink(self.link, completion: { (error) -> () in
+                if error != nil {
+                    UIAlertView.showUnableToDeleteLinkError()
+                } else {
+                    UIAlertView.showDeleteLinkSuccess()
+                }
+            })
+        }))
         
         if link.saved() {
             alertController.addAction(UIAlertAction(title: "unsave", style: .Default, handler: { (action) -> Void in
@@ -459,6 +481,83 @@ AddCommentViewControllerDelegate {
                 })
             }))
         }
+        
+        if self.link.author == UserSession.sharedSession.currentUser?.username {
+            if self.link.selfPost == true {
+                alertController.addAction(UIAlertAction(title: "edit", style: .Default, handler: { (action) -> Void in
+                    self.performSegueWithIdentifier("EditLinkSegue", sender: self.link)
+                }))
+            }
+            
+            alertController.addAction(UIAlertAction(title: "delete", style: .Default, handler: { (action) -> Void in
+                RedditSession.sharedSession.deleteLink(self.link, completion: { (error) -> () in
+                    if error != nil {
+                        UIAlertView.showUnableToDeleteLinkError()
+                    } else {
+                        UIAlertView.showDeleteLinkSuccess()
+                        self.navigationController?.popToRootViewControllerAnimated(true)
+                    }
+                })
+            }))
+        }
+        
+        alertController.addAction(UIAlertAction(title: "cancel", style: .Cancel, handler: nil))
+        
+        
+        if let popoverController = alertController.popoverPresentationController {
+            popoverController.sourceView = sourceView
+            popoverController.sourceRect = sourceView.bounds
+        }
+        
+        alertController.present(animated: true, completion: nil)
+    }
+    
+    private func commentMoreActions(sourceView: UIView, comment: RKComment) {
+        LocalyticsSession.shared().tagEvent("Swipe more")
+        
+        var alertController = UIAlertController(title: "Select comment options", message: nil, preferredStyle: .ActionSheet)
+        
+        alertController.addAction(UIAlertAction(title: "save", style: .Default, handler: { (action) -> Void in
+            RedditSession.sharedSession.saveComment(comment, completion: { (error) -> () in
+                // alert or do something else...
+                if error != nil {
+                    UIAlertView.showUnableToSaveCommentError()
+                } else {
+                    UIAlertView.showSaveCommentSuccess()
+                }
+            })
+        }))
+        
+        if comment.author == UserSession.sharedSession.currentUser?.username {
+            alertController.addAction(UIAlertAction(title: "edit", style: .Default, handler: { (action) -> Void in
+                self.performSegueWithIdentifier("EditCommentSegue", sender: comment)
+            }))
+            
+            alertController.addAction(UIAlertAction(title: "delete", style: .Default, handler: { (action) -> Void in
+                RedditSession.sharedSession.deleteComment(comment, completion: { (error) -> () in
+                    if error != nil {
+                        UIAlertView.showUnableToDeleteCommentError()
+                    } else {
+                        UIAlertView.showDeleteCommentSuccess()
+                        self.syncComments()
+                    }
+                })
+            }))
+        }
+        
+        alertController.addAction(UIAlertAction(title: "reply", style: .Default, handler: { (action) -> Void in
+            self.performSegueWithIdentifier("AddCommentSegue", sender: comment)
+        }))
+        
+        alertController.addAction(UIAlertAction(title: "report", style: .Default, handler: { (action) -> Void in
+            RedditSession.sharedSession.reportComment(comment, completion: { (error) -> () in
+                if error != nil {
+                    UIAlertView.showUnableToReportCommentError()
+                } else {
+                    UIAlertView.showReportCommentSuccess()
+                }
+            })
+        }))
         
         alertController.addAction(UIAlertAction(title: "cancel", style: .Cancel, handler: nil))
         
@@ -490,7 +589,6 @@ AddCommentViewControllerDelegate {
     private func downVote(object: RKVotable) {
         RedditSession.sharedSession.downvote(object, completion: { (error) -> () in
             self.hud.hide(true)
-            
             if error != nil {
                 UIAlertView(title: "Error!",
                     message: error!.localizedDescription,
@@ -504,18 +602,40 @@ AddCommentViewControllerDelegate {
     }
     
     func addCommentViewController(controller: AddCommentViewController, didAddComment success: Bool) {
-        
         self.hud.hide(true)
-        
         if success {
-            LocalyticsSession.shared().tagEvent("Added comment")
-            
-            RedditSession.sharedSession.fetchComments(nil, link: self.link) { (pagination, results, error) -> () in
-                self.comments = results
+            if controller.edit {
+                UIAlertView.showEditedCommentSuccess()
+                LocalyticsSession.shared().tagEvent("Edited comment")
+            } else {
+                if let replyComment = controller.comment {
+                    UIAlertView.showReplyCommentSuccess()
+                    LocalyticsSession.shared().tagEvent("Reply comment added")
+                } else {
+                    UIAlertView.showAddedCommentSuccess()
+                    LocalyticsSession.shared().tagEvent("Added comment")
+                }
             }
+            self.syncComments()
         } else {
             LocalyticsSession.shared().tagEvent("Add comment failed")
+            if controller.edit {
+                UIAlertView.showUnableToEditCommentError()
+                LocalyticsSession.shared().tagEvent("Edited comment failed")
+            } else {
+                if let replyComment = controller.comment {
+                    UIAlertView.showUnableToReplyCommentError()
+                    LocalyticsSession.shared().tagEvent("Reply comment failed")
+                } else {
+                    UIAlertView.showUnableToAddCommentError()
+                    LocalyticsSession.shared().tagEvent("Added comment failed")
+                }
+            }
         }
+    }
+    
+    @IBAction func moreButtonTapped(sender: AnyObject) {
+        
     }
     
     @IBAction func shareButtonTapped(sender: AnyObject) {

@@ -21,6 +21,7 @@ class AddCommentViewController: UIViewController, UITextViewDelegate {
     var delegate: AddCommentViewControllerDelegate?
     
     var comment: RKComment?
+    var edit = false
     var message: RKMessage?
     var link: RKLink?
     
@@ -42,7 +43,16 @@ class AddCommentViewController: UIViewController, UITextViewDelegate {
                 self.navigationItem.title = "messasge reply"
             }
         } else {
-            self.navigationItem.title = "new comment"
+            if self.edit {
+                self.navigationItem.title = "edit comment"
+                self.textView.text = self.comment?.body
+            } else {
+                if let replyComment = self.comment {
+                    self.navigationItem.title = "reply"
+                } else {
+                    self.navigationItem.title = "new comment"
+                }
+            }
         }
         
         if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
@@ -82,14 +92,13 @@ class AddCommentViewController: UIViewController, UITextViewDelegate {
                 
                 RedditSession.sharedSession.submitComment(self.textView.text,
                     onThingWithFullName: replyMessage.fullName, completion: { (error) -> () in
+                    self.hud.hide(true)
                     if error != nil {
-                        self.hud.hide(true)
                         UIAlertView(title: "Error!",
                             message: error?.localizedDescription,
                             delegate: self,
                             cancelButtonTitle: "Ok").show()
                     } else {
-                        self.hud.hide(true)
                         self.dismissViewControllerAnimated(true, completion: { () -> Void in
                             self.delegate?.addCommentViewController(self, didAddComment: true)
                         })
@@ -98,21 +107,39 @@ class AddCommentViewController: UIViewController, UITextViewDelegate {
             } else {
                 self.hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
                 
-                RedditSession.sharedSession.submitComment(self.textView.text,
-                    link: self.link, comment: self.comment, completion: { (error) -> () in
-                        if error != nil {
+                if self.edit {
+                    if let editComment = self.comment {
+                        RedditSession.sharedSession.editComment(editComment,
+                            newText: self.textView.text,
+                            completion: { (error) -> () in
+                            if error != nil {
+                                UIAlertView(title: "Error!",
+                                    message: error?.localizedDescription,
+                                    delegate: self,
+                                    cancelButtonTitle: "Ok").show()
+                            } else {
+                                self.dismissViewControllerAnimated(true, completion: { () -> Void in
+                                    self.delegate?.addCommentViewController(self, didAddComment: true)
+                                })
+                            }
+                        })
+                    }
+                } else {
+                    RedditSession.sharedSession.submitComment(self.textView.text,
+                        link: self.link, comment: self.comment, completion: { (error) -> () in
                             self.hud.hide(true)
-                            UIAlertView(title: "Error!",
-                                message: error?.localizedDescription,
-                                delegate: self,
-                                cancelButtonTitle: "Ok").show()
-                        } else {
-                            self.hud.hide(true)
-                            self.dismissViewControllerAnimated(true, completion: { () -> Void in
-                                self.delegate?.addCommentViewController(self, didAddComment: true)
-                            })
-                        }
-                })
+                            if error != nil {
+                                UIAlertView(title: "Error!",
+                                    message: error?.localizedDescription,
+                                    delegate: self,
+                                    cancelButtonTitle: "Ok").show()
+                            } else {
+                                self.dismissViewControllerAnimated(true, completion: { () -> Void in
+                                    self.delegate?.addCommentViewController(self, didAddComment: true)
+                                })
+                            }
+                    })
+                }
             }
         } else {
             UIAlertView(title: "Error!",

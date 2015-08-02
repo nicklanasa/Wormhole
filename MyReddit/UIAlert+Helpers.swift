@@ -10,6 +10,8 @@ import UIKit
 
 extension UIAlertView {
     
+    // Errors
+    
     class func showPostNoSubredditError() {
         UIAlertView(title: "Error!",
             message: "You must supply a subreddit!",
@@ -62,6 +64,106 @@ extension UIAlertView {
     class func showSubscribeError() {
         UIAlertView(title: "Error!",
             message: "Unable to subscribe to Subreddit. Please make sure you are connected to the internets.",
+            delegate: self,
+            cancelButtonTitle: "Ok").show()
+    }
+    
+    class func showUnableToReportCommentError() {
+        UIAlertView(title: "Error!",
+            message: "Unable to report comment. Please make sure you are connected to the internets.",
+            delegate: self,
+            cancelButtonTitle: "Ok").show()
+    }
+    
+    class func showUnableToDeleteCommentError() {
+        UIAlertView(title: "Error!",
+            message: "Unable to delete comment. Please make sure you are connected to the internets.",
+            delegate: self,
+            cancelButtonTitle: "Ok").show()
+    }
+    
+    class func showUnableToDeleteLinkError() {
+        UIAlertView(title: "Error!",
+            message: "Unable to link comment. Please make sure you are connected to the internets.",
+            delegate: self,
+            cancelButtonTitle: "Ok").show()
+    }
+    
+    class func showUnableToEditCommentError() {
+        UIAlertView(title: "Error!",
+            message: "Unable to edit comment. Please make sure you are connected to the internets.",
+            delegate: self,
+            cancelButtonTitle: "Ok").show()
+    }
+    
+    class func showUnableToAddCommentError() {
+        UIAlertView(title: "Error!",
+            message: "Unable to add comment. Please make sure you are connected to the internets.",
+            delegate: self,
+            cancelButtonTitle: "Ok").show()
+    }
+    
+    class func showUnableToReplyCommentError() {
+        UIAlertView(title: "Error!",
+            message: "Unable to reply to comment. Please make sure you are connected to the internets.",
+            delegate: self,
+            cancelButtonTitle: "Ok").show()
+    }
+    
+    class func showUnableToSaveCommentError() {
+        UIAlertView(title: "Error!",
+            message: "Unable to save comment. Please make sure you are connected to the internets.",
+            delegate: self,
+            cancelButtonTitle: "Ok").show()
+    }
+    
+    // Success
+    
+    class func showReportCommentSuccess() {
+        UIAlertView(title: "Success!",
+            message: "Comment reported!",
+            delegate: self,
+            cancelButtonTitle: "Ok").show()
+    }
+    
+    class func showDeleteLinkSuccess() {
+        UIAlertView(title: "Success!",
+            message: "Comment deleted!",
+            delegate: self,
+            cancelButtonTitle: "Ok").show()
+    }
+    
+    class func showDeleteCommentSuccess() {
+        UIAlertView(title: "Success!",
+            message: "Link deleted!",
+            delegate: self,
+            cancelButtonTitle: "Ok").show()
+    }
+    
+    class func showAddedCommentSuccess() {
+        UIAlertView(title: "Success!",
+            message: "Comment added!",
+            delegate: self,
+            cancelButtonTitle: "Ok").show()
+    }
+
+    class func showReplyCommentSuccess() {
+        UIAlertView(title: "Success!",
+            message: "Reply added!",
+            delegate: self,
+            cancelButtonTitle: "Ok").show()
+    }
+    
+    class func showEditedCommentSuccess() {
+        UIAlertView(title: "Success!",
+            message: "Comment edited!",
+            delegate: self,
+            cancelButtonTitle: "Ok").show()
+    }
+    
+    class func showSaveCommentSuccess() {
+        UIAlertView(title: "Success!",
+            message: "Comment saved!",
             delegate: self,
             cancelButtonTitle: "Ok").show()
     }

@@ -199,12 +199,49 @@ class RedditSession {
         }
     }
     
+    func fetchLinkWithComment(comment: RKComment, completion: PaginationCompletion) {
+        UIApplication.sharedApplication().networkActivityIndicatorVisible = true
+        LocalyticsSession.shared().tagEvent("Remove subreddit from multireddit")
+        
+        RKClient.sharedClient().linkWithFullName(comment.linkID, completion: { (result, error) -> Void in
+            if let link = result as? RKLink {
+                completion(pagination: nil, results: [link], error: error)
+            } else {
+                completion(pagination: nil, results: nil, error: error)
+            }
+        })
+    }
+    
     func markLinkAsViewed(link: RKLink, completion: ErrorCompletion) {
         UIApplication.sharedApplication().networkActivityIndicatorVisible = true
         RKClient.sharedClient().storeVisitedLink(link, completion: { (error) -> Void in
             UIApplication.sharedApplication().networkActivityIndicatorVisible = false
             completion(error: error)
         })
+    }
+    
+    func reportLink(link: RKLink, completion: ErrorCompletion) {
+        UIApplication.sharedApplication().networkActivityIndicatorVisible = true
+        RKClient.sharedClient().reportLink(link, completion: { (error) -> Void in
+            UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+            completion(error: error)
+        })
+    }
+    
+    func deleteLink(link: RKLink, completion: ErrorCompletion) {
+        UIApplication.sharedApplication().networkActivityIndicatorVisible = true
+        RKClient.sharedClient().deleteLink(link, completion: { (error) -> Void in
+            UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+            completion(error: error)
+        })
+    }
+    
+    func editLink(link: RKLink, newText: String, completion: ErrorCompletion) {
+        UIApplication.sharedApplication().networkActivityIndicatorVisible = true
+        RKClient.sharedClient().editSelfPost(link, newText: newText) { (error) -> Void in
+            UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+            completion(error: error)
+        }
     }
     
     func fetchMessages(pagination: RKPagination?, category: RKMessageCategory, read: Bool, completion: PaginationCompletion) {
@@ -271,13 +308,43 @@ class RedditSession {
         })
     }
     
-    func fetchLinkWithComment(comment: RKComment, completion: PaginationCompletion) {
+    func saveComment(comment: RKComment, completion: ErrorCompletion) {
         UIApplication.sharedApplication().networkActivityIndicatorVisible = true
-        LocalyticsSession.shared().tagEvent("Fetched link for comment")
+        LocalyticsSession.shared().tagEvent("Saved comment")
         
-        RKClient.sharedClient().linkWithFullName(comment.linkID, completion: { (link, error) -> Void in
+        RKClient.sharedClient().saveComment(comment, completion: { (error) -> Void in
             UIApplication.sharedApplication().networkActivityIndicatorVisible = false
-            completion(pagination: nil, results: [link], error: error)
+            completion(error: error)
+        })
+    }
+    
+    func editComment(comment: RKComment, newText: String, completion: ErrorCompletion) {
+        UIApplication.sharedApplication().networkActivityIndicatorVisible = true
+        LocalyticsSession.shared().tagEvent("Edit comment")
+        
+        RKClient.sharedClient().editComment(comment, newText: newText) { (error) -> Void in
+            UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+            completion(error: error)
+        }
+    }
+    
+    func reportComment(comment: RKComment, completion: ErrorCompletion) {
+        UIApplication.sharedApplication().networkActivityIndicatorVisible = true
+        LocalyticsSession.shared().tagEvent("Report comment")
+        
+        RKClient.sharedClient().reportComment(comment, completion: { (error) -> Void in
+            UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+            completion(error: error)
+        })
+    }
+    
+    func deleteComment(comment: RKComment, completion: ErrorCompletion) {
+        UIApplication.sharedApplication().networkActivityIndicatorVisible = true
+        LocalyticsSession.shared().tagEvent("Delete comment")
+        
+        RKClient.sharedClient().deleteComment(comment, completion: { (error) -> Void in
+            UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+            completion(error: error)
         })
     }
     

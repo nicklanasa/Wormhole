@@ -39,8 +39,8 @@ class PostImageCell: PostCell {
     
     private func resetViews() {
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
-            self.titleLabel.frame = CGRectMake(15, 25, self.contentView.frame.size.width - 20, 50)
-            self.subredditLabel.frame = CGRectMake(15, 4, self.contentView.frame.size.width - 20, 21)
+            self.titleLabel.frame = CGRectMake(15, 26, self.contentView.frame.size.width - 20, 50)
+            self.subredditLabel.frame = CGRectMake(15, 6, self.contentView.frame.size.width - 20, 21)
             self.scoreLabel.frame = CGRectMake(self.contentView.frame.size.width - 80, 4, 70, 18)
             self.postInfoLabel.frame = CGRectMake(15, self.contentView.frame.size.height - 25, self.contentView.frame.size.width - 20, 14)
         })
