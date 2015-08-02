@@ -181,6 +181,10 @@ class AccountsViewController: UIViewController, UITableViewDelegate, UITableView
                     controller.user = user
                 }
             }
+        } else {
+            if let controller = segue.destinationViewController as? ProfileViewController {
+                controller.hidesBottomBarWhenPushed = false
+            }
         }
     }
     

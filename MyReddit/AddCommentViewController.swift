@@ -42,6 +42,11 @@ class AddCommentViewController: UIViewController, UITextViewDelegate {
             } else {
                 self.navigationItem.title = "messasge reply"
             }
+        } else if let editLink = self.link {
+            if self.edit {
+                self.navigationItem.title = "edit post"
+                self.textView.text = self.link?.selfText
+            }
         } else {
             if self.edit {
                 self.navigationItem.title = "edit comment"
@@ -104,6 +109,25 @@ class AddCommentViewController: UIViewController, UITextViewDelegate {
                         })
                     }
                 })
+            } else if let editLink = self.link {
+                self.hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
+                
+                if self.edit {
+                    RedditSession.sharedSession.editLink(editLink,
+                        newText: self.textView.text,
+                        completion: { (error) -> () in
+                        if error != nil {
+                            UIAlertView(title: "Error!",
+                                message: error?.localizedDescription,
+                                delegate: self,
+                                cancelButtonTitle: "Ok").show()
+                        } else {
+                            self.dismissViewControllerAnimated(true, completion: { () -> Void in
+                                self.delegate?.addCommentViewController(self, didAddComment: true)
+                            })
+                        }
+                    })
+                }
             } else {
                 self.hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
                 
@@ -143,7 +167,7 @@ class AddCommentViewController: UIViewController, UITextViewDelegate {
             }
         } else {
             UIAlertView(title: "Error!",
-                message: "Reply cannot be empty!",
+                message: "Text cannot be empty!",
                 delegate: self,
                 cancelButtonTitle: "Ok").show()
         }

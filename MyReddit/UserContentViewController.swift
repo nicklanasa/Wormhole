@@ -37,7 +37,6 @@ LoadMoreHeaderDelegate {
     override func viewDidLoad() {
         
         self.tableView.reloadData()
-        self.syncContent()
         
         self.navigationItem.title = self.categoryTitle.lowercaseString
         self.tableView.backgroundColor = MyRedditBackgroundColor
@@ -52,6 +51,10 @@ LoadMoreHeaderDelegate {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         LocalyticsSession.shared().tagScreen("UserContent")
+        
+        self.content = Array<AnyObject>()
+        
+        self.syncContent()
     }
 
     private func syncContent() {

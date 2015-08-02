@@ -22,7 +22,13 @@ AddCommentViewControllerDelegate {
     var closedIndexPaths = [NSIndexPath]()
     var collapsedIndexPaths = [NSIndexPath]()
     
-    var link: RKLink!
+    var link: RKLink! {
+        didSet {
+            self.tableView.beginUpdates()
+            self.tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: 0, inSection: 0)], withRowAnimation: .Fade)
+            self.tableView.endUpdates()
+        }
+    }
     var optionsController: LinkShareOptionsViewController!
     
     var filter: RKCommentSort! {
@@ -367,11 +373,16 @@ AddCommentViewControllerDelegate {
                     if let editComment = sender as? RKComment {
                         controller.comment = editComment
                         controller.edit =  true
+                    } else if let editLink = sender as? RKLink {
+                        controller.link = editLink
+                        controller.edit = true
                     }
                     
                     controller.delegate = self
                 }
             }
+        } else if segue.identifier == "DeletePostSegue" {
+            
         } else {
             if let nav = segue.destinationViewController as? UINavigationController {
                 if let controller = nav.viewControllers[0] as? WebViewController {
@@ -446,7 +457,7 @@ AddCommentViewControllerDelegate {
         }
     }
     
-    private func linkMoreActions(sourceView: UIView) {
+    private func linkMoreActions(sourceView: AnyObject) {
         LocalyticsSession.shared().tagEvent("Swipe more")
         // More
         self.hud.hide(true)
@@ -459,9 +470,9 @@ AddCommentViewControllerDelegate {
         alertController.addAction(UIAlertAction(title: "report", style: .Default, handler: { (action) -> Void in
             RedditSession.sharedSession.reportLink(self.link, completion: { (error) -> () in
                 if error != nil {
-                    UIAlertView.showUnableToDeleteLinkError()
+                    UIAlertView.showUnableToReportLinkError()
                 } else {
-                    UIAlertView.showDeleteLinkSuccess()
+                    UIAlertView.showReportLinkSuccess()
                 }
             })
         }))
@@ -485,7 +496,7 @@ AddCommentViewControllerDelegate {
         if self.link.author == UserSession.sharedSession.currentUser?.username {
             if self.link.selfPost == true {
                 alertController.addAction(UIAlertAction(title: "edit", style: .Default, handler: { (action) -> Void in
-                    self.performSegueWithIdentifier("EditLinkSegue", sender: self.link)
+                    self.performSegueWithIdentifier("EditCommentSegue", sender: self.link)
                 }))
             }
             
@@ -494,8 +505,14 @@ AddCommentViewControllerDelegate {
                     if error != nil {
                         UIAlertView.showUnableToDeleteLinkError()
                     } else {
-                        UIAlertView.showDeleteLinkSuccess()
-                        self.navigationController?.popToRootViewControllerAnimated(true)
+                        var deleteAlert = UIAlertController(title: "Delete post", message: "Are you sure you want to delete this post?", preferredStyle: .Alert)
+                        
+                        deleteAlert.addAction(UIAlertAction(title: "Yes", style: .Default, handler: { (action) -> Void in
+                            self.performSegueWithIdentifier("DeletePostSegue", sender: nil)
+                        }))
+                        
+                        deleteAlert.addAction(UIAlertAction(title: "No", style: .Cancel, handler: nil))
+                        deleteAlert.present(animated: true, completion: nil)
                     }
                 })
             }))
@@ -503,16 +520,19 @@ AddCommentViewControllerDelegate {
         
         alertController.addAction(UIAlertAction(title: "cancel", style: .Cancel, handler: nil))
         
-        
         if let popoverController = alertController.popoverPresentationController {
-            popoverController.sourceView = sourceView
+            if let view = sourceView as? UITableViewCell {
+                popoverController.sourceView = view
+            } else {
+                popoverController.barButtonItem = sourceView as! UIBarButtonItem
+            }
             popoverController.sourceRect = sourceView.bounds
         }
         
         alertController.present(animated: true, completion: nil)
     }
     
-    private func commentMoreActions(sourceView: UIView, comment: RKComment) {
+    private func commentMoreActions(sourceView: AnyObject, comment: RKComment) {
         LocalyticsSession.shared().tagEvent("Swipe more")
         
         var alertController = UIAlertController(title: "Select comment options", message: nil, preferredStyle: .ActionSheet)
@@ -561,9 +581,13 @@ AddCommentViewControllerDelegate {
         
         alertController.addAction(UIAlertAction(title: "cancel", style: .Cancel, handler: nil))
         
-        
         if let popoverController = alertController.popoverPresentationController {
-            popoverController.sourceView = sourceView
+            if let view = sourceView as? UITableViewCell {
+                popoverController.sourceView = view
+            } else {
+                popoverController.barButtonItem = sourceView as! UIBarButtonItem
+            }
+            
             popoverController.sourceRect = sourceView.bounds
         }
         
@@ -605,20 +629,25 @@ AddCommentViewControllerDelegate {
         self.hud.hide(true)
         if success {
             if controller.edit {
-                UIAlertView.showEditedCommentSuccess()
-                LocalyticsSession.shared().tagEvent("Edited comment")
+                if let editLink = controller.link {
+                    RedditSession.sharedSession.linkWithFullName(self.link, completion: { (pagination, results, error) -> () in
+                        if let refreshedLink = results?.first as? RKLink {
+                            self.link = refreshedLink
+                        }
+                    })
+                    LocalyticsSession.shared().tagEvent("Edited link")
+                } else {
+                    LocalyticsSession.shared().tagEvent("Edited comment")
+                }
             } else {
                 if let replyComment = controller.comment {
-                    UIAlertView.showReplyCommentSuccess()
                     LocalyticsSession.shared().tagEvent("Reply comment added")
                 } else {
-                    UIAlertView.showAddedCommentSuccess()
                     LocalyticsSession.shared().tagEvent("Added comment")
                 }
             }
             self.syncComments()
         } else {
-            LocalyticsSession.shared().tagEvent("Add comment failed")
             if controller.edit {
                 UIAlertView.showUnableToEditCommentError()
                 LocalyticsSession.shared().tagEvent("Edited comment failed")
@@ -635,7 +664,7 @@ AddCommentViewControllerDelegate {
     }
     
     @IBAction func moreButtonTapped(sender: AnyObject) {
-        
+        self.linkMoreActions(sender)
     }
     
     @IBAction func shareButtonTapped(sender: AnyObject) {

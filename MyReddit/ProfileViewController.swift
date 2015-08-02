@@ -43,18 +43,18 @@ class ProfileViewController: UIViewController, UITableViewDataSource, UITableVie
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         LocalyticsSession.shared().tagScreen("Profile")
-    }
-    
-    override func viewDidLoad() {
+        
         if let searchedUser = user {
             self.userTitles =  ["Overview", "Comments", "Submitted", "Gilded"]
-            self.toolbar.hidden = true
+            self.navigationItem.rightBarButtonItem = nil
         } else {
             if let user = UserSession.sharedSession.currentUser {
                 self.navigationItem.title = user.username
             }
         }
-        
+    }
+    
+    override func viewDidLoad() {
         self.tableView.backgroundColor = MyRedditDarkBackgroundColor
     }
     

@@ -75,6 +75,13 @@ extension UIAlertView {
             cancelButtonTitle: "Ok").show()
     }
     
+    class func showUnableToReportLinkError() {
+        UIAlertView(title: "Error!",
+            message: "Unable to report link. Please make sure you are connected to the internets.",
+            delegate: self,
+            cancelButtonTitle: "Ok").show()
+    }
+    
     class func showUnableToDeleteCommentError() {
         UIAlertView(title: "Error!",
             message: "Unable to delete comment. Please make sure you are connected to the internets.",
@@ -122,6 +129,13 @@ extension UIAlertView {
     class func showReportCommentSuccess() {
         UIAlertView(title: "Success!",
             message: "Comment reported!",
+            delegate: self,
+            cancelButtonTitle: "Ok").show()
+    }
+    
+    class func showReportLinkSuccess() {
+        UIAlertView(title: "Success!",
+            message: "Link reported!",
             delegate: self,
             cancelButtonTitle: "Ok").show()
     }
