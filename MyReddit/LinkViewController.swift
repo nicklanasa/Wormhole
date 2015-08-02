@@ -13,6 +13,7 @@ class LinkViewController: UIViewController, UITextViewDelegate {
     
     var link: RKLink!
     var optionsController: LinkShareOptionsViewController!
+    
     var readerBarButtonItem: UIBarButtonItem!
     var saveButtonItem: UIBarButtonItem!
     
@@ -124,12 +125,11 @@ class LinkViewController: UIViewController, UITextViewDelegate {
         self.postTitleView.backgroundColor = MyRedditBackgroundColor
         self.postTitleLabel.textColor = MyRedditLabelColor
         
-        self.textView.hidden = true
         self.textView.delegate = self
         
         self.configureNav()
         
-        self.setupWebView()
+        self.showReader()
     }
     
     private func setupWebView() {
@@ -153,18 +153,6 @@ class LinkViewController: UIViewController, UITextViewDelegate {
             })
             
             NSUserDefaults.standardUserDefaults().setObject(true, forKey: self.link.identifier)
-            
-            self.readerBarButtonItem = UIBarButtonItem(image: UIImage(named: "Reader"),
-                style: .Plain,
-                target: self,
-                action: "showReader")
-            
-            self.saveButtonItem = UIBarButtonItem(image: UIImage(named: "Saved"),
-                style: .Plain,
-                target: self,
-                action: "saveLink")
-            
-            self.navigationItem.rightBarButtonItems = [self.readerBarButtonItem, self.saveButtonItem]
             
             if self.link.saved {
                 self.navigationItem.rightBarButtonItem?.tintColor = MyRedditColor
@@ -198,11 +186,25 @@ class LinkViewController: UIViewController, UITextViewDelegate {
         navLabel.numberOfLines = 2
         navLabel.sizeToFit()
         self.navigationItem.titleView = navLabel
+        
+        self.readerBarButtonItem = UIBarButtonItem(image: UIImage(named: "Reader"),
+            style: .Plain,
+            target: self,
+            action: "showReader")
+        
+        self.saveButtonItem = UIBarButtonItem(image: UIImage(named: "Saved"),
+            style: .Plain,
+            target: self,
+            action: "saveLink")
+        
+        self.navigationItem.rightBarButtonItems = [self.readerBarButtonItem, self.saveButtonItem]
     }
     
     func showReader() {
+        var hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
         RedditSession.sharedSession.readableContentWithURL(self.link.URL.absoluteString!, completion: { (content, error) -> () in
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                hud.hide(true)
                 if error != nil {
                     UIAlertView(title: "Error!",
                         message: "Unable to get readable content!",
@@ -238,8 +240,11 @@ class LinkViewController: UIViewController, UITextViewDelegate {
                     
                     LocalyticsSession.shared().tagEvent("Save failed")
                 } else {
-                    self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "Saved"), style: .Plain, target: self, action: "unSaveLink")
-                    self.navigationItem.rightBarButtonItem?.tintColor = MyRedditColor
+                    self.saveButtonItem = UIBarButtonItem(image: UIImage(named: "SavedSelected"),
+                        style: .Plain,
+                        target: self,
+                        action: "unSaveLink")
+                    self.navigationItem.rightBarButtonItems = [self.readerBarButtonItem, self.saveButtonItem]
                 }
             })
         }
@@ -259,8 +264,11 @@ class LinkViewController: UIViewController, UITextViewDelegate {
                     
                     LocalyticsSession.shared().tagEvent("Unsave failed")
                 } else {
-                    self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "Saved"), style: .Plain, target: self, action: "saveLink")
-                    self.navigationItem.rightBarButtonItem?.tintColor = MyRedditLabelColor
+                    self.saveButtonItem = UIBarButtonItem(image: UIImage(named: "Saved"),
+                        style: .Plain,
+                        target: self,
+                        action: "saveLink")
+                    self.navigationItem.rightBarButtonItems = [self.readerBarButtonItem, self.saveButtonItem]
                 }
             })
         }
@@ -338,5 +346,16 @@ class LinkViewController: UIViewController, UITextViewDelegate {
     func textView(textView: UITextView, shouldInteractWithURL URL: NSURL, inRange characterRange: NSRange) -> Bool {
         self.performSegueWithIdentifier("WebSegue", sender: URL)
         return false
+    }
+    
+    override func willRotateToInterfaceOrientation(toInterfaceOrientation: UIInterfaceOrientation, duration: NSTimeInterval) {
+        self.textView.text = ""
+    }
+    
+    override func didRotateFromInterfaceOrientation(fromInterfaceOrientation: UIInterfaceOrientation) {
+        var mutableString = self.content.content.html2AttributedString
+        self.textView.attributedText = mutableString
+        self.textView.textColor = MyRedditLabelColor
+        self.textView.font = MyRedditSelfTextFont
     }
 }

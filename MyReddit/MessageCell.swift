@@ -32,7 +32,7 @@ class MessageCell: JZSwipeCell, UITextViewDelegate {
     override func awakeFromNib() {
         super.awakeFromNib()
         
-        self.imageSet = SwipeCellImageSetMake(UIImage(named: "moreWhite"), UIImage(named: "moreWhite"), UIImage(named: "ReplySmall"), UIImage(named: "ReplySmall"))
+        self.imageSet = SwipeCellImageSetMake(UIImage(named: "moreWhite"), UIImage(named: "moreWhite"), UIImage(named: "Reply"), UIImage(named: "Reply"))
         self.colorSet = SwipeCellColorSetMake(MyRedditColor, MyRedditColor, MyRedditReplyColor, MyRedditReplyColor)
         
         self.bodyTextView.delegate = self

@@ -35,28 +35,21 @@ class TitleCell: PostCell {
                 self.scoreLabel.textColor = UIColor.lightGrayColor()
             }
             
-            self.commentsLabel.text = link.totalComments.description
             self.subredditLabel.text = "/r/\(link.subreddit)"
             
             var showFlair = ""
             
             if SettingsManager.defaultManager.valueForSetting(.Flair) {
                 if let flairString = link.linkFlairText {
-                    showFlair = " | \(flairString)"
+                    showFlair = "\(flairString) |"
                 }
             }
             
-            var infoString = NSMutableAttributedString(string: "\(link.domain) | \(link.author)\(showFlair) | \(link.created.timeAgoSimple())")
+            var infoString = NSMutableAttributedString(string:"\(showFlair) \(link.author) | \(link.created.timeAgoSimple()) | \(link.totalComments.description) comments")
             var attrs = [NSForegroundColorAttributeName : MyRedditLabelColor]
-            infoString.addAttributes(attrs, range: NSMakeRange(0, count(link.domain)))
+            infoString.addAttributes(attrs, range: NSMakeRange(0, count(showFlair) == 0 ? 0 : count(showFlair) - 1))
             
             self.postInfoLabel.attributedText = infoString
-            
-            if self.link.stickied {
-                self.stickyLabel.hidden = true
-            } else {
-                self.stickyLabel.hidden = true
-            }
             
             self.titleLabel.font = UIFont(name: self.titleLabel.font.fontName,
                 size: SettingsManager.defaultManager.titleFontSizeForDefaultTextSize)
@@ -68,14 +61,6 @@ class TitleCell: PostCell {
                 self.titleLabel.textColor = UIColor.lightGrayColor()
             } else {
                 self.titleLabel.textColor = MyRedditLabelColor
-            }
-            
-            if let imageView = self.commentImageView {
-                if SettingsManager.defaultManager.valueForSetting(.NightMode) {
-                    imageView.image = UIImage(named: "ChatWhite")
-                } else {
-                    imageView.image = UIImage(named: "Chat")
-                }
             }
         }
     }

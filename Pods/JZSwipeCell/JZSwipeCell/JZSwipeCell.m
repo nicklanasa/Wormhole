@@ -126,7 +126,6 @@ static CGFloat const kMaxBounceAmount = 8;
 	if (!self.icon)
 	{
 		self.icon = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, kDefaultIconSize, kDefaultIconSize)];
-        self.icon.contentMode = UIViewContentModeScaleAspectFit;
 		[self addSubview:self.icon];
 	}
 	

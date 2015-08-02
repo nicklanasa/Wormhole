@@ -20,7 +20,9 @@ class SubredditsByCategoryTableViewController: RootTableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-            
+        
+        self.navigationItem.title = self.category
+        
         RedditSession.sharedSession.subredditsForCategory(self.category, completion: { (pagination, results, error) -> () in
             if let subreddits = results as? [String] {
                 self.subreddits = subreddits
@@ -52,10 +54,7 @@ class SubredditsByCategoryTableViewController: RootTableViewController {
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         self.tableView.deselectRowAtIndexPath(indexPath, animated: true)
-        
-        RedditSession.sharedSession.subredditWithSubredditName(self.subreddits![indexPath.row],
-            completion: { (pagination, results, error) -> () in
-            
+        RedditSession.sharedSession.searchForSubredditByName(self.subreddits![indexPath.row], pagination: nil) { (pagination, results, error) -> () in
             if let subreddits = results as? [RKSubreddit] {
                 var foundSubreddit: RKSubreddit?
                 
@@ -69,7 +68,7 @@ class SubredditsByCategoryTableViewController: RootTableViewController {
                 if foundSubreddit == nil {
                     dispatch_async(dispatch_get_main_queue(), { () -> Void in
                         UIAlertView(title: "Error!",
-                            message: error?.localizedDescription,
+                            message: "Unable to get subreddit!",
                             delegate: self,
                             cancelButtonTitle: "OK").show()
                     })
@@ -79,12 +78,12 @@ class SubredditsByCategoryTableViewController: RootTableViewController {
             } else {
                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
                     UIAlertView(title: "Error!",
-                        message: error?.localizedDescription,
+                        message: "Unable to get subreddit!",
                         delegate: self,
                         cancelButtonTitle: "OK").show()
                 })
             }
-        })
+        }
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {

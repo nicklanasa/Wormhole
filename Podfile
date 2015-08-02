@@ -2,7 +2,8 @@
 # platform :ios, '6.0'
 
 target 'MyReddit' do
-
+        
+pod 'Localytics-AMP', '~> 2.0'
 pod 'RedditKit', '~> 1.3'
 pod 'SDWebImage'
 pod 'XNGMarkdownParser'
@@ -11,12 +12,13 @@ pod 'BDGInAppPurchase'
 pod 'MBProgressHUD'
 pod 'JZSwipeCell', '~> 1.1'
 pod 'ImgurAnonymousAPIClient', :git => 'https://github.com/nolanw/ImgurAnonymousAPIClient.git', :tag => 'v0.1.1'
-pod 'Facebook-iOS-SDK'
 pod 'NSDate+Calendar'
 pod 'ImgurSession'
 pod 'Appirater'
-pod 'Localytics-AMP', '~> 2.0'
 pod 'NSDate+TimeAgo'
+pod 'JHPullToRefreshKit'
+pod 'UIImage-ResizeMagick'
+pod 'FZImageUtilCategory'
 
 end
 

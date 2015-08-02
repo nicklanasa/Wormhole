@@ -63,7 +63,7 @@ class LinkShareOptionsViewController: UIViewController {
         }))
         
         self.alertController.addAction(UIAlertAction(title: "share", style: .Default, handler: { (action) -> Void in
-            let objectsToShare = [self.link.title, self.link.URL]
+            let objectsToShare = ["\(self.link.title) @myreddit", self.link.URL]
             
             let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
             

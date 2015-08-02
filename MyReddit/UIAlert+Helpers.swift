@@ -51,4 +51,18 @@ extension UIAlertView {
                 cancelButtonTitle: "Ok").show()
         }
     }
+    
+    class func showUnableToUnsubscribeError() {
+        UIAlertView(title: "Error!",
+            message: "Unable to unsubscribe to Subreddit. Please make sure you are connected to the internets.",
+            delegate: self,
+            cancelButtonTitle: "Ok").show()
+    }
+    
+    class func showSubscribeError() {
+        UIAlertView(title: "Error!",
+            message: "Unable to subscribe to Subreddit. Please make sure you are connected to the internets.",
+            delegate: self,
+            cancelButtonTitle: "Ok").show()
+    }
 }

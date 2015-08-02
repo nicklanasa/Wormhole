@@ -16,7 +16,7 @@ protocol ImageViewControllerDelegate {
 class ImageViewController: UIViewController, UIScrollViewDelegate {
     
     @IBOutlet weak var imageView: UIImageView!
-    @IBOutlet weak var scrollView: UIScrollView!
+    @IBOutlet weak var scrollView: CenteringScrollView!
     @IBOutlet weak var indicator: UIActivityIndicatorView!
     
     var delegate: ImageViewControllerDelegate?
@@ -37,23 +37,25 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
     }
     
     override func viewDidAppear(animated: Bool) {
+        self.indicator.tintColor = MyRedditLabelColor
         self.indicator.startAnimating()
+        self.imageView.contentMode = .ScaleAspectFit
         self.imageView.sd_setImageWithURL(self.imageURL, placeholderImage: nil, options: nil) { (image, error, cacheType, url) -> Void in
             if error != nil {
                 UIAlertView(title: "Error!", message: "Unable to load image.", delegate: self, cancelButtonTitle: "Ok").show()
             } else {
                 self.imageView.image = image
-                self.imageView.center = self.scrollView.center
             }
             self.indicator.stopAnimating()
         }
         
         self.scrollView.contentSize = self.view.frame.size
-        self.scrollView.minimumZoomScale = 0.5
+        self.scrollView.minimumZoomScale = 0.75
         
         var tap = UITapGestureRecognizer(target: self, action: "imageViewTapped:")
         tap.numberOfTapsRequired = 1
         self.imageView.gestureRecognizers = [tap]
+        self.view.gestureRecognizers = [tap]
     }
 
     func imageViewTapped(gesture: UIGestureRecognizer) {
@@ -63,19 +65,30 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
     func viewForZoomingInScrollView(scrollView: UIScrollView) -> UIView? {
         return self.imageView
     }
-    
-    func scrollViewDidZoom(scrollView: UIScrollView) {
-        var top: CGFloat = 0
-        var left: CGFloat = 0
+}
+
+class CenteringScrollView: UIScrollView {
+    override func layoutSubviews() {
+        super.layoutSubviews()
         
-        if self.scrollView.contentSize.width < self.scrollView.bounds.size.width {
-            left = (self.scrollView.bounds.size.width - self.scrollView.contentSize.width) * 0.5
+        if let imageView = self.subviews[1] as? UIImageView {
+            // center the image as it becomes smaller than the size of the screen
+            var boundsSize = self.bounds.size
+            
+            // center horizontally
+            if imageView.frame.size.width < boundsSize.width {
+                imageView.frame.origin.x = (boundsSize.width - imageView.frame.size.width) / 2
+            } else {
+                imageView.frame.origin.x = 0
+            }
+            
+            // center vertically
+            if imageView.frame.size.height < boundsSize.height {
+                // Minus some padding
+                imageView.frame.origin.y = ((boundsSize.height - imageView.frame.size.height) / 2) - 20
+            } else {
+                imageView.frame.origin.y = 0
+            }
         }
-        
-        if (self.scrollView.contentSize.height < self.scrollView.bounds.size.height) {
-            top = (self.scrollView.bounds.size.height - self.scrollView.contentSize.height) * 0.5
-        }
-        
-        self.scrollView.contentInset = UIEdgeInsetsMake(top, left, top, left)
     }
 }

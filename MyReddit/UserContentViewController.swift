@@ -288,19 +288,7 @@ LoadMoreHeaderDelegate {
                         self.hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
                         if swipeType.value == JZSwipeTypeShortLeft.value {
                             // Upvote
-                            LocalyticsSession.shared().tagEvent("Swipe Upvote")
-                            RedditSession.sharedSession.upvote(link, completion: { (error) -> () in
-                                self.hud.hide(true)
-                                
-                                if error != nil {
-                                    UIAlertView(title: "Error!",
-                                        message: error!.localizedDescription,
-                                        delegate: self,
-                                        cancelButtonTitle: "Ok").show()
-                                } else {
-                                    self.syncContent()
-                                }
-                            })
+                           self.upvote(link)
                         } else if swipeType.value == JZSwipeTypeShortRight.value {
                             // Downvote
                             LocalyticsSession.shared().tagEvent("Swipe Downvote")
@@ -451,5 +439,21 @@ LoadMoreHeaderDelegate {
             self.tableView.reloadData()
             header.stopAnimating()
         }
+    }
+    
+    private func upvote(link: RKLink) {
+        LocalyticsSession.shared().tagEvent("Swipe Upvote")
+        RedditSession.sharedSession.upvote(link, completion: { (error) -> () in
+            self.hud.hide(true)
+            
+            if error != nil {
+                UIAlertView(title: "Error!",
+                    message: error!.localizedDescription,
+                    delegate: self,
+                    cancelButtonTitle: "Ok").show()
+            } else {
+                self.syncContent()
+            }
+        })
     }
 }

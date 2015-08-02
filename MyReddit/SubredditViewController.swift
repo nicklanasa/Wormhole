@@ -30,18 +30,20 @@ NSFetchedResultsControllerDelegate,
 LoadMoreHeaderDelegate,
 UIGestureRecognizerDelegate,
 JZSwipeCellDelegate,
-UISplitViewControllerDelegate {
+UISplitViewControllerDelegate, PostImageCellDelegate {
     
     var subreddit: RKSubreddit!
     var multiReddit: RKMultireddit!
     
+    var fetchingMore = false
     var front = true
     var all = false
     var pagination: RKPagination?
     var selectedLink: RKLink!
-    var pageIndex: Int!
     var currentCategory: RKSubredditCategory?
     var optionsController: LinkShareOptionsViewController!
+    var refreshControl = MyRedditRefreshControl(type: .SlideDown)
+    var heightsCache = [String : AnyObject]()
     
     @IBOutlet weak var tableView: UITableView!
     
@@ -66,64 +68,7 @@ UISplitViewControllerDelegate {
         }
     }
     
-    var refreshControl: UIRefreshControl! {
-        get {
-            var control = UIRefreshControl()
-            control.attributedTitle = NSAttributedString(string: "",
-                attributes: [NSFontAttributeName : MyRedditCommentTextBoldFont, NSForegroundColorAttributeName : MyRedditLabelColor])
-            control.addTarget(self, action: "refresh:", forControlEvents: UIControlEvents.ValueChanged)
-            return control
-        }
-    }
-    
-    var links = Array<AnyObject>() {
-        didSet {
-            
-            if !SettingsManager.defaultManager.valueForSetting(.NSFW) {
-                self.links.filter({ (obj) -> Bool in
-                    if let link = obj as? RKLink {
-                        return !link.NSFW
-                    }
-                    
-                    return true
-                })
-            }
-            
-            var foundImage = false
-            if let post = self.links.first as? RKLink {
-                if post.isImageLink() {
-                    self.headerImage.sd_setImageWithURL(post.URL)
-                    self.displayHeader(true)
-                } else if let media = post.media {
-                    self.headerImage.sd_setImageWithURL(media.thumbnailURL)
-                    self.displayHeader(true)
-                } else if post.domain == "imgur.com" {
-                    if let absoluteString = post.URL.absoluteString {
-                        var stringURL = absoluteString + ".jpg"
-                        var imageURL = NSURL(string: stringURL)
-                        self.headerImage.sd_setImageWithURL(imageURL,
-                            placeholderImage: UIImage(),
-                            completed: { (image, error, cacheType, url) -> Void in
-                            if error != nil {
-                                self.displayHeader(false)
-                            } else {
-                                self.displayHeader(true)
-                            }
-                        })
-                    }
-                } else {
-                    self.tableView.addSubview(self.refreshControl)
-                    self.displayHeader(false)
-                }
-            }
-            
-            if self.links.count == 25 || self.links.count == 0 {
-                self.tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: .Fade)
-            } else {
-                self.tableView.reloadData()
-            }
-        }
-    }
+    var links = Array<AnyObject>()
     
     private func displayHeader(foundImage: Bool) {
         
@@ -135,7 +80,7 @@ UISplitViewControllerDelegate {
         
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
             if !foundImage {
-                self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0)
+                //self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0)
                 self.headerImage.removeFromSuperview()
             } else {
                 self.tableView.contentInset = UIEdgeInsetsMake(headerHeight, 0, 0, 0)
@@ -143,79 +88,73 @@ UISplitViewControllerDelegate {
                 self.headerImage.frame = CGRectMake(0, -headerHeight, UIScreen.mainScreen().bounds.size.width, headerHeight)
                 
                 if self.links.count <= 25 {
-                    self.tableView.setContentOffset(CGPointMake(0, -headerHeight), animated: true)
-                    
-                    var tap = UITapGestureRecognizer(target: self, action: "headerImageTapped:")
-                    tap.numberOfTapsRequired = 1
-                    self.headerImage.gestureRecognizers = [tap]
+                    if self.tableView.contentOffset.y <= 0 {
+                        self.tableView.setContentOffset(CGPointMake(0, -headerHeight), animated: true)
+                        
+                        var tap = UITapGestureRecognizer(target: self, action: "headerImageTapped:")
+                        tap.numberOfTapsRequired = 1
+                        self.headerImage.gestureRecognizers = [tap]
+                    }
                 }
             }
         })
     }
     
-    func headerImageTapped(gesture: UIGestureRecognizer) {
-        self.tableView(self.tableView,
-            didSelectRowAtIndexPath: NSIndexPath(forRow: 0, inSection: 0))
-        
-        LocalyticsSession.shared().tagEvent("Subreddit Header image tapped")
+    func updateHeaderImage() {
+        var foundImage = false
+        if let post = self.links.first as? RKLink {
+            if post.isImageLink() {
+                self.headerImage.sd_setImageWithURL(post.URL)
+                self.displayHeader(true)
+            } else if let media = post.media {
+                self.headerImage.sd_setImageWithURL(media.thumbnailURL)
+                self.displayHeader(true)
+            } else if post.domain == "imgur.com" {
+                if let absoluteString = post.URL.absoluteString {
+                    var stringURL = absoluteString + ".jpg"
+                    var imageURL = NSURL(string: stringURL)
+                    self.headerImage.sd_setImageWithURL(imageURL,
+                        placeholderImage: UIImage(),
+                        completed: { (image, error, cacheType, url) -> Void in
+                            if error != nil {
+                                self.displayHeader(false)
+                            } else {
+                                self.displayHeader(true)
+                            }
+                    })
+                }
+            } else {
+            
+                self.refreshControl.addToScrollView(self.tableView, withRefreshBlock: { () -> Void in
+                    self.refresh(nil)
+                })
+                
+                self.displayHeader(false)
+            }
+        }
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        SDImageCache.sharedImageCache().clearMemory()
-        SDImageCache.sharedImageCache().cleanDisk()
-        SDImageCache.sharedImageCache().clearDisk()
-        SDImageCache.sharedImageCache().setValue(nil, forKey: "memCache")
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        self.update()
-    }
-    
-    func update() {
         self.tableView.reloadData()
-        
-        LocalyticsSession.shared().tagScreen("Subreddit")
-
-        dispatch_async(dispatch_get_main_queue(), { () -> Void in
-            self.updateSubscribeButton()
-            self.filterButton.tintColor = MyRedditLabelColor
-            self.listButton.tintColor = MyRedditLabelColor
-            self.postButton.tintColor = MyRedditLabelColor
-            self.searchButton.tintColor = MyRedditLabelColor
-            self.messages.tintColor = MyRedditLabelColor
-            
-            self.navigationItem.leftBarButtonItem!.setTitleTextAttributes([
-                NSFontAttributeName: MyRedditTitleBigFont, NSForegroundColorAttributeName : MyRedditLabelColor],
-                forState: UIControlState.Normal)
-            self.navigationItem.rightBarButtonItem!.setTitleTextAttributes([
-                NSFontAttributeName: MyRedditTitleFont],
-                forState: UIControlState.Normal)
-        })
-        
-        self.fetchUnread()
+        self.updateUI()
     }
     
     override func viewDidLoad() {
-        
         super.viewDidLoad()
         
-        self.syncLinks()
-        
-        var rightBarButtons = self.navigationItem.rightBarButtonItems
-        var postBarButton = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: "")
-        rightBarButtons?.append(postBarButton)
-        
+        self.updateAndFetch()
         self.tableView.tableFooterView = UIView()
      
         switch UIDevice.currentDevice().userInterfaceIdiom {
         case .Pad:
             configureForPad()
-        case .Phone:
-            configureForPhone()
-        default:
-            println("Unsupported user interface idiom")
+        case .Phone: break
+        default: break
         }
     }
     
@@ -229,11 +168,7 @@ UISplitViewControllerDelegate {
         
         self.splitViewController?.delegate = self
     }
-    
-    private func configureForPhone() {
-        
-    }
-    
+
     private func fetchUnread() {
         RedditSession.sharedSession.fetchMessages(nil, category: .Unread, read: false) { (pagination, results, error) -> () in
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
@@ -244,6 +179,13 @@ UISplitViewControllerDelegate {
                 }
             })
         }
+    }
+    
+    func headerImageTapped(gesture: UIGestureRecognizer) {
+        self.tableView(self.tableView,
+            didSelectRowAtIndexPath: NSIndexPath(forRow: 0, inSection: 0))
+        
+        LocalyticsSession.shared().tagEvent("Subreddit Header image tapped")
     }
 
     @IBAction func filterButtonPressed(sender: AnyObject) {
@@ -280,13 +222,11 @@ UISplitViewControllerDelegate {
     }
     
     func filterLinks(filterSwtichType: FilterSwitchType) {
-        
         LocalyticsSession.shared().tagEvent("Filtered subreddit")
-        
         self.pagination = nil
         self.links = Array<AnyObject>()
         self.currentCategory = RKSubredditCategory(rawValue: UInt(filterSwtichType.rawValue))
-        self.syncLinks()
+        self.fetchLinks()
     }
 
     @IBAction func messagesButtonTapped(sender: AnyObject) {
@@ -324,17 +264,10 @@ UISplitViewControllerDelegate {
                         RedditSession.sharedSession.unsubscribe(self.subreddit, completion: { (error) -> () in
                             print(error)
                             if error != nil {
-                                UIAlertView(title: "Error!",
-                                    message: "Unable to unsubscribe to Subreddit. Please make sure you are connected to the internets.",
-                                    delegate: self,
-                                    cancelButtonTitle: "Ok").show()
+                                UIAlertView.showUnableToUnsubscribeError()
                             } else {
-                                self.links = Array<AnyObject>()
-                                self.pagination = nil
-                                self.front = true
-                                self.currentCategory = nil
-                                self.syncLinks()
-                                self.updateSubscribeButton()
+                                self.reset()
+                                self.updateAndFetch()
                             }
                         })
                     } else {
@@ -348,19 +281,39 @@ UISplitViewControllerDelegate {
                     if UserSession.sharedSession.isSignedIn {
                         RedditSession.sharedSession.subscribe(self.subreddit, completion: { (error) -> () in
                             if error != nil {
-                                UIAlertView(title: "Error!",
-                                    message: "Unable to subscribe to Subreddit. Please make sure you are connected to the internets.",
-                                    delegate: self,
-                                    cancelButtonTitle: "Ok").show()
+                                UIAlertView.showSubscribeError()
                             } else {
                                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                                    RedditSession.sharedSession.subredditWithSubredditName(self.subreddit.name,
-                                        completion: { (pagination, results, error) -> () in
-                                            if let subreddit = results?.first as? RKSubreddit {
-                                                self.subreddit = subreddit
+                                    RedditSession.sharedSession.searchForSubredditByName(self.subreddit.name, pagination: nil) { (pagination, results, error) -> () in
+                                        if let subreddits = results as? [RKSubreddit] {
+                                            var foundSubreddit: RKSubreddit?
+                                            for subreddit in subreddits {
+                                                if subreddit.name.lowercaseString == self.subreddit.name.lowercaseString {
+                                                    foundSubreddit = subreddit
+                                                    break
+                                                }
+                                            }
+                                            
+                                            if foundSubreddit == nil {
+                                                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                                                    UIAlertView(title: "Error!",
+                                                        message: "Unable to subscribe to subreddit.",
+                                                        delegate: self,
+                                                        cancelButtonTitle: "OK").show()
+                                                })
+                                            } else {
+                                                self.subreddit = foundSubreddit
                                                 self.updateSubscribeButton()
                                             }
-                                    })
+                                        } else {
+                                            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                                                UIAlertView(title: "Error!",
+                                                    message: "Unable to find subreddit by that name.",
+                                                    delegate: self,
+                                                    cancelButtonTitle: "OK").show()
+                                            })
+                                        }
+                                    }
                                 })
                             }
                         })
@@ -386,11 +339,13 @@ UISplitViewControllerDelegate {
                 } else {
                     if self.subreddit.subscriber.boolValue {
                         self.subscribeButton.title = "Unsubscribe"
-                        self.subscribeButton.setTitleTextAttributes([NSForegroundColorAttributeName: MyRedditDownvoteColor, NSFontAttributeName: MyRedditTitleFont],
+                        self.subscribeButton.setTitleTextAttributes([NSForegroundColorAttributeName: MyRedditDownvoteColor,
+                            NSFontAttributeName: MyRedditTitleFont],
                             forState: .Normal)
                     } else {
                         self.subscribeButton.title = "Subscribe"
-                        self.subscribeButton.setTitleTextAttributes([NSForegroundColorAttributeName: MyRedditUpvoteColor, NSFontAttributeName: MyRedditTitleFont],
+                        self.subscribeButton.setTitleTextAttributes([NSForegroundColorAttributeName: MyRedditUpvoteColor,
+                            NSFontAttributeName: MyRedditTitleFont],
                             forState: .Normal)
                     }
                 }
@@ -401,6 +356,8 @@ UISplitViewControllerDelegate {
             self.subscribeButton.target = self
         }
     }
+    
+    // MARK: UIScrollViewDelegate
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
         
@@ -421,219 +378,6 @@ UISplitViewControllerDelegate {
             
             if yOffset <= threshold {
                 self.refresh(nil)
-            }
-        }
-    }
-    
-    func refresh(sender: AnyObject?) {
-        UIView.animateWithDuration(0.3, animations: { () -> Void in
-            self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0)
-            self.headerImage.removeFromSuperview()
-            self.links = Array<AnyObject>()
-            self.pagination = nil
-            self.syncLinks()
-        })
-    }
-    
-    private func syncLinks() {
-        
-        var title: String!
-        
-        if let multiReddit = self.multiReddit {
-            title = multiReddit.name
-        } else {
-            if all {
-                title = "/r/all"
-            } else {
-                title = front ? "front" : "/r/\(subreddit.name.lowercaseString)"
-            }
-        }
-        
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: title,
-            style: .Plain,
-            target: self,
-            action: nil)
-        
-        self.navigationController?.navigationBarHidden = false
-        
-        self.navigationItem.title = ""
-        
-        self.tableView.reloadData()
-        
-        self.update()
-        
-        self.hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
-        
-        if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 1)) as? LoadMoreHeader {
-            dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                cell.startAnimating()
-                self.fetchLinks({ () -> () in
-                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                        self.hud.hide(true)
-                        self.refreshControl.endRefreshing()
-                        cell.stopAnimating()
-                    })
-                })
-            })
-        }
-    }
-    
-    private func fetchLinks(completion: () -> ()) {
-        
-        LocalyticsSession.shared().tagEvent("Fetched links")
-        
-        if front {
-            RedditSession.sharedSession.fetchFrontPagePosts(self.pagination,
-                category: self.currentCategory, completion: { (pagination, results, error) -> () in
-                self.pagination = pagination
-                if let moreLinks = results {
-                    self.links.extend(moreLinks)
-                }
-                
-                completion()
-            })
-        } else if all {
-            RedditSession.sharedSession.fetchAllPosts(self.pagination,
-                category: self.currentCategory, completion: { (pagination, results, error) -> () in
-                    self.pagination = pagination
-                    if let moreLinks = results {
-                        self.links.extend(moreLinks)
-                    }
-                    
-                    completion()
-            })
-        } else {
-            if let subreddit = self.subreddit {
-                RedditSession.sharedSession.fetchPostsForSubreddit(self.subreddit,
-                    category: self.currentCategory,
-                    pagination: self.pagination,
-                    completion: { (pagination, results, error) -> () in
-                        self.pagination = pagination
-                        if let moreLinks = results {
-                            self.links.extend(moreLinks)
-                        }
-                        
-                        completion()
-                })
-            } else {
-                RedditSession.sharedSession.fetchPostsForMultiReddit(self.multiReddit,
-                    category: self.currentCategory,
-                    pagination: self.pagination,
-                    completion: { (pagination, results, error) -> () in
-                    self.pagination = pagination
-                    if let moreLinks = results {
-                        self.links.extend(moreLinks)
-                    }
-                    
-                    completion()
-                })
-            }
-        }
-    }
-
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if section == 1 {
-            return 1
-        }
-        
-        return self.links.count
-    }
-    
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 2
-    }
-    
-    func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return 700
-    }
-
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        
-        if indexPath.section == 1 {
-            var cell =  tableView.dequeueReusableCellWithIdentifier("LoadMoreHeader") as! LoadMoreHeader
-            cell.delegate = self
-            
-            cell.activityIndicator.hidden = true
-            cell.loadMoreButton.hidden = false
-            cell.activityIndicator.tintColor = MyRedditColor
-            
-            return cell
-        }
-        
-        var cell = tableView.dequeueReusableCellWithIdentifier("PostImageCell") as! PostCell
-        
-        if let link = self.links[indexPath.row] as? RKLink {
-            if link.isImageLink() || link.media != nil || link.domain == "imgur.com" {
-                cell = tableView.dequeueReusableCellWithIdentifier("PostImageCell") as! PostImageCell
-                
-                if indexPath.row == 0 || SettingsManager.defaultManager.valueForSetting(.FullWidthImages) {
-                    cell = tableView.dequeueReusableCellWithIdentifier("TitleCell") as! TitleCell
-                }
-                
-            } else {
-                cell = tableView.dequeueReusableCellWithIdentifier("TitleCell") as! TitleCell
-            }
-            
-            cell.link = link
-        }
-
-        cell.delegate = self
-        
-        return cell
-    }
-    
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        self.tableView.deselectRowAtIndexPath(indexPath, animated: true)
-        if indexPath.section == 0 {
-            self.hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
-            if let link = self.links[indexPath.row] as? RKLink {
-                self.selectedLink = link
-                if link.selfPost {
-                    self.performSegueWithIdentifier("CommentsSegue", sender: link)
-                } else {
-                    if link.domain == "imgur.com" || link.isImageLink() {
-                        if link.domain == "imgur.com" && !link.URL.absoluteString!.hasExtension() {
-                            var urlComponents = link.URL.absoluteString?.componentsSeparatedByString("/")
-                            if urlComponents?.count > 4 {
-                                let albumID = urlComponents?[4]
-                                IMGAlbumRequest.albumWithID(albumID, success: { (album) -> Void in
-                                    self.performSegueWithIdentifier("GallerySegue", sender: album.images)
-                                    }) { (error) -> Void in
-                                        LocalyticsSession.shared().tagEvent("Imgur album request failed")
-                                       self.performSegueWithIdentifier("SubredditLink", sender: link)
-                                }
-                            } else {
-                                if urlComponents?.count > 3 {
-                                    let imageID = urlComponents?[3]
-                                    IMGImageRequest.imageWithID(imageID, success: { (image) -> Void in
-                                        self.performSegueWithIdentifier("GallerySegue", sender: [image])
-                                    }, failure: { (error) -> Void in
-                                        LocalyticsSession.shared().tagEvent("Imgur image request failed")
-                                        self.performSegueWithIdentifier("SubredditLink", sender: link)
-                                    })
-                                } else {
-                                    self.performSegueWithIdentifier("GallerySegue", sender: [link.URL])
-                                }
-                            }
-                        } else {
-                            self.performSegueWithIdentifier("GallerySegue", sender: [link.URL!])
-                        }
-                    } else {
-                        self.performSegueWithIdentifier("SubredditLink", sender: link)
-                    }
-                }
-            }
-        }
-    }
-    
-    func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
-        if indexPath.section == 0 {
-            if indexPath.row == self.links.count - 1 && self.links.count != 0 {
-                if SettingsManager.defaultManager.valueForSetting(.InfiniteScrolling) {
-                    self.fetchLinks({ () -> () in
-                        
-                    })
-                }
             }
         }
     }
@@ -691,22 +435,340 @@ UISplitViewControllerDelegate {
     }
     
     func loadMoreHeader(header: LoadMoreHeader, didTapButton sender: AnyObject) {
-        header.startAnimating()
         if self.pagination != nil {
-            self.fetchLinks({ () -> () in
-                dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                    header.stopAnimating()
-                })
-            })
+            self.fetchLinks()
         } else {
             self.tableView.reloadData()
-            header.stopAnimating()
         }
     }
+    
+    // MARK: Fetching 
+    
+    private func fetchFrontPagePosts(completion: () -> ()) {
+        RedditSession.sharedSession.fetchFrontPagePosts(self.pagination,
+            category: self.currentCategory, completion: { (pagination, results, error) -> () in
+                self.pagination = pagination
+                if let moreLinks = results {
+                    self.links.extend(moreLinks)
+                }
+                
+                completion()
+        })
+    }
+    
+    private func fetchAllPosts(completion: () -> ()) {
+        RedditSession.sharedSession.fetchAllPosts(self.pagination,
+            category: self.currentCategory, completion: { (pagination, results, error) -> () in
+                self.pagination = pagination
+                if let moreLinks = results {
+                    self.links.extend(moreLinks)
+                }
+                
+                completion()
+        })
+    }
+    
+    private func fetchPostsForSubreddit(completion: () -> ()) {
+        RedditSession.sharedSession.fetchPostsForSubreddit(self.subreddit,
+            category: self.currentCategory,
+            pagination: self.pagination,
+            completion: { (pagination, results, error) -> () in
+                self.pagination = pagination
+                if let moreLinks = results {
+                    self.links.extend(moreLinks)
+                }
+                
+                completion()
+        })
+    }
+    
+    private func fetchPostsForMultiReddit(completion: () -> ()) {
+        RedditSession.sharedSession.fetchPostsForMultiReddit(self.multiReddit,
+            category: self.currentCategory,
+            pagination: self.pagination,
+            completion: { (pagination, results, error) -> () in
+                self.pagination = pagination
+                if let moreLinks = results {
+                    self.links.extend(moreLinks)
+                }
+                
+                completion()
+        })
+    }
+    
+    private func fetchLinks() {
+        
+        self.hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
+        LocalyticsSession.shared().tagEvent("Fetched links")
+ 
+        if self.front {
+            self.fetchFrontPagePosts({ () -> () in
+                self.endRefreshing()
+            })
+        } else if all {
+            self.fetchAllPosts({ () -> () in
+                self.endRefreshing()
+            })
+        } else {
+            if let subreddit = self.subreddit {
+                self.fetchPostsForSubreddit({ () -> () in
+                    self.endRefreshing()
+                })
+            } else {
+                self.fetchPostsForMultiReddit({ () -> () in
+                    self.endRefreshing()
+                })
+            }
+        }
+    }
+    
+    // MARK: Updating
+    
+    private func reload() {
+        if !SettingsManager.defaultManager.valueForSetting(.NSFW) {
+            self.links.filter({ (obj) -> Bool in
+                if let link = obj as? RKLink {
+                    return !link.NSFW
+                }
+                
+                return true
+            })
+        }
+        
+        self.updateHeaderImage()
+        
+        if self.links.count < 25 || self.links.count == 0 {
+            self.tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: .Fade)
+        } else {
+            self.tableView.reloadData()
+        }
+    }
+    
+    private func reset() {
+        self.links = Array<AnyObject>()
+        self.pagination = nil
+        self.front = true
+        self.currentCategory = nil
+    }
+    
+    private func updateAndFetch() {
+        LocalyticsSession.shared().tagScreen("Subreddit")
+        self.updateUI()
+        self.fetchUnread()
+        self.fetchLinks()
+        self.updateSubscribeButton()
+    }
+    
+    private func updateUI() {
+        
+        var title: String!
+        
+        if let multiReddit = self.multiReddit {
+            title = multiReddit.name
+        } else {
+            if all {
+                title = "/r/all"
+            } else {
+                title = front ? "front" : "/r/\(subreddit.name.lowercaseString)"
+            }
+        }
+        
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: title,
+            style: .Plain,
+            target: self,
+            action: nil)
+        
+        self.navigationController?.navigationBarHidden = false
+        self.navigationItem.title = ""
+        
+        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            self.updateSubscribeButton()
+            self.filterButton.tintColor = MyRedditLabelColor
+            self.listButton.tintColor = MyRedditLabelColor
+            self.postButton.tintColor = MyRedditLabelColor
+            self.searchButton.tintColor = MyRedditLabelColor
+            self.messages.tintColor = MyRedditLabelColor
+            
+            self.navigationItem.leftBarButtonItem!.setTitleTextAttributes([
+                NSFontAttributeName: MyRedditTitleBigFont, NSForegroundColorAttributeName : MyRedditLabelColor],
+                forState: UIControlState.Normal)
+            self.navigationItem.rightBarButtonItem!.setTitleTextAttributes([
+                NSFontAttributeName: MyRedditTitleFont],
+                forState: UIControlState.Normal)
+        })
+    }
+    
+    private func endRefreshing() {
+        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            self.hud.hide(true)
+            self.reload()
+            self.refreshControl.endRefreshing()
+            self.fetchingMore = false
+        })
+    }
+    
+    func refresh(sender: AnyObject?) {
+        UIView.animateWithDuration(0.3, animations: { () -> Void in
+            self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0)
+            self.headerImage.removeFromSuperview()
+            self.links = Array<AnyObject>()
+            self.pagination = nil
+            self.fetchLinks()
+        })
+    }
+    
+    // MARK: UITableViewDataSource
+    
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return self.links.count
+    }
+    
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        return 1
+    }
+    
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+
+        var cell = tableView.dequeueReusableCellWithIdentifier("PostImageCell") as! PostCell
+        
+        if indexPath.row < self.links.count {
+            if let link = self.links[indexPath.row] as? RKLink {
+                if link.isImageLink() || link.domain == "imgur.com" {
+                    
+                    if indexPath.row == 0 || SettingsManager.defaultManager.valueForSetting(.FullWidthImages) {
+                        cell = tableView.dequeueReusableCellWithIdentifier("TitleCell") as! TitleCell
+                    } else {
+                        var imageCell = tableView.dequeueReusableCellWithIdentifier("PostImageCell") as! PostImageCell
+                        imageCell.postImageDelegate = self
+                        imageCell.link = link
+                        imageCell.delegate = self
+                        return imageCell
+                    }
+                } else {
+                    cell = tableView.dequeueReusableCellWithIdentifier("TitleCell") as! TitleCell
+                }
+                
+                cell.link = link
+            }
+        }
+        
+        cell.delegate = self
+        
+        return cell
+    }
+    
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        if indexPath.row < self.links.count {
+            if let link = self.links[indexPath.row] as? RKLink {
+                if link.isImageLink() || link.domain == "imgur.com" {
+                    
+                    // Image
+                    
+                    if indexPath.row == 0 || SettingsManager.defaultManager.valueForSetting(.FullWidthImages) {
+                        // regular
+                        return self.heightForTitlePost(link)
+                    } else {
+                        
+                        var url: String?
+                        
+                        if link.isImageLink() {
+                            url = link.URL.absoluteString
+                        } else if link.domain == "imgur.com" {
+                            if let absoluteString = link.URL.absoluteString {
+                                var stringURL = absoluteString + ".jpg"
+                                url = stringURL
+                            }
+                        }
+                        
+                        if url != nil {
+                            if let height = self.heightsCache[url!] as? NSNumber {
+                                return CGFloat(height.floatValue)
+                            }
+                        }
+                        
+                        return 300
+                    }
+                    
+                } else {
+                    // regular
+                    return self.heightForTitlePost(link)
+                }
+            }
+        }
+        
+        return 0
+    }
+    
+    func heightForTitlePost(link: RKLink) -> CGFloat {
+        var text = link.title
+        var frame = CGRectMake(0, 0, (self.tableView.frame.size.width - 18), CGFloat.max)
+        let label: UILabel = UILabel(frame: frame)
+        label.numberOfLines = 0
+        label.lineBreakMode = NSLineBreakMode.ByWordWrapping
+        label.font = UIFont(name: "AvenirNext-Medium",
+            size: SettingsManager.defaultManager.titleFontSizeForDefaultTextSize)
+        label.text = text
+        label.sizeToFit()
+        
+        return label.frame.height + 80
+    }
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        self.tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        self.hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
+        if let link = self.links[indexPath.row] as? RKLink {
+            self.selectedLink = link
+            if link.selfPost {
+                self.performSegueWithIdentifier("CommentsSegue", sender: link)
+            } else {
+                if link.domain == "imgur.com" || link.isImageLink() {
+                    if link.domain == "imgur.com" && !link.URL.absoluteString!.hasExtension() {
+                        var urlComponents = link.URL.absoluteString?.componentsSeparatedByString("/")
+                        if urlComponents?.count > 4 {
+                            let albumID = urlComponents?[4]
+                            IMGAlbumRequest.albumWithID(albumID, success: { (album) -> Void in
+                                self.performSegueWithIdentifier("GallerySegue", sender: album.images)
+                                }) { (error) -> Void in
+                                    LocalyticsSession.shared().tagEvent("Imgur album request failed")
+                                    self.performSegueWithIdentifier("SubredditLink", sender: link)
+                            }
+                        } else {
+                            if urlComponents?.count > 3 {
+                                let imageID = urlComponents?[3]
+                                IMGImageRequest.imageWithID(imageID, success: { (image) -> Void in
+                                    self.performSegueWithIdentifier("GallerySegue", sender: [image])
+                                    }, failure: { (error) -> Void in
+                                        LocalyticsSession.shared().tagEvent("Imgur image request failed")
+                                        self.performSegueWithIdentifier("SubredditLink", sender: link)
+                                })
+                            } else {
+                                self.performSegueWithIdentifier("GallerySegue", sender: [link.URL])
+                            }
+                        }
+                    } else {
+                        self.performSegueWithIdentifier("GallerySegue", sender: [link.URL!])
+                    }
+                } else {
+                    self.performSegueWithIdentifier("SubredditLink", sender: link)
+                }
+            }
+        }
+    }
+ 
+    func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
+        var endScrolling = scrollView.contentOffset.y + scrollView.frame.size.height
+        if endScrolling >= scrollView.contentSize.height && !self.fetchingMore {
+            self.fetchingMore = true
+            self.fetchLinks()
+        }
+    }
+    
+    // MARK: JZSwipeCellDelegate
     
     func swipeCell(cell: JZSwipeCell!, triggeredSwipeWithType swipeType: JZSwipeType) {
         if swipeType.value != JZSwipeTypeNone.value {
             cell.reset()
+            cell.layoutSubviews()
             if !SettingsManager.defaultManager.purchased {
                 self.performSegueWithIdentifier("PurchaseSegue", sender: self)
             } else {
@@ -808,5 +870,13 @@ UISplitViewControllerDelegate {
     
     func swipeCell(cell: JZSwipeCell!, swipeTypeChangedFrom from: JZSwipeType, to: JZSwipeType) {
         
+    }
+    
+    func postImageCell(cell: PostImageCell, didDownloadImageWithHeight height: CGFloat, url: NSURL) {
+        if let indexPath = self.tableView.indexPathForCell(cell) {
+            self.heightsCache[url.absoluteString!] = NSNumber(float: Float(height))
+            self.tableView.beginUpdates()
+            self.tableView.endUpdates()
+        }
     }
 }

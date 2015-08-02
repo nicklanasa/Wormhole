@@ -9,6 +9,11 @@
 import Foundation
 import UIKit
 
+protocol PostImageCellDelegate {
+    func postImageCell(cell: PostImageCell,
+        didDownloadImageWithHeight height: CGFloat, url: NSURL)
+}
+
 class PostImageCell: PostCell {
     
     @IBOutlet weak var postImageView: UIImageView!
@@ -21,71 +26,64 @@ class PostImageCell: PostCell {
     @IBOutlet weak var commentImageView: UIImageView!
     @IBOutlet weak var imageHeightConstraint: NSLayoutConstraint!
     
+    var postImageDelegate: PostImageCellDelegate?
+    
     override func awakeFromNib() {
         super.awakeFromNib()
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        self.resetViews()
+    }
+    
+    private func resetViews() {
+        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            self.titleLabel.frame = CGRectMake(15, 25, self.contentView.frame.size.width - 20, 50)
+            self.subredditLabel.frame = CGRectMake(15, 4, self.contentView.frame.size.width - 20, 21)
+            self.scoreLabel.frame = CGRectMake(self.contentView.frame.size.width - 80, 4, 70, 18)
+            self.postInfoLabel.frame = CGRectMake(15, self.contentView.frame.size.height - 25, self.contentView.frame.size.width - 20, 14)
+        })
     }
     
     override var link: RKLink! {
         didSet {
             self.postImageView.alpha = 0.0
             
+            var url: NSURL!
+            
             if self.link.isImageLink() {
-                SDWebImageDownloader.sharedDownloader().downloadImageWithURL(self.link.URL, options: SDWebImageDownloaderOptions.ContinueInBackground, progress: { (rSize, eSize) -> Void in
-                    
-                    }, completed: { (image, data, error, success) -> Void in
-                        dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                            UIView.animateWithDuration(0.3, animations: { () -> Void in
-                                self.postImageView.alpha = 1.0
-                                if error != nil {
-                                    self.postImageView.image = UIImage(named: "Reddit")
-                                    self.postImageView.contentMode = UIViewContentMode.ScaleAspectFit
-                                } else {
-                                    self.postImageView.image = image.resize(self.postImageView.frame.size)
-                                    self.postImageView.contentMode = UIViewContentMode.ScaleToFill
-                                }
-                            })
-                        })
-                })
-            } else if let media = self.link.media {
-                if let thumbnailURL = media.thumbnailURL {
-                    self.postImageView.sd_setImageWithURL(thumbnailURL, completed: { (image, error, cacheType, url) -> Void in
-                        dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                            UIView.animateWithDuration(0.3, animations: { () -> Void in
-                                self.postImageView.alpha = 1.0
-                                if error != nil {
-                                    self.postImageView.image = UIImage(named: "Reddit")
-                                    self.postImageView.contentMode = UIViewContentMode.ScaleAspectFit
-                                } else {
-                                    self.postImageView.image = image.resize(self.postImageView.frame.size)
-                                    self.postImageView.contentMode = UIViewContentMode.ScaleToFill
-                                }
-                            })
-                        })
-                    })
-                }
+                url = self.link.URL
             } else if self.link.domain == "imgur.com" {
                 if let absoluteString = self.link.URL.absoluteString {
                     var stringURL = absoluteString + ".jpg"
-                    var imageURL = NSURL(string: stringURL)
-                    
-                    SDWebImageDownloader.sharedDownloader().downloadImageWithURL(imageURL, options: SDWebImageDownloaderOptions.ContinueInBackground, progress: { (rSize, eSize) -> Void in
-                        
-                        }, completed: { (image, data, error, success) -> Void in
-                            dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                                UIView.animateWithDuration(0.3, animations: { () -> Void in
-                                    self.postImageView.alpha = 1.0
-                                    if error != nil {
-                                        self.postImageView.image = UIImage(named: "Reddit")
-                                        self.postImageView.contentMode = UIViewContentMode.ScaleAspectFit
-                                    } else {
-                                        self.postImageView.image = image.resize(self.postImageView.frame.size)
-                                        self.postImageView.contentMode = UIViewContentMode.ScaleToFill
-                                    }
-                                })
-                            })
-                    })
+                    url = NSURL(string: stringURL)
                 }
             }
+            
+            self.postImageView.sd_setImageWithURL(url, completed: { (image, error, cacheType, url) -> Void in
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    UIView.animateWithDuration(0.3, animations: { () -> Void in
+                        self.postImageView.alpha = 1.0
+                        if error != nil {
+                            self.postImageView.image = UIImage(named: "Reddit")
+                            self.postImageView.contentMode = UIViewContentMode.ScaleAspectFit
+                            self.resetViews()
+                        } else {
+                            if let resizedImage = image?.imageWithImage(image, convertToSize: self.postImageView.frame.size) {
+                                self.postImageView.contentMode = UIViewContentMode.ScaleAspectFill
+                                self.postImageView.image = resizedImage
+                                self.postImageDelegate?.postImageCell(self, didDownloadImageWithHeight: resizedImage.size.height + 150, url: url)
+                                self.resetViews()
+                            } else {
+                                self.postImageView.image = UIImage(named: "Reddit")
+                                self.postImageView.contentMode = UIViewContentMode.ScaleToFill
+                                self.resetViews()
+                            }
+                        }
+                    })
+                })
+            })
 
             if self.link.upvoted() {
                 self.scoreLabel.textColor = MyRedditUpvoteColor
@@ -97,7 +95,6 @@ class PostImageCell: PostCell {
             
             self.titleLabel.text = link.title
             self.scoreLabel.text = link.score.description
-            self.commentsLabel.text = link.totalComments.description
             self.subredditLabel.text = "/r/\(link.subreddit)"
            
             var showFlair = ""
@@ -108,18 +105,17 @@ class PostImageCell: PostCell {
                 }
             }
             
-            var infoString = NSMutableAttributedString(string:"\(link.domain) | \(link.author)\(showFlair) | \(link.created.timeAgoSimple())")
-            var attrs = [NSForegroundColorAttributeName : MyRedditLabelColor]
-            infoString.addAttributes(attrs, range: NSMakeRange(0, count(link.domain)))
-            
-            self.postInfoLabel.attributedText = infoString
-            
-            if self.link.stickied {
-                self.stickyLabel.hidden = true
-            } else {
-                self.stickyLabel.hidden = true
+            if SettingsManager.defaultManager.valueForSetting(.Flair) {
+                if let flairString = link.linkFlairText {
+                    showFlair = "\(flairString) |"
+                }
             }
             
+            var infoString = NSMutableAttributedString(string:"\(showFlair) \(link.author) | \(link.created.timeAgoSimple()) | \(link.totalComments.description) comments")
+            var attrs = [NSForegroundColorAttributeName : MyRedditLabelColor]
+            infoString.addAttributes(attrs, range: NSMakeRange(0, count(showFlair) == 0 ? 0 : count(showFlair) - 1))
+            
+            self.postInfoLabel.attributedText = infoString
             self.titleLabel.font = UIFont(name: self.titleLabel.font.fontName,
                 size: SettingsManager.defaultManager.titleFontSizeForDefaultTextSize)
             
@@ -131,14 +127,13 @@ class PostImageCell: PostCell {
             } else {
                 self.titleLabel.textColor = MyRedditLabelColor
             }
-            if let imageView = self.commentImageView {
-                if SettingsManager.defaultManager.valueForSetting(.NightMode) {
-                    imageView.image = UIImage(named: "ChatWhite")
-                } else {
-                    imageView.image = UIImage(named: "Chat")
-                }
-            }
+            
+            self.resetViews()
         }
     }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        self.resetViews()
+    }
 }
-

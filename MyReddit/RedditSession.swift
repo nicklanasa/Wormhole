@@ -375,12 +375,12 @@ class RedditSession {
     
     func subredditWithSubredditName(name: String, completion: PaginationCompletion) {
         UIApplication.sharedApplication().networkActivityIndicatorVisible = true
-        RKClient.sharedClient().subredditWithName(name, completion: { (subreddit, error) -> Void in
+        RKClient.sharedClient().subredditWithName(name, completion: { (result, error) -> Void in
             UIApplication.sharedApplication().networkActivityIndicatorVisible = false
-            if subreddit != nil {
-                completion(pagination: nil, results: [subreddit], error: error)
+            if let subreddits = result as? [AnyObject] {
+                completion(pagination: nil, results: subreddits, error: error)
             } else {
-                completion(pagination: nil, results: [], error: error)
+                completion(pagination: nil, results: nil, error: error)
             }
         })
     }

@@ -41,30 +41,6 @@ UISearchBarDelegate {
         }
     }
     
-    lazy var searchController: UISearchController = {
-        var controller = UISearchController(searchResultsController: nil)
-        controller.dimsBackgroundDuringPresentation = false
-        controller.searchBar.delegate = self
-        controller.searchBar.setShowsCancelButton(false, animated: false)
-        controller.hidesNavigationBarDuringPresentation = false
-        controller.searchBar.sizeToFit()
-        controller.searchBar.searchBarStyle = .Minimal
-        controller.searchBar.returnKeyType = .Search
-        controller.searchBar.placeholder = "Search subreddits..."
-        
-        var textFieldInsideSearchBar = controller.searchBar.valueForKey("searchField") as? UITextField
-        textFieldInsideSearchBar?.textColor = MyRedditLabelColor
-        
-        for v in controller.searchBar.subviews {
-            if let textField = v as? UITextField {
-                textField.clearButtonMode = .Always
-                break;
-            }
-        }
-        
-        return controller
-    }()
-    
     var syncSubreddits = Array<AnyObject>()
     var syncMultiSubreddits = Array<AnyObject>()
     
@@ -175,7 +151,6 @@ UISearchBarDelegate {
         }
         
         self.tableView.backgroundView = UIView()
-        self.tableView.tableHeaderView = self.searchController.searchBar
         self.tableView.backgroundColor = MyRedditBackgroundColor
         self.view.backgroundColor = MyRedditBackgroundColor
         

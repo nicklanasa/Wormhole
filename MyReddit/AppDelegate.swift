@@ -68,7 +68,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, IMGSessionDelegate {
         Appirater.setUsesUntilPrompt(5)
         Appirater.appLaunched(true)
         
-        return FBSDKApplicationDelegate .sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
+        SDWebImageDownloader.sharedDownloader().shouldDecompressImages = false
+        
+        return true
     }
 
     func applicationWillResignActive(application: UIApplication) {
@@ -83,19 +85,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, IMGSessionDelegate {
 
     func applicationWillEnterForeground(application: UIApplication) {
         // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
-    }
-
-    func applicationDidBecomeActive(application: UIApplication) {
-        // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-        FBSDKAppEvents.activateApp()
-    }
-
-    func applicationWillTerminate(application: UIApplication) {
-        // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
-    }
-
-    func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject?) -> Bool {
-        return FBSDKApplicationDelegate.sharedInstance().application(application, openURL: url, sourceApplication: sourceApplication, annotation: annotation)
     }
     
     func applicationDidReceiveMemoryWarning(application: UIApplication) {

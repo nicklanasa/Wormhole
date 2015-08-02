@@ -9,7 +9,6 @@
 import UIKit
 
 class RootTableViewController: UITableViewController {
-    
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         self.updateAppearance()

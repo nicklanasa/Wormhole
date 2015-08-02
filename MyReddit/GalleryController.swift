@@ -29,6 +29,8 @@ UICollectionViewDelegate {
     @IBOutlet weak var containerView: UIView!
     
     var optionsController: LinkShareOptionsViewController!
+    var photosBarButtonItem: UIBarButtonItem!
+    var saveButtonItem: UIBarButtonItem!
    
     var link: RKLink!
     
@@ -114,17 +116,17 @@ UICollectionViewDelegate {
         
         NSUserDefaults.standardUserDefaults().setObject(true, forKey: self.link.identifier)
         
-        var gridButton = UIBarButtonItem(image: UIImage(named: "Grid"),
+        self.photosBarButtonItem = UIBarButtonItem(image: UIImage(named: "Grid"),
             style: .Plain,
             target: self,
             action: "showGrid")
         
-        var bookmark = UIBarButtonItem(image: UIImage(named: "Saved"),
+        self.saveButtonItem = UIBarButtonItem(image: UIImage(named: "Saved"),
             style: .Plain,
             target: self,
             action: "saveLink")
         
-        self.navigationItem.rightBarButtonItems = [gridButton, bookmark]
+        self.navigationItem.rightBarButtonItems = [self.photosBarButtonItem, self.saveButtonItem]
         
         if self.link.saved {
             self.navigationItem.rightBarButtonItem?.tintColor = MyRedditColor
@@ -142,8 +144,20 @@ UICollectionViewDelegate {
             }, completion: { (s) -> Void in
                 UIView.animateWithDuration(0.3, animations: { () -> Void in
                     self.collectionView.alpha = 1.0
+                    if self.postTitleView.alpha == 0.0 {
+                        UIView.animateWithDuration(0.3, animations: { () -> Void in
+                            self.postTitleView.alpha = 1.0
+                            self.toolbar.alpha = 1.0
+                        })
+                    }
                 })
             })
+            
+            self.photosBarButtonItem = UIBarButtonItem(image: UIImage(named: "GridSelected"),
+                style: .Plain,
+                target: self,
+                action: "showGrid")
+            self.navigationItem.rightBarButtonItems = [self.photosBarButtonItem, self.saveButtonItem]
         } else {
             UIView.animateWithDuration(0.3, animations: { () -> Void in
                 self.collectionView.alpha = 0.0
@@ -152,6 +166,12 @@ UICollectionViewDelegate {
                     self.containerView.alpha = 1.0
                 })
             })
+            
+            self.photosBarButtonItem = UIBarButtonItem(image: UIImage(named: "Grid"),
+                style: .Plain,
+                target: self,
+                action: "showGrid")
+            self.navigationItem.rightBarButtonItems = [self.photosBarButtonItem, self.saveButtonItem]
         }
     }
     
@@ -291,8 +311,8 @@ UICollectionViewDelegate {
                         delegate: self,
                         cancelButtonTitle: "Ok").show()
                 } else {
-                    self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "Saved"), style: .Plain, target: self, action: "unSaveLink")
-                    self.navigationItem.rightBarButtonItem?.tintColor = MyRedditColor
+                    self.saveButtonItem = UIBarButtonItem(image: UIImage(named: "SavedSelected"), style: .Plain, target: self, action: "unSaveLink")
+                    self.navigationItem.rightBarButtonItems = [self.photosBarButtonItem, self.saveButtonItem]
                 }
             })
         }
@@ -310,8 +330,8 @@ UICollectionViewDelegate {
                         delegate: self,
                         cancelButtonTitle: "Ok").show()
                 } else {
-                    self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "Saved"), style: .Plain, target: self, action: "saveLink")
-                    self.navigationItem.rightBarButtonItem?.tintColor = MyRedditLabelColor
+                    self.saveButtonItem = UIBarButtonItem(image: UIImage(named: "Saved"), style: .Plain, target: self, action: "saveLink")
+                    self.navigationItem.rightBarButtonItems = [self.photosBarButtonItem, self.saveButtonItem]
                 }
             })
         }
