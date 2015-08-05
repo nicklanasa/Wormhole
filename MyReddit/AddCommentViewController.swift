@@ -127,6 +127,21 @@ class AddCommentViewController: UIViewController, UITextViewDelegate {
                             })
                         }
                     })
+                } else {
+                    RedditSession.sharedSession.submitComment(self.textView.text,
+                        link: self.link, comment: self.comment, completion: { (error) -> () in
+                            self.hud.hide(true)
+                            if error != nil {
+                                UIAlertView(title: "Error!",
+                                    message: error?.localizedDescription,
+                                    delegate: self,
+                                    cancelButtonTitle: "Ok").show()
+                            } else {
+                                self.dismissViewControllerAnimated(true, completion: { () -> Void in
+                                    self.delegate?.addCommentViewController(self, didAddComment: true)
+                                })
+                            }
+                    })
                 }
             } else {
                 self.hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)

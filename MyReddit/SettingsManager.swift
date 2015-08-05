@@ -16,6 +16,7 @@ enum Setting: NSInteger {
     case NightMode
     case InfiniteScrolling
     case FullWidthImages
+    case DefaultToReaderMode
 }
 
 enum TextSizeSetting: NSInteger {
@@ -75,6 +76,13 @@ class SettingsManager {
             
             return false
             
+        case .DefaultToReaderMode:
+            if let scrolling = NSUserDefaults.standardUserDefaults().objectForKey("DefaultToReaderMode") as? NSNumber {
+                return scrolling.boolValue
+            }
+            
+            return false
+            
         default: return false
             
         }
@@ -129,6 +137,9 @@ class SettingsManager {
             LocalyticsSession.shared().tagEvent("Infinite scrolling toggled")
         case .FullWidthImages:
             NSUserDefaults.standardUserDefaults().setObject(value, forKey: "FullWidthImages")
+            LocalyticsSession.shared().tagEvent("Full Width Images mode toggled")
+        case .DefaultToReaderMode:
+            NSUserDefaults.standardUserDefaults().setObject(value, forKey: "DefaultToReaderMode")
             LocalyticsSession.shared().tagEvent("Full Width Images mode toggled")
         default: break
             

@@ -17,6 +17,7 @@ class SettingsTableViewController: UITableViewController, BDGIAPDelegate {
     @IBOutlet weak var nightModeSwitch: UISwitch!
     @IBOutlet weak var fullWidthImagesSwitch: UISwitch!
     @IBOutlet weak var infiniteScrollingSwitch: UISwitch!
+    @IBOutlet weak var defaultToReaderModeSwitch: UISwitch!
     @IBOutlet weak var textSizeLabel: UILabel!
     
     @IBOutlet weak var showFlairCell: UserInfoCell!
@@ -35,6 +36,7 @@ class SettingsTableViewController: UITableViewController, BDGIAPDelegate {
     @IBOutlet weak var samanthaLanasaCreatorCell: UserInfoCell!
     @IBOutlet weak var otherAppMuzCell: UserInfoCell!
     @IBOutlet weak var hideFullWidthImagesCell: UserInfoCell!
+    @IBOutlet weak var defaultToReaderModeCell: UserInfoCell!
     
     var hud: MBProgressHUD! {
         didSet {
@@ -62,6 +64,7 @@ class SettingsTableViewController: UITableViewController, BDGIAPDelegate {
             self.fullWidthImagesSwitch.on = SettingsManager.defaultManager.valueForSetting(.FullWidthImages)
             self.nightModeSwitch.on = SettingsManager.defaultManager.valueForSetting(.NightMode)
             self.infiniteScrollingSwitch.on = SettingsManager.defaultManager.valueForSetting(.InfiniteScrolling)
+            self.defaultToReaderModeSwitch.on = SettingsManager.defaultManager.valueForSetting(.DefaultToReaderMode)
             self.textSizeLabel.text = SettingsManager.defaultManager.valueForTextSizeSetting(currentTextSize)
             
             self.showFlairCell.backgroundColor = MyRedditBackgroundColor
@@ -94,7 +97,8 @@ class SettingsTableViewController: UITableViewController, BDGIAPDelegate {
             self.samanthaLanasaCreatorCell.backgroundColor = MyRedditBackgroundColor
             self.otherAppMuzCell.titleLabel.textColor = MyRedditLabelColor
             self.otherAppMuzCell.backgroundColor = MyRedditBackgroundColor
-            
+            self.defaultToReaderModeCell.titleLabel.textColor = MyRedditLabelColor
+            self.defaultToReaderModeCell.backgroundColor = MyRedditBackgroundColor
             self.hideFullWidthImagesCell.titleLabel.textColor = MyRedditLabelColor
             self.hideFullWidthImagesCell.backgroundColor = MyRedditBackgroundColor
             
@@ -121,6 +125,10 @@ class SettingsTableViewController: UITableViewController, BDGIAPDelegate {
         }
     }
     
+    @IBAction func defaultToReaderModeValueChanged(sender: AnyObject) {
+        SettingsManager.defaultManager.updateValueForSetting(.DefaultToReaderMode, value: self.defaultToReaderModeSwitch.on)
+    }
+    
     @IBAction func hideFullWidthImagesValueChanged(sender: AnyObject) {
         SettingsManager.defaultManager.updateValueForSetting(.FullWidthImages, value: self.fullWidthImagesSwitch.on)
     }
@@ -144,7 +152,7 @@ class SettingsTableViewController: UITableViewController, BDGIAPDelegate {
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
         if indexPath.section == 1 {
-            if indexPath.row == 1 {
+            if indexPath.row == 3 {
                 // Text Size
                 var alert = UIAlertController(title: "Text Size",
                     message: "Please select the text size. This will change the text size for both comments and posts.",

@@ -23,6 +23,12 @@ class RootViewController: UIViewController {
         self.navigationController?.navigationBar.tintColor = MyRedditLabelColor
         self.navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: MyRedditLabelColor,
             NSFontAttributeName : MyRedditTitleFont]
+        
+        if SettingsManager.defaultManager.valueForSetting(.NightMode) {
+            UIApplication.sharedApplication().setStatusBarStyle(UIStatusBarStyle.LightContent, animated: true)
+        } else {
+            UIApplication.sharedApplication().setStatusBarStyle(UIStatusBarStyle.Default, animated: true)
+        }
     }
     
     override func didReceiveMemoryWarning() {

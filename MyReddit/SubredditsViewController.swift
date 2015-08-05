@@ -437,20 +437,32 @@ UISearchBarDelegate {
     }
     
     func showMyRedditSubreddit() {
-        RedditSession.sharedSession.subredditWithSubredditName("myreddit_app", completion: { (pagination, results, error) -> () in
-            if error != nil {
-                UIAlertView(title: "Error!",
-                    message: "Unable to find that subreddit! Please check your internet connection.",
-                    delegate: self,
-                    cancelButtonTitle: "Ok").show()
-                LocalyticsSession.shared().tagEvent("Unable to load Myreddit subreddit")
-            } else {
-                if let subreddit = results?.first as? RKSubreddit {
-                    self.performSegueWithIdentifier("SubredditPosts", sender: subreddit)
-                    LocalyticsSession.shared().tagEvent("Loaded Myreddit subreddit")
+        RedditSession.sharedSession.searchForSubredditByName("myreddit_app", pagination: nil) { (pagination, results, error) -> () in
+            if let subreddits = results as? [RKSubreddit] {
+                for subreddit in subreddits {
+                    if subreddit.name.lowercaseString == "myreddit_app".lowercaseString {
+                        self.foundSubreddit = subreddit
+                        break
+                    }
                 }
+                
+                if self.foundSubreddit == nil {
+                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                        UIAlertView(title: "Error!",
+                            message: "Unable to find subreddit by that name.",
+                            delegate: self,
+                            cancelButtonTitle: "OK").show()
+                    })
+                }
+            } else {
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    UIAlertView(title: "Error!",
+                        message: "Unable to find subreddit by that name.",
+                        delegate: self,
+                        cancelButtonTitle: "OK").show()
+                })
             }
-        })
+        }
     }
     
     func showFindUserDialog() {

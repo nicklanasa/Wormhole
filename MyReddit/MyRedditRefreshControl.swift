@@ -16,7 +16,11 @@ class MyRedditRefreshControl: JHRefreshControl {
     var label: UILabel!
     
     override func handleScrollingOnAnimationView(animationView: UIView!, withPullDistance pullDistance: CGFloat, pullRatio: CGFloat, pullVelocity: CGFloat) {
-        
+        print(self.height)
+        print(pullDistance)
+        if pullVelocity > 0.0 || pullRatio > 1.0 || pullDistance > self.height {
+            self.endRefreshing()
+        }
     }
     
     override func resetAnimationView(animationView: UIView!) {
@@ -34,13 +38,6 @@ class MyRedditRefreshControl: JHRefreshControl {
     
     override func animationCycleForAnimationView(animationView: UIView!) {
         self.backgroundColor = self.colors[self.index]
-    }
-    
-    override func exitAnimationForRefreshView(animationView: UIView!, withCompletion completion: JHCompletionBlock!) {
-        UIView.animateWithDuration(0.3, animations: { () -> Void in
-        }) { (finished) -> Void in
-            completion()
-        }
     }
     
     override func setup() {
@@ -63,7 +60,7 @@ class MyRedditRefreshControl: JHRefreshControl {
     
     override var animationDuration: NSTimeInterval {
         get {
-            return 0.4
+            return 0.3
         }
     }
     

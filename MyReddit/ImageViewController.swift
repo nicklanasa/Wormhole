@@ -42,7 +42,10 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
         self.imageView.contentMode = .ScaleAspectFit
         self.imageView.sd_setImageWithURL(self.imageURL, placeholderImage: nil, options: nil) { (image, error, cacheType, url) -> Void in
             if error != nil {
-                UIAlertView(title: "Error!", message: "Unable to load image.", delegate: self, cancelButtonTitle: "Ok").show()
+                UIAlertView(title: "Error!",
+                    message: "Unable to load image.",
+                    delegate: self,
+                    cancelButtonTitle: "Ok").show()
             } else {
                 self.imageView.image = image
             }

@@ -13,7 +13,8 @@ class UserContentViewController: UIViewController,
 UITableViewDelegate,
 UITableViewDataSource,
 JZSwipeCellDelegate,
-LoadMoreHeaderDelegate {
+LoadMoreHeaderDelegate,
+PostImageCellDelegate {
     
     var category: RKUserContentCategory!
     var categoryTitle: String!
@@ -22,6 +23,7 @@ LoadMoreHeaderDelegate {
     var optionsController: LinkShareOptionsViewController!
     var selectedLink: RKLink!
     var user: RKUser!
+    var heightsCache = [String : AnyObject]()
     
     var hud: MBProgressHUD! {
         didSet {
@@ -38,6 +40,8 @@ LoadMoreHeaderDelegate {
         
         self.tableView.reloadData()
         
+        self.syncContent()
+        
         self.navigationItem.title = self.categoryTitle.lowercaseString
         self.tableView.backgroundColor = MyRedditBackgroundColor
         
@@ -51,10 +55,6 @@ LoadMoreHeaderDelegate {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         LocalyticsSession.shared().tagScreen("UserContent")
-        
-        self.content = Array<AnyObject>()
-        
-        self.syncContent()
     }
 
     private func syncContent() {
@@ -99,15 +99,40 @@ LoadMoreHeaderDelegate {
         }
         
         if let link = self.content[indexPath.row] as? RKLink {
-            if link.isImageLink() || link.media != nil || link.domain == "imgur.com" {
+            if link.isImageLink() || link.domain == "imgur.com" {
+                // Image
                 
                 if indexPath.row == 0 || SettingsManager.defaultManager.valueForSetting(.FullWidthImages) {
+                    // regular
                     return self.heightForLink(link)
+                } else {
+                    
+                    var url: String?
+                    
+                    if link.isImageLink() {
+                        url = link.URL.absoluteString
+                    } else if link.media != nil {
+                        if let thumbnailURL = link.media.thumbnailURL {
+                            url = thumbnailURL.description
+                        }
+                    } else if link.domain == "imgur.com" {
+                        if let absoluteString = link.URL.absoluteString {
+                            var stringURL = absoluteString + ".jpg"
+                            url = stringURL
+                        }
+                    }
+                    
+                    if url != nil {
+                        if let height = self.heightsCache[url!] as? NSNumber {
+                            return CGFloat(height.floatValue)
+                        }
+                    }
+                    
+                    return 392
                 }
                 
-                return 392
-                
             } else {
+                // regular
                 return self.heightForLink(link)
             }
         } else if let comment = self.content[indexPath.row] as? RKComment {
@@ -118,19 +143,17 @@ LoadMoreHeaderDelegate {
     }
     
     private func heightForLink(link: RKLink) -> CGFloat {
-        
-        var title = link.title.stringByReplacingOccurrencesOfString("&gt;", withString: ">", options: nil, range: nil)
-        
-        var parsedString = NSMutableAttributedString(string: "\(title)")
-        var frame = CGRectMake(0, 0, self.tableView.frame.size.width - 30, CGFloat.max)
+        var text = link.title
+        var frame = CGRectMake(0, 0, (self.tableView.frame.size.width - 18), CGFloat.max)
         let label: UILabel = UILabel(frame: frame)
         label.numberOfLines = 0
-        label.font = MyRedditSelfTextFont
         label.lineBreakMode = NSLineBreakMode.ByWordWrapping
-        label.attributedText = parsedString
+        label.font = UIFont(name: "AvenirNext-Medium",
+            size: SettingsManager.defaultManager.titleFontSizeForDefaultTextSize)
+        label.text = text
         label.sizeToFit()
         
-        return label.frame.size.height + 60
+        return label.frame.height + 80
     }
     
     private func heightForComment(comment: RKComment) -> CGFloat {
@@ -158,11 +181,16 @@ LoadMoreHeaderDelegate {
         var cell = tableView.dequeueReusableCellWithIdentifier("PostImageCell") as! PostCell
         
         if let link = self.content[indexPath.row] as? RKLink {
-            if link.isImageLink() || link.media != nil || link.domain == "imgur.com" {
-                cell = tableView.dequeueReusableCellWithIdentifier("PostImageCell") as! PostImageCell
+            if link.isImageLink() || link.domain == "imgur.com" {
                 
                 if indexPath.row == 0 || SettingsManager.defaultManager.valueForSetting(.FullWidthImages) {
                     cell = tableView.dequeueReusableCellWithIdentifier("TitleCell") as! TitleCell
+                } else {
+                    var imageCell = tableView.dequeueReusableCellWithIdentifier("PostImageCell") as! PostImageCell
+                    imageCell.postImageDelegate = self
+                    imageCell.link = link
+                    imageCell.delegate = self
+                    return imageCell
                 }
                 
             } else {
@@ -238,7 +266,20 @@ LoadMoreHeaderDelegate {
                         }
                     })
                 } else {
-                    self.performSegueWithIdentifier("CommentsSegue", sender: comment)
+                    RedditSession.sharedSession.fetchLinkWithComment(comment, completion: { (pagination, results, error) -> () in
+                        if let link = results?.first as? RKLink {
+                            if link.selfPost {
+                                self.performSegueWithIdentifier("CommentsSegue", sender: link)
+                            } else {
+                                self.performSegueWithIdentifier("SubredditLink", sender: link)
+                            }
+                        } else {
+                            UIAlertView(title: "Error!",
+                                message: "Unable to get link!",
+                                delegate: self,
+                                cancelButtonTitle: "Ok").show()
+                        }
+                    })
                 }
             }
         }
@@ -263,18 +304,9 @@ LoadMoreHeaderDelegate {
                 }
             }
         } else {
-            if let comment = sender as? RKComment {
-                if let nav = segue.destinationViewController as? UINavigationController {
-                    if let controller = nav.viewControllers[0] as? CommentsViewController {
-                        // TODO: get link for comment
-                        //RedditSession.sharedSession.linkWithFullName(<#link: RKLink#>, completion: <#PaginationCompletion##(pagination: RKPagination?, results: [AnyObject]?, error: NSError?) -> ()#>)
-                    }
-                }
-            } else if let link = sender as? RKLink {
-                if let nav = segue.destinationViewController as? UINavigationController {
-                    if let controller = nav.viewControllers[0] as? CommentsViewController {
-                        controller.link = link
-                    }
+            if let link = sender as? RKLink {
+                if let controller = segue.destinationViewController as? CommentsViewController {
+                    controller.link = link
                 }
             }
         }
@@ -287,26 +319,17 @@ LoadMoreHeaderDelegate {
                 self.performSegueWithIdentifier("PurchaseSegue", sender: self)
             } else {
                 if let indexPath = self.tableView.indexPathForCell(cell) {
+                    var postCell = cell as! PostCell
                     if let link = self.content[indexPath.row] as? RKLink  {
                         self.hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
                         if swipeType.value == JZSwipeTypeShortLeft.value {
                             // Upvote
                            self.upvote(link)
+                            postCell.upvote()
                         } else if swipeType.value == JZSwipeTypeShortRight.value {
                             // Downvote
-                            LocalyticsSession.shared().tagEvent("Swipe Downvote")
-                            RedditSession.sharedSession.downvote(link, completion: { (error) -> () in
-                                self.hud.hide(true)
-                                
-                                if error != nil {
-                                    UIAlertView(title: "Error!",
-                                        message: error!.localizedDescription,
-                                        delegate: self,
-                                        cancelButtonTitle: "Ok").show()
-                                } else {
-                                    self.syncContent()
-                                }
-                            })
+                            self.downvote(link)
+                            postCell.downvote()
                         } else if swipeType.value == JZSwipeTypeLongLeft.value {
                             // More
                             
@@ -444,6 +467,22 @@ LoadMoreHeaderDelegate {
         }
     }
     
+    private func downvote(link: RKLink) {
+        LocalyticsSession.shared().tagEvent("Swipe Downvote")
+        RedditSession.sharedSession.downvote(link, completion: { (error) -> () in
+            self.hud.hide(true)
+            
+            if error != nil {
+                UIAlertView(title: "Error!",
+                    message: error!.localizedDescription,
+                    delegate: self,
+                    cancelButtonTitle: "Ok").show()
+            } else {
+                self.syncContent()
+            }
+        })
+    }
+    
     private func upvote(link: RKLink) {
         LocalyticsSession.shared().tagEvent("Swipe Upvote")
         RedditSession.sharedSession.upvote(link, completion: { (error) -> () in
@@ -458,5 +497,13 @@ LoadMoreHeaderDelegate {
                 self.syncContent()
             }
         })
+    }
+    
+    func postImageCell(cell: PostImageCell, didDownloadImageWithHeight height: CGFloat, url: NSURL) {
+        if let indexPath = self.tableView.indexPathForCell(cell) {
+            self.heightsCache[url.description] = NSNumber(float: Float(height))
+            self.tableView.beginUpdates()
+            self.tableView.endUpdates()
+        }
     }
 }

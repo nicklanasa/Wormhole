@@ -23,7 +23,6 @@ class MessageCell: JZSwipeCell, UITextViewDelegate {
         }
     }
     
-    
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var readLabel: UILabel!
     @IBOutlet weak var infoLabel: UILabel!
@@ -36,6 +35,8 @@ class MessageCell: JZSwipeCell, UITextViewDelegate {
         self.colorSet = SwipeCellColorSetMake(MyRedditColor, MyRedditColor, MyRedditReplyColor, MyRedditReplyColor)
         
         self.bodyTextView.delegate = self
+        
+        self.icon.contentMode = UIViewContentMode.ScaleAspectFit
     }
     
     var message: RKMessage! {

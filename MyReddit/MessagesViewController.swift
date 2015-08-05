@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 import CoreData
 
-class MessagesViewController: UIViewController,
+class MessagesViewController: RootViewController,
 UITableViewDataSource,
 UITableViewDelegate,
 MessageCellDelegate,
@@ -57,7 +57,6 @@ JZSwipeCellDelegate {
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        
         LocalyticsSession.shared().tagScreen("Messages")
     }
     

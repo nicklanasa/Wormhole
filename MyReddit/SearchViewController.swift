@@ -12,11 +12,11 @@ import UIKit
 class SearchViewController: UIViewController,
 UITableViewDelegate,
 UITableViewDataSource,
-UISearchResultsUpdating,
 UISearchDisplayDelegate,
 UISearchBarDelegate,
 JZSwipeCellDelegate,
-LoadMoreHeaderDelegate {
+LoadMoreHeaderDelegate,
+PostImageCellDelegate {
     
     var pagination: RKPagination?
     var optionsController: LinkShareOptionsViewController!
@@ -27,14 +27,7 @@ LoadMoreHeaderDelegate {
     @IBOutlet weak var restrictToSubredditSwitch: UIBarButtonItem!
     @IBOutlet weak var restrictSubreddit: UISwitch!
     @IBOutlet weak var listButton: UIBarButtonItem!
-    
-    var subreddits = Array<AnyObject>() {
-        didSet {
-            dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                self.tableView.reloadData()
-            })
-        }
-    }
+    var heightsCache = [String : AnyObject]()
     
     var links = Array<AnyObject>() {
         didSet {
@@ -54,7 +47,6 @@ LoadMoreHeaderDelegate {
     
     lazy var searchController: UISearchController = {
         var controller = UISearchController(searchResultsController: nil)
-        controller.searchResultsUpdater = self
         controller.dimsBackgroundDuringPresentation = false
         controller.searchBar.delegate = self
         controller.searchBar.setShowsCancelButton(false, animated: false)
@@ -74,17 +66,9 @@ LoadMoreHeaderDelegate {
         return controller
     }()
     
-    func updateSearchResultsForSearchController(searchController: UISearchController) {
-        
-        self.subreddits = Array<AnyObject>()
+    func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
         self.links = Array<AnyObject>()
-        self.tableView.reloadData()
-        
-        if count(searchController.searchBar.text) == 0 {
-            self.subreddits = Array<AnyObject>()
-        } else {
-            self.search()
-        }
+        self.search()
     }
     
     func search() {
@@ -130,25 +114,10 @@ LoadMoreHeaderDelegate {
                         }
                 })
             }
-        }
-    }
-    
-    override func viewDidAppear(animated: Bool) {
-        
-        if let splitViewController = self.splitViewController {
-            self.navigationItem.titleView = self.searchController.searchBar
         } else {
-            self.tableView.tableHeaderView = self.searchController.searchBar
+            self.links = Array<AnyObject>()
+            self.tableView.reloadData()
         }
-        
-        self.tableView.rowHeight = UITableViewAutomaticDimension
-        self.tableView.backgroundColor = MyRedditBackgroundColor
-        
-        var textFieldInsideSearchBar = self.searchController.searchBar.valueForKey("searchField") as? UITextField
-        
-        textFieldInsideSearchBar?.textColor = MyRedditLabelColor
-        
-        self.view.backgroundColor = MyRedditBackgroundColor
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -172,10 +141,25 @@ LoadMoreHeaderDelegate {
         self.tableView.tableFooterView = UIView()
     }
     
-    override func viewWillDisappear(animated: Bool) {
-        self.searchController.active = false
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        self.tableView.rowHeight = UITableViewAutomaticDimension
+        self.tableView.backgroundColor = MyRedditBackgroundColor
+        
+        var textFieldInsideSearchBar = self.searchController.searchBar.valueForKey("searchField") as? UITextField
+        
+        textFieldInsideSearchBar?.textColor = MyRedditLabelColor
+        
+        self.view.backgroundColor = MyRedditBackgroundColor
+        
+        if let splitViewController = self.splitViewController {
+            self.navigationItem.titleView = self.searchController.searchBar
+        } else {
+            self.tableView.tableHeaderView = self.searchController.searchBar
+        }
     }
-    
+
     @IBAction func restrictToSubredditSwitchValueChanged(sender: AnyObject) {
         
     }
@@ -208,8 +192,18 @@ LoadMoreHeaderDelegate {
         var cell = tableView.dequeueReusableCellWithIdentifier("PostImageCell") as! PostCell
         
         if let link = self.links[indexPath.row] as? RKLink {
-            if link.isImageLink() || link.media != nil || link.domain == "imgur.com" {
-                cell = tableView.dequeueReusableCellWithIdentifier("PostImageCell") as! PostImageCell
+            if link.isImageLink() || link.domain == "imgur.com" {
+                
+                if indexPath.row == 0 || SettingsManager.defaultManager.valueForSetting(.FullWidthImages) {
+                    cell = tableView.dequeueReusableCellWithIdentifier("TitleCell") as! TitleCell
+                } else {
+                    var imageCell = tableView.dequeueReusableCellWithIdentifier("PostImageCell") as! PostImageCell
+                    imageCell.postImageDelegate = self
+                    imageCell.link = link
+                    imageCell.delegate = self
+                    return imageCell
+                }
+                
             } else {
                 cell = tableView.dequeueReusableCellWithIdentifier("TitleCell") as! TitleCell
             }
@@ -224,6 +218,7 @@ LoadMoreHeaderDelegate {
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         self.tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        self.searchController.active = false
         if let link = self.links[indexPath.row] as? RKLink {
             if link.selfPost {
                 self.performSegueWithIdentifier("CommentsSegue", sender: link)
@@ -242,17 +237,73 @@ LoadMoreHeaderDelegate {
             }
         } else {
             if let link = sender as? RKLink {
-                if let nav = segue.destinationViewController as? UINavigationController {
-                    if let controller = nav.viewControllers[0] as? CommentsViewController {
-                        controller.link = link
-                    }
+                if let controller = segue.destinationViewController as? CommentsViewController {
+                    controller.link = link
                 }
             }
         }
     }
     
-    func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return 500
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        
+        if indexPath.row == self.links.count {
+            return 60
+        }
+        
+        if let link = self.links[indexPath.row] as? RKLink {
+            if link.isImageLink() || link.domain == "imgur.com" {
+                // Image
+                
+                if indexPath.row == 0 || SettingsManager.defaultManager.valueForSetting(.FullWidthImages) {
+                    // regular
+                    return self.heightForLink(link)
+                } else {
+                    
+                    var url: String?
+                    
+                    if link.isImageLink() {
+                        url = link.URL.absoluteString
+                    } else if link.media != nil {
+                        if let thumbnailURL = link.media.thumbnailURL {
+                            url = thumbnailURL.description
+                        }
+                    } else if link.domain == "imgur.com" {
+                        if let absoluteString = link.URL.absoluteString {
+                            var stringURL = absoluteString + ".jpg"
+                            url = stringURL
+                        }
+                    }
+                    
+                    if url != nil {
+                        if let height = self.heightsCache[url!] as? NSNumber {
+                            return CGFloat(height.floatValue)
+                        }
+                    }
+                    
+                    return 392
+                }
+                
+            } else {
+                // regular
+                return self.heightForLink(link)
+            }
+        }
+        
+        return 0
+    }
+    
+    private func heightForLink(link: RKLink) -> CGFloat {
+        var text = link.title
+        var frame = CGRectMake(0, 0, (self.tableView.frame.size.width - 18), CGFloat.max)
+        let label: UILabel = UILabel(frame: frame)
+        label.numberOfLines = 0
+        label.lineBreakMode = NSLineBreakMode.ByWordWrapping
+        label.font = UIFont(name: "AvenirNext-Medium",
+            size: SettingsManager.defaultManager.titleFontSizeForDefaultTextSize)
+        label.text = text
+        label.sizeToFit()
+        
+        return label.frame.height + 80
     }
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
@@ -281,6 +332,8 @@ LoadMoreHeaderDelegate {
                                         message: "Unable to upvote! Please try again!",
                                         delegate: self,
                                         cancelButtonTitle: "Ok").show()
+                                } else {
+                                    self.search()
                                 }
                             })
                         } else if swipeType.value == JZSwipeTypeShortRight.value {
@@ -294,7 +347,9 @@ LoadMoreHeaderDelegate {
                                         message: "Unable to downvote! Please try again!",
                                         delegate: self,
                                         cancelButtonTitle: "Ok").show()
-                                } 
+                                } else {
+                                    self.search()
+                                }
                             })
                         } else if swipeType.value == JZSwipeTypeLongLeft.value {
                             LocalyticsSession.shared().tagEvent("Swipe more")
@@ -381,5 +436,13 @@ LoadMoreHeaderDelegate {
     func loadMoreHeader(header: LoadMoreHeader, didTapButton sender: AnyObject) {
         header.startAnimating()
         self.search()
+    }
+    
+    func postImageCell(cell: PostImageCell, didDownloadImageWithHeight height: CGFloat, url: NSURL) {
+        if let indexPath = self.tableView.indexPathForCell(cell) {
+            self.heightsCache[url.description] = NSNumber(float: Float(height))
+            self.tableView.beginUpdates()
+            self.tableView.endUpdates()
+        }
     }
 }

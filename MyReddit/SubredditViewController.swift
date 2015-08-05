@@ -30,7 +30,8 @@ NSFetchedResultsControllerDelegate,
 LoadMoreHeaderDelegate,
 UIGestureRecognizerDelegate,
 JZSwipeCellDelegate,
-UISplitViewControllerDelegate, PostImageCellDelegate {
+UISplitViewControllerDelegate,
+PostImageCellDelegate {
     
     var subreddit: RKSubreddit!
     var multiReddit: RKMultireddit!
@@ -45,7 +46,9 @@ UISplitViewControllerDelegate, PostImageCellDelegate {
     var refreshControl = MyRedditRefreshControl(type: .SlideDown)
     var heightsCache = [String : AnyObject]()
     
+    @IBOutlet weak var noPostsLabel: UILabel!
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var noPostsView: UIView!
     
     @IBOutlet var headerImage: UIImageView! {
         didSet {
@@ -70,67 +73,13 @@ UISplitViewControllerDelegate, PostImageCellDelegate {
     
     var links = Array<AnyObject>()
     
-    private func displayHeader(foundImage: Bool) {
-        
-        var headerHeight = HeaderIphoneHeight
-        
-        if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
-            headerHeight = HeaderIpadHeight
-        }
-        
-        dispatch_async(dispatch_get_main_queue(), { () -> Void in
-            if !foundImage {
-                //self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0)
-                self.headerImage.removeFromSuperview()
-            } else {
-                self.tableView.contentInset = UIEdgeInsetsMake(headerHeight, 0, 0, 0)
-                self.tableView.addSubview(self.headerImage)
-                self.headerImage.frame = CGRectMake(0, -headerHeight, UIScreen.mainScreen().bounds.size.width, headerHeight)
-                
-                if self.links.count <= 25 {
-                    if self.tableView.contentOffset.y <= 0 {
-                        self.tableView.setContentOffset(CGPointMake(0, -headerHeight), animated: true)
-                        
-                        var tap = UITapGestureRecognizer(target: self, action: "headerImageTapped:")
-                        tap.numberOfTapsRequired = 1
-                        self.headerImage.gestureRecognizers = [tap]
-                    }
-                }
-            }
-        })
-    }
-    
-    func updateHeaderImage() {
-        var foundImage = false
-        if let post = self.links.first as? RKLink {
-            if post.isImageLink() {
-                self.headerImage.sd_setImageWithURL(post.URL)
-                self.displayHeader(true)
-            } else if let media = post.media {
-                self.headerImage.sd_setImageWithURL(media.thumbnailURL)
-                self.displayHeader(true)
-            } else if post.domain == "imgur.com" {
-                if let absoluteString = post.URL.absoluteString {
-                    var stringURL = absoluteString + ".jpg"
-                    var imageURL = NSURL(string: stringURL)
-                    self.headerImage.sd_setImageWithURL(imageURL,
-                        placeholderImage: UIImage(),
-                        completed: { (image, error, cacheType, url) -> Void in
-                            if error != nil {
-                                self.displayHeader(false)
-                            } else {
-                                self.displayHeader(true)
-                            }
-                    })
-                }
-            } else {
-            
-                self.refreshControl.addToScrollView(self.tableView, withRefreshBlock: { () -> Void in
-                    self.refresh(nil)
-                })
-                
-                self.displayHeader(false)
-            }
+    private func checkIfNoContent() {
+        if self.links.count == 0 {
+            self.tableView.hidden = true
+            self.noPostsView.hidden = false
+        } else {
+            self.tableView.hidden = false
+            self.noPostsView.hidden = true
         }
     }
     
@@ -146,6 +95,10 @@ UISplitViewControllerDelegate, PostImageCellDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.refreshControl.addToScrollView(self.tableView, withRefreshBlock: { () -> Void in
+            self.refresh(nil)
+        })
         
         self.updateAndFetch()
         self.tableView.tableFooterView = UIView()
@@ -425,10 +378,8 @@ UISplitViewControllerDelegate, PostImageCellDelegate {
         } else {
             if let link = sender as? RKLink {
                 self.hud.hide(true)
-                if let nav = segue.destinationViewController as? UINavigationController {
-                    if let controller = nav.viewControllers[0] as? CommentsViewController {
-                        controller.link = link
-                    }
+                if let controller = segue.destinationViewController as? CommentsViewController {
+                    controller.link = link
                 }
             }
         }
@@ -498,7 +449,6 @@ UISplitViewControllerDelegate, PostImageCellDelegate {
     
     private func fetchLinks() {
         
-        self.hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
         LocalyticsSession.shared().tagEvent("Fetched links")
  
         if self.front {
@@ -528,16 +478,16 @@ UISplitViewControllerDelegate, PostImageCellDelegate {
         if !SettingsManager.defaultManager.valueForSetting(.NSFW) {
             self.links.filter({ (obj) -> Bool in
                 if let link = obj as? RKLink {
-                    return !link.NSFW
+                    if link.NSFW {
+                        return false
+                    }
                 }
                 
                 return true
             })
         }
         
-        self.updateHeaderImage()
-        
-        if self.links.count < 25 || self.links.count == 0 {
+        if self.links.count == 25 || self.links.count == 0 {
             self.tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: .Fade)
         } else {
             self.tableView.reloadData()
@@ -555,7 +505,7 @@ UISplitViewControllerDelegate, PostImageCellDelegate {
         LocalyticsSession.shared().tagScreen("Subreddit")
         self.updateUI()
         self.fetchUnread()
-        self.fetchLinks()
+        self.refreshControl.forceRefresh()
         self.updateSubscribeButton()
     }
     
@@ -588,6 +538,8 @@ UISplitViewControllerDelegate, PostImageCellDelegate {
             self.postButton.tintColor = MyRedditLabelColor
             self.searchButton.tintColor = MyRedditLabelColor
             self.messages.tintColor = MyRedditLabelColor
+            self.noPostsView.backgroundColor = MyRedditBackgroundColor
+            self.noPostsLabel.textColor = MyRedditLabelColor
             
             self.navigationItem.leftBarButtonItem!.setTitleTextAttributes([
                 NSFontAttributeName: MyRedditTitleBigFont, NSForegroundColorAttributeName : MyRedditLabelColor],
@@ -596,25 +548,27 @@ UISplitViewControllerDelegate, PostImageCellDelegate {
                 NSFontAttributeName: MyRedditTitleFont],
                 forState: UIControlState.Normal)
         })
+        
+        self.navigationController?.setToolbarHidden(true, animated: true)
     }
     
     private func endRefreshing() {
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
-            self.hud.hide(true)
             self.reload()
             self.refreshControl.endRefreshing()
             self.fetchingMore = false
+            self.checkIfNoContent()
+            
+            if let hud = self.hud {
+                hud.hide(true)
+            }
         })
     }
     
     func refresh(sender: AnyObject?) {
-        UIView.animateWithDuration(0.3, animations: { () -> Void in
-            self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0)
-            self.headerImage.removeFromSuperview()
-            self.links = Array<AnyObject>()
-            self.pagination = nil
-            self.fetchLinks()
-        })
+        self.links = Array<AnyObject>()
+        self.pagination = nil
+        self.fetchLinks()
     }
     
     // MARK: UITableViewDataSource
@@ -635,7 +589,7 @@ UISplitViewControllerDelegate, PostImageCellDelegate {
             if let link = self.links[indexPath.row] as? RKLink {
                 if link.isImageLink() || link.domain == "imgur.com" {
                     
-                    if indexPath.row == 0 || SettingsManager.defaultManager.valueForSetting(.FullWidthImages) {
+                    if SettingsManager.defaultManager.valueForSetting(.FullWidthImages) {
                         cell = tableView.dequeueReusableCellWithIdentifier("TitleCell") as! TitleCell
                     } else {
                         var imageCell = tableView.dequeueReusableCellWithIdentifier("PostImageCell") as! PostImageCell
@@ -661,10 +615,9 @@ UISplitViewControllerDelegate, PostImageCellDelegate {
         if indexPath.row < self.links.count {
             if let link = self.links[indexPath.row] as? RKLink {
                 if link.isImageLink() || link.domain == "imgur.com" {
-                    
                     // Image
                     
-                    if indexPath.row == 0 || SettingsManager.defaultManager.valueForSetting(.FullWidthImages) {
+                    if SettingsManager.defaultManager.valueForSetting(.FullWidthImages) {
                         // regular
                         return self.heightForTitlePost(link)
                     } else {
@@ -673,6 +626,10 @@ UISplitViewControllerDelegate, PostImageCellDelegate {
                         
                         if link.isImageLink() {
                             url = link.URL.absoluteString
+                        } else if link.media != nil {
+                            if let thumbnailURL = link.media.thumbnailURL {
+                                url = thumbnailURL.description
+                            }
                         } else if link.domain == "imgur.com" {
                             if let absoluteString = link.URL.absoluteString {
                                 var stringURL = absoluteString + ".jpg"
@@ -686,7 +643,7 @@ UISplitViewControllerDelegate, PostImageCellDelegate {
                             }
                         }
                         
-                        return 300
+                        return 392
                     }
                     
                 } else {
@@ -721,7 +678,7 @@ UISplitViewControllerDelegate, PostImageCellDelegate {
             if link.selfPost {
                 self.performSegueWithIdentifier("CommentsSegue", sender: link)
             } else {
-                if link.domain == "imgur.com" || link.isImageLink() {
+                if (link.domain == "imgur.com" || link.isImageLink()) && link.URL.absoluteString?.rangeOfString("gif") == nil {
                     if link.domain == "imgur.com" && !link.URL.absoluteString!.hasExtension() {
                         var urlComponents = link.URL.absoluteString?.componentsSeparatedByString("/")
                         if urlComponents?.count > 4 {
@@ -758,6 +715,7 @@ UISplitViewControllerDelegate, PostImageCellDelegate {
     func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
         var endScrolling = scrollView.contentOffset.y + scrollView.frame.size.height
         if endScrolling >= scrollView.contentSize.height && !self.fetchingMore {
+            self.hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
             self.fetchingMore = true
             self.fetchLinks()
         }
@@ -874,9 +832,25 @@ UISplitViewControllerDelegate, PostImageCellDelegate {
     
     func postImageCell(cell: PostImageCell, didDownloadImageWithHeight height: CGFloat, url: NSURL) {
         if let indexPath = self.tableView.indexPathForCell(cell) {
-            self.heightsCache[url.absoluteString!] = NSNumber(float: Float(height))
+            self.heightsCache[url.description] = NSNumber(float: Float(height))
             self.tableView.beginUpdates()
             self.tableView.endUpdates()
         }
+    }
+    
+    @IBAction func submitAPostButtonPressed(sender: AnyObject) {
+        if !SettingsManager.defaultManager.purchased {
+            self.performSegueWithIdentifier("PurchaseSegue", sender: self)
+        } else {
+            if UserSession.sharedSession.isSignedIn {
+                self.performSegueWithIdentifier("PostSegue", sender: self)
+            } else {
+                self.performSegueWithIdentifier("AccountsSegue", sender: self)
+            }
+        }
+    }
+    
+    @IBAction func tryAgainButtonPressed(sender: AnyObject) {
+        self.updateAndFetch()
     }
 }

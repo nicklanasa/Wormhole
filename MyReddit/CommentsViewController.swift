@@ -45,8 +45,10 @@ AddCommentViewControllerDelegate {
         
     var comments: [AnyObject]? {
         didSet {
-            self.commentsBySection = self.buildCommentsBySection()
-            self.navigationItem.title =  "\(self.link.totalComments) comments"
+            if self.comments?.count > 0 {
+                self.commentsBySection = self.buildCommentsBySection()
+                self.navigationItem.title =  "\(self.link.totalComments) comments"
+            }
         }
     }
     
@@ -90,8 +92,21 @@ AddCommentViewControllerDelegate {
     
     var refreshCommentsControl = MyRedditRefreshControl()
     
-    func refresh(sender: AnyObject)
-    {
+    func refresh(sender: AnyObject) {
+        
+        RedditSession.sharedSession.linkWithFullName(self.link, completion: { (pagination, results, error) -> () in
+            if error != nil {
+                UIAlertView(title: "Error!",
+                    message: "Unable to get refresh link!",
+                    delegate: self,
+                    cancelButtonTitle: "OK").show()
+            } else {
+                if let link = results?.first as? RKLink {
+                    self.link = link
+                }
+            }
+        })
+        
         self.syncComments()
     }
     
@@ -102,6 +117,8 @@ AddCommentViewControllerDelegate {
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
             self.navigationItem.title =  "\(self.link.totalComments) comments"
         })
+        
+        self.navigationController?.setToolbarHidden(false, animated: true)
     }
     
     override func viewDidLoad() {
@@ -109,16 +126,18 @@ AddCommentViewControllerDelegate {
         self.syncComments()
         
         self.refreshCommentsControl.addToScrollView(self.tableView, withRefreshBlock: { () -> Void in
-            self.syncComments()
+            self.refresh(self.tableView)
         })
     }
     
     func syncComments() {
         self.hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
         RedditSession.sharedSession.fetchComments(nil, link: self.link) { (pagination, results, error) -> () in
-            self.comments = results
-            self.refreshCommentsControl.endRefreshing()
-            self.hud.hide(true)
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                self.comments = results
+                self.refreshCommentsControl.endRefreshing()
+                self.hud.hide(true)
+            })
         }
     }
     
@@ -189,10 +208,17 @@ AddCommentViewControllerDelegate {
                 range: nil)
         }
         
+        var parser = XNGMarkdownParser()
+        parser.paragraphFont = MyRedditSelfTextFont
+        parser.boldFontName = MyRedditCommentTextBoldFont.familyName
+        parser.boldItalicFontName = MyRedditCommentTextItalicFont.familyName
+        parser.italicFontName = MyRedditCommentTextItalicFont.familyName
+        parser.linkFontName = MyRedditCommentTextBoldFont.familyName
+        
         var title = link.title.stringByReplacingOccurrencesOfString("&gt;", withString: ">", options: nil, range: nil)
         
-        var parsedString = NSMutableAttributedString(string: "\(title)\(selfText)")
-        var frame = CGRectMake(0, 0, self.tableView.frame.size.width - 30, CGFloat.max)
+        var parsedString = NSMutableAttributedString(attributedString: parser.attributedStringFromMarkdownString("\(title)\(selfText)"))
+        var frame = CGRectMake(0, 0, self.tableView.frame.size.width - 60, CGFloat.max)
         let label: UILabel = UILabel(frame: frame)
         label.numberOfLines = 0
         label.font = MyRedditSelfTextFont
@@ -338,17 +364,11 @@ AddCommentViewControllerDelegate {
                 self.closedIndexPaths.extend(collapsedIndexPaths)
             }
             
-            self.tableView.beginUpdates()
-            self.tableView.reloadRowsAtIndexPaths(self.tableView.indexPathsForVisibleRows()!, withRowAnimation: .Automatic)
-            self.tableView.endUpdates()
+            var reloadRows: [NSIndexPath] = collapsedIndexPaths + closedIndexPaths
             
-            if indexPath.section - 1 >= 0 {
-                self.tableView.beginUpdates()
-                self.tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: 0, inSection: indexPath.section - 1)],
-                    withRowAnimation: .Fade)
-                self.tableView.endUpdates()
-                self.tableView.reloadData()
-            }
+            self.tableView.beginUpdates()
+            self.tableView.reloadRowsAtIndexPaths(reloadRows, withRowAnimation: .Automatic)
+            self.tableView.endUpdates()
         }
     }
     

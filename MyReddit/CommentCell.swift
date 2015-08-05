@@ -74,9 +74,16 @@ class CommentCell: JZSwipeCell, UITextViewDelegate {
                     range: nil)
             }
             
+            var parser = XNGMarkdownParser()
+            parser.paragraphFont = MyRedditSelfTextFont
+            parser.boldFontName = MyRedditCommentTextBoldFont.familyName
+            parser.boldItalicFontName = MyRedditCommentTextItalicFont.familyName
+            parser.italicFontName = MyRedditCommentTextItalicFont.familyName
+            parser.linkFontName = MyRedditCommentTextBoldFont.familyName
+            
             var title = link.title.stringByReplacingOccurrencesOfString("&gt;", withString: ">", options: nil, range: nil)
             
-            var parsedString = NSMutableAttributedString(string: "\(title)\(selfText)")
+            var parsedString = NSMutableAttributedString(attributedString: parser.attributedStringFromMarkdownString("\(title)\(selfText)"))
             var titleAttr = [NSForegroundColorAttributeName : MyRedditLabelColor]
             var selfTextAttr = [NSForegroundColorAttributeName : MyRedditSelfTextLabelColor]
             var fontAttr = [NSFontAttributeName : MyRedditSelfTextFont]

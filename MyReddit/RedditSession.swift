@@ -600,7 +600,11 @@ class RedditSession {
         UIApplication.sharedApplication().networkActivityIndicatorVisible = true
         RKClient.sharedClient().linkWithFullName(link.fullName, completion: { (link, error) -> Void in
             UIApplication.sharedApplication().networkActivityIndicatorVisible = false
-            completion(pagination: nil, results: [link], error: error)
+            if link == nil {
+                completion(pagination: nil, results: [], error: error)
+            } else {
+                completion(pagination: nil, results: [link], error: error)
+            }
         })
     }
     

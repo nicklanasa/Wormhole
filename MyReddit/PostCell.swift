@@ -28,4 +28,13 @@ class PostCell: JZSwipeCell {
         self.imageSet = SwipeCellImageSetMake(downVoteImage, UIImage(named: "ShareWhite"), upVoteImage, UIImage(named: "moreWhite"))
         self.colorSet = SwipeCellColorSetMake(MyRedditDownvoteColor, MyRedditColor, MyRedditUpvoteColor, MyRedditReplyColor)
     }
+    
+    func upvote() {
+    }
+    
+    func downvote() {
+    }
+    
+    func unvote() {
+    }
 }

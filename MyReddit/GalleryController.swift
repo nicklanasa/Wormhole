@@ -83,6 +83,7 @@ UICollectionViewDelegate {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         LocalyticsSession.shared().tagScreen("Gallery")
+        self.navigationController?.setToolbarHidden(true, animated: true)
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -90,6 +91,8 @@ UICollectionViewDelegate {
         if self.postTitleView.frame.size.height > 35 {
             self.seeMoreButtonTapped(self)
         }
+        
+        self.navigationController?.setToolbarHidden(false, animated: true)
     }
     
     override func viewDidLoad() {
@@ -292,10 +295,8 @@ UICollectionViewDelegate {
                 self.pageViewController = controller
             }
         } else if segue.identifier == "CommentsSegue" {
-            if let nav = segue.destinationViewController as? UINavigationController {
-                if let controller = nav.viewControllers[0] as? CommentsViewController {
-                    controller.link = link
-                }
+            if let controller = segue.destinationViewController as? CommentsViewController {
+                controller.link = self.link
             }
         }
     }
@@ -350,16 +351,18 @@ UICollectionViewDelegate {
         if self.postTitleView.frame.size.height > 35 {
             self.seeMoreButtonTapped(self)
         }
-        if self.link.upvoted() {
-            self.upvoteButton.tintColor = MyRedditUpvoteColor
-            self.downvoteButton.tintColor = MyRedditLabelColor
-        } else if self.link.downvoted() {
-            self.upvoteButton.tintColor = MyRedditLabelColor
-            self.downvoteButton.tintColor = MyRedditDownvoteColor
-        } else {
-            self.upvoteButton.tintColor = MyRedditLabelColor
-            self.downvoteButton.tintColor = MyRedditLabelColor
-        }
+        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            if self.link.upvoted() {
+                self.upvoteButton.image = UIImage(named: "UpSelected")
+                self.downvoteButton.image = UIImage(named: "Down")
+            } else if self.link.downvoted() {
+                self.upvoteButton.image = UIImage(named: "Up")
+                self.downvoteButton.image = UIImage(named: "DownSelected")
+            } else {
+                self.upvoteButton.image = UIImage(named: "Up")
+                self.downvoteButton.image = UIImage(named: "Down")
+            }
+        })
     }
 
     @IBAction func shareButtonTapped(sender: AnyObject) {

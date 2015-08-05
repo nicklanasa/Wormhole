@@ -108,6 +108,7 @@ class LinkViewController: UIViewController, UITextViewDelegate {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         LocalyticsSession.shared().tagScreen("Link")
+        self.navigationController?.setToolbarHidden(true, animated: true)
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -115,6 +116,8 @@ class LinkViewController: UIViewController, UITextViewDelegate {
         if self.postTitleView.frame.size.height > 35 {
             self.seeMoreButtonTapped(self)
         }
+        
+        self.navigationController?.setToolbarHidden(false, animated: true)
     }
     
     override func viewDidLoad() {
@@ -129,7 +132,11 @@ class LinkViewController: UIViewController, UITextViewDelegate {
         
         self.configureNav()
         
-        self.showReader()
+        if SettingsManager.defaultManager.valueForSetting(.DefaultToReaderMode) {
+            self.showReader()
+        } else {
+            self.setupWebView()
+        }
     }
     
     private func setupWebView() {
@@ -287,24 +294,23 @@ class LinkViewController: UIViewController, UITextViewDelegate {
         if self.postTitleView.frame.size.height > 35 {
             self.seeMoreButtonTapped(self)
         }
+        
         if self.link.upvoted() {
-            self.upvoteButton.tintColor = MyRedditUpvoteColor
-            self.downvoteButton.tintColor = MyRedditLabelColor
+            self.upvoteButton.image = UIImage(named: "UpSelected")
+            self.downvoteButton.image = UIImage(named: "Down")
         } else if self.link.downvoted() {
-            self.upvoteButton.tintColor = MyRedditLabelColor
-            self.downvoteButton.tintColor = MyRedditDownvoteColor
+            self.upvoteButton.image = UIImage(named: "Up")
+            self.downvoteButton.image = UIImage(named: "DownSelected")
         } else {
-            self.upvoteButton.tintColor = MyRedditLabelColor
-            self.downvoteButton.tintColor = MyRedditLabelColor
+            self.upvoteButton.image = UIImage(named: "Up")
+            self.downvoteButton.image = UIImage(named: "Down")
         }
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "CommentsSegue" {
-            if let nav = segue.destinationViewController as? UINavigationController {
-                if let controller = nav.viewControllers[0] as? CommentsViewController {
-                    controller.link = link
-                }
+            if let controller = segue.destinationViewController as? CommentsViewController {
+                controller.link = self.link
             }
         } else if segue.identifier == "WebSegue" {
             if let nav = segue.destinationViewController as? UINavigationController {

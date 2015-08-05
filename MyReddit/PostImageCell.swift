@@ -54,6 +54,10 @@ class PostImageCell: PostCell {
             
             if self.link.isImageLink() {
                 url = self.link.URL
+            } else if self.link.media != nil {
+                if let thumbnailURL = link.media.thumbnailURL {
+                    url = thumbnailURL
+                }
             } else if self.link.domain == "imgur.com" {
                 if let absoluteString = self.link.URL.absoluteString {
                     var stringURL = absoluteString + ".jpg"
@@ -101,19 +105,17 @@ class PostImageCell: PostCell {
             
             if SettingsManager.defaultManager.valueForSetting(.Flair) {
                 if let flairString = link.linkFlairText {
-                    showFlair = " | \(flairString)"
-                }
-            }
-            
-            if SettingsManager.defaultManager.valueForSetting(.Flair) {
-                if let flairString = link.linkFlairText {
-                    showFlair = "\(flairString) |"
+                    if count(flairString) > 0 {
+                        showFlair = "\(flairString) |"
+                    }
                 }
             }
             
             var infoString = NSMutableAttributedString(string:"\(showFlair) \(link.author) | \(link.created.timeAgoSimple()) | \(link.totalComments.description) comments")
             var attrs = [NSForegroundColorAttributeName : MyRedditLabelColor]
+            var commentsAttr = [NSForegroundColorAttributeName : MyRedditColor]
             infoString.addAttributes(attrs, range: NSMakeRange(0, count(showFlair) == 0 ? 0 : count(showFlair) - 1))
+            infoString.addAttributes(commentsAttr, range: NSMakeRange(count(infoString.string) - count("\(link.totalComments.description) comments"), count("\(link.totalComments.description) comments")))
             
             self.postInfoLabel.attributedText = infoString
             self.titleLabel.font = UIFont(name: self.titleLabel.font.fontName,
@@ -130,6 +132,26 @@ class PostImageCell: PostCell {
             
             self.resetViews()
         }
+    }
+    
+    override func upvote() {
+        if self.link.upvoted() {
+            self.unvote()
+        } else {
+            self.scoreLabel.textColor = MyRedditUpvoteColor
+        }
+    }
+    
+    override func downvote() {
+        if self.link.upvoted() {
+            self.unvote()
+        } else {
+            self.scoreLabel.textColor = MyRedditDownvoteColor
+        }
+    }
+    
+    override func unvote() {
+        self.scoreLabel.textColor = UIColor.lightGrayColor()
     }
     
     override func prepareForReuse() {
