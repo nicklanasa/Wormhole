@@ -202,7 +202,7 @@ AddCommentViewControllerDelegate {
         var selfText = ""
         
         if link.selfPost && count(link.selfText) > 0 {
-            selfText = "\n\n\(link.selfText))".stringByReplacingOccurrencesOfString("&gt;",
+            selfText = "\n\n\(link.selfText)".stringByReplacingOccurrencesOfString("&gt;",
                 withString: ">",
                 options: nil,
                 range: nil)
@@ -218,15 +218,10 @@ AddCommentViewControllerDelegate {
         var title = link.title.stringByReplacingOccurrencesOfString("&gt;", withString: ">", options: nil, range: nil)
         
         var parsedString = NSMutableAttributedString(attributedString: parser.attributedStringFromMarkdownString("\(title)\(selfText)"))
-        var frame = CGRectMake(0, 0, self.tableView.frame.size.width - 60, CGFloat.max)
-        let label: UILabel = UILabel(frame: frame)
-        label.numberOfLines = 0
-        label.font = MyRedditSelfTextFont
-        label.lineBreakMode = NSLineBreakMode.ByWordWrapping
-        label.attributedText = parsedString
-        label.sizeToFit()
-
-        return label.frame.size.height + 60
+        
+        var str = parsedString.string as NSString
+        var rect = str.boundingRectWithSize(CGSizeMake(self.tableView.frame.size.width - 30, CGFloat.max), options: NSStringDrawingOptions.UsesLineFragmentOrigin, attributes: [NSFontAttributeName : MyRedditSelfTextFont], context: nil)
+        return rect.height + 60
     }
     
     private func heightForIndexPath(indexPath: NSIndexPath) -> CGFloat {
@@ -306,6 +301,7 @@ AddCommentViewControllerDelegate {
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
             tableView.deselectRowAtIndexPath(indexPath, animated: true)
         })
+        
         if indexPath.section != 0 {
             var remove = false
             

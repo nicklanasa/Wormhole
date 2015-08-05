@@ -26,7 +26,6 @@ class CommentCell: JZSwipeCell, UITextViewDelegate {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        
         self.contentView.setNeedsUpdateConstraints()
         self.contentView.setNeedsLayout()
         
@@ -36,10 +35,13 @@ class CommentCell: JZSwipeCell, UITextViewDelegate {
             self.lines.append(lineView)
             self.contentView.addSubview(lineView)
         }
+        
+        self.commentTextView.backgroundColor = MyRedditBackgroundColor
+        self.contentView.backgroundColor = MyRedditBackgroundColor
     }
     
     override func awakeFromNib() {
-        
+    
         super.awakeFromNib()
         
         if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
@@ -57,7 +59,8 @@ class CommentCell: JZSwipeCell, UITextViewDelegate {
         
         self.commentTextView.delegate = self
         
-        self.backgroundView?.backgroundColor = MyRedditBackgroundColor
+        self.contentView.backgroundColor = MyRedditBackgroundColor
+        self.backgroundColor = MyRedditBackgroundColor
         self.defaultBackgroundColor = MyRedditBackgroundColor
         self.commentTextView.textColor = MyRedditLabelColor
     }
@@ -68,7 +71,7 @@ class CommentCell: JZSwipeCell, UITextViewDelegate {
             var selfText = ""
             
             if link.selfPost && count(link.selfText) > 0 {
-                selfText = "\n\n\(link.selfText))".stringByReplacingOccurrencesOfString("&gt;",
+                selfText = "\n\n\(link.selfText)".stringByReplacingOccurrencesOfString("&gt;",
                     withString: ">",
                     options: nil,
                     range: nil)
@@ -188,7 +191,7 @@ class CommentCell: JZSwipeCell, UITextViewDelegate {
         }
         
         self.lines = [UIView]()
-        self.backgroundView?.backgroundColor = MyRedditBackgroundColor
+        self.commentTextView.textColor = MyRedditLabelColor
         self.indentationLevel = 0
         self.indentationWidth = 0
         self.separatorInset = UIEdgeInsetsZero

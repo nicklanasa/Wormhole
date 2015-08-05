@@ -336,16 +336,6 @@ UINavigationControllerDelegate {
         }
     }
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-//        if segue.identifier == "SearchSegue" {
-//            if let nav = segue.destinationViewController as? UINavigationController {
-//                if let controller = nav.viewControllers[0] as? SearchViewController {
-//                    //controller.delegate = self
-//                }
-//            }
-//        }
-    }
-    
     func searchViewController(controller: SearchViewController, didTapSubreddit subreddit: RKSubreddit) {
         LocalyticsSession.shared().tagEvent("Added subreddit to post")
         self.subreddit = subreddit
