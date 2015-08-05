@@ -22,7 +22,6 @@ class SubredditCell: UITableViewCell {
     var subreddit: Subreddit! {
         didSet {
             self.nameLabel.text = subreddit.name
-            self.subscribersLabel.text = subreddit.totalSubscribers.integerValue.abbreviateNumber()
             
             self.nsfwLabel.hidden = true
             
@@ -41,8 +40,6 @@ class SubredditCell: UITableViewCell {
     var rkSubreddit: RKSubreddit! {
         didSet {
             self.nameLabel.text = rkSubreddit.name.capitalizedString
-            
-            self.subscribersLabel.hidden = true
             
             self.nsfwLabel.hidden = true
             
@@ -68,8 +65,6 @@ class SubredditCell: UITableViewCell {
         didSet {
             self.nameLabel.text = rkMultiSubreddit.name
             
-            self.subscribersLabel.hidden = true
-            
             self.nsfwLabel.hidden = true
 
             self.nameLabel.textColor = MyRedditLabelColor
@@ -91,9 +86,7 @@ class SubredditCell: UITableViewCell {
             } else {
                 self.nameLabel.text = "Unknown"
             }
-            
-            self.subscribersLabel.hidden = true
-            
+                        
             self.nsfwLabel.hidden = true
             
             if let over18 = subredditData["over18"] as? NSNumber {

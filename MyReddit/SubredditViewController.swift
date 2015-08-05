@@ -587,7 +587,7 @@ PostImageCellDelegate {
         
         if indexPath.row < self.links.count {
             if let link = self.links[indexPath.row] as? RKLink {
-                if link.isImageLink() || link.domain == "imgur.com" {
+                if link.isImageLink() || link.domain == "imgur.com" || link.media != nil {
                     
                     if SettingsManager.defaultManager.valueForSetting(.FullWidthImages) {
                         cell = tableView.dequeueReusableCellWithIdentifier("TitleCell") as! TitleCell
@@ -614,7 +614,7 @@ PostImageCellDelegate {
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         if indexPath.row < self.links.count {
             if let link = self.links[indexPath.row] as? RKLink {
-                if link.isImageLink() || link.domain == "imgur.com" {
+                if link.isImageLink() || link.domain == "imgur.com" || link.media != nil {
                     // Image
                     
                     if SettingsManager.defaultManager.valueForSetting(.FullWidthImages) {

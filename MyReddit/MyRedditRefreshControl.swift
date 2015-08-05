@@ -16,8 +16,6 @@ class MyRedditRefreshControl: JHRefreshControl {
     var label: UILabel!
     
     override func handleScrollingOnAnimationView(animationView: UIView!, withPullDistance pullDistance: CGFloat, pullRatio: CGFloat, pullVelocity: CGFloat) {
-        print(self.height)
-        print(pullDistance)
         if pullVelocity > 0.0 || pullRatio > 1.0 || pullDistance > self.height {
             self.endRefreshing()
         }

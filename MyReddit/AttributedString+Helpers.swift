@@ -16,7 +16,7 @@ extension NSMutableAttributedString {
                 if let image = attachement.imageForBounds(attachement.bounds, textContainer: NSTextContainer(), characterIndex: range.location) {
                     let screenSize: CGRect = UIScreen.mainScreen().bounds
                     if image.size.width > screenSize.width-2 {
-                        let newImage = image.resize(CGSizeMake(UIScreen.mainScreen().bounds.width, UIScreen.mainScreen().bounds.width - 50))
+                        let newImage = image.resize(CGSizeMake(UIScreen.mainScreen().bounds.width, UIScreen.mainScreen().bounds.width))
                         let newAttribut = NSTextAttachment()
                         newAttribut.image = newImage
                         self.addAttribute(NSAttachmentAttributeName, value: newAttribut, range: range)

@@ -14,6 +14,7 @@ UITableViewDelegate,
 UITableViewDataSource,
 UISearchDisplayDelegate,
 UISearchBarDelegate,
+UISearchControllerDelegate,
 JZSwipeCellDelegate,
 LoadMoreHeaderDelegate,
 PostImageCellDelegate {
@@ -23,13 +24,23 @@ PostImageCellDelegate {
     var subreddit: RKSubreddit!
     var selectedSubreddit: RKSubreddit!
     
+    @IBOutlet weak var filterControl: UISegmentedControl!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var restrictToSubredditSwitch: UIBarButtonItem!
     @IBOutlet weak var restrictSubreddit: UISwitch!
     @IBOutlet weak var listButton: UIBarButtonItem!
+    
     var heightsCache = [String : AnyObject]()
     
     var links = Array<AnyObject>() {
+        didSet {
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                self.tableView.reloadData()
+            })
+        }
+    }
+    
+    var subreddits = Array<AnyObject>() {
         didSet {
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
                 self.tableView.reloadData()
@@ -49,12 +60,13 @@ PostImageCellDelegate {
         var controller = UISearchController(searchResultsController: nil)
         controller.dimsBackgroundDuringPresentation = false
         controller.searchBar.delegate = self
+        controller.delegate = self
         controller.searchBar.setShowsCancelButton(false, animated: false)
         controller.hidesNavigationBarDuringPresentation = false
-        controller.searchBar.sizeToFit()
         controller.searchBar.searchBarStyle = .Minimal
         controller.searchBar.returnKeyType = .Done
-        controller.searchBar.placeholder = "Search posts..."
+        controller.searchBar.placeholder = "Search subreddits or posts..."
+        controller.searchBar.sizeToFit()
         
         for v in controller.searchBar.subviews {
             if let textField = v as? UITextField {
@@ -66,6 +78,16 @@ PostImageCellDelegate {
         return controller
     }()
     
+    @IBAction func filterControlValueChanged(sender: AnyObject) {
+        if self.filterControl.selectedSegmentIndex == 1 {
+            self.restrictSubreddit.enabled = false
+        } else {
+            self.restrictSubreddit.enabled = true
+        }
+        
+        self.search()
+    }
+    
     func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
         self.links = Array<AnyObject>()
         self.search()
@@ -74,6 +96,30 @@ PostImageCellDelegate {
     func search() {
         var searchText = self.searchController.searchBar.text.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
         
+        if count(searchText) > 0 {
+            if self.filterControl.selectedSegmentIndex == 1 {
+                self.searchSubs(searchText)
+            } else {
+                self.searchLinks(searchText)
+            }
+        } else {
+            self.links = Array<AnyObject>()
+            self.subreddits = Array<AnyObject>()
+            self.tableView.reloadData()
+        }
+        
+    }
+    
+    private func searchSubs(searchText: String) {
+        
+        RedditSession.sharedSession.searchForSubredditByName(searchText, pagination: nil) { (pagination, results, error) -> () in
+            if let subreddits = results {
+                self.subreddits = subreddits
+            }
+        }
+    }
+    
+    private func searchLinks(searchText: String) {
         if count(searchText) > 0 {
             if self.restrictSubreddit.on {
                 if let subreddit = self.subreddit {
@@ -123,6 +169,8 @@ PostImageCellDelegate {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
+        self.navigationController?.setToolbarHidden(true, animated: true)
+        
         LocalyticsSession.shared().tagScreen("Search")
         
         var restrictToSubreddit: UIBarButtonItem!
@@ -169,8 +217,15 @@ PostImageCellDelegate {
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if self.links.count > 0 {
-            return self.links.count + 1
+        
+        if self.filterControl.selectedSegmentIndex == 1 {
+            if self.subreddits.count > 0 {
+                return self.subreddits.count
+            }
+        } else {
+            if self.links.count > 0 {
+                return self.links.count + 1
+            }
         }
         
         return 0
@@ -182,6 +237,12 @@ PostImageCellDelegate {
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
+        if self.filterControl.selectedSegmentIndex == 1 {
+            var cell = tableView.dequeueReusableCellWithIdentifier("SubredditCell") as! SubredditCell
+            cell.rkSubreddit = self.subreddits[indexPath.row] as! RKSubreddit
+            return cell
+        }
+        
         if indexPath.row == self.links.count {
             var cell =  tableView.dequeueReusableCellWithIdentifier("LoadMoreHeader") as! LoadMoreHeader
             cell.delegate = self
@@ -192,9 +253,9 @@ PostImageCellDelegate {
         var cell = tableView.dequeueReusableCellWithIdentifier("PostImageCell") as! PostCell
         
         if let link = self.links[indexPath.row] as? RKLink {
-            if link.isImageLink() || link.domain == "imgur.com" {
+            if link.isImageLink() || link.domain == "imgur.com" || link.media != nil {
                 
-                if indexPath.row == 0 || SettingsManager.defaultManager.valueForSetting(.FullWidthImages) {
+                if SettingsManager.defaultManager.valueForSetting(.FullWidthImages) {
                     cell = tableView.dequeueReusableCellWithIdentifier("TitleCell") as! TitleCell
                 } else {
                     var imageCell = tableView.dequeueReusableCellWithIdentifier("PostImageCell") as! PostImageCell
@@ -219,11 +280,18 @@ PostImageCellDelegate {
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         self.tableView.deselectRowAtIndexPath(indexPath, animated: true)
         self.searchController.active = false
-        if let link = self.links[indexPath.row] as? RKLink {
-            if link.selfPost {
-                self.performSegueWithIdentifier("CommentsSegue", sender: link)
-            } else {
-                self.performSegueWithIdentifier("SubredditLink", sender: link)
+        
+        if self.filterControl.selectedSegmentIndex == 0 {
+            if let link = self.links[indexPath.row] as? RKLink {
+                if link.selfPost {
+                    self.performSegueWithIdentifier("CommentsSegue", sender: link)
+                } else {
+                    self.performSegueWithIdentifier("SubredditLink", sender: link)
+                }
+            }
+        } else {
+            if let subreddit = self.subreddits[indexPath.row] as? RKSubreddit {
+                self.performSegueWithIdentifier("SubredditSegue", sender: subreddit)
             }
         }
     }
@@ -233,6 +301,15 @@ PostImageCellDelegate {
             if let link = sender as? RKLink {
                 if let controller = segue.destinationViewController as? LinkViewController {
                     controller.link = link
+                }
+            }
+        } else if segue.identifier == "SubredditSegue" {
+            if let subreddit = sender as? RKSubreddit {
+                if let nav = segue.destinationViewController as? UINavigationController {
+                    if let controller = nav.viewControllers[0] as? SubredditViewController {
+                        controller.subreddit = subreddit
+                        controller.front = false
+                    }
                 }
             }
         } else {
@@ -246,15 +323,19 @@ PostImageCellDelegate {
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         
+        if self.filterControl.selectedSegmentIndex == 1 {
+            return 55
+        }
+        
         if indexPath.row == self.links.count {
             return 60
         }
         
         if let link = self.links[indexPath.row] as? RKLink {
-            if link.isImageLink() || link.domain == "imgur.com" {
+            if link.isImageLink() || link.domain == "imgur.com" || link.media != nil {
                 // Image
                 
-                if indexPath.row == 0 || SettingsManager.defaultManager.valueForSetting(.FullWidthImages) {
+                if SettingsManager.defaultManager.valueForSetting(.FullWidthImages) {
                     // regular
                     return self.heightForLink(link)
                 } else {
