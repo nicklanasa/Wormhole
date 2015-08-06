@@ -2931,7 +2931,11 @@
                                 <items>
                                     <navigationItem id="ZY5-xd-CW9">
                                         <nil key="title"/>
-                                        <barButtonItem key="leftBarButtonItem" image="Filter" id="o7m-N6-A4S"/>
+                                        <barButtonItem key="leftBarButtonItem" image="Filter" id="o7m-N6-A4S">
+                                            <connections>
+                                                <action selector="filterButtonPressed:" destination="jpB-u1-7lM" id="0L7-J2-Gr1"/>
+                                            </connections>
+                                        </barButtonItem>
                                         <segmentedControl key="titleView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" id="YYE-Fy-ta0">
                                             <rect key="frame" x="180" y="7" width="240" height="30"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -2972,6 +2976,7 @@
                     </navigationItem>
                     <nil key="simulatedBottomBarMetrics"/>
                     <connections>
+                        <outlet property="filterButton" destination="o7m-N6-A4S" id="bEw-17-87t"/>
                         <outlet property="filterControl" destination="YYE-Fy-ta0" id="Wif-EK-R5R"/>
                         <outlet property="restrictSubreddit" destination="avk-q9-TgO" id="Lgc-B4-5fV"/>
                         <outlet property="restrictToSubredditSwitch" destination="rAl-Hu-NUx" id="HeB-R1-AaZ"/>
@@ -5019,19 +5024,19 @@
         <image name="Up" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="Na3-yg-xfC"/>
-        <segue reference="NhS-rE-Zeo"/>
         <segue reference="FtF-gF-eJb"/>
-        <segue reference="3tl-bC-neo"/>
+        <segue reference="v8v-Am-6HY"/>
+        <segue reference="Na3-yg-xfC"/>
+        <segue reference="Qys-I3-WrZ"/>
+        <segue reference="iqb-h7-VjS"/>
+        <segue reference="Udn-dz-6HG"/>
+        <segue reference="aPe-Za-FV1"/>
         <segue reference="sND-y2-DTj"/>
-        <segue reference="nEx-7L-vW5"/>
-        <segue reference="SWo-82-5L3"/>
         <segue reference="gh5-lw-0Sc"/>
+        <segue reference="SWo-82-5L3"/>
+        <segue reference="nEx-7L-vW5"/>
         <segue reference="zMo-OM-Z5J"/>
         <segue reference="xgG-eu-NoT"/>
-        <segue reference="aPe-Za-FV1"/>
-        <segue reference="Udn-dz-6HG"/>
-        <segue reference="iqb-h7-VjS"/>
-        <segue reference="Qys-I3-WrZ"/>
+        <segue reference="3tl-bC-neo"/>
     </inferredMetricsTieBreakers>
 </document>

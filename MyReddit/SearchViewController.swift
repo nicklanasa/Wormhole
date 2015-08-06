@@ -29,6 +29,7 @@ PostImageCellDelegate {
     @IBOutlet weak var restrictToSubredditSwitch: UIBarButtonItem!
     @IBOutlet weak var restrictSubreddit: UISwitch!
     @IBOutlet weak var listButton: UIBarButtonItem!
+    @IBOutlet weak var filterButton: UIBarButtonItem!
     
     var heightsCache = [String : AnyObject]()
     
@@ -78,11 +79,46 @@ PostImageCellDelegate {
         return controller
     }()
     
+    @IBAction func filterButtonPressed(sender: AnyObject) {
+        var actionSheet = UIAlertController(title: "Select sort", message: nil, preferredStyle: .ActionSheet)
+        
+        actionSheet.addAction(UIAlertAction(title: "newest", style: .Default, handler: { (action) -> Void in
+            self.links.sort({ (l0, l1) -> Bool in
+                if let link0 = l0 as? RKLink, link1 = l1 as? RKLink {
+                    return link0.created.timeIntervalSinceNow > link1.created.timeIntervalSinceNow
+                }
+                
+                return false
+            })
+        }))
+        
+        actionSheet.addAction(UIAlertAction(title: "oldest", style: .Default, handler: { (action) -> Void in
+            self.links.sort({ (l0, l1) -> Bool in
+                if let link0 = l0 as? RKLink, link1 = l1 as? RKLink {
+                    return link0.created.timeIntervalSinceNow < link1.created.timeIntervalSinceNow
+                }
+                
+                return false
+            })
+        }))
+
+        actionSheet.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: { (action) -> Void in
+        }))
+        
+        if let popoverController = actionSheet.popoverPresentationController {
+            popoverController.barButtonItem = self.filterButton
+        }
+        
+        actionSheet.present(animated: true, completion: nil)
+    }
+    
     @IBAction func filterControlValueChanged(sender: AnyObject) {
         if self.filterControl.selectedSegmentIndex == 1 {
             self.restrictSubreddit.enabled = false
+            self.filterButton.enabled = false
         } else {
             self.restrictSubreddit.enabled = true
+            self.filterButton.enabled = true
         }
         
         self.search()
