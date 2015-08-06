@@ -136,8 +136,6 @@ class UserSession {
         UITextField.appearance().font = MyRedditSelfTextFont
         UITextField.appearance().keyboardAppearance = .Dark
         
-        UITextView.appearance().keyboardAppearance = .Dark
-        
         UIRefreshControl.appearance().tintColor = MyRedditColor
         
         UIActivityIndicatorView.appearance().tintColor = MyRedditColor
@@ -202,7 +200,6 @@ class UserSession {
         UITextField.appearance().font = MyRedditSelfTextFont
         UITextField.appearance().keyboardAppearance = .Light
         
-        UITextView.appearance().keyboardAppearance = .Light
         
         UIActivityIndicatorView.appearance().tintColor = MyRedditColor
         
