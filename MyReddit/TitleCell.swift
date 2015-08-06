@@ -11,12 +11,14 @@ import UIKit
 
 class TitleCell: PostCell {
     @IBOutlet weak var scoreLabel: UILabel!
-    @IBOutlet weak var commentsLabel: UILabel!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var postInfoLabel: UILabel!
-    @IBOutlet weak var subredditLabel: UILabel!
-    @IBOutlet weak var stickyLabel: UILabel!
-    @IBOutlet weak var commentImageView: UIImageView!
+    @IBOutlet weak var subredditButton: UIButton!
+    
+    func subredditTap() {
+        self.postCellDelegate?.postCell(self,
+            didTapSubreddit: self.subredditButton.titleForState(.Normal))
+    }
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -35,7 +37,9 @@ class TitleCell: PostCell {
                 self.scoreLabel.textColor = UIColor.lightGrayColor()
             }
             
-            self.subredditLabel.text = "/r/\(link.subreddit)"
+            self.subredditButton.setTitle("\(link.subreddit)", forState: .Normal)
+            
+            self.subredditButton.addTarget(self, action: "subredditTap", forControlEvents: .TouchUpInside)
             
             var showFlair = ""
             
@@ -82,8 +86,7 @@ class TitleCell: PostCell {
                 self.scoreLabel.textColor = UIColor.lightGrayColor()
             }
             
-            self.commentsLabel.text = linkComment.replies?.count.description
-            self.subredditLabel.hidden = true
+            self.subredditButton.hidden = true
             
             var replies = linkComment.replies?.count == 1 ? "reply" : "replies"
             
@@ -96,12 +99,6 @@ class TitleCell: PostCell {
             
             self.titleLabel.textColor = MyRedditLabelColor
             self.contentView.backgroundColor = MyRedditBackgroundColor
-            
-            if SettingsManager.defaultManager.valueForSetting(.NightMode) {
-                self.commentImageView.image = UIImage(named: "ChatWhite")
-            } else {
-                self.commentImageView.image = UIImage(named: "Chat")
-            }
         }
     }
     

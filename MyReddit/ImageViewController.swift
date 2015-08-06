@@ -52,7 +52,8 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
             self.indicator.stopAnimating()
         }
         
-        self.scrollView.contentSize = self.view.frame.size
+        self.scrollView.contentSize = self.imageView.frame.size
+
         self.scrollView.minimumZoomScale = 0.75
         
         var tap = UITapGestureRecognizer(target: self, action: "imageViewTapped:")

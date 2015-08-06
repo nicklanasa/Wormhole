@@ -31,7 +31,8 @@ LoadMoreHeaderDelegate,
 UIGestureRecognizerDelegate,
 JZSwipeCellDelegate,
 UISplitViewControllerDelegate,
-PostImageCellDelegate {
+PostImageCellDelegate,
+PostCellDelegate {
     
     var subreddit: RKSubreddit!
     var multiReddit: RKMultireddit!
@@ -91,6 +92,7 @@ PostImageCellDelegate {
         super.viewWillAppear(animated)
         self.tableView.reloadData()
         self.updateUI()
+        self.fetchUnread()
     }
     
     override func viewDidLoad() {
@@ -126,9 +128,9 @@ PostImageCellDelegate {
         RedditSession.sharedSession.fetchMessages(nil, category: .Unread, read: false) { (pagination, results, error) -> () in
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
                 if results?.count > 0 {
-                    self.messages.tintColor = MyRedditColor
+                    self.messages.image = UIImage(named: "MessagesSelected")
                 } else {
-                    self.messages.tintColor = MyRedditLabelColor
+                    self.messages.image = UIImage(named: "Messages")
                 }
             })
         }
@@ -375,6 +377,15 @@ PostImageCellDelegate {
                     controller.link = self.selectedLink
                 }
             }
+        } else if segue.identifier == "PostSubredditSegue" {
+            if let controller = segue.destinationViewController as? NavBarController {
+                if let subredditViewController = controller.viewControllers[0] as? SubredditViewController {
+                    if let subreddit = sender as? RKSubreddit {
+                        subredditViewController.front = false
+                        subredditViewController.subreddit = subreddit
+                    }
+                }
+            }
         } else {
             if let link = sender as? RKLink {
                 self.hud.hide(true)
@@ -594,6 +605,7 @@ PostImageCellDelegate {
                     } else {
                         var imageCell = tableView.dequeueReusableCellWithIdentifier("PostImageCell") as! PostImageCell
                         imageCell.postImageDelegate = self
+                        imageCell.postCellDelegate = self
                         imageCell.link = link
                         imageCell.delegate = self
                         return imageCell
@@ -606,6 +618,7 @@ PostImageCellDelegate {
             }
         }
         
+        cell.postCellDelegate = self
         cell.delegate = self
         
         return cell
@@ -835,6 +848,43 @@ PostImageCellDelegate {
             self.heightsCache[url.description] = NSNumber(float: Float(height))
             self.tableView.beginUpdates()
             self.tableView.endUpdates()
+        }
+    }
+    
+    func postCell(cell: PostCell, didTapSubreddit subreddit: String?) {
+        if let subredditName = subreddit {
+            RedditSession.sharedSession.searchForSubredditByName(subredditName, pagination: nil, completion: { (pagination, results, error) -> () in
+                
+                var foundSubreddit: RKSubreddit?
+                
+                if let subreddits = results as? [RKSubreddit] {
+                    for subreddit in subreddits {
+                        if subreddit.name.lowercaseString == subredditName.lowercaseString {
+                            foundSubreddit = subreddit
+                            break
+                        }
+                    }
+                    
+                    if foundSubreddit == nil {
+                        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                            UIAlertView(title: "Error!",
+                                message: "Unable to find subreddit by that name.",
+                                delegate: self,
+                                cancelButtonTitle: "OK").show()
+                        })
+                    } else {
+                        self.performSegueWithIdentifier("PostSubredditSegue",
+                            sender: foundSubreddit)
+                    }
+                } else {
+                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                        UIAlertView(title: "Error!",
+                            message: "Unable to find subreddit by that name.",
+                            delegate: self,
+                            cancelButtonTitle: "OK").show()
+                    })
+                }
+            })
         }
     }
     

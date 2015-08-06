@@ -29,11 +29,13 @@ class CommentCell: JZSwipeCell, UITextViewDelegate {
         self.contentView.setNeedsUpdateConstraints()
         self.contentView.setNeedsLayout()
         
-        for var i = 1; i < self.indentationLevel; i++ {
-            var lineView = UIView(frame: CGRectMake(CGFloat(i * 15), 5, 1, self.frame.size.height - 5))
-            lineView.backgroundColor = MyRedditCommentLinesColor
-            self.lines.append(lineView)
-            self.contentView.addSubview(lineView)
+        if self.lines.count == 0 {
+            for var i = 1; i < self.indentationLevel; i++ {
+                var lineView = UIView(frame: CGRectMake(CGFloat(i * 15), 5, 1, self.frame.size.height - 5))
+                lineView.backgroundColor = MyRedditCommentLinesColor
+                self.lines.append(lineView)
+                self.contentView.addSubview(lineView)
+            }
         }
         
         self.commentTextView.backgroundColor = MyRedditBackgroundColor
@@ -129,8 +131,20 @@ class CommentCell: JZSwipeCell, UITextViewDelegate {
     func configueForComment(#comment: RKComment, isLinkAuthor: Bool) {
         
         self.comment = comment
-        let body = comment.body.stringByReplacingOccurrencesOfString("&gt;", withString: ">", options: nil, range: nil).stringByReplacingOccurrencesOfString("&amp;", withString: "&", options: nil, range: nil)
-        self.commentTextView.text = body
+        
+        let body = comment.body.stringByReplacingOccurrencesOfString("&gt;", withString: ">",
+            options: nil,
+            range: nil).stringByReplacingOccurrencesOfString("&amp;", withString: "&", options: nil, range: nil)
+        
+        var parser = XNGMarkdownParser()
+        parser.paragraphFont = self.commentTextView.font
+        parser.boldFontName = MyRedditCommentTextBoldFont.familyName
+        parser.boldItalicFontName = MyRedditCommentTextItalicFont.familyName
+        parser.italicFontName = MyRedditCommentTextItalicFont.familyName
+        parser.linkFontName = MyRedditCommentTextBoldFont.familyName
+        
+        var parsedString = NSMutableAttributedString(attributedString: parser.attributedStringFromMarkdownString("\(body)"))
+        self.commentTextView.attributedText = parsedString
         
         var timeAgo = self.comment.created.timeAgoSimple()
         
@@ -191,7 +205,6 @@ class CommentCell: JZSwipeCell, UITextViewDelegate {
         }
         
         self.lines = [UIView]()
-        self.commentTextView.textColor = MyRedditLabelColor
         self.indentationLevel = 0
         self.indentationWidth = 0
         self.separatorInset = UIEdgeInsetsZero

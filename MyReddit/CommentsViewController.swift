@@ -220,7 +220,10 @@ AddCommentViewControllerDelegate {
         var parsedString = NSMutableAttributedString(attributedString: parser.attributedStringFromMarkdownString("\(title)\(selfText)"))
         
         var str = parsedString.string as NSString
-        var rect = str.boundingRectWithSize(CGSizeMake(self.tableView.frame.size.width - 30, CGFloat.max), options: NSStringDrawingOptions.UsesLineFragmentOrigin, attributes: [NSFontAttributeName : MyRedditSelfTextFont], context: nil)
+        var rect = str.boundingRectWithSize(CGSizeMake(self.tableView.frame.size.width - 30, CGFloat.max),
+            options: NSStringDrawingOptions.UsesLineFragmentOrigin,
+            attributes: [NSFontAttributeName : MyRedditSelfTextFont],
+            context: nil)
         return rect.height + 60
     }
     
@@ -230,17 +233,26 @@ AddCommentViewControllerDelegate {
         var indentationLevel = commentDictionary["level"] as! Int
         var indentationWidth = CGFloat(15)
         var comment = commentDictionary["comment"] as! RKComment
-        var text = comment.body
         
-        var frame = CGRectMake(0, 0, (self.tableView.frame.size.width - 18) - (CGFloat(indentationLevel + 1) * indentationWidth), CGFloat.max)
-        let label: UILabel = UILabel(frame: frame)
-        label.numberOfLines = 0
-        label.lineBreakMode = NSLineBreakMode.ByWordWrapping
-        label.font = MyRedditCommentTextFont
-        label.text = text
-        label.sizeToFit()
+        let body = comment.body.stringByReplacingOccurrencesOfString("&gt;", withString: ">",
+            options: nil,
+            range: nil).stringByReplacingOccurrencesOfString("&amp;", withString: "&", options: nil, range: nil)
         
-        return label.frame.height + 60
+        var parser = XNGMarkdownParser()
+        parser.paragraphFont = MyRedditCommentTextBoldFont
+        parser.boldFontName = MyRedditCommentTextBoldFont.familyName
+        parser.boldItalicFontName = MyRedditCommentTextItalicFont.familyName
+        parser.italicFontName = MyRedditCommentTextItalicFont.familyName
+        parser.linkFontName = MyRedditCommentTextBoldFont.familyName
+        
+        var parsedString = NSMutableAttributedString(attributedString: parser.attributedStringFromMarkdownString("\(body)"))
+    
+        var rect = parsedString.string.boundingRectWithSize(CGSizeMake((self.tableView.frame.size.width - 18) - (CGFloat(indentationLevel + 1) * indentationWidth), CGFloat.max),
+            options: NSStringDrawingOptions.UsesLineFragmentOrigin,
+            attributes: [NSFontAttributeName : MyRedditCommentTextFont],
+            context: nil)
+
+        return rect.height + 60
     }
     
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -259,7 +271,7 @@ AddCommentViewControllerDelegate {
         if indexPath.section == 0 {
             cell.link = self.link
         } else {
-            var commentDictionary = self.self.commentsBySection?[indexPath.section - 1] as! [String : AnyObject]
+            var commentDictionary = self.commentsBySection?[indexPath.section - 1] as! [String : AnyObject]
             var indent = commentDictionary["level"] as! Int
             cell.indentationLevel = indent + 1
             cell.indentationWidth = 15
@@ -360,10 +372,9 @@ AddCommentViewControllerDelegate {
                 self.closedIndexPaths.extend(collapsedIndexPaths)
             }
             
-            var reloadRows: [NSIndexPath] = collapsedIndexPaths + closedIndexPaths
+            var reloadRows = self.hiddenIndexPaths + self.closedIndexPaths
             
             self.tableView.beginUpdates()
-            self.tableView.reloadRowsAtIndexPaths(reloadRows, withRowAnimation: .Automatic)
             self.tableView.endUpdates()
         }
     }

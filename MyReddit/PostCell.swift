@@ -9,9 +9,15 @@
 import Foundation
 import UIKit
 
+protocol PostCellDelegate {
+    func postCell(cell: PostCell, didTapSubreddit subreddit: String?)
+}
+
 class PostCell: JZSwipeCell {
     var link: RKLink!
     var linkComment: RKComment!
+    
+    var postCellDelegate: PostCellDelegate?
     
     override func awakeFromNib() {
         super.awakeFromNib()

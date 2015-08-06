@@ -17,7 +17,8 @@ UISearchBarDelegate,
 UISearchControllerDelegate,
 JZSwipeCellDelegate,
 LoadMoreHeaderDelegate,
-PostImageCellDelegate {
+PostImageCellDelegate,
+PostCellDelegate {
     
     var pagination: RKPagination?
     var optionsController: LinkShareOptionsViewController!
@@ -298,6 +299,7 @@ PostImageCellDelegate {
                     imageCell.postImageDelegate = self
                     imageCell.link = link
                     imageCell.delegate = self
+                    imageCell.postCellDelegate = self
                     return imageCell
                 }
                 
@@ -309,6 +311,7 @@ PostImageCellDelegate {
         }
         
         cell.delegate = self
+        cell.postCellDelegate = self
         
         return cell
     }
@@ -345,6 +348,15 @@ PostImageCellDelegate {
                     if let controller = nav.viewControllers[0] as? SubredditViewController {
                         controller.subreddit = subreddit
                         controller.front = false
+                    }
+                }
+            }
+        } else if segue.identifier == "PostSubredditSegue" {
+            if let controller = segue.destinationViewController as? NavBarController {
+                if let subredditViewController = controller.viewControllers[0] as? SubredditViewController {
+                    if let subreddit = sender as? RKSubreddit {
+                        subredditViewController.front = false
+                        subredditViewController.subreddit = subreddit
                     }
                 }
             }
@@ -534,22 +546,6 @@ PostImageCellDelegate {
         
     }
     
-    func multiRedditsViewController(controller: MultiRedditsViewController, didTapMultiReddit multiReddit: RKMultireddit) {
-        RedditSession.sharedSession.addSubredditToMultiReddit(multiReddit, subreddit: self.selectedSubreddit, completion: { (error) -> () in
-            if error != nil {
-                UIAlertView(title: "Error!",
-                    message: "Unable to add subreddit to multireddit! Please check your internet connection.",
-                    delegate: self,
-                    cancelButtonTitle: "Ok").show()
-            } else {
-                UIAlertView(title: "Sucess!",
-                    message: "Added subreddit!",
-                    delegate: self,
-                    cancelButtonTitle: "Ok").show()
-            }
-        })
-    }
-    
     func loadMoreHeader(header: LoadMoreHeader, didTapButton sender: AnyObject) {
         header.startAnimating()
         self.search()
@@ -560,6 +556,43 @@ PostImageCellDelegate {
             self.heightsCache[url.description] = NSNumber(float: Float(height))
             self.tableView.beginUpdates()
             self.tableView.endUpdates()
+        }
+    }
+    
+    func postCell(cell: PostCell, didTapSubreddit subreddit: String?) {
+        if let subredditName = subreddit {
+            RedditSession.sharedSession.searchForSubredditByName(subredditName, pagination: nil, completion: { (pagination, results, error) -> () in
+                
+                var foundSubreddit: RKSubreddit?
+                
+                if let subreddits = results as? [RKSubreddit] {
+                    for subreddit in subreddits {
+                        if subreddit.name.lowercaseString == subredditName.lowercaseString {
+                            foundSubreddit = subreddit
+                            break
+                        }
+                    }
+                    
+                    if foundSubreddit == nil {
+                        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                            UIAlertView(title: "Error!",
+                                message: "Unable to find subreddit by that name.",
+                                delegate: self,
+                                cancelButtonTitle: "OK").show()
+                        })
+                    } else {
+                        self.performSegueWithIdentifier("PostSubredditSegue",
+                            sender: foundSubreddit)
+                    }
+                } else {
+                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                        UIAlertView(title: "Error!",
+                            message: "Unable to find subreddit by that name.",
+                            delegate: self,
+                            cancelButtonTitle: "OK").show()
+                    })
+                }
+            })
         }
     }
 }

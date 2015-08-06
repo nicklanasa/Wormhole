@@ -19,14 +19,15 @@ class PostImageCell: PostCell {
     @IBOutlet weak var postImageView: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var scoreLabel: UILabel!
-    @IBOutlet weak var commentsLabel: UILabel!
     @IBOutlet weak var postInfoLabel: UILabel!
-    @IBOutlet weak var subredditLabel: UILabel!
-    @IBOutlet weak var stickyLabel: UILabel!
-    @IBOutlet weak var commentImageView: UIImageView!
-    @IBOutlet weak var imageHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var subredditButton: UIButton!
     
     var postImageDelegate: PostImageCellDelegate?
+    
+    func subredditTap() {
+        self.postCellDelegate?.postCell(self,
+            didTapSubreddit: self.subredditButton.titleForState(.Normal))
+    }
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -40,7 +41,7 @@ class PostImageCell: PostCell {
     private func resetViews() {
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
             self.titleLabel.frame = CGRectMake(15, 26, self.contentView.frame.size.width - 20, 50)
-            self.subredditLabel.frame = CGRectMake(15, 6, self.contentView.frame.size.width - 20, 21)
+            self.subredditButton.frame = CGRectMake(15, 6, self.contentView.frame.size.width - 20, 21)
             self.scoreLabel.frame = CGRectMake(self.contentView.frame.size.width - 80, 4, 70, 18)
             self.postInfoLabel.frame = CGRectMake(15, self.contentView.frame.size.height - 25, self.contentView.frame.size.width - 20, 14)
         })
@@ -77,7 +78,7 @@ class PostImageCell: PostCell {
                             if let resizedImage = image?.imageWithImage(image, convertToSize: self.postImageView.frame.size) {
                                 self.postImageView.contentMode = UIViewContentMode.ScaleAspectFill
                                 self.postImageView.image = resizedImage
-                                self.postImageDelegate?.postImageCell(self, didDownloadImageWithHeight: resizedImage.size.height + 150, url: url)
+                                self.postImageDelegate?.postImageCell(self, didDownloadImageWithHeight: resizedImage.size.height + 123, url: url)
                                 self.resetViews()
                             } else {
                                 self.postImageView.image = UIImage(named: "Reddit")
@@ -99,7 +100,9 @@ class PostImageCell: PostCell {
             
             self.titleLabel.text = link.title
             self.scoreLabel.text = link.score.description
-            self.subredditLabel.text = "/r/\(link.subreddit)"
+            self.subredditButton.setTitle("\(link.subreddit)", forState: .Normal)
+            
+            self.subredditButton.addTarget(self, action: "subredditTap", forControlEvents: .TouchUpInside)
            
             var showFlair = ""
             
