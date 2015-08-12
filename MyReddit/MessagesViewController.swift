@@ -43,6 +43,7 @@ JZSwipeCellDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         self.tableView.addSubview(refreshControl)
         
         self.tableView.rowHeight = UITableViewAutomaticDimension
@@ -90,6 +91,14 @@ JZSwipeCellDelegate {
         }
     }
     
+    override func preferredStatusBarStyle() -> UIStatusBarStyle {
+        if SettingsManager.defaultManager.valueForSetting(.NightMode) {
+            return .LightContent
+        } else {
+            return .Default
+        }
+    }
+    
     @IBAction func cancelButtonTapped(sender: AnyObject) {
         self.dismissViewControllerAnimated(true, completion: nil)
     }
@@ -134,11 +143,9 @@ JZSwipeCellDelegate {
                     controller.url = sender as! NSURL
                 }
             }
-        } else if let nav = segue.destinationViewController as? UINavigationController {
-            if let controller = nav.viewControllers[0] as? AddCommentViewController {
-                if let message = sender as? RKMessage {
-                    controller.message = message
-                }
+        } else if let controller = segue.destinationViewController as? AddCommentViewController {
+            if let message = sender as? RKMessage {
+                controller.message = message
             }
         }
     }

@@ -67,27 +67,23 @@ class PostImageCell: PostCell {
             }
             
             self.postImageView.sd_setImageWithURL(url, completed: { (image, error, cacheType, url) -> Void in
-                dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                    UIView.animateWithDuration(0.3, animations: { () -> Void in
-                        self.postImageView.alpha = 1.0
-                        if error != nil {
-                            self.postImageView.image = UIImage(named: "Reddit")
-                            self.postImageView.contentMode = UIViewContentMode.ScaleAspectFit
-                            self.resetViews()
-                        } else {
-                            if let resizedImage = image?.imageWithImage(image, convertToSize: self.postImageView.frame.size) {
-                                self.postImageView.contentMode = UIViewContentMode.ScaleAspectFill
-                                self.postImageView.image = resizedImage
-                                self.postImageDelegate?.postImageCell(self, didDownloadImageWithHeight: resizedImage.size.height + 123, url: url)
-                                self.resetViews()
-                            } else {
-                                self.postImageView.image = UIImage(named: "Reddit")
-                                self.postImageView.contentMode = UIViewContentMode.ScaleToFill
-                                self.resetViews()
-                            }
-                        }
-                    })
-                })
+                self.postImageView.alpha = 1.0
+                if error != nil {
+                    self.postImageView.image = UIImage(named: "Reddit")
+                    self.postImageView.contentMode = UIViewContentMode.ScaleAspectFit
+                    self.resetViews()
+                } else {
+                    if let resizedImage = image?.imageWithImage(image, toSize: self.postImageView.frame.size) {
+                        self.postImageView.contentMode = UIViewContentMode.ScaleAspectFill
+                        self.postImageView.image = resizedImage
+                        self.postImageDelegate?.postImageCell(self, didDownloadImageWithHeight: resizedImage.size.height + 123, url: url)
+                        self.resetViews()
+                    } else {
+                        self.postImageView.image = UIImage(named: "Reddit")
+                        self.postImageView.contentMode = UIViewContentMode.ScaleToFill
+                        self.resetViews()
+                    }
+                }
             })
 
             if self.link.upvoted() {

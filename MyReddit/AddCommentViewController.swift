@@ -104,9 +104,7 @@ class AddCommentViewController: UIViewController, UITextViewDelegate {
                             delegate: self,
                             cancelButtonTitle: "Ok").show()
                     } else {
-                        self.dismissViewControllerAnimated(true, completion: { () -> Void in
-                            self.delegate?.addCommentViewController(self, didAddComment: true)
-                        })
+                        self.dismiss()
                     }
                 })
             } else if let editLink = self.link {
@@ -122,9 +120,7 @@ class AddCommentViewController: UIViewController, UITextViewDelegate {
                                 delegate: self,
                                 cancelButtonTitle: "Ok").show()
                         } else {
-                            self.dismissViewControllerAnimated(true, completion: { () -> Void in
-                                self.delegate?.addCommentViewController(self, didAddComment: true)
-                            })
+                            self.dismiss()
                         }
                     })
                 } else {
@@ -137,9 +133,7 @@ class AddCommentViewController: UIViewController, UITextViewDelegate {
                                     delegate: self,
                                     cancelButtonTitle: "Ok").show()
                             } else {
-                                self.dismissViewControllerAnimated(true, completion: { () -> Void in
-                                    self.delegate?.addCommentViewController(self, didAddComment: true)
-                                })
+                                self.dismiss()
                             }
                     })
                 }
@@ -157,9 +151,7 @@ class AddCommentViewController: UIViewController, UITextViewDelegate {
                                     delegate: self,
                                     cancelButtonTitle: "Ok").show()
                             } else {
-                                self.dismissViewControllerAnimated(true, completion: { () -> Void in
-                                    self.delegate?.addCommentViewController(self, didAddComment: true)
-                                })
+                                self.dismiss()
                             }
                         })
                     }
@@ -173,9 +165,7 @@ class AddCommentViewController: UIViewController, UITextViewDelegate {
                                     delegate: self,
                                     cancelButtonTitle: "Ok").show()
                             } else {
-                                self.dismissViewControllerAnimated(true, completion: { () -> Void in
-                                    self.delegate?.addCommentViewController(self, didAddComment: true)
-                                })
+                                self.dismiss()
                             }
                     })
                 }
@@ -185,6 +175,16 @@ class AddCommentViewController: UIViewController, UITextViewDelegate {
                 message: "Text cannot be empty!",
                 delegate: self,
                 cancelButtonTitle: "Ok").show()
+        }
+    }
+    
+    private func dismiss() {
+        if let replyMessage = self.message {
+            self.navigationController?.popViewControllerAnimated(true)
+        } else {
+            self.dismissViewControllerAnimated(true, completion: { () -> Void in
+                self.delegate?.addCommentViewController(self, didAddComment: true)
+            })
         }
     }
     

@@ -1676,8 +1676,8 @@
                         <outlet property="searchDisplayController" destination="esx-Ti-TzV" id="Ihw-jf-VwU"/>
                         <outlet property="tableView" destination="cYO-aZ-ouF" id="SGJ-u7-c7q"/>
                         <segue destination="BuP-V6-G2K" kind="presentation" identifier="MessageLinkSegue" modalTransitionStyle="crossDissolve" id="cNt-ex-e8B"/>
-                        <segue destination="Rp1-52-6Wg" kind="presentation" identifier="ReplyToMessageSegue" modalTransitionStyle="crossDissolve" id="Bsu-Nf-8xk"/>
                         <segue destination="qVg-dB-hBp" kind="show" identifier="RepliesSegue" id="1iV-Hy-GoQ"/>
+                        <segue destination="S2c-Ji-cZD" kind="show" identifier="ReplyToMessageSegue" id="Abo-Jz-JcR"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="CMA-Kn-jdl" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -2542,7 +2542,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YLA-TV-r2t" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1313" y="1937"/>
+            <point key="canvasLocation" x="-1304" y="1933"/>
         </scene>
         <!--Web View Controller-->
         <scene sceneID="ePa-YU-F9g">
@@ -2953,6 +2953,7 @@
                         <segue destination="Hdo-ax-c9X" kind="show" identifier="PurchaseSegue" id="lWs-ak-HDh"/>
                         <segue destination="Wuv-iQ-z1V" kind="custom" identifier="SubredditSegue" customClass="DismissSegue" customModule="MyReddit" customModuleProvider="target" id="eWX-LR-CuE"/>
                         <segue destination="Wuv-iQ-z1V" kind="custom" identifier="PostSubredditSegue" customClass="DismissSegue" customModule="MyReddit" customModuleProvider="target" id="2Uy-Da-x1t"/>
+                        <segue destination="qVg-dB-hBp" kind="show" identifier="CommentsSegue" id="lYT-mX-Owe"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JKt-uO-kmL" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -4992,19 +4993,20 @@
         <image name="Up" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="Na3-yg-xfC"/>
-        <segue reference="v8v-Am-6HY"/>
         <segue reference="FtF-gF-eJb"/>
-        <segue reference="pMg-rh-ZMv"/>
-        <segue reference="nb3-Xk-rNn"/>
-        <segue reference="zMo-OM-Z5J"/>
-        <segue reference="3tl-bC-neo"/>
+        <segue reference="lYT-mX-Owe"/>
         <segue reference="aPe-Za-FV1"/>
         <segue reference="Udn-dz-6HG"/>
-        <segue reference="nEx-7L-vW5"/>
-        <segue reference="gh5-lw-0Sc"/>
         <segue reference="iqb-h7-VjS"/>
         <segue reference="Qys-I3-WrZ"/>
         <segue reference="fLo-75-wzd"/>
+        <segue reference="pMg-rh-ZMv"/>
+        <segue reference="nb3-Xk-rNn"/>
+        <segue reference="vvu-K9-HER"/>
+        <segue reference="cNt-ex-e8B"/>
+        <segue reference="Abo-Jz-JcR"/>
+        <segue reference="zMo-OM-Z5J"/>
+        <segue reference="nEx-7L-vW5"/>
+        <segue reference="gh5-lw-0Sc"/>
     </inferredMetricsTieBreakers>
 </document>
