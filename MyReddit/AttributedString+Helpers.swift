@@ -11,7 +11,7 @@ import UIKit
 
 extension NSMutableAttributedString {
     func layout() {
-        self.enumerateAttribute(NSAttachmentAttributeName, inRange: NSMakeRange(0, self.length), options: NSAttributedStringEnumerationOptions(0)) { (value, range, stop) -> Void in
+        self.enumerateAttribute(NSAttachmentAttributeName, inRange: NSMakeRange(0, self.length), options: NSAttributedStringEnumerationOptions(rawValue: 0)) { (value, range, stop) -> Void in
             if let attachement = value as? NSTextAttachment {
                 if let image = attachement.imageForBounds(attachement.bounds, textContainer: NSTextContainer(), characterIndex: range.location) {
                     let screenSize: CGRect = UIScreen.mainScreen().bounds

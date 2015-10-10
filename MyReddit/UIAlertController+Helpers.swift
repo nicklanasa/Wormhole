@@ -13,7 +13,7 @@ extension UIViewController {
         present(animated: true, completion: nil)
     }
     
-    func present(#animated: Bool, completion: (() -> Void)?) {
+    func present(animated animated: Bool, completion: (() -> Void)?) {
         if let rootVC = UIApplication.sharedApplication().keyWindow?.rootViewController {
             presentFromController(rootVC, animated: animated, completion: completion)
         }

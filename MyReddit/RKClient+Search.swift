@@ -20,10 +20,11 @@ extension RKClient {
         NSURLConnection.cancelPreviousPerformRequestsWithTarget(self)
         NSURLConnection.sendAsynchronousRequest(request, queue: queue) { (response, data, error) -> Void in
             if data != nil && error == nil {
-                if data.length > 0 {
+                if data!.length > 0 {
                     var dictError: NSError?
                     
-                    if let responseDict = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.allZeros, error: &dictError) as? [String:AnyObject] {
+                    do {
+                        let responseDict = try NSJSONSerialization.JSONObjectWithData(data!, options: .AllowFragments)
                         if let dataDict = responseDict["data"] as? [String:AnyObject] {
                             if let children = dataDict["children"] as? [[String:AnyObject]] {
                                 
@@ -38,10 +39,9 @@ extension RKClient {
                                 completion(results: results, error: error)
                             }
                         }
-                    } else {
-                        completion(results: nil, error: dictError)
+                    } catch {
+                    completion(results: nil, error: dictError)
                     }
-                    
                 } else {
                     completion(results: nil, error: error)
                 }

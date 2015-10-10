@@ -33,7 +33,7 @@ class SubredditCategoriesTableViewController: RootTableViewController {
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell = tableView.dequeueReusableCellWithIdentifier("SubredditCategoryCell") as! SubredditCell
+        let cell = tableView.dequeueReusableCellWithIdentifier("SubredditCategoryCell") as! SubredditCell
         cell.nameLabel.text = self.categories[indexPath.row].lowercaseString
         cell.accessoryType = .DisclosureIndicator
         return cell

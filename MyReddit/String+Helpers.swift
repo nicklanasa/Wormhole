@@ -12,8 +12,12 @@ extension String {
     func decode() -> String {
         let encodedData = self.dataUsingEncoding(NSUTF8StringEncoding)!
         let attributedOptions = [NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType]
-        let attributedString = NSAttributedString(data: encodedData, options: attributedOptions, documentAttributes: nil, error: nil)
-        return attributedString!.string
+        do {
+            let attributedString = try NSAttributedString(data: encodedData, options: attributedOptions, documentAttributes: nil)
+            return attributedString.string
+        } catch {
+            return ""
+        }
     }
     
     func hasExtension() -> Bool {
@@ -25,13 +29,16 @@ extension String {
     }
     
     var html2AttributedString: NSAttributedString {
-        var str = NSMutableAttributedString(data: dataUsingEncoding(NSUTF8StringEncoding)!,
-            options:[NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType, NSCharacterEncodingDocumentAttribute: NSUTF8StringEncoding],
-            documentAttributes: nil,
-            error: nil)!
-        
-        str.layout()
-        
-        return str
+        do {
+            let str = try NSMutableAttributedString(data: dataUsingEncoding(NSUTF8StringEncoding)!,
+                options:[NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType, NSCharacterEncodingDocumentAttribute: NSUTF8StringEncoding],
+                documentAttributes: nil)
+            
+            str.layout()
+            
+            return str
+        } catch {
+            return NSAttributedString(string: "Unable to get content.")
+        }
     }
 }

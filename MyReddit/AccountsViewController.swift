@@ -24,11 +24,11 @@ class AccountsViewController: UIViewController, UITableViewDelegate, UITableView
     }()
     
     override func viewWillAppear(animated: Bool) {
-        var error: NSError?
         
-        if self.usersController.performFetch(&error) {
+        do {
+            try self.usersController.performFetch()
             self.tableView.reloadData()
-        }
+        } catch {}
         
         self.tableView.backgroundColor = MyRedditDarkBackgroundColor
         
@@ -52,7 +52,7 @@ class AccountsViewController: UIViewController, UITableViewDelegate, UITableView
         forChangeType type: NSFetchedResultsChangeType,
         newIndexPath: NSIndexPath?)
     {
-        var tableView = self.tableView
+        let tableView = self.tableView
         var indexPaths:[NSIndexPath] = [NSIndexPath]()
         switch type {
             
@@ -92,7 +92,7 @@ class AccountsViewController: UIViewController, UITableViewDelegate, UITableView
             self.tableView.deleteSections(NSIndexSet(index: sectionIndex),
                 withRowAnimation: .Fade)
             
-        case .Update, .Move: println("Move or delete called in didChangeSection")
+        case .Update, .Move: print("Move or delete called in didChangeSection")
         }
     }
     
@@ -106,7 +106,7 @@ class AccountsViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     @IBAction func cancelButtonTapped(sender: AnyObject) {
-        if let splitViewController = self.splitViewController {
+        if let _ = self.splitViewController {
             self.navigationController?.popViewControllerAnimated(true)
         } else {
             self.dismissViewControllerAnimated(true, completion: nil)
@@ -130,7 +130,7 @@ class AccountsViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if let sectionInfo = self.usersController?.sections?[section] as? NSFetchedResultsSectionInfo {
+        if let sectionInfo = self.usersController?.sections?[section] {
             return sectionInfo.numberOfObjects
         }
         
@@ -138,9 +138,9 @@ class AccountsViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell = tableView.dequeueReusableCellWithIdentifier("AccountCell") as! UserInfoCell
+        let cell = tableView.dequeueReusableCellWithIdentifier("AccountCell") as! UserInfoCell
         
-        var user = self.usersController?.objectAtIndexPath(indexPath) as! User
+        let user = self.usersController?.objectAtIndexPath(indexPath) as! User
         cell.titleLabel.text = user.username
         cell.accessoryType = .DisclosureIndicator
         
@@ -160,7 +160,7 @@ class AccountsViewController: UIViewController, UITableViewDelegate, UITableView
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         
-        var user = self.usersController?.objectAtIndexPath(indexPath) as! User
+        let user = self.usersController?.objectAtIndexPath(indexPath) as! User
         
         if let currentUser = UserSession.sharedSession.currentUser {
             if user.username == currentUser.username {
@@ -169,7 +169,7 @@ class AccountsViewController: UIViewController, UITableViewDelegate, UITableView
                 self.performSegueWithIdentifier("SavedUserLoginSegue", sender: user)
             }
         } else {
-            var user = self.usersController?.objectAtIndexPath(indexPath) as! User
+            let user = self.usersController?.objectAtIndexPath(indexPath) as! User
             self.performSegueWithIdentifier("SavedUserLoginSegue", sender: user)
         }
     }
@@ -199,10 +199,10 @@ class AccountsViewController: UIViewController, UITableViewDelegate, UITableView
     func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
     }
     
-    func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [AnyObject]? {
+    func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
         let deleteAction = UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: "Delete", handler: { (action, indexPath) -> Void in
             
-            var user = self.usersController?.objectAtIndexPath(indexPath) as! User
+            let user = self.usersController?.objectAtIndexPath(indexPath) as! User
             
             if let currentUser = UserSession.sharedSession.currentUser {
                 if user.username == currentUser.username {

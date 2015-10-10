@@ -66,7 +66,7 @@ PostImageCellDelegate {
                 completion: { (pagination, results, error) -> () in
                 self.pagination = pagination
                 if let moreContent = results {
-                    self.content.extend(moreContent)
+                    self.content.appendContentsOf(moreContent)
                 }
                 
                 if self.content.count == 25 || self.content.count == 0 {
@@ -116,10 +116,8 @@ PostImageCellDelegate {
                             url = thumbnailURL.description
                         }
                     } else if link.domain == "imgur.com" {
-                        if let absoluteString = link.URL.absoluteString {
-                            var stringURL = absoluteString + ".jpg"
-                            url = stringURL
-                        }
+                        let stringURL = link.URL.absoluteString + ".jpg"
+                        url = stringURL
                     }
                     
                     if url != nil {
@@ -143,8 +141,8 @@ PostImageCellDelegate {
     }
     
     private func heightForLink(link: RKLink) -> CGFloat {
-        var text = link.title
-        var frame = CGRectMake(0, 0, (self.tableView.frame.size.width - 18), CGFloat.max)
+        let text = link.title
+        let frame = CGRectMake(0, 0, (self.tableView.frame.size.width - 18), CGFloat.max)
         let label: UILabel = UILabel(frame: frame)
         label.numberOfLines = 0
         label.lineBreakMode = NSLineBreakMode.ByWordWrapping
@@ -158,7 +156,7 @@ PostImageCellDelegate {
     
     private func heightForComment(comment: RKComment) -> CGFloat {
  
-        var frame = CGRectMake(0, 0, (self.tableView.frame.size.width - 18) - 15, CGFloat.max)
+        let frame = CGRectMake(0, 0, (self.tableView.frame.size.width - 18) - 15, CGFloat.max)
         let label: UILabel = UILabel(frame: frame)
         label.numberOfLines = 0
         label.lineBreakMode = NSLineBreakMode.ByWordWrapping
@@ -172,7 +170,7 @@ PostImageCellDelegate {
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
 
         if indexPath.section == 1 {
-            var cell =  tableView.dequeueReusableCellWithIdentifier("LoadMoreHeader") as! LoadMoreHeader
+            let cell =  tableView.dequeueReusableCellWithIdentifier("LoadMoreHeader") as! LoadMoreHeader
             cell.delegate = self
             cell.loadMoreButton.hidden = false
             return cell
@@ -186,7 +184,7 @@ PostImageCellDelegate {
                 if indexPath.row == 0 || SettingsManager.defaultManager.valueForSetting(.FullWidthImages) {
                     cell = tableView.dequeueReusableCellWithIdentifier("TitleCell") as! TitleCell
                 } else {
-                    var imageCell = tableView.dequeueReusableCellWithIdentifier("PostImageCell") as! PostImageCell
+                    let imageCell = tableView.dequeueReusableCellWithIdentifier("PostImageCell") as! PostImageCell
                     imageCell.postImageDelegate = self
                     imageCell.link = link
                     imageCell.delegate = self
@@ -199,7 +197,7 @@ PostImageCellDelegate {
             
             cell.link = link
         } else if let comment = self.content[indexPath.row] as? RKComment {
-            var cell = tableView.dequeueReusableCellWithIdentifier("CommentCell") as! CommentCell
+            let cell = tableView.dequeueReusableCellWithIdentifier("CommentCell") as! CommentCell
             cell.indentationLevel = 1
             cell.indentationWidth = 15
             cell.configueForComment(comment: comment, isLinkAuthor: true)
@@ -221,18 +219,18 @@ PostImageCellDelegate {
                     self.performSegueWithIdentifier("CommentsSegue", sender: link)
                 } else {
                     if link.domain == "imgur.com" || link.isImageLink() {
-                        if link.domain == "imgur.com" && !link.URL.absoluteString!.hasExtension() {
-                            var urlComponents = link.URL.absoluteString?.componentsSeparatedByString("/")
-                            if urlComponents?.count > 4 {
-                                let albumID = urlComponents?[4]
+                        if link.domain == "imgur.com" && !link.URL.absoluteString.hasExtension() {
+                            var urlComponents = link.URL.absoluteString.componentsSeparatedByString("/")
+                            if urlComponents.count > 4 {
+                                let albumID = urlComponents[4]
                                 IMGAlbumRequest.albumWithID(albumID, success: { (album) -> Void in
                                     self.performSegueWithIdentifier("GallerySegue", sender: album.images)
                                     }) { (error) -> Void in
                                         self.performSegueWithIdentifier("SubredditLink", sender: link)
                                 }
                             } else {
-                                if urlComponents?.count > 3 {
-                                    let imageID = urlComponents?[3]
+                                if urlComponents.count > 3 {
+                                    let imageID = urlComponents[3]
                                     IMGImageRequest.imageWithID(imageID, success: { (image) -> Void in
                                         self.performSegueWithIdentifier("GallerySegue", sender: [image])
                                         }, failure: { (error) -> Void in
@@ -313,30 +311,30 @@ PostImageCellDelegate {
     }
     
     func swipeCell(cell: JZSwipeCell!, triggeredSwipeWithType swipeType: JZSwipeType) {
-        if swipeType.value != JZSwipeTypeNone.value {
+        if swipeType.rawValue != JZSwipeTypeNone.rawValue {
             cell.reset()
             if !SettingsManager.defaultManager.purchased {
                 self.performSegueWithIdentifier("PurchaseSegue", sender: self)
             } else {
                 if let indexPath = self.tableView.indexPathForCell(cell) {
-                    var postCell = cell as! PostCell
+                    let postCell = cell as! PostCell
                     if let link = self.content[indexPath.row] as? RKLink  {
                         self.hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
-                        if swipeType.value == JZSwipeTypeShortLeft.value {
+                        if swipeType.rawValue == JZSwipeTypeShortLeft.rawValue {
                             // Upvote
                            self.upvote(link)
                             postCell.upvote()
-                        } else if swipeType.value == JZSwipeTypeShortRight.value {
+                        } else if swipeType.rawValue == JZSwipeTypeShortRight.rawValue {
                             // Downvote
                             self.downvote(link)
                             postCell.downvote()
-                        } else if swipeType.value == JZSwipeTypeLongLeft.value {
+                        } else if swipeType.rawValue == JZSwipeTypeLongLeft.rawValue {
                             // More
                             
                             LocalyticsSession.shared().tagEvent("Swipe more")
                             
                             self.hud.hide(true)
-                            var alertController = UIAlertController(title: "Select option", message: nil, preferredStyle: .ActionSheet)
+                            let alertController = UIAlertController(title: "Select option", message: nil, preferredStyle: .ActionSheet)
                             
                             if link.saved() {
                                 alertController.addAction(UIAlertAction(title: "unsave", style: .Default, handler: { (action) -> Void in
@@ -415,7 +413,7 @@ PostImageCellDelegate {
                     } else if let comment = self.content[indexPath.row] as? RKComment {
                         self.hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
                         
-                        if swipeType.value == JZSwipeTypeShortRight.value || swipeType.value == JZSwipeTypeLongRight.value {
+                        if swipeType.rawValue == JZSwipeTypeShortRight.rawValue || swipeType.rawValue == JZSwipeTypeLongRight.rawValue {
                             LocalyticsSession.shared().tagEvent("Swipe downvote comment")
                             // Downvote
                             RedditSession.sharedSession.downvote(comment, completion: { (error) -> () in
@@ -430,7 +428,7 @@ PostImageCellDelegate {
                                     self.tableView.reloadData()
                                 }
                             })
-                        } else if swipeType.value == JZSwipeTypeShortLeft.value || swipeType.value == JZSwipeTypeLongLeft.value {
+                        } else if swipeType.rawValue == JZSwipeTypeShortLeft.rawValue || swipeType.rawValue == JZSwipeTypeLongLeft.rawValue {
                             // Upvote
                             LocalyticsSession.shared().tagEvent("Swipe upvote comment")
                             RedditSession.sharedSession.upvote(comment, completion: { (error) -> () in
@@ -500,7 +498,7 @@ PostImageCellDelegate {
     }
     
     func postImageCell(cell: PostImageCell, didDownloadImageWithHeight height: CGFloat, url: NSURL) {
-        if let indexPath = self.tableView.indexPathForCell(cell) {
+        if let _ = self.tableView.indexPathForCell(cell) {
             self.heightsCache[url.description] = NSNumber(float: Float(height))
             self.tableView.beginUpdates()
             self.tableView.endUpdates()

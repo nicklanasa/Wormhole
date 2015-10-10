@@ -60,10 +60,8 @@ class PostImageCell: PostCell {
                     url = thumbnailURL
                 }
             } else if self.link.domain == "imgur.com" {
-                if let absoluteString = self.link.URL.absoluteString {
-                    var stringURL = absoluteString + ".jpg"
-                    url = NSURL(string: stringURL)
-                }
+                let stringURL = self.link.URL.absoluteString + ".jpg"
+                url = NSURL(string: stringURL)
             }
             
             self.postImageView.sd_setImageWithURL(url, completed: { (image, error, cacheType, url) -> Void in
@@ -104,17 +102,17 @@ class PostImageCell: PostCell {
             
             if SettingsManager.defaultManager.valueForSetting(.Flair) {
                 if let flairString = link.linkFlairText {
-                    if count(flairString) > 0 {
+                    if flairString.characters.count > 0 {
                         showFlair = "\(flairString) |"
                     }
                 }
             }
             
-            var infoString = NSMutableAttributedString(string:"\(showFlair) \(link.author) | \(link.created.timeAgoSimple()) | \(link.totalComments.description) comments")
-            var attrs = [NSForegroundColorAttributeName : MyRedditLabelColor]
-            var commentsAttr = [NSForegroundColorAttributeName : MyRedditColor]
-            infoString.addAttributes(attrs, range: NSMakeRange(0, count(showFlair) == 0 ? 0 : count(showFlair) - 1))
-            infoString.addAttributes(commentsAttr, range: NSMakeRange(count(infoString.string) - count("\(link.totalComments.description) comments"), count("\(link.totalComments.description) comments")))
+            let infoString = NSMutableAttributedString(string:"\(showFlair) \(link.author) | \(link.created.timeAgoSinceNow()) | \(link.totalComments.description) comments")
+            let attrs = [NSForegroundColorAttributeName : MyRedditLabelColor]
+            let commentsAttr = [NSForegroundColorAttributeName : MyRedditColor]
+            infoString.addAttributes(attrs, range: NSMakeRange(0, showFlair.characters.count == 0 ? 0 : showFlair.characters.count - 1))
+            infoString.addAttributes(commentsAttr, range: NSMakeRange(infoString.string.characters.count - "\(link.totalComments.description) comments".characters.count, "\(link.totalComments.description) comments".characters.count))
             
             self.postInfoLabel.attributedText = infoString
             self.titleLabel.font = UIFont(name: self.titleLabel.font.fontName,

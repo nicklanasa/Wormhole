@@ -18,24 +18,6 @@ class SubredditCell: UITableViewCell {
     override func awakeFromNib() {
         self.nameLabel.textColor = MyRedditLabelColor
     }
-
-    var subreddit: Subreddit! {
-        didSet {
-            self.nameLabel.text = subreddit.name
-            
-            self.nsfwLabel.hidden = true
-            
-            if subreddit.over18.boolValue {
-                self.nsfwLabel.hidden = false
-            }
-            
-            if let headerURL = subreddit.headerImageURL {
-                self.subredditImageView.sd_setImageWithURL(NSURL(string: headerURL), placeholderImage: nil)
-            } else {
-                self.subredditImageView.image = nil
-            }
-        }
-    }
     
     var rkSubreddit: RKSubreddit! {
         didSet {

@@ -17,7 +17,7 @@ class MultiRedditsViewController: UIViewController, UITableViewDelegate, UITable
     
     var multiSubreddits = Array<AnyObject>() {
         didSet {
-            self.multiSubreddits.sort({ (first, second) -> Bool in
+            self.multiSubreddits.sortInPlace({ (first, second) -> Bool in
                 if let subreddit1 = first as? RKMultireddit {
                     if let subreddit2 = second as? RKMultireddit {
                         return subreddit1.name.caseInsensitiveCompare(subreddit2.name) == .OrderedAscending
@@ -85,10 +85,10 @@ class MultiRedditsViewController: UIViewController, UITableViewDelegate, UITable
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell = tableView.dequeueReusableCellWithIdentifier("SubredditCell") as! SubredditCell
+        let cell = tableView.dequeueReusableCellWithIdentifier("SubredditCell") as! SubredditCell
         
         if indexPath.row == 0 {
-            var cell = tableView.dequeueReusableCellWithIdentifier("NewMultiRedditCell") as! UserInfoCell
+            let cell = tableView.dequeueReusableCellWithIdentifier("NewMultiRedditCell") as! UserInfoCell
             return cell
         } else {
             if let subreddit = self.multiSubreddits[indexPath.row - 1] as? RKMultireddit {
@@ -120,25 +120,25 @@ class MultiRedditsViewController: UIViewController, UITableViewDelegate, UITable
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         self.tableView.deselectRowAtIndexPath(indexPath, animated: true)
         if indexPath.row == 0 {
-            var alert = UIAlertController(title: "New", message: "Please enter the MutliReddit's name.", preferredStyle: .Alert)
+            let alert = UIAlertController(title: "New", message: "Please enter the MutliReddit's name.", preferredStyle: .Alert)
             
             alert.addTextFieldWithConfigurationHandler({ (textField) -> Void in
                 
             })
             
             alert.addAction(UIAlertAction(title: "Ok", style: .Default, handler: { (action) -> Void in
-                if let textfield = alert.textFields?.first as? UITextField {
+                if let textfield = alert.textFields?.first {
                     
-                    var multiRedditName = textfield.text.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
+                    let multiRedditName = textfield.text!.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
                     
-                    if count(multiRedditName) == 0 || multiRedditName.componentsSeparatedByString(" ").count > 1 {
+                    if multiRedditName.characters.count == 0 || multiRedditName.componentsSeparatedByString(" ").count > 1 {
                         UIAlertView(title: "Error!", message: "You must enter a valid MultiReddit name! Please make sure it doesn't contain spaces.", delegate: self, cancelButtonTitle: "Ok").show()
                     } else {
                         
-                        if count(multiRedditName) < 3 {
+                        if multiRedditName.characters.count < 3 {
                             UIAlertView(title: "Error!", message: "Multireddit name must be greater than 3 characters!", delegate: self, cancelButtonTitle: "Ok").show()
                         } else {
-                            var visibilityAlert = UIAlertController(title: "Visibility", message: "Please select the visibility for the MultiReddit.", preferredStyle: .Alert)
+                            let visibilityAlert = UIAlertController(title: "Visibility", message: "Please select the visibility for the MultiReddit.", preferredStyle: .Alert)
                             visibilityAlert.addAction(UIAlertAction(title: "Public", style: .Default, handler: { (a) -> Void in
                                 RedditSession.sharedSession.createMultiReddit(multiRedditName, visibility: .Public, completion: { (error) -> () in
                                     self.syncMultiReddits()
@@ -187,7 +187,7 @@ class MultiRedditsViewController: UIViewController, UITableViewDelegate, UITable
         }
     }
     
-    func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [AnyObject]? {
+    func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
         if indexPath.row != 0 {
             let deleteAction = UITableViewRowAction(style: UITableViewRowActionStyle.Default,
                 title: "Delete",

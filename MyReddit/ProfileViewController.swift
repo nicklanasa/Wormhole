@@ -21,7 +21,7 @@ class ProfileViewController: UIViewController, UITableViewDataSource, UITableVie
     var user: RKUser?
     
     @IBAction func cancelButtonTapped(sender: AnyObject) {
-        if let splitViewController = self.splitViewController {
+        if let _ = self.splitViewController {
             self.navigationController?.popViewControllerAnimated(true)
         } else {
             self.dismissViewControllerAnimated(true, completion: nil)
@@ -31,7 +31,7 @@ class ProfileViewController: UIViewController, UITableViewDataSource, UITableVie
     @IBAction func logoutButtonTapped(sender: AnyObject) {
         UserSession.sharedSession.logout()
         
-        if let splitViewController = self.splitViewController {
+        if let _ = self.splitViewController {
             NSNotificationCenter.defaultCenter().postNotificationName("RefreshSubreddits", object: nil)
         }
         
@@ -44,7 +44,7 @@ class ProfileViewController: UIViewController, UITableViewDataSource, UITableVie
         super.viewWillAppear(animated)
         LocalyticsSession.shared().tagScreen("Profile")
         
-        if let searchedUser = user {
+        if let _ = user {
             self.userTitles =  ["Overview", "Comments", "Submitted", "Gilded"]
             self.navigationItem.rightBarButtonItem = nil
         } else {
@@ -71,23 +71,23 @@ class ProfileViewController: UIViewController, UITableViewDataSource, UITableVie
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell = tableView.dequeueReusableCellWithIdentifier("UserInfoCell") as! UserInfoCell
+        let cell = tableView.dequeueReusableCellWithIdentifier("UserInfoCell") as! UserInfoCell
         
         if let searchedUser = self.user {
             if indexPath.section == 0 {
-                var title = self.profileTitles[indexPath.row] as String
+                let title = self.profileTitles[indexPath.row] as String
                 cell.titleLabel.text = title
                 
                 if indexPath.row == 0 {
                     cell.infoLabel.text = searchedUser.username
                 } else {
-                    cell.infoLabel.text = searchedUser.created.timeAgoSimple()
+                    cell.infoLabel.text = searchedUser.created.timeAgoSinceNow()
                 }
                 
                 cell.selectionStyle = .None
                 
             } else if indexPath.section == 1 {
-                var title = self.karmaTitles[indexPath.row] as String
+                let title = self.karmaTitles[indexPath.row] as String
                 cell.titleLabel.text = title
                 
                 if indexPath.row == 0 {
@@ -98,7 +98,7 @@ class ProfileViewController: UIViewController, UITableViewDataSource, UITableVie
                 
                 cell.selectionStyle = .None
             } else {
-                var title = self.userTitles[indexPath.row] as String
+                let title = self.userTitles[indexPath.row] as String
                 cell.titleLabel.text = title
                 cell.infoLabel.hidden = true
                 
@@ -107,19 +107,19 @@ class ProfileViewController: UIViewController, UITableViewDataSource, UITableVie
         } else {
             if let user = UserSession.sharedSession.currentUser {
                 if indexPath.section == 0 {
-                    var title = self.profileTitles[indexPath.row] as String
+                    let title = self.profileTitles[indexPath.row] as String
                     cell.titleLabel.text = title
                     
                     if indexPath.row == 0 {
                         cell.infoLabel.text = user.username
                     } else {
-                        cell.infoLabel.text = user.created.timeAgoSimple()
+                        cell.infoLabel.text = user.created.timeAgoSinceNow()
                     }
                     
                     cell.selectionStyle = .None
                     
                 } else if indexPath.section == 1 {
-                    var title = self.karmaTitles[indexPath.row] as String
+                    let title = self.karmaTitles[indexPath.row] as String
                     cell.titleLabel.text = title
                     
                     if indexPath.row == 0 {
@@ -130,7 +130,7 @@ class ProfileViewController: UIViewController, UITableViewDataSource, UITableVie
                     
                     cell.selectionStyle = .None
                 } else {
-                    var title = self.userTitles[indexPath.row] as String
+                    let title = self.userTitles[indexPath.row] as String
                     cell.titleLabel.text = title
                     cell.infoLabel.hidden = true
                     
@@ -157,8 +157,8 @@ class ProfileViewController: UIViewController, UITableViewDataSource, UITableVie
                 if let controller = nav.viewControllers[0] as? UserContentViewController {
                     if let cell = sender as? UITableViewCell {
                         
-                        var indexPath: NSIndexPath = self.tableView.indexPathForCell(cell)!
-                        var category = RKUserContentCategory(rawValue: UInt(indexPath.row+1))
+                        let indexPath: NSIndexPath = self.tableView.indexPathForCell(cell)!
+                        let category = RKUserContentCategory(rawValue: UInt(indexPath.row+1))
                         controller.category = category
                         controller.categoryTitle = self.userTitles[indexPath.row] as String
                         

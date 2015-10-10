@@ -22,10 +22,10 @@ class LinkCell: UITableViewCell {
             attributes: [NSForegroundColorAttributeName : UIColor.lightGrayColor()])
         
         if SettingsManager.defaultManager.valueForSetting(.NightMode) {
-            var image = UIImage(named: "CameraWhite")?.imageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal)
+            let image = UIImage(named: "CameraWhite")?.imageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal)
             self.addImageButton.setImage(image, forState: .Normal)
         } else {
-            var image = UIImage(named: "Camera")?.imageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal)
+            let image = UIImage(named: "Camera")?.imageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal)
             self.addImageButton.setImage(image, forState: .Normal)
         }
         

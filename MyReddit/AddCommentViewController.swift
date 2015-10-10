@@ -42,7 +42,7 @@ class AddCommentViewController: UIViewController, UITextViewDelegate {
             } else {
                 self.navigationItem.title = "messasge reply"
             }
-        } else if let editLink = self.link {
+        } else if let _ = self.link {
             if self.edit {
                 self.navigationItem.title = "edit post"
                 self.textView.text = self.link?.selfText
@@ -52,7 +52,7 @@ class AddCommentViewController: UIViewController, UITextViewDelegate {
                 self.navigationItem.title = "edit comment"
                 self.textView.text = self.comment?.body
             } else {
-                if let replyComment = self.comment {
+                if let _ = self.comment {
                     self.navigationItem.title = "reply"
                 } else {
                     self.navigationItem.title = "new comment"
@@ -91,7 +91,7 @@ class AddCommentViewController: UIViewController, UITextViewDelegate {
     @IBAction func doneButtonTapped(sender: AnyObject) {
         textView.resignFirstResponder()
         
-        if count(self.textView.text) > 0 {
+        if self.textView.text.characters.count > 0 {
             if let replyMessage = self.message {
                 self.hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
                 
@@ -179,7 +179,7 @@ class AddCommentViewController: UIViewController, UITextViewDelegate {
     }
     
     private func dismiss() {
-        if let replyMessage = self.message {
+        if let _ = self.message {
             self.navigationController?.popViewControllerAnimated(true)
         } else {
             self.dismissViewControllerAnimated(true, completion: { () -> Void in

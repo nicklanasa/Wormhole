@@ -31,7 +31,7 @@ class PostTextCell: UITableViewCell, UITextViewDelegate {
     
     func textViewDidEndEditing(textView: UITextView) {
 
-        if count(textView.text) == 0 {
+        if textView.text.characters.count == 0 {
             textView.text = "enter text..."
             textView.textColor = UIColor(red: 187/255, green: 187/255, blue: 193/255, alpha: 1.0)
         }
@@ -47,9 +47,7 @@ class PostTextCell: UITableViewCell, UITextViewDelegate {
             textViewDidChange(textView)
         }
     }
-}
-
-extension PostTextCell: UITextViewDelegate {
+    
     func textViewDidChange(textView: UITextView) {
         
         let size = textView.bounds.size

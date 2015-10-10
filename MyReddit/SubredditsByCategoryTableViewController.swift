@@ -46,8 +46,8 @@ class SubredditsByCategoryTableViewController: RootTableViewController {
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell = tableView.dequeueReusableCellWithIdentifier("SubredditCategoryCell") as! SubredditCell
-        var subreddit = self.subreddits?[indexPath.row]
+        let cell = tableView.dequeueReusableCellWithIdentifier("SubredditCategoryCell") as! SubredditCell
+        let subreddit = self.subreddits?[indexPath.row]
         cell.nameLabel.text = subreddit
         return cell
     }

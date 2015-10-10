@@ -40,7 +40,7 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
         self.indicator.tintColor = MyRedditLabelColor
         self.indicator.startAnimating()
         self.imageView.contentMode = .ScaleAspectFit
-        self.imageView.sd_setImageWithURL(self.imageURL, placeholderImage: nil, options: nil) { (image, error, cacheType, url) -> Void in
+        self.imageView.sd_setImageWithURL(self.imageURL) { (image, error, cacheType, url) -> Void in
             if error != nil {
                 UIAlertView(title: "Error!",
                     message: "Unable to load image.",
@@ -56,7 +56,7 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
 
         self.scrollView.minimumZoomScale = 0.75
         
-        var tap = UITapGestureRecognizer(target: self, action: "imageViewTapped:")
+        let tap = UITapGestureRecognizer(target: self, action: "imageViewTapped:")
         tap.numberOfTapsRequired = 1
         self.imageView.gestureRecognizers = [tap]
         self.view.gestureRecognizers = [tap]
@@ -77,7 +77,7 @@ class CenteringScrollView: UIScrollView {
         
         if let imageView = self.subviews[1] as? UIImageView {
             // center the image as it becomes smaller than the size of the screen
-            var boundsSize = self.bounds.size
+            let boundsSize = self.bounds.size
             
             // center horizontally
             if imageView.frame.size.width < boundsSize.width {

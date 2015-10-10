@@ -42,25 +42,24 @@ class MessageCell: JZSwipeCell, UITextViewDelegate {
     var message: RKMessage! {
         didSet {
             
-            self.titleLabel.text = message.subject.stringByReplacingOccurrencesOfString("&gt;", withString: ">", options: nil, range: nil)
+            self.titleLabel.text = message.subject.stringByReplacingOccurrencesOfString("&gt;", withString: ">", options: .CaseInsensitiveSearch, range: nil)
             
-            var parser = XNGMarkdownParser()
+            let parser = XNGMarkdownParser()
             parser.paragraphFont = MyRedditSelfTextFont
             parser.boldFontName = MyRedditCommentTextBoldFont.familyName
             parser.boldItalicFontName = MyRedditCommentTextItalicFont.familyName
             parser.italicFontName = MyRedditCommentTextItalicFont.familyName
             parser.linkFontName = MyRedditCommentTextBoldFont.familyName
             
-            var parsedString = NSMutableAttributedString(attributedString: parser.attributedStringFromMarkdownString(message.messageBody.stringByReplacingOccurrencesOfString("&gt;", withString: ">", options: nil, range: nil)))
-            var titleAttr = [NSForegroundColorAttributeName : MyRedditLabelColor]
-            var selfTextAttr = [NSForegroundColorAttributeName : UIColor.darkGrayColor()]
-            parsedString.addAttributes(selfTextAttr, range: NSMakeRange(0, count(parsedString.string)))
+            let parsedString = NSMutableAttributedString(attributedString: parser.attributedStringFromMarkdownString(message.messageBody.stringByReplacingOccurrencesOfString("&gt;", withString: ">", options: .CaseInsensitiveSearch, range: nil)))
+            let selfTextAttr = [NSForegroundColorAttributeName : UIColor.darkGrayColor()]
+            parsedString.addAttributes(selfTextAttr, range: NSMakeRange(0, parsedString.string.characters.count))
             
             self.bodyTextView.attributedText = parsedString
             
-            var infoString = NSMutableAttributedString(string:"\(message.created.timeAgoSimple()) | \(message.author)")
-            var attrs = [NSForegroundColorAttributeName : MyRedditColor]
-            infoString.addAttributes(attrs, range: NSMakeRange(0, count(message.created.timeAgoSimple())))
+            let infoString = NSMutableAttributedString(string:"\(message.created.timeAgoSinceNow()) | \(message.author)")
+            let attrs = [NSForegroundColorAttributeName : MyRedditColor]
+            infoString.addAttributes(attrs, range: NSMakeRange(0, message.created.timeAgoSinceNow().characters.count))
             
             self.infoLabel.attributedText = infoString
             

@@ -45,17 +45,17 @@ class TitleCell: PostCell {
             
             if SettingsManager.defaultManager.valueForSetting(.Flair) {
                 if let flairString = link.linkFlairText {
-                    if count(flairString) > 0 {
+                    if flairString.characters.count > 0 {
                         showFlair = "\(flairString) |"
                     }
                 }
             }
             
-            var infoString = NSMutableAttributedString(string:"\(showFlair) \(link.author) | \(link.created.timeAgoSimple()) | \(link.totalComments.description) comments")
-            var attrs = [NSForegroundColorAttributeName : MyRedditLabelColor]
-            var commentsAttr = [NSForegroundColorAttributeName : MyRedditColor]
-            infoString.addAttributes(attrs, range: NSMakeRange(0, count(showFlair) == 0 ? 0 : count(showFlair) - 1))
-            infoString.addAttributes(commentsAttr, range: NSMakeRange(count(infoString.string) - count("\(link.totalComments.description) comments"), count("\(link.totalComments.description) comments")))
+            let infoString = NSMutableAttributedString(string:"\(showFlair) \(link.author) | \(link.created.timeAgoSinceNow()) | \(link.totalComments.description) comments")
+            let attrs = [NSForegroundColorAttributeName : MyRedditLabelColor]
+            let commentsAttr = [NSForegroundColorAttributeName : MyRedditColor]
+            infoString.addAttributes(attrs, range: NSMakeRange(0, showFlair.characters.count == 0 ? 0 : showFlair.characters.count - 1))
+            infoString.addAttributes(commentsAttr, range: NSMakeRange(infoString.string.characters.count - "\(link.totalComments.description) comments".characters.count, "\(link.totalComments.description) comments".characters.count))
             
             self.postInfoLabel.attributedText = infoString
             
@@ -88,12 +88,12 @@ class TitleCell: PostCell {
             
             self.subredditButton.hidden = true
             
-            var replies = linkComment.replies?.count == 1 ? "reply" : "replies"
+            let replies = linkComment.replies?.count == 1 ? "reply" : "replies"
             
-            var infoString = NSMutableAttributedString(string: "\(linkComment.author) - \(linkComment.created.timeAgoSimple()) - \(linkComment.replies?.count ?? 0) \(replies)")
+            let infoString = NSMutableAttributedString(string: "\(linkComment.author) - \(linkComment.created.timeAgoSinceNow()) - \(linkComment.replies?.count ?? 0) \(replies)")
 
-            var attrs = [NSForegroundColorAttributeName : MyRedditLabelColor]
-            infoString.addAttributes(attrs, range: NSMakeRange(0, count(linkComment.author)))
+            let attrs = [NSForegroundColorAttributeName : MyRedditLabelColor]
+            infoString.addAttributes(attrs, range: NSMakeRange(0, linkComment.author.characters.count))
             
             self.postInfoLabel.attributedText = infoString
             

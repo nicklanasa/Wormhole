@@ -82,9 +82,6 @@ class SettingsManager {
             }
             
             return false
-            
-        default: return false
-            
         }
     }
     
@@ -112,9 +109,6 @@ class SettingsManager {
             }
             
             return "Medium"
-            
-        default: return "Medium"
-            
         }
     }
     
@@ -141,8 +135,6 @@ class SettingsManager {
         case .DefaultToReaderMode:
             NSUserDefaults.standardUserDefaults().setObject(value, forKey: "DefaultToReaderMode")
             LocalyticsSession.shared().tagEvent("Full Width Images mode toggled")
-        default: break
-            
         }
     }
     
@@ -153,9 +145,7 @@ class SettingsManager {
         case .Medium:
             NSUserDefaults.standardUserDefaults().setObject("Medium", forKey: "TextSize")
         case .Large:
-            NSUserDefaults.standardUserDefaults().setObject("Large", forKey: "TextSize")
-        default: break
-            
+            NSUserDefaults.standardUserDefaults().setObject("Large", forKey: "TextSize")            
         }
     }
     

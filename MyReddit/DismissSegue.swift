@@ -11,8 +11,8 @@ import UIKit
 class DismissSegue: UIStoryboardSegue {
     
     override func perform() {
-        var sourceView = self.sourceViewController.view as UIView!
-        var destView = self.destinationViewController.view as UIView!
+        let sourceView = self.sourceViewController.view as UIView!
+        let destView = self.destinationViewController.view as UIView!
         
         destView.alpha = 0.0
         
@@ -23,7 +23,7 @@ class DismissSegue: UIStoryboardSegue {
             destView.alpha = 1.0
             sourceView.alpha = 0.0
         }) { (Finished) -> Void in
-            UIApplication.sharedApplication().rootViewController = self.destinationViewController as? UIViewController
+            UIApplication.sharedApplication().rootViewController = self.destinationViewController
         }
     }
 }

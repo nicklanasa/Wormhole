@@ -43,13 +43,13 @@ class PurchaseViewController: UIViewController, BDGIAPDelegate {
     }
     
     @IBAction func shareToUnlockButtonTapped(sender: AnyObject) {
-        var alert = UIAlertController(title: "Share", message: nil, preferredStyle: .ActionSheet)
+        let alert = UIAlertController(title: "Share", message: nil, preferredStyle: .ActionSheet)
         alert.addAction(UIAlertAction(title: "facebook", style: .Default, handler: { (action) -> Void in
             if SLComposeViewController.isAvailableForServiceType(SLServiceTypeFacebook) {
-                var socialVC = SLComposeViewController(forServiceType: SLServiceTypeFacebook)
+                let socialVC = SLComposeViewController(forServiceType: SLServiceTypeFacebook)
                 socialVC.addImage(UIImage(named: "MyRedditShare"))
                 
-                var completion: SLComposeViewControllerCompletionHandler = { (result) -> Void in
+                let completion: SLComposeViewControllerCompletionHandler = { (result) -> Void in
                     if result == .Done {
                         LocalyticsSession.shared().tagEvent("Facebook share to unlock")
                         NSUserDefaults.standardUserDefaults().setObject(true, forKey: "purchased")
@@ -72,10 +72,10 @@ class PurchaseViewController: UIViewController, BDGIAPDelegate {
         }))
         alert.addAction(UIAlertAction(title: "twitter", style: .Default, handler: { (action) -> Void in
             if SLComposeViewController.isAvailableForServiceType(SLServiceTypeTwitter) {
-                var socialVC = SLComposeViewController(forServiceType: SLServiceTypeTwitter)
+                let socialVC = SLComposeViewController(forServiceType: SLServiceTypeTwitter)
                 socialVC.addImage(UIImage(named: "MyRedditShare"))
                 
-                var completion: SLComposeViewControllerCompletionHandler = { (result) -> Void in
+                let completion: SLComposeViewControllerCompletionHandler = { (result) -> Void in
                     if result == .Done {
                         LocalyticsSession.shared().tagEvent("Twitter share to unlock")
                         NSUserDefaults.standardUserDefaults().setObject(true, forKey: "purchased")
@@ -99,7 +99,7 @@ class PurchaseViewController: UIViewController, BDGIAPDelegate {
         alert.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
         
         if let popoverController = alert.popoverPresentationController {
-            var button = sender as! UIButton
+            let button = sender as! UIButton
             popoverController.sourceView = button
             popoverController.sourceRect = button.bounds
         }

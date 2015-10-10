@@ -58,8 +58,8 @@ AddCommentViewControllerDelegate {
         
         for comment in self.comments as! [RKComment] {
             comments.append(["comment" : comment, "level" : 0])
-            var dictionary = self.repliesForComment(comment, level: 1)
-            comments.extend(dictionary)
+            let dictionary = self.repliesForComment(comment, level: 1)
+            comments.appendContentsOf(dictionary)
         }
         
         return comments
@@ -70,7 +70,7 @@ AddCommentViewControllerDelegate {
         
         for reply in comment.replies as! [RKComment] {
             replies.append(["comment" : reply, "level" : level])
-            replies.extend(self.repliesForComment(reply, level: level + 1))
+            replies.appendContentsOf(self.repliesForComment(reply, level: level + 1))
         }
         
         return replies
@@ -142,7 +142,7 @@ AddCommentViewControllerDelegate {
     }
     
     @IBAction func filterButtonTapped(sender: AnyObject) {
-        var actionSheet = UIAlertController(title: "Select sort", message: nil, preferredStyle: .ActionSheet)
+        let actionSheet = UIAlertController(title: "Select sort", message: nil, preferredStyle: .ActionSheet)
         actionSheet.addAction(UIAlertAction(title: "Top", style: .Default, handler: { (action) -> Void in
             self.filter = RKCommentSort.Top
         }))
@@ -201,26 +201,26 @@ AddCommentViewControllerDelegate {
         
         var selfText = ""
         
-        if link.selfPost && count(link.selfText) > 0 {
+        if link.selfPost && link.selfText.characters.count > 0 {
             selfText = "\n\n\(link.selfText)".stringByReplacingOccurrencesOfString("&gt;",
                 withString: ">",
-                options: nil,
+                options: .CaseInsensitiveSearch,
                 range: nil)
         }
         
-        var parser = XNGMarkdownParser()
+        let parser = XNGMarkdownParser()
         parser.paragraphFont = MyRedditSelfTextFont
         parser.boldFontName = MyRedditCommentTextBoldFont.familyName
         parser.boldItalicFontName = MyRedditCommentTextItalicFont.familyName
         parser.italicFontName = MyRedditCommentTextItalicFont.familyName
         parser.linkFontName = MyRedditCommentTextBoldFont.familyName
         
-        var title = link.title.stringByReplacingOccurrencesOfString("&gt;", withString: ">", options: nil, range: nil)
+        let title = link.title.stringByReplacingOccurrencesOfString("&gt;", withString: ">", options: .CaseInsensitiveSearch, range: nil)
         
-        var parsedString = NSMutableAttributedString(attributedString: parser.attributedStringFromMarkdownString("\(title)\(selfText)"))
+        let parsedString = NSMutableAttributedString(attributedString: parser.attributedStringFromMarkdownString("\(title)\(selfText)"))
         
-        var str = parsedString.string as NSString
-        var rect = str.boundingRectWithSize(CGSizeMake(self.tableView.frame.size.width - 30, CGFloat.max),
+        let str = parsedString.string as NSString
+        let rect = str.boundingRectWithSize(CGSizeMake(self.tableView.frame.size.width - 30, CGFloat.max),
             options: NSStringDrawingOptions.UsesLineFragmentOrigin,
             attributes: [NSFontAttributeName : MyRedditSelfTextFont],
             context: nil)
@@ -230,24 +230,24 @@ AddCommentViewControllerDelegate {
     private func heightForIndexPath(indexPath: NSIndexPath) -> CGFloat {
         
         var commentDictionary = self.self.commentsBySection?[indexPath.section - 1] as! [String : AnyObject]
-        var indentationLevel = commentDictionary["level"] as! Int
-        var indentationWidth = CGFloat(15)
-        var comment = commentDictionary["comment"] as! RKComment
+        let indentationLevel = commentDictionary["level"] as! Int
+        let indentationWidth = CGFloat(15)
+        let comment = commentDictionary["comment"] as! RKComment
         
         let body = comment.body.stringByReplacingOccurrencesOfString("&gt;", withString: ">",
-            options: nil,
-            range: nil).stringByReplacingOccurrencesOfString("&amp;", withString: "&", options: nil, range: nil)
+            options: .CaseInsensitiveSearch,
+            range: nil).stringByReplacingOccurrencesOfString("&amp;", withString: "&", options: .CaseInsensitiveSearch, range: nil)
         
-        var parser = XNGMarkdownParser()
+        let parser = XNGMarkdownParser()
         parser.paragraphFont = MyRedditCommentTextBoldFont
         parser.boldFontName = MyRedditCommentTextBoldFont.familyName
         parser.boldItalicFontName = MyRedditCommentTextItalicFont.familyName
         parser.italicFontName = MyRedditCommentTextItalicFont.familyName
         parser.linkFontName = MyRedditCommentTextBoldFont.familyName
         
-        var parsedString = NSMutableAttributedString(attributedString: parser.attributedStringFromMarkdownString("\(body)"))
+        let parsedString = NSMutableAttributedString(attributedString: parser.attributedStringFromMarkdownString("\(body)"))
     
-        var rect = parsedString.string.boundingRectWithSize(CGSizeMake((self.tableView.frame.size.width - 18) - (CGFloat(indentationLevel + 1) * indentationWidth), CGFloat.max),
+        let rect = parsedString.string.boundingRectWithSize(CGSizeMake((self.tableView.frame.size.width - 18) - (CGFloat(indentationLevel + 1) * indentationWidth), CGFloat.max),
             options: NSStringDrawingOptions.UsesLineFragmentOrigin,
             attributes: [NSFontAttributeName : MyRedditCommentTextFont],
             context: nil)
@@ -264,7 +264,7 @@ AddCommentViewControllerDelegate {
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell = tableView.dequeueReusableCellWithIdentifier("CommentCell") as! CommentCell
+        let cell = tableView.dequeueReusableCellWithIdentifier("CommentCell") as! CommentCell
 
         var comment: RKComment!
         
@@ -272,7 +272,7 @@ AddCommentViewControllerDelegate {
             cell.link = self.link
         } else {
             var commentDictionary = self.commentsBySection?[indexPath.section - 1] as! [String : AnyObject]
-            var indent = commentDictionary["level"] as! Int
+            let indent = commentDictionary["level"] as! Int
             cell.indentationLevel = indent + 1
             cell.indentationWidth = 15
             comment = commentDictionary["comment"] as! RKComment
@@ -329,24 +329,24 @@ AddCommentViewControllerDelegate {
             var hiddenIndexPaths = [NSIndexPath]()
             
             // Get comment to start collapse
-            var comment = commentDictionary["comment"] as! RKComment
+            let comment = commentDictionary["comment"] as! RKComment
             
             // Get replies for comment
-            var repliesForComment = self.repliesForComment(comment, level: 0)
+            let repliesForComment = self.repliesForComment(comment, level: 0)
             
             collapsedIndexPaths.append(indexPath)
             
             if remove {
 
                 var sectionCount = indexPath.section
-                for reply in repliesForComment {
+                for _ in repliesForComment {
                     sectionCount += 1
                     hiddenIndexPaths.append(NSIndexPath(forRow: 0, inSection: sectionCount))
                 }
                 
                 for removedIndexPath in collapsedIndexPaths {
                     for var i = 0; i < self.closedIndexPaths.count; i++ {
-                        var closedIndexPath = self.closedIndexPaths[i]
+                        let closedIndexPath = self.closedIndexPaths[i]
                         if closedIndexPath.section == removedIndexPath.section {
                             self.closedIndexPaths.removeAtIndex(i)
                         }
@@ -355,7 +355,7 @@ AddCommentViewControllerDelegate {
                 
                 for hiddenIndexPath in hiddenIndexPaths {
                     for var i = 0; i < self.hiddenIndexPaths.count; i++ {
-                        var closedIndexPath = self.hiddenIndexPaths[i]
+                        let closedIndexPath = self.hiddenIndexPaths[i]
                         if closedIndexPath.section == hiddenIndexPath.section {
                             self.hiddenIndexPaths.removeAtIndex(i)
                         }
@@ -363,16 +363,14 @@ AddCommentViewControllerDelegate {
                 }
             } else {
                 var sectionCount = indexPath.section
-                for reply in repliesForComment {
+                for _ in repliesForComment {
                     sectionCount += 1
                     hiddenIndexPaths.append(NSIndexPath(forRow: 0, inSection: sectionCount))
                 }
                 
-                self.hiddenIndexPaths.extend(hiddenIndexPaths)
-                self.closedIndexPaths.extend(collapsedIndexPaths)
+                self.hiddenIndexPaths.appendContentsOf(hiddenIndexPaths)
+                self.closedIndexPaths.appendContentsOf(collapsedIndexPaths)
             }
-            
-            var reloadRows = self.hiddenIndexPaths + self.closedIndexPaths
             
             self.tableView.beginUpdates()
             self.tableView.endUpdates()
@@ -432,7 +430,7 @@ AddCommentViewControllerDelegate {
     }
    
     func swipeCell(cell: JZSwipeCell!, triggeredSwipeWithType swipeType: JZSwipeType) {
-        if swipeType.value != JZSwipeTypeNone.value {
+        if swipeType.rawValue != JZSwipeTypeNone.rawValue {
             cell.reset()
             if !SettingsManager.defaultManager.purchased {
                 self.performSegueWithIdentifier("PurchaseSegue", sender: self)
@@ -453,15 +451,15 @@ AddCommentViewControllerDelegate {
                     
                     if let object = votedable {
                         
-                        if swipeType.value == JZSwipeTypeShortRight.value {
+                        if swipeType.rawValue == JZSwipeTypeShortRight.rawValue {
                             self.downVote(object)
-                        } else if swipeType.value == JZSwipeTypeShortLeft.value {
+                        } else if swipeType.rawValue == JZSwipeTypeShortLeft.rawValue {
                             self.upVote(object)
-                        } else if swipeType.value == JZSwipeTypeLongLeft.value {
+                        } else if swipeType.rawValue == JZSwipeTypeLongLeft.rawValue {
                             if indexPath.section != 0 {
                                 self.hud.hide(true)
                                 var commentDictionary = self.self.commentsBySection?[indexPath.section - 1] as! [String : AnyObject]
-                                var comment = commentDictionary["comment"] as! RKComment
+                                let comment = commentDictionary["comment"] as! RKComment
                                 self.commentMoreActions(cell, comment: comment)
                             } else {
                                 self.linkMoreActions(cell)
@@ -488,7 +486,7 @@ AddCommentViewControllerDelegate {
         LocalyticsSession.shared().tagEvent("Swipe more")
         // More
         self.hud.hide(true)
-        var alertController = UIAlertController(title: "Select options", message: nil, preferredStyle: .ActionSheet)
+        let alertController = UIAlertController(title: "Select options", message: nil, preferredStyle: .ActionSheet)
         
         alertController.addAction(UIAlertAction(title: "add comment", style: .Default, handler: { (action) -> Void in
             self.performSegueWithIdentifier("AddCommentSegue", sender: nil)
@@ -532,7 +530,7 @@ AddCommentViewControllerDelegate {
                     if error != nil {
                         UIAlertView.showUnableToDeleteLinkError()
                     } else {
-                        var deleteAlert = UIAlertController(title: "Delete post", message: "Are you sure you want to delete this post?", preferredStyle: .Alert)
+                        let deleteAlert = UIAlertController(title: "Delete post", message: "Are you sure you want to delete this post?", preferredStyle: .Alert)
                         
                         deleteAlert.addAction(UIAlertAction(title: "Yes", style: .Default, handler: { (action) -> Void in
                             self.performSegueWithIdentifier("DeletePostSegue", sender: nil)
@@ -550,10 +548,10 @@ AddCommentViewControllerDelegate {
         if let popoverController = alertController.popoverPresentationController {
             if let view = sourceView as? UITableViewCell {
                 popoverController.sourceView = view
+                popoverController.sourceRect = sourceView.bounds
             } else {
-                popoverController.barButtonItem = sourceView as! UIBarButtonItem
+                popoverController.barButtonItem = sourceView as? UIBarButtonItem
             }
-            popoverController.sourceRect = sourceView.bounds
         }
         
         alertController.present(animated: true, completion: nil)
@@ -562,7 +560,7 @@ AddCommentViewControllerDelegate {
     private func commentMoreActions(sourceView: AnyObject, comment: RKComment) {
         LocalyticsSession.shared().tagEvent("Swipe more")
         
-        var alertController = UIAlertController(title: "Select comment options", message: nil, preferredStyle: .ActionSheet)
+        let alertController = UIAlertController(title: "Select comment options", message: nil, preferredStyle: .ActionSheet)
         
         alertController.addAction(UIAlertAction(title: "save", style: .Default, handler: { (action) -> Void in
             RedditSession.sharedSession.saveComment(comment, completion: { (error) -> () in
@@ -611,11 +609,10 @@ AddCommentViewControllerDelegate {
         if let popoverController = alertController.popoverPresentationController {
             if let view = sourceView as? UITableViewCell {
                 popoverController.sourceView = view
+                popoverController.sourceRect = sourceView.bounds
             } else {
-                popoverController.barButtonItem = sourceView as! UIBarButtonItem
+                popoverController.barButtonItem = sourceView as? UIBarButtonItem
             }
-            
-            popoverController.sourceRect = sourceView.bounds
         }
         
         alertController.present(animated: true, completion: nil)
@@ -656,7 +653,7 @@ AddCommentViewControllerDelegate {
         self.hud.hide(true)
         if success {
             if controller.edit {
-                if let editLink = controller.link {
+                if let _ = controller.link {
                     RedditSession.sharedSession.linkWithFullName(self.link, completion: { (pagination, results, error) -> () in
                         if let refreshedLink = results?.first as? RKLink {
                             self.link = refreshedLink
@@ -667,7 +664,7 @@ AddCommentViewControllerDelegate {
                     LocalyticsSession.shared().tagEvent("Edited comment")
                 }
             } else {
-                if let replyComment = controller.comment {
+                if let _ = controller.comment {
                     LocalyticsSession.shared().tagEvent("Reply comment added")
                 } else {
                     LocalyticsSession.shared().tagEvent("Added comment")
@@ -679,7 +676,7 @@ AddCommentViewControllerDelegate {
                 UIAlertView.showUnableToEditCommentError()
                 LocalyticsSession.shared().tagEvent("Edited comment failed")
             } else {
-                if let replyComment = controller.comment {
+                if let _ = controller.comment {
                     UIAlertView.showUnableToReplyCommentError()
                     LocalyticsSession.shared().tagEvent("Reply comment failed")
                 } else {
@@ -695,7 +692,7 @@ AddCommentViewControllerDelegate {
     }
     
     @IBAction func shareButtonTapped(sender: AnyObject) {
-        var linkOptions = LinkShareOptionsViewController(link: self.link)
+        let linkOptions = LinkShareOptionsViewController(link: self.link)
         linkOptions.barbuttonItem = self.shareButton
         linkOptions.showInView(self.view)
     }

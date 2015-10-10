@@ -175,7 +175,7 @@ class RedditSession {
         UIApplication.sharedApplication().networkActivityIndicatorVisible = true
         LocalyticsSession.shared().tagEvent("Fetch multireddit")
         
-        if let user = UserSession.sharedSession.currentUser {
+        if let _ = UserSession.sharedSession.currentUser {
             RKClient.sharedClient().multiredditWithName(name, user: RKClient.sharedClient().currentUser) { (result, error) -> Void in
                 UIApplication.sharedApplication().networkActivityIndicatorVisible = false
                 if result == nil {
@@ -625,17 +625,18 @@ class RedditSession {
     }
     
     func readableContentWithURL(url: String, completion: ReadableCompletion) {
-        var token = "86d3dcc05ff4444f692ab168d4543084911ac9d6"
-        var url = "https://www.readability.com/api/content/v1/parser?url=\(url)&token=\(token)"
-        var request = NSURLRequest(URL: NSURL(string: url)!)
-        var queue = NSOperationQueue()
+        let token = "86d3dcc05ff4444f692ab168d4543084911ac9d6"
+        let url = "https://www.readability.com/api/content/v1/parser?url=\(url)&token=\(token)"
+        let request = NSURLRequest(URL: NSURL(string: url)!)
+        let queue = NSOperationQueue()
         NSURLConnection.sendAsynchronousRequest(request, queue: queue) { (response, data, error) -> Void in
             if let responseData = data {
-                var jsonError: NSError?
-                if let json = NSJSONSerialization.JSONObjectWithData(responseData,
-                    options: nil,
-                    error: &jsonError) as? [String : AnyObject] {
-                    completion(content: ReadableContent(json: json), error: nil)
+                do {
+                    let json = try NSJSONSerialization.JSONObjectWithData(responseData,
+                        options: .AllowFragments)
+                    completion(content: ReadableContent(json: json as! [String : AnyObject]), error: nil)
+                } catch {
+                    completion(content: nil, error: nil)
                 }
             } else {
                 completion(content: nil, error: error)

@@ -10,7 +10,7 @@ import Foundation
 
 extension RKLink {
     func viewed() -> Bool {
-        if let savedLinked: AnyObject = NSUserDefaults.standardUserDefaults().objectForKey(self.identifier) {
+        if let _: AnyObject = NSUserDefaults.standardUserDefaults().objectForKey(self.identifier) {
             return true
         } else {
             return false
@@ -18,7 +18,7 @@ extension RKLink {
     }
     
     func saved() -> Bool {
-        if let savedLinked: AnyObject = NSUserDefaults.standardUserDefaults().objectForKey(self.identifier + "saved") {
+        if let _: AnyObject = NSUserDefaults.standardUserDefaults().objectForKey(self.identifier + "saved") {
             return true
         } else {
             return false
@@ -34,7 +34,7 @@ extension RKLink {
     }
     
     func isHidden() -> Bool {
-        if let hidden: AnyObject = NSUserDefaults.standardUserDefaults().objectForKey(self.identifier + "hidden") {
+        if let _: AnyObject = NSUserDefaults.standardUserDefaults().objectForKey(self.identifier + "hidden") {
             return true
         } else {
             if self.hidden {

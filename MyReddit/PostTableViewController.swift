@@ -77,7 +77,7 @@ UINavigationControllerDelegate {
         super.viewWillAppear(animated)
         LocalyticsSession.shared().tagScreen("Post")
         
-        if let splitViewController = self.splitViewController {
+        if let _ = self.splitViewController {
             self.listButton.action = self.splitViewController!.displayModeButtonItem().action
         }
     }
@@ -93,12 +93,12 @@ UINavigationControllerDelegate {
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         if self.postType == .Text && indexPath.row == 3 {
-            var cell = tableView.dequeueReusableCellWithIdentifier("PostTextCell") as! PostTextCell
+            let cell = tableView.dequeueReusableCellWithIdentifier("PostTextCell") as! PostTextCell
             cell.separatorInset = UIEdgeInsets(top: 0, left: self.tableView.frame.size.width, bottom: 0, right: 0)
             return cell
         } else {
             if indexPath.row == 3 {
-                var cell = tableView.dequeueReusableCellWithIdentifier("LinkCell") as! LinkCell
+                let cell = tableView.dequeueReusableCellWithIdentifier("LinkCell") as! LinkCell
                 cell.delegate = self
                 
                 if let image = self.selectedImage {
@@ -116,18 +116,18 @@ UINavigationControllerDelegate {
         }
         
         if indexPath.row == 0 {
-            var cell = tableView.dequeueReusableCellWithIdentifier("PostTypeCell") as! PostTypeCell
+            let cell = tableView.dequeueReusableCellWithIdentifier("PostTypeCell") as! PostTypeCell
             cell.delegate = self
             return cell
         } else if indexPath.row == 1 {
-            var cell = tableView.dequeueReusableCellWithIdentifier("PostSubredditCell") as! PostSubredditCell
+            let cell = tableView.dequeueReusableCellWithIdentifier("PostSubredditCell") as! PostSubredditCell
             if let subreddit = self.subreddit {
                 cell.subredditTextField.text = subreddit.name
             }
             cell.delegate = self
             return cell
         } else {
-            var cell = tableView.dequeueReusableCellWithIdentifier("PostTitleCell") as! PostTitleCell
+            let cell = tableView.dequeueReusableCellWithIdentifier("PostTitleCell") as! PostTitleCell
             return cell
         }
     }
@@ -165,7 +165,7 @@ UINavigationControllerDelegate {
     func postImage(link: String, subredditName: String) {
         self.showCaptchaDialog { (result, error) -> () in
             if result {
-                var client = ImgurAnonymousAPIClient(clientID: "e97d1faf5a39e09")
+                let client = ImgurAnonymousAPIClient(clientID: "e97d1faf5a39e09")
                 client.uploadImage(self.selectedImage!, withFilename: "image.jpg", completionHandler: { (url, error) -> Void in
                     if error != nil {
                         self.hud.hide(true)
@@ -226,15 +226,15 @@ UINavigationControllerDelegate {
                                     completion(result: false, error: error)
                                 } else {
                                     if let image = results?.first as? UIImage {
-                                        var alert = UIAlertController(title: "Enter Reddit captcha",
+                                        let alert = UIAlertController(title: "Enter Reddit captcha",
                                             message: "                                         ",
                                             preferredStyle: .Alert)
                                         
                                         alert.addTextFieldWithConfigurationHandler({ (textField) -> Void in })
                                         
-                                        var okAction = UIAlertAction(title: "Ok", style: .Default, handler: { (action) -> Void in
-                                            if let textfield = alert.textFields?.first as? UITextField {
-                                                if count(textfield.text) != 0 {
+                                        let okAction = UIAlertAction(title: "Ok", style: .Default, handler: { (action) -> Void in
+                                            if let textfield = alert.textFields?.first {
+                                                if textfield.text!.characters.count != 0 {
                                                     self.captchaValue = textfield.text
                                                     completion(result: true, error: nil)
                                                 } else {
@@ -243,7 +243,7 @@ UINavigationControllerDelegate {
                                             }
                                         })
                                         
-                                        var imageView = UIImageView(frame: CGRectMake(90, 40, 80, 40))
+                                        let imageView = UIImageView(frame: CGRectMake(90, 40, 80, 40))
                                         imageView.image = image
                                         imageView.contentMode = .ScaleAspectFit
                                         alert.view.addSubview(imageView)
@@ -269,32 +269,32 @@ UINavigationControllerDelegate {
     
     @IBAction func sendButtonTapped(sender: AnyObject) {
         if let subredditCell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 1, inSection: 0)) as? PostSubredditCell {
-            if count(subredditCell.subredditTextField.text) > 0 {
+            if subredditCell.subredditTextField.text?.characters.count > 0 {
                 if let postTitleCell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 2, inSection: 0)) as? PostTitleCell {
-                    if count(postTitleCell.titleTextField.text) > 0 {
+                    if postTitleCell.titleTextField.text?.characters.count > 0 {
                         if self.postType == .Text {
                             if let postTextCell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 3, inSection: 0)) as? PostTextCell {
-                                if count(postTextCell.textView.text) > 0 {
+                                if postTextCell.textView.text?.characters.count > 0 {
                                     // Submit text
-                                    self.postText(postTitleCell.titleTextField.text,
-                                        subredditName: subredditCell.subredditTextField.text,
-                                        text: postTextCell.textView.text)
+                                    self.postText(postTitleCell.titleTextField.text!,
+                                        subredditName: subredditCell.subredditTextField.text!,
+                                        text: postTextCell.textView.text!)
                                 } else {
                                     UIAlertView.showPostNoTextError()
                                 }
                             }
                         } else {
                             if let urlCell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 3, inSection: 0)) as? LinkCell {
-                                if count(urlCell.linkTextField.text) > 0 || self.selectedImage != nil {
+                                if urlCell.linkTextField.text?.characters.count > 0 || self.selectedImage != nil {
                                     // Submit image
                                     self.hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
-                                    if let image = self.selectedImage {
-                                        self.postImage(postTitleCell.titleTextField.text,
-                                            subredditName: subredditCell.subredditTextField.text)
+                                    if let _ = self.selectedImage {
+                                        self.postImage(postTitleCell.titleTextField.text!,
+                                            subredditName: subredditCell.subredditTextField.text!)
                                     } else {
-                                        self.postLink(postTitleCell.titleTextField.text,
-                                            subredditName: subredditCell.subredditTextField.text,
-                                            url: urlCell.linkTextField.text)
+                                        self.postLink(postTitleCell.titleTextField.text!,
+                                            subredditName: subredditCell.subredditTextField.text!,
+                                            url: urlCell.linkTextField.text!)
                                     }
                                 } else {
                                     UIAlertView.showPostNoLinkOrImageError()
@@ -348,11 +348,11 @@ UINavigationControllerDelegate {
     }
     
     func selectImage() {
-        var alertController = UIAlertController(title: "Select source", message: nil, preferredStyle: .ActionSheet)
+        let alertController = UIAlertController(title: "Select source", message: nil, preferredStyle: .ActionSheet)
         
         alertController.addAction(UIAlertAction(title: "Photo Library", style: .Default, handler: { (action) -> Void in
             if UIImagePickerController.isSourceTypeAvailable(.PhotoLibrary){
-                var picker = UIImagePickerController()
+                let picker = UIImagePickerController()
                 picker.delegate = self
                 picker.sourceType = .PhotoLibrary
                 self.presentViewController(picker, animated: true, completion: nil)
@@ -366,7 +366,7 @@ UINavigationControllerDelegate {
         
         alertController.addAction(UIAlertAction(title: "Camera", style: .Default, handler: { (action) -> Void in
             if UIImagePickerController.isSourceTypeAvailable(.Camera){
-                var picker = UIImagePickerController()
+                let picker = UIImagePickerController()
                 picker.delegate = self
                 picker.sourceType = .Camera
                 self.presentViewController(picker, animated: true, completion: nil)
@@ -382,7 +382,7 @@ UINavigationControllerDelegate {
             LocalyticsSession.shared().tagEvent("Image selected cancelled")
         }))
         
-        if let image = self.selectedImage {
+        if let _ = self.selectedImage {
             alertController.addAction(UIAlertAction(title: "Remove link", style: .Destructive, handler: { (action) -> Void in
                 self.selectedImage = nil
                 LocalyticsSession.shared().tagEvent("Removed image from post")

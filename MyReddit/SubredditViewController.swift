@@ -185,7 +185,7 @@ PostCellDelegate {
             category: self.currentCategory, completion: { (pagination, results, error) -> () in
                 self.pagination = pagination
                 if let moreLinks = results {
-                    self.links.extend(moreLinks)
+                    self.links.appendContentsOf(moreLinks)
                 }
                 
                 completion()
@@ -197,7 +197,7 @@ PostCellDelegate {
             category: self.currentCategory, completion: { (pagination, results, error) -> () in
                 self.pagination = pagination
                 if let moreLinks = results {
-                    self.links.extend(moreLinks)
+                    self.links.appendContentsOf(moreLinks)
                 }
                 
                 completion()
@@ -211,7 +211,7 @@ PostCellDelegate {
             completion: { (pagination, results, error) -> () in
                 self.pagination = pagination
                 if let moreLinks = results {
-                    self.links.extend(moreLinks)
+                    self.links.appendContentsOf(moreLinks)
                 }
                 
                 completion()
@@ -225,7 +225,7 @@ PostCellDelegate {
             completion: { (pagination, results, error) -> () in
                 self.pagination = pagination
                 if let moreLinks = results {
-                    self.links.extend(moreLinks)
+                    self.links.appendContentsOf(moreLinks)
                 }
                 
                 completion()
@@ -245,7 +245,7 @@ PostCellDelegate {
                 self.endRefreshing()
             })
         } else {
-            if let subreddit = self.subreddit {
+            if let _ = self.subreddit {
                 self.fetchPostsForSubreddit({ () -> () in
                     self.endRefreshing()
                 })
@@ -261,7 +261,7 @@ PostCellDelegate {
     
     private func reload() {
         if !SettingsManager.defaultManager.valueForSetting(.NSFW) {
-            self.links.filter({ (obj) -> Bool in
+            self.links = self.links.filter({ (obj) -> Bool in
                 if let link = obj as? RKLink {
                     if link.NSFW {
                         return false
@@ -354,7 +354,7 @@ PostCellDelegate {
 
     @IBAction func filterButtonPressed(sender: AnyObject) {
         
-        var alert = UIAlertController(title: "Select filter", message: nil, preferredStyle: .ActionSheet)
+        let alert = UIAlertController(title: "Select filter", message: nil, preferredStyle: .ActionSheet)
         
         alert.addAction(UIAlertAction(title: "hot", style: .Default, handler: { (action) -> Void in
             self.filterLinks(.Hot)
@@ -532,7 +532,7 @@ PostCellDelegate {
                     if SettingsManager.defaultManager.valueForSetting(.FullWidthImages) {
                         cell = tableView.dequeueReusableCellWithIdentifier("TitleCell") as! TitleCell
                     } else {
-                        var imageCell = tableView.dequeueReusableCellWithIdentifier("PostImageCell") as! PostImageCell
+                        let imageCell = tableView.dequeueReusableCellWithIdentifier("PostImageCell") as! PostImageCell
                         imageCell.postImageDelegate = self
                         imageCell.postCellDelegate = self
                         imageCell.link = link
@@ -573,10 +573,8 @@ PostCellDelegate {
                                 url = thumbnailURL.description
                             }
                         } else if link.domain == "imgur.com" {
-                            if let absoluteString = link.URL.absoluteString {
-                                var stringURL = absoluteString + ".jpg"
-                                url = stringURL
-                            }
+                            let stringURL = link.URL.absoluteString + ".jpg"
+                            url = stringURL
                         }
                         
                         if url != nil {
@@ -599,8 +597,8 @@ PostCellDelegate {
     }
     
     func heightForTitlePost(link: RKLink) -> CGFloat {
-        var text = link.title
-        var frame = CGRectMake(0, 0, (self.tableView.frame.size.width - 18), CGFloat.max)
+        let text = link.title
+        let frame = CGRectMake(0, 0, (self.tableView.frame.size.width - 18), CGFloat.max)
         let label: UILabel = UILabel(frame: frame)
         label.numberOfLines = 0
         label.lineBreakMode = NSLineBreakMode.ByWordWrapping
@@ -620,11 +618,11 @@ PostCellDelegate {
             if link.selfPost {
                 self.performSegueWithIdentifier("CommentsSegue", sender: link)
             } else {
-                if (link.domain == "imgur.com" || link.isImageLink()) && link.URL.absoluteString?.rangeOfString("gif") == nil {
-                    if link.domain == "imgur.com" && !link.URL.absoluteString!.hasExtension() {
-                        var urlComponents = link.URL.absoluteString?.componentsSeparatedByString("/")
-                        if urlComponents?.count > 4 {
-                            let albumID = urlComponents?[4]
+                if (link.domain == "imgur.com" || link.isImageLink()) && link.URL.absoluteString.rangeOfString("gif") == nil {
+                    if link.domain == "imgur.com" && !link.URL.absoluteString.hasExtension() {
+                        var urlComponents = link.URL.absoluteString.componentsSeparatedByString("/")
+                        if urlComponents.count > 4 {
+                            let albumID = urlComponents[4]
                             IMGAlbumRequest.albumWithID(albumID, success: { (album) -> Void in
                                 self.performSegueWithIdentifier("GallerySegue", sender: album.images)
                                 }) { (error) -> Void in
@@ -632,8 +630,8 @@ PostCellDelegate {
                                     self.performSegueWithIdentifier("SubredditLink", sender: link)
                             }
                         } else {
-                            if urlComponents?.count > 3 {
-                                let imageID = urlComponents?[3]
+                            if urlComponents.count > 3 {
+                                let imageID = urlComponents[3]
                                 IMGImageRequest.imageWithID(imageID, success: { (image) -> Void in
                                     self.performSegueWithIdentifier("GallerySegue", sender: [image])
                                     }, failure: { (error) -> Void in
@@ -657,7 +655,7 @@ PostCellDelegate {
     // MARK: JZSwipeCellDelegate
     
     func swipeCell(cell: JZSwipeCell!, triggeredSwipeWithType swipeType: JZSwipeType) {
-        if swipeType.value != JZSwipeTypeNone.value {
+        if swipeType.rawValue != JZSwipeTypeNone.rawValue {
             cell.reset()
             cell.layoutSubviews()
             if !SettingsManager.defaultManager.purchased {
@@ -668,7 +666,7 @@ PostCellDelegate {
                 
                 if let indexPath = self.tableView.indexPathForCell(cell) {
                     if let link = self.links[indexPath.row] as? RKLink {
-                        if swipeType.value == JZSwipeTypeShortLeft.value {
+                        if swipeType.rawValue == JZSwipeTypeShortLeft.rawValue {
                             // Upvote
                             LocalyticsSession.shared().tagEvent("Swipe upvote")
                             RedditSession.sharedSession.upvote(link, completion: { (error) -> () in
@@ -683,7 +681,7 @@ PostCellDelegate {
                                     self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
                                 }
                             })
-                        } else if swipeType.value == JZSwipeTypeShortRight.value {
+                        } else if swipeType.rawValue == JZSwipeTypeShortRight.rawValue {
                             LocalyticsSession.shared().tagEvent("Swipe downvote")
                             // Downvote
                             RedditSession.sharedSession.downvote(link, completion: { (error) -> () in
@@ -698,11 +696,11 @@ PostCellDelegate {
                                     self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
                                 }
                             })
-                        } else if swipeType.value == JZSwipeTypeLongLeft.value {
+                        } else if swipeType.rawValue == JZSwipeTypeLongLeft.rawValue {
                             LocalyticsSession.shared().tagEvent("Swipe more")
                             // More
                             self.hud.hide(true)
-                            var alertController = UIAlertController(title: "Select option", message: nil, preferredStyle: .ActionSheet)
+                            let alertController = UIAlertController(title: "Select option", message: nil, preferredStyle: .ActionSheet)
                             
                             if link.saved() {
                                 alertController.addAction(UIAlertAction(title: "unsave", style: .Default, handler: { (action) -> Void in
@@ -766,7 +764,7 @@ PostCellDelegate {
     // MARK: PostImageCellDelegate
     
     func postImageCell(cell: PostImageCell, didDownloadImageWithHeight height: CGFloat, url: NSURL) {
-        if let indexPath = self.tableView.indexPathForCell(cell) {
+        if let _ = self.tableView.indexPathForCell(cell) {
             self.heightsCache[url.description] = NSNumber(float: Float(height))
             self.tableView.beginUpdates()
             self.tableView.endUpdates()
@@ -876,7 +874,7 @@ PostCellDelegate {
     // MARK: UIScrollViewDelegate
     
     func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
-        var endScrolling = scrollView.contentOffset.y + scrollView.frame.size.height
+        let endScrolling = scrollView.contentOffset.y + scrollView.frame.size.height
         if endScrolling >= scrollView.contentSize.height && !self.fetchingMore {
             self.hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
             self.fetchingMore = true

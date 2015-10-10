@@ -50,7 +50,7 @@ class UserSession {
             if error != nil {
                 completion(error: error)
             } else {
-                var redditUser = RKClient.sharedClient().currentUser
+                let redditUser = RKClient.sharedClient().currentUser
                 DataManager.manager.datastore.addUser(redditUser, password: password, completion: { (user, error) -> () in
                     self.currentUser = user
                     
@@ -73,11 +73,11 @@ class UserSession {
     
     func nightMode() {
         
-        var backgroundColor = UIColor(red: 12/255,
+        let backgroundColor = UIColor(red: 12/255,
             green: 16/255,
             blue: 33/255,
             alpha: 1.0)
-        var foregroundColor = UIColor(red: 248/255,
+        let foregroundColor = UIColor(red: 248/255,
             green: 248/255,
             blue: 248/255,
             alpha: 1.0)
@@ -120,7 +120,7 @@ class UserSession {
         UITableView.appearance().backgroundView = nil
         UITableView.appearance().sectionIndexBackgroundColor = UIColor.clearColor()
         
-        var backgroundView = UIView()
+        let backgroundView = UIView()
         backgroundView.backgroundColor = UIColor.lightGrayColor().colorWithAlphaComponent(0.7)
         UITableViewCell.appearance().selectedBackgroundView = backgroundView
         
@@ -185,7 +185,7 @@ class UserSession {
         UITableView.appearance().backgroundView = nil
         UITableView.appearance().sectionIndexBackgroundColor = UIColor.clearColor()
         
-        var backgroundView = UIView()
+        let backgroundView = UIView()
         backgroundView.backgroundColor = UIColor.lightGrayColor().colorWithAlphaComponent(0.7)
         UITableViewCell.appearance().selectedBackgroundView = backgroundView
         

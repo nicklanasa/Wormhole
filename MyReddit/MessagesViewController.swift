@@ -117,12 +117,12 @@ JZSwipeCellDelegate {
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if indexPath.row == self.messages.count {
-            var header = tableView.dequeueReusableCellWithIdentifier("LoadMoreHeader") as! LoadMoreHeader
+            let header = tableView.dequeueReusableCellWithIdentifier("LoadMoreHeader") as! LoadMoreHeader
             header.delegate = self
             return header
         }
         
-        var cell = tableView.dequeueReusableCellWithIdentifier("MessageCell") as! MessageCell
+        let cell = tableView.dequeueReusableCellWithIdentifier("MessageCell") as! MessageCell
         
         let message = self.messages[indexPath.row] as! RKMessage
         cell.message = message
@@ -157,7 +157,7 @@ JZSwipeCellDelegate {
             if self.pagination != nil {
                 self.pagination = pagination
                 if let messages = results {
-                    self.messages.extend(messages)
+                    self.messages.appendContentsOf(messages)
                 }
             }
             
@@ -173,7 +173,7 @@ JZSwipeCellDelegate {
                 if let message = self.messages[indexPath.row] as? RKMessage {
                     if message.unread {
                         
-                        var filteredMessages = self.readMessages.filter({ (object) -> Bool in
+                        let filteredMessages = self.readMessages.filter({ (object) -> Bool in
                             if let readMessage = object as? RKMessage {
                                 return readMessage.identifier == message.identifier
                             }
@@ -195,10 +195,10 @@ JZSwipeCellDelegate {
     func swipeCell(cell: JZSwipeCell!, triggeredSwipeWithType swipeType: JZSwipeType) {
         
         if let indexPath = self.tableView.indexPathForCell(cell) {
-            if swipeType.value != JZSwipeTypeNone.value {
+            if swipeType.rawValue != JZSwipeTypeNone.rawValue {
                 cell.reset()
                 
-                if swipeType.value == JZSwipeTypeLongLeft.value || swipeType.value == JZSwipeTypeShortLeft.value {
+                if swipeType.rawValue == JZSwipeTypeLongLeft.rawValue || swipeType.rawValue == JZSwipeTypeShortLeft.rawValue {
                     if !SettingsManager.defaultManager.purchased {
                         self.performSegueWithIdentifier("PurchaseSegue", sender: self)
                     } else {
@@ -214,7 +214,7 @@ JZSwipeCellDelegate {
                     } else {
                         LocalyticsSession.shared().tagEvent("Swipe more")
                         
-                        var alertController = UIAlertController(title: "Select option", message: nil, preferredStyle: .ActionSheet)
+                        let alertController = UIAlertController(title: "Select option", message: nil, preferredStyle: .ActionSheet)
                         
                         if self.category == .Unread {
                             alertController.addAction(UIAlertAction(title: "mark read", style: .Default, handler: { (action) -> Void in

@@ -13,9 +13,9 @@ extension UIImage {
         
         var scaledImageRect = CGRectZero
         
-        var aspectWidth = toSize.width / self.size.width
-        var aspectHeight = toSize.height / self.size.height
-        var aspectRatio = max(aspectWidth, aspectHeight)
+        let aspectWidth = toSize.width / self.size.width
+        let aspectHeight = toSize.height / self.size.height
+        let aspectRatio = max(aspectWidth, aspectHeight)
         
         scaledImageRect.size.width = self.size.width * aspectRatio
         scaledImageRect.size.height = self.size.height * aspectRatio
@@ -25,7 +25,7 @@ extension UIImage {
         
         UIGraphicsBeginImageContextWithOptions(toSize, false, 0)
         self.drawInRect(scaledImageRect)
-        var scaledImage = UIGraphicsGetImageFromCurrentImageContext()
+        let scaledImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         
         return scaledImage
@@ -40,7 +40,7 @@ extension UIImage {
         newHeight = (newHeight * self.scale) / self.scale
         UIGraphicsBeginImageContextWithOptions(CGSizeMake(size.width, newHeight), false, self.scale)
         self.drawInRect(CGRectMake(0, 0, size.width, newHeight))
-        var newImage = UIGraphicsGetImageFromCurrentImageContext()
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         return newImage
     }

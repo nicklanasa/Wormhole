@@ -32,7 +32,7 @@ class EditMultiRedditTableViewController: RootTableViewController, EditMultiredd
     
     @IBAction func deleteButtonPressed(sender: AnyObject) {
         
-        var alert = UIAlertController(title: "Delete", message: "Are you sure you want to delete this multireddit?", preferredStyle: .Alert)
+        let alert = UIAlertController(title: "Delete", message: "Are you sure you want to delete this multireddit?", preferredStyle: .Alert)
         
         alert.addAction(UIAlertAction(title: "Yes", style: .Default, handler: { (action) -> Void in
             RedditSession.sharedSession.deleteMultiReddit(self.multireddit, completion: { (error) -> () in
@@ -73,7 +73,7 @@ class EditMultiRedditTableViewController: RootTableViewController, EditMultiredd
     
     func reload() {
         if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) as? EditMultiredditNameCell {
-            RedditSession.sharedSession.multiredditWithName(cell.nameTextField.text, completion: { (pagination, results, error) -> () in
+            RedditSession.sharedSession.multiredditWithName(cell.nameTextField.text!, completion: { (pagination, results, error) -> () in
                 if error != nil {
                     dispatch_async(dispatch_get_main_queue(), { () -> Void in
                         UIAlertView(title: "Error!",
@@ -113,15 +113,15 @@ class EditMultiRedditTableViewController: RootTableViewController, EditMultiredd
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if indexPath.section == 1 {
             if indexPath.row == 0 {
-                var cell = tableView.dequeueReusableCellWithIdentifier("AddSubredditCell") as! UITableViewCell
-                return cell
+                let cell = tableView.dequeueReusableCellWithIdentifier("AddSubredditCell")
+                return cell!
             }
-            var cell = tableView.dequeueReusableCellWithIdentifier("SubredditCell") as! SubredditCell
-            var subreddit = self.multireddit.subreddits?[indexPath.row - 1] as! String
+            let cell = tableView.dequeueReusableCellWithIdentifier("SubredditCell") as! SubredditCell
+            let subreddit = self.multireddit.subreddits?[indexPath.row - 1] as! String
             cell.nameLabel.text = subreddit
             return cell
         } else {
-            var editMultiredditNameCell = tableView.dequeueReusableCellWithIdentifier("EditMultiredditNameCell") as! EditMultiredditNameCell
+            let editMultiredditNameCell = tableView.dequeueReusableCellWithIdentifier("EditMultiredditNameCell") as! EditMultiredditNameCell
             editMultiredditNameCell.nameTextField.text = self.multireddit.name
             editMultiredditNameCell.delegate = self
             return editMultiredditNameCell
@@ -164,13 +164,13 @@ class EditMultiRedditTableViewController: RootTableViewController, EditMultiredd
         
     }
     
-    override func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [AnyObject]? {
+    override func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
         if indexPath.section == 0 || (indexPath.section == 1 && indexPath.row == 0) {
             return nil
         }
         
         let deleteAction = UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: "delete", handler: { (action, indexPath) -> Void in
-            var subredditName = self.multireddit.subreddits?[indexPath.row - 1] as! String
+            let subredditName = self.multireddit.subreddits?[indexPath.row - 1] as! String
             RedditSession.sharedSession.searchForSubredditByName(subredditName, pagination: nil) { (pagination, results, error) -> () in
                 if let subreddits = results as? [RKSubreddit] {
                     
@@ -209,25 +209,24 @@ class EditMultiRedditTableViewController: RootTableViewController, EditMultiredd
         
         return [deleteAction]
     }
-
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
 
     }
     
     func showAddNewSubredditToMultiredditDialog() {
-        var alert = UIAlertController(title: "Find Subreddit",
+        let alert = UIAlertController(title: "Find Subreddit",
             message: "Please enter the subreddit name.",
             preferredStyle: .Alert)
         
         alert.addTextFieldWithConfigurationHandler({ (textField) -> Void in })
         
         alert.addAction(UIAlertAction(title: "Ok", style: .Default, handler: { (action) -> Void in
-            if let textfield = alert.textFields?.first as? UITextField {
+            if let textfield = alert.textFields?.first {
                 
-                var subredditName = textfield.text.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
+                let subredditName = textfield.text!.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
                 
-                if count(subredditName) == 0 {
+                if subredditName.characters.count == 0 {
                     UIAlertView(title: "Error!",
                         message: "You must enter in a subreddit name!",
                         delegate: self,
@@ -277,7 +276,7 @@ class EditMultiRedditTableViewController: RootTableViewController, EditMultiredd
     
     func editMultiredditCell(cell: EditMultiredditNameCell, didTapReturnButton sender: AnyObject) {
         // Update Multireddit name
-        if count(cell.nameTextField.text) == 0 || count(cell.nameTextField.text) <= 3 || cell.nameTextField.text.componentsSeparatedByString(" ").count > 1 {
+        if cell.nameTextField.text?.characters.count == 0 || cell.nameTextField.text?.characters.count <= 3 || cell.nameTextField.text?.componentsSeparatedByString(" ").count > 1 {
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
                 UIAlertView(title: "Error!",
                     message: "You must enter in a valid multireddit name! Make sure it doesn't have any spaces in it and that it's greater than 3 characters.",
@@ -285,7 +284,7 @@ class EditMultiRedditTableViewController: RootTableViewController, EditMultiredd
                     cancelButtonTitle: "OK").show()
             })
         } else {
-            var name = cell.nameTextField.text.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet()).stringByTrimmingCharactersInSet(NSCharacterSet(charactersInString: " "))
+            let name = cell.nameTextField.text!.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet()).stringByTrimmingCharactersInSet(NSCharacterSet(charactersInString: " "))
             RedditSession.sharedSession.renameMultiredditWithName(name, multiReddit: self.multireddit, completion: { (error) -> () in
                 if error != nil {
                     dispatch_async(dispatch_get_main_queue(), { () -> Void in

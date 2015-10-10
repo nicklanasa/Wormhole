@@ -25,14 +25,14 @@ class LoginViewController: UIViewController, UITableViewDataSource, UITableViewD
     var user: User?
 
     @IBAction func loginButtonPressed(sender: AnyObject) {
-        var emailCell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) as! EmailCell
-        var passwordCell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 1, inSection: 0)) as! PasswordCell
+        let emailCell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) as! EmailCell
+        let passwordCell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 1, inSection: 0)) as! PasswordCell
         
         self.hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
         
-        if count(emailCell.usernameTextField.text) > 0 && count(passwordCell.passwordTextField.text) > 0 {
-            UserSession.sharedSession.loginWithUsername(emailCell.usernameTextField.text,
-                password: passwordCell.passwordTextField.text) { (error) -> () in
+        if emailCell.usernameTextField.text?.characters.count > 0 && passwordCell.passwordTextField.text?.characters.count > 0 {
+            UserSession.sharedSession.loginWithUsername(emailCell.usernameTextField.text!,
+                password: passwordCell.passwordTextField.text!) { (error) -> () in
                     if error != nil {
                         self.hud.hide(true)
                         UIAlertView(title: "Error!",
@@ -45,7 +45,7 @@ class LoginViewController: UIViewController, UITableViewDataSource, UITableViewD
                         
                         LocalyticsSession.shared().tagEvent("Login success")
                         
-                        if let splitViewController = self.splitViewController {
+                        if let _ = self.splitViewController {
                             NSNotificationCenter.defaultCenter().postNotificationName("RefreshSubreddits", object: nil)
                         }
                         
@@ -64,7 +64,7 @@ class LoginViewController: UIViewController, UITableViewDataSource, UITableViewD
     
     override func viewDidAppear(animated: Bool) {
         self.tableView.reloadData()
-        var emailCell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) as! EmailCell
+        let emailCell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) as! EmailCell
         emailCell.usernameTextField.becomeFirstResponder()
     }
     
@@ -76,7 +76,7 @@ class LoginViewController: UIViewController, UITableViewDataSource, UITableViewD
     }
     
     @IBAction func cancelButtonPressed(sender: AnyObject) {
-        if let splitViewController = self.splitViewController {
+        if let _ = self.splitViewController {
             self.navigationController?.popViewControllerAnimated(true)
         } else {
             self.dismissViewControllerAnimated(true, completion: nil)
@@ -89,7 +89,7 @@ class LoginViewController: UIViewController, UITableViewDataSource, UITableViewD
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if indexPath.row == 0 {
-            var cell = tableView.dequeueReusableCellWithIdentifier("EmailCell") as! EmailCell
+            let cell = tableView.dequeueReusableCellWithIdentifier("EmailCell") as! EmailCell
             cell.delegate = self
             
             if let currentUser = self.user {
@@ -98,7 +98,7 @@ class LoginViewController: UIViewController, UITableViewDataSource, UITableViewD
             
             return cell
         } else {
-            var cell = tableView.dequeueReusableCellWithIdentifier("PasswordCell") as! PasswordCell
+            let cell = tableView.dequeueReusableCellWithIdentifier("PasswordCell") as! PasswordCell
             cell.delegate = self
             
             if let currentUser = self.user {
@@ -110,7 +110,7 @@ class LoginViewController: UIViewController, UITableViewDataSource, UITableViewD
     }
     
     func emailCell(cell: EmailCell, didTapReturnButton sender: AnyObject) {
-        var passwordCell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 1, inSection: 0)) as! PasswordCell
+        let passwordCell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 1, inSection: 0)) as! PasswordCell
         passwordCell.passwordTextField.becomeFirstResponder()
     }
     

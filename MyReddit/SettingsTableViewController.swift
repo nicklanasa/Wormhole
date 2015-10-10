@@ -57,7 +57,7 @@ class SettingsTableViewController: UITableViewController, BDGIAPDelegate {
     
     private func updateTable() {
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
-            var currentTextSize = SettingsManager.defaultManager.defaultTextSize
+            let currentTextSize = SettingsManager.defaultManager.defaultTextSize
             self.showFlairSwitch.on = SettingsManager.defaultManager.valueForSetting(.Flair)
             self.showNSFWSwitch.on = SettingsManager.defaultManager.valueForSetting(.NSFW)
             self.showSubredditLogosSwitch.on = SettingsManager.defaultManager.valueForSetting(.SubredditLogos)
@@ -154,7 +154,7 @@ class SettingsTableViewController: UITableViewController, BDGIAPDelegate {
         if indexPath.section == 1 {
             if indexPath.row == 3 {
                 // Text Size
-                var alert = UIAlertController(title: "Text Size",
+                let alert = UIAlertController(title: "Text Size",
                     message: "Please select the text size. This will change the text size for both comments and posts.",
                     preferredStyle: .ActionSheet)
                 
@@ -217,12 +217,12 @@ class SettingsTableViewController: UITableViewController, BDGIAPDelegate {
                 UIApplication.sharedApplication().openURL(NSURL(string: "itms://itunes.apple.com/us/app/apple-store/id544533053?mt=8")!)
             case 2:
                 LocalyticsSession.shared().tagEvent("MyReddit Facebook button tapped")
-                var url = NSURL(string: "https://www.facebook.com/pages/MyReddit/442141645823510?ref=hl")
+                let url = NSURL(string: "https://www.facebook.com/pages/MyReddit/442141645823510?ref=hl")
                 self.performSegueWithIdentifier("WebViewSegue", sender: url)
             case 3:
                 LocalyticsSession.shared().tagEvent("Settings share button tapped")
-                var url = NSURL(string: "http://nytekproductions.com/myreddit/")
-                var shareText = "Check out MyReddit - A Reddit client for iOS that rocks!"
+                let url = NSURL(string: "http://nytekproductions.com/myreddit/")
+                let shareText = "Check out MyReddit - A Reddit client for iOS that rocks!"
                 let objectsToShare = [shareText, url!]
                 let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
                 if let popoverController = activityVC.popoverPresentationController {
@@ -243,15 +243,15 @@ class SettingsTableViewController: UITableViewController, BDGIAPDelegate {
             switch indexPath.row {
             case 0:
                 LocalyticsSession.shared().tagEvent("Nytek Productions twitter")
-                var url = NSURL(string: "twitter://user?screen_name=Nytekproduction")
+                let url = NSURL(string: "twitter://user?screen_name=Nytekproduction")
                 UIApplication.sharedApplication().openURL(url!)
             case 1:
                 LocalyticsSession.shared().tagEvent("Nick Lanasa twitter")
-                var url = NSURL(string: "twitter://user?screen_name=nicklanasa")
+                let url = NSURL(string: "twitter://user?screen_name=nicklanasa")
                 UIApplication.sharedApplication().openURL(url!)
             case 2:
                 LocalyticsSession.shared().tagEvent("Samantha Lanasa twitter")
-                var url = NSURL(string: "twitter://user?screen_name=3lovethemapples")
+                let url = NSURL(string: "twitter://user?screen_name=3lovethemapples")
                 UIApplication.sharedApplication().openURL(url!)
             default: return
             }
@@ -263,13 +263,13 @@ class SettingsTableViewController: UITableViewController, BDGIAPDelegate {
     
     override func shouldPerformSegueWithIdentifier(identifier: String?, sender: AnyObject?) -> Bool {
         if identifier == "WebViewSegue" {
-            if let requestURL = sender as? NSURL {
+            if let _ = sender as? NSURL {
                 return true
             } else {
                 return false
             }
         } else if identifier == "MyRedditSubredditSegue" {
-            if let subreddit = sender as? RKSubreddit {
+            if let _ = sender as? RKSubreddit {
                 return true
             } else {
                 return false

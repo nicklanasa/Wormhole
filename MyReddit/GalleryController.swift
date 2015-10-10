@@ -180,27 +180,27 @@ UICollectionViewDelegate {
     
     private func configureNav() {
         
-        var infoString = NSMutableAttributedString(string:"\(self.link.title)\nby \(self.link.author) on /r/\(self.link.subreddit)")
-        var attrs = [NSFontAttributeName : MyRedditSelfTextFont]
-        var subAttrs = [NSFontAttributeName : MyRedditSelfTextFont, NSForegroundColorAttributeName : MyRedditColor]
-        infoString.addAttributes(attrs, range: NSMakeRange(count("\(self.link.title)\nby "), count(link.author)))
-        infoString.addAttributes(subAttrs, range: NSMakeRange(count("\(self.link.title)\nby \(self.link.author) on "), count("/r/\(link.subreddit)")))
+        let infoString = NSMutableAttributedString(string:"\(self.link.title)\nby \(self.link.author) on /r/\(self.link.subreddit)")
+        let attrs = [NSFontAttributeName : MyRedditSelfTextFont]
+        let subAttrs = [NSFontAttributeName : MyRedditSelfTextFont, NSForegroundColorAttributeName : MyRedditColor]
+        infoString.addAttributes(attrs, range: NSMakeRange("\(self.link.title)\nby ".characters.count, link.author.characters.count))
+        infoString.addAttributes(subAttrs, range: NSMakeRange("\(self.link.title)\nby \(self.link.author) on ".characters.count, "/r/\(link.subreddit)".characters.count))
         
         self.postTitleLabel.attributedText = infoString
         
         self.view.backgroundColor = MyRedditBackgroundColor
         
-        var score = self.link.score.abbreviateNumber()
-        var comments = Int(self.link.totalComments).abbreviateNumber()
+        let score = self.link.score.abbreviateNumber()
+        let comments = Int(self.link.totalComments).abbreviateNumber()
         
-        var titleString = NSMutableAttributedString(string: "\(score)\n\(comments) comments")
-        var fontAttrs = [NSFontAttributeName : MyRedditCommentTextFont,
+        let titleString = NSMutableAttributedString(string: "\(score)\n\(comments) comments")
+        let fontAttrs = [NSFontAttributeName : MyRedditCommentTextFont,
             NSForegroundColorAttributeName : MyRedditLabelColor]
-        var scoreAttrs = [NSForegroundColorAttributeName : MyRedditUpvoteColor]
-        titleString.addAttributes(fontAttrs, range: NSMakeRange(0, count(titleString.string)))
-        titleString.addAttributes(scoreAttrs, range: NSMakeRange(0, count(score)))
+        let scoreAttrs = [NSForegroundColorAttributeName : MyRedditUpvoteColor]
+        titleString.addAttributes(fontAttrs, range: NSMakeRange(0, titleString.string.characters.count))
+        titleString.addAttributes(scoreAttrs, range: NSMakeRange(0, score.characters.count))
         
-        var navLabel = UILabel(frame: CGRectZero)
+        let navLabel = UILabel(frame: CGRectZero)
         navLabel.attributedText = titleString
         navLabel.textAlignment = .Center
         navLabel.numberOfLines = 2
@@ -208,8 +208,7 @@ UICollectionViewDelegate {
         self.navigationItem.titleView = navLabel
     }
     
-    func pageViewController(pageViewController: UIPageViewController,
-        willTransitionToViewControllers pendingViewControllers: [AnyObject]) {
+    func pageViewController(pageViewController: UIPageViewController, willTransitionToViewControllers pendingViewControllers: [UIViewController]) {
         if self.postTitleView.frame.size.height > 35 {
             self.seeMoreButtonTapped(self)
         }
@@ -220,7 +219,7 @@ UICollectionViewDelegate {
             self.pageViewController.dataSource = self
             self.pageViewController.delegate = self
             
-            var controller = self.viewControllerAtIndex(0)!
+            let controller = self.viewControllerAtIndex(0)!
             
             self.pageViewController.setViewControllers([controller],
                 direction: UIPageViewControllerNavigationDirection.Forward,
@@ -235,7 +234,7 @@ UICollectionViewDelegate {
 
     func pageViewController(pageViewController: UIPageViewController,
         viewControllerBeforeViewController viewController: UIViewController) -> UIViewController? {
-        var controller = viewController as! ImageViewController
+        let controller = viewController as! ImageViewController
         var index: NSInteger = controller.pageIndex
         
         self.pagesBarbutton.title = "\(index+1)/\(self.images!.count)"
@@ -251,7 +250,7 @@ UICollectionViewDelegate {
     
     func pageViewController(pageViewController: UIPageViewController,
         viewControllerAfterViewController viewController: UIViewController) -> UIViewController? {
-        var controller = viewController as! ImageViewController
+        let controller = viewController as! ImageViewController
         var index: NSInteger = controller.pageIndex
         
         self.pagesBarbutton.title = "\(index+1)/\(self.images!.count)"
@@ -271,12 +270,12 @@ UICollectionViewDelegate {
     }
     
     private func viewControllerAtIndex(index: NSInteger) -> ImageViewController? {
-        var imagesCount = self.images?.count ?? 0
+        let imagesCount = self.images?.count ?? 0
         if imagesCount == 0 || index >= imagesCount {
             return nil
         }
         
-        var controller = self.storyboard?.instantiateViewControllerWithIdentifier("ImageViewController") as! ImageViewController
+        let controller = self.storyboard?.instantiateViewControllerWithIdentifier("ImageViewController") as! ImageViewController
         controller.pageIndex = index
         if let imgImage = self.images?[index] as? IMGImage {
             controller.imageURL = imgImage.url
@@ -430,10 +429,10 @@ UICollectionViewDelegate {
     
     // The cell that is returned must be retrieved from a call to -dequeueReusableCellWithReuseIdentifier:forIndexPath:
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        var cell = collectionView.dequeueReusableCellWithReuseIdentifier("ImageCell",
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("ImageCell",
             forIndexPath: indexPath) as! GalleryImageCollectionViewCell
         if let imgImage = self.images?[indexPath.row] as? IMGImage {
-            var thumbnailImageURL = imgImage.URLWithSize(IMGSize(rawValue: IMGSize.MediumThumbnailSize.rawValue)!)
+            let thumbnailImageURL = imgImage.URLWithSize(IMGSize(rawValue: IMGSize.MediumThumbnailSize.rawValue)!)
             cell.imageView.sd_setImageWithURL(thumbnailImageURL)
         } else if let imageURL = self.images?[indexPath.row] as? NSURL {
             cell.imageView.sd_setImageWithURL(imageURL)

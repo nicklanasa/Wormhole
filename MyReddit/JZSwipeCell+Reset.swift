@@ -10,7 +10,7 @@ import Foundation
 
 extension JZSwipeCell {
     func reset() {
-        var indentPoints: CGFloat = CGFloat(self.indentationLevel) * self.indentationWidth
+        let indentPoints: CGFloat = CGFloat(self.indentationLevel) * self.indentationWidth
         UIView.animateWithDuration(0.3, animations: { () -> Void in
             self.contentView.frame = CGRectMake(indentPoints,
                 self.contentView.frame.origin.y,

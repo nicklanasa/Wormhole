@@ -1,4 +1,4 @@
-NSDate+Calendar 0.0.6
+NSDate+Calendar 0.0.7
 ===
 
 This is the set of categories on [NSDate](https://developer.apple.com/library/mac/documentation/Cocoa/Reference/Foundation/Classes/NSDate_Class/Reference/Reference.html) that allow access to date components such as *year, month, week of year, week of month, weekday, day, hour, minute, second* in local time zone and many more.
@@ -26,6 +26,8 @@ NSInteger hour = date.hour;                 // 13
 NSInteger minute = date.minute;             // 4
 NSInteger second = date.second;             // 35
 NSUInteger daysInMonth = date.daysInMonth;  // 31
+NSUInteger dayInYear = date.dayInYear;      // 213
+NSUInteger hourInYear = date.hourInYear     // 5102
 ```
 
 ###### Create date from date components

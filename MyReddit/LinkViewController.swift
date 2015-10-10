@@ -168,26 +168,26 @@ class LinkViewController: UIViewController, UITextViewDelegate {
     }
     
     private func configureNav() {
-        var infoString = NSMutableAttributedString(string:"\(self.link.title)\nby \(self.link.author) on /r/\(self.link.subreddit)")
-        var attrs = [NSFontAttributeName : MyRedditSelfTextFont]
-        var subAttrs = [NSFontAttributeName : MyRedditSelfTextFont, NSForegroundColorAttributeName : MyRedditColor]
-        infoString.addAttributes(attrs, range: NSMakeRange(count("\(self.link.title)\nby "), count(link.author)))
-        infoString.addAttributes(subAttrs, range: NSMakeRange(count("\(self.link.title)\nby \(self.link.author) on "), count("/r/\(link.subreddit)")))
+        let infoString = NSMutableAttributedString(string:"\(self.link.title)\nby \(self.link.author) on /r/\(self.link.subreddit)")
+        let attrs = [NSFontAttributeName : MyRedditSelfTextFont]
+        let subAttrs = [NSFontAttributeName : MyRedditSelfTextFont, NSForegroundColorAttributeName : MyRedditColor]
+        infoString.addAttributes(attrs, range: NSMakeRange("\(self.link.title)\nby ".characters.count, link.author.characters.count))
+        infoString.addAttributes(subAttrs, range: NSMakeRange("\(self.link.title)\nby \(self.link.author) on ".characters.count, "/r/\(link.subreddit)".characters.count))
         
         self.postTitleLabel.attributedText = infoString
         
         self.view.backgroundColor = MyRedditBackgroundColor
         
-        var score = self.link.score.abbreviateNumber()
-        var comments = Int(self.link.totalComments).abbreviateNumber()
+        let score = self.link.score.abbreviateNumber()
+        let comments = Int(self.link.totalComments).abbreviateNumber()
         
-        var titleString = NSMutableAttributedString(string: "\(score)\n\(comments) comments")
-        var fontAttrs = [NSFontAttributeName : MyRedditCommentTextFont, NSForegroundColorAttributeName : MyRedditLabelColor]
-        var scoreAttrs = [NSForegroundColorAttributeName : MyRedditUpvoteColor]
-        titleString.addAttributes(fontAttrs, range: NSMakeRange(0, count(titleString.string)))
-        titleString.addAttributes(scoreAttrs, range: NSMakeRange(0, count(score)))
+        let titleString = NSMutableAttributedString(string: "\(score)\n\(comments) comments")
+        let fontAttrs = [NSFontAttributeName : MyRedditCommentTextFont, NSForegroundColorAttributeName : MyRedditLabelColor]
+        let scoreAttrs = [NSForegroundColorAttributeName : MyRedditUpvoteColor]
+        titleString.addAttributes(fontAttrs, range: NSMakeRange(0, titleString.string.characters.count))
+        titleString.addAttributes(scoreAttrs, range: NSMakeRange(0, score.characters.count))
         
-        var navLabel = UILabel(frame: CGRectZero)
+        let navLabel = UILabel(frame: CGRectZero)
         navLabel.attributedText = titleString
         navLabel.textAlignment = .Center
         navLabel.numberOfLines = 2
@@ -208,8 +208,8 @@ class LinkViewController: UIViewController, UITextViewDelegate {
     }
     
     func showReader() {
-        var hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
-        RedditSession.sharedSession.readableContentWithURL(self.link.URL.absoluteString!, completion: { (content, error) -> () in
+        let hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
+        RedditSession.sharedSession.readableContentWithURL(self.link.URL.absoluteString, completion: { (content, error) -> () in
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
                 hud.hide(true)
                 if error != nil {
@@ -359,7 +359,7 @@ class LinkViewController: UIViewController, UITextViewDelegate {
     }
     
     override func didRotateFromInterfaceOrientation(fromInterfaceOrientation: UIInterfaceOrientation) {
-        var mutableString = self.content.content.html2AttributedString
+        let mutableString = self.content.content.html2AttributedString
         self.textView.attributedText = mutableString
         self.textView.textColor = MyRedditLabelColor
         self.textView.font = MyRedditSelfTextFont

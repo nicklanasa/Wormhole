@@ -57,13 +57,13 @@ class ComposeTableViewController: RootTableViewController, UITextViewDelegate {
     
     @IBAction func sendButtonTapped(sender: AnyObject) {
         
-        if count(self.textView.text) > 0 &&
-            count(self.toTextField.text) > 0 &&
-            count(self.subjectTextField.text) > 0 {
+        if self.textView.text.characters.count > 0 &&
+            self.toTextField.text!.characters.count > 0 &&
+            self.subjectTextField.text!.characters.count > 0 {
             self.hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
             RedditSession.sharedSession.sendMessage(self.textView.text,
-                subject: self.subjectTextField.text,
-                recipient: self.toTextField.text,
+                subject: self.subjectTextField.text!,
+                recipient: self.toTextField.text!,
                 completion: { (error) -> () in
                     dispatch_async(dispatch_get_main_queue(), { () -> Void in
                         if error != nil {
@@ -102,7 +102,7 @@ class ComposeTableViewController: RootTableViewController, UITextViewDelegate {
     }
     
     func textViewDidEndEditing(textView: UITextView) {
-        if count(textView.text) == 0 {
+        if textView.text.characters.count == 0 {
             textView.text = "enter message..."
             textView.textColor = UIColor.lightGrayColor()
         }

@@ -81,10 +81,10 @@ PostCellDelegate {
     }()
     
     @IBAction func filterButtonPressed(sender: AnyObject) {
-        var actionSheet = UIAlertController(title: "Select sort", message: nil, preferredStyle: .ActionSheet)
+        let actionSheet = UIAlertController(title: "Select sort", message: nil, preferredStyle: .ActionSheet)
         
         actionSheet.addAction(UIAlertAction(title: "newest", style: .Default, handler: { (action) -> Void in
-            self.links.sort({ (l0, l1) -> Bool in
+            self.links.sortInPlace({ (l0, l1) -> Bool in
                 if let link0 = l0 as? RKLink, link1 = l1 as? RKLink {
                     return link0.created.timeIntervalSinceNow > link1.created.timeIntervalSinceNow
                 }
@@ -94,7 +94,7 @@ PostCellDelegate {
         }))
         
         actionSheet.addAction(UIAlertAction(title: "oldest", style: .Default, handler: { (action) -> Void in
-            self.links.sort({ (l0, l1) -> Bool in
+            self.links.sortInPlace({ (l0, l1) -> Bool in
                 if let link0 = l0 as? RKLink, link1 = l1 as? RKLink {
                     return link0.created.timeIntervalSinceNow < link1.created.timeIntervalSinceNow
                 }
@@ -131,9 +131,9 @@ PostCellDelegate {
     }
     
     func search() {
-        var searchText = self.searchController.searchBar.text.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
+        let searchText = self.searchController.searchBar.text!.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
         
-        if count(searchText) > 0 {
+        if searchText.characters.count > 0 {
             if self.filterControl.selectedSegmentIndex == 1 {
                 self.searchSubs(searchText)
             } else {
@@ -157,16 +157,16 @@ PostCellDelegate {
     }
     
     private func searchLinks(searchText: String) {
-        if count(searchText) > 0 {
+        if searchText.characters.count > 0 {
             if self.restrictSubreddit.on {
-                if let subreddit = self.subreddit {
+                if let _ = self.subreddit {
                     RedditSession.sharedSession.searchForLinksInSubreddit(self.subreddit,
-                        searchText: searchController.searchBar.text,
+                        searchText: searchController.searchBar.text!,
                         pagination: self.pagination,
                         completion: { (pagination, results, error) -> () in
                             if error == nil {
                                 if let links = results {
-                                    self.links.extend(links)
+                                    self.links.appendContentsOf(links)
                                     self.pagination = pagination
                                 }
                             }
@@ -178,7 +178,7 @@ PostCellDelegate {
                         completion: { (pagination, results, error) -> () in
                             if error == nil {
                                 if let links = results {
-                                    self.links.extend(links)
+                                    self.links.appendContentsOf(links)
                                     self.pagination = pagination
                                 }
                             }
@@ -191,7 +191,7 @@ PostCellDelegate {
                     completion: { (pagination, results, error) -> () in
                         if error == nil {
                             if let links = results {
-                                self.links.extend(links)
+                                self.links.appendContentsOf(links)
                                 self.pagination = pagination
                             }
                         }
@@ -219,7 +219,7 @@ PostCellDelegate {
         
         self.navigationItem.rightBarButtonItems = [restrictToSubredditSwitch, restrictToSubreddit]
         
-        if let splitViewController = self.splitViewController {
+        if let _ = self.splitViewController {
             self.listButton.action = self.splitViewController!.displayModeButtonItem().action
         }
         
@@ -232,13 +232,13 @@ PostCellDelegate {
         self.tableView.rowHeight = UITableViewAutomaticDimension
         self.tableView.backgroundColor = MyRedditBackgroundColor
         
-        var textFieldInsideSearchBar = self.searchController.searchBar.valueForKey("searchField") as? UITextField
+        let textFieldInsideSearchBar = self.searchController.searchBar.valueForKey("searchField") as? UITextField
         
         textFieldInsideSearchBar?.textColor = MyRedditLabelColor
         
         self.view.backgroundColor = MyRedditBackgroundColor
         
-        if let splitViewController = self.splitViewController {
+        if let _ = self.splitViewController {
             self.navigationItem.titleView = self.searchController.searchBar
         } else {
             self.tableView.tableHeaderView = self.searchController.searchBar
@@ -275,13 +275,13 @@ PostCellDelegate {
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         if self.filterControl.selectedSegmentIndex == 1 {
-            var cell = tableView.dequeueReusableCellWithIdentifier("SubredditCell") as! SubredditCell
+            let cell = tableView.dequeueReusableCellWithIdentifier("SubredditCell") as! SubredditCell
             cell.rkSubreddit = self.subreddits[indexPath.row] as! RKSubreddit
             return cell
         }
         
         if indexPath.row == self.links.count {
-            var cell =  tableView.dequeueReusableCellWithIdentifier("LoadMoreHeader") as! LoadMoreHeader
+            let cell =  tableView.dequeueReusableCellWithIdentifier("LoadMoreHeader") as! LoadMoreHeader
             cell.delegate = self
             cell.stopAnimating()
             return cell
@@ -295,7 +295,7 @@ PostCellDelegate {
                 if SettingsManager.defaultManager.valueForSetting(.FullWidthImages) {
                     cell = tableView.dequeueReusableCellWithIdentifier("TitleCell") as! TitleCell
                 } else {
-                    var imageCell = tableView.dequeueReusableCellWithIdentifier("PostImageCell") as! PostImageCell
+                    let imageCell = tableView.dequeueReusableCellWithIdentifier("PostImageCell") as! PostImageCell
                     imageCell.postImageDelegate = self
                     imageCell.link = link
                     imageCell.delegate = self
@@ -397,10 +397,8 @@ PostCellDelegate {
                             url = thumbnailURL.description
                         }
                     } else if link.domain == "imgur.com" {
-                        if let absoluteString = link.URL.absoluteString {
-                            var stringURL = absoluteString + ".jpg"
-                            url = stringURL
-                        }
+                        let stringURL = link.URL.absoluteString + ".jpg"
+                        url = stringURL
                     }
                     
                     if url != nil {
@@ -422,8 +420,8 @@ PostCellDelegate {
     }
     
     private func heightForLink(link: RKLink) -> CGFloat {
-        var text = link.title
-        var frame = CGRectMake(0, 0, (self.tableView.frame.size.width - 18), CGFloat.max)
+        let text = link.title
+        let frame = CGRectMake(0, 0, (self.tableView.frame.size.width - 18), CGFloat.max)
         let label: UILabel = UILabel(frame: frame)
         label.numberOfLines = 0
         label.lineBreakMode = NSLineBreakMode.ByWordWrapping
@@ -440,7 +438,7 @@ PostCellDelegate {
     }
     
     func swipeCell(cell: JZSwipeCell!, triggeredSwipeWithType swipeType: JZSwipeType) {
-        if swipeType.value != JZSwipeTypeNone.value {
+        if swipeType.rawValue != JZSwipeTypeNone.rawValue {
             cell.reset()
             if !SettingsManager.defaultManager.purchased {
                 self.performSegueWithIdentifier("PurchaseSegue", sender: self)
@@ -450,7 +448,7 @@ PostCellDelegate {
                 
                 if let indexPath = self.tableView.indexPathForCell(cell) {
                     if let link = self.links[indexPath.row] as? RKLink {
-                        if swipeType.value == JZSwipeTypeShortLeft.value {
+                        if swipeType.rawValue == JZSwipeTypeShortLeft.rawValue {
                             // Upvote
                             LocalyticsSession.shared().tagEvent("Swipe upvote")
                             RedditSession.sharedSession.upvote(link, completion: { (error) -> () in
@@ -465,7 +463,7 @@ PostCellDelegate {
                                     self.search()
                                 }
                             })
-                        } else if swipeType.value == JZSwipeTypeShortRight.value {
+                        } else if swipeType.rawValue == JZSwipeTypeShortRight.rawValue {
                             LocalyticsSession.shared().tagEvent("Swipe downvote")
                             // Downvote
                             RedditSession.sharedSession.downvote(link, completion: { (error) -> () in
@@ -480,11 +478,11 @@ PostCellDelegate {
                                     self.search()
                                 }
                             })
-                        } else if swipeType.value == JZSwipeTypeLongLeft.value {
+                        } else if swipeType.rawValue == JZSwipeTypeLongLeft.rawValue {
                             LocalyticsSession.shared().tagEvent("Swipe more")
                             // More
                             self.hud.hide(true)
-                            var alertController = UIAlertController(title: "Select option", message: nil, preferredStyle: .ActionSheet)
+                            let alertController = UIAlertController(title: "Select option", message: nil, preferredStyle: .ActionSheet)
                             
                             if link.saved() {
                                 alertController.addAction(UIAlertAction(title: "unsave", style: .Default, handler: { (action) -> Void in
@@ -552,7 +550,7 @@ PostCellDelegate {
     }
     
     func postImageCell(cell: PostImageCell, didDownloadImageWithHeight height: CGFloat, url: NSURL) {
-        if let indexPath = self.tableView.indexPathForCell(cell) {
+        if let _ = self.tableView.indexPathForCell(cell) {
             self.heightsCache[url.description] = NSNumber(float: Float(height))
             self.tableView.beginUpdates()
             self.tableView.endUpdates()

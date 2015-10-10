@@ -15,7 +15,13 @@ extension String {
             NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType,
             NSCharacterEncodingDocumentAttribute: NSUTF8StringEncoding
         ]
-        let attributedString = NSAttributedString(data: encodedData, options: attributedOptions, documentAttributes: nil, error: nil)!
+        
+        var attributedString = NSAttributedString(string: "")
+        
+        do {
+            attributedString = try NSAttributedString(data: encodedData, options: attributedOptions, documentAttributes: nil)
+        } catch {}
+        
         self.init(attributedString.string)
     }
 }

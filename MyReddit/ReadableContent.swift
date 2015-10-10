@@ -22,7 +22,7 @@ class ReadableContent {
     var dek: String!
     var title: String!
     
-    init(#json: [String : AnyObject]) {
+    init(json: [String : AnyObject]) {
         
         if let domain = json["domain"] as? String {
             self.domain = domain
