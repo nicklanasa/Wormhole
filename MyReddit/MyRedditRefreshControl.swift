@@ -39,6 +39,7 @@ class MyRedditRefreshControl: JHRefreshControl {
     }
     
     override func setup() {
+        
         self.index = 0
         self.backgroundColor = self.colors[index]
         
@@ -47,6 +48,30 @@ class MyRedditRefreshControl: JHRefreshControl {
         self.label.text = "refresh"
         self.label.textColor = UIColor.whiteColor()
         self.label.textAlignment = .Center
+        
+        // Add some constaints for rotating.
+        self.addConstraint(NSLayoutConstraint(item: self.label,
+            attribute: .Width,
+            relatedBy: .Equal,
+            toItem: self,
+            attribute: .Width,
+            multiplier: 1,
+            constant: 0))
+        self.addConstraint(NSLayoutConstraint(item: self.label,
+            attribute: .Trailing,
+            relatedBy: .Equal,
+            toItem: self,
+            attribute: .Trailing,
+            multiplier: 1,
+            constant: 0))
+        self.addConstraint(NSLayoutConstraint(item: self.label,
+            attribute: .Leading,
+            relatedBy: .Equal,
+            toItem: self,
+            attribute: .Leading,
+            multiplier: 1,
+            constant: 0))
+        
         self.addSubviewToRefreshAnimationView(self.label)
     }
     

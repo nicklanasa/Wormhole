@@ -39,8 +39,4 @@ class DataManager {
             completion(pagination: pagination, results: results, error: nil)
         }
     }
-    
-    func syncLinksMultireddit(multiSubreddit: MultiReddit, category: RKSubredditCategory?, pagination: RKPagination?, completion: PaginationCompletion) {
-        
-    }
 }
