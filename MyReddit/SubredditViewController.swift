@@ -48,7 +48,8 @@ PostCellDelegate {
     var selectedLink: RKLink!
     var currentCategory: RKSubredditCategory?
     var optionsController: LinkShareOptionsViewController!
-    var refreshControl = MyRedditRefreshControl(type: .SlideDown)
+    var refreshControl: UIRefreshControl!
+    //var refreshControl = MyRedditRefreshControl(type: .SlideDown)
     var heightsCache = [String : AnyObject]()
     
     @IBOutlet weak var noPostsLabel: UILabel!
@@ -82,10 +83,13 @@ PostCellDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.refreshControl.addToScrollView(self.tableView, withRefreshBlock: { () -> Void in
-            self.refresh(nil)
-        })
+        self.refreshControl = UIRefreshControl()
+        self.refreshControl.addTarget(self,
+            action: "refresh:",
+            forControlEvents: .ValueChanged)
+        self.tableView.addSubview(self.refreshControl)
         
+        self.refresh(nil)
         self.updateAndFetch()
         self.tableView.tableFooterView = UIView()
      
@@ -113,6 +117,7 @@ PostCellDelegate {
         self.links = Array<AnyObject>()
         self.pagination = nil
         self.fetchLinks()
+        self.refreshControl.endRefreshing()
     }
     
     // Private
@@ -290,7 +295,8 @@ PostCellDelegate {
         LocalyticsSession.shared().tagScreen("Subreddit")
         self.updateUI()
         self.fetchUnread()
-        self.refreshControl.forceRefresh()
+        //self.refreshControl.forceRefresh()
+        self.refresh(nil)
         self.updateSubscribeButton()
     }
     

@@ -1161,6 +1161,7 @@
 		};
 		CE712F001AC2F1A20042B071 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7047AFFBDD6CBEEDDCA19D07 /* Pods-MyReddit.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1181,6 +1182,7 @@
 		};
 		CE712F011AC2F1A20042B071 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 15EC45AB568566F68E59569F /* Pods-MyReddit.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				FRAMEWORK_SEARCH_PATHS = (

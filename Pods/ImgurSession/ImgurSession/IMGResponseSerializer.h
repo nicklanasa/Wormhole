@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 GeoffMacDonald. All rights reserved.
 //
 
-#import <AFNetworking/AFURLResponseSerialization.h>
+#import "AFURLResponseSerialization.h"
 
 /*
  Subclass of AFJSONResponseSerializer to provide ImgurSession a method to track client API rate limits
