@@ -12,11 +12,6 @@ class RootTableViewController: UITableViewController {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         self.updateAppearance()
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        self.updateAppearance()
         
         NSNotificationCenter.defaultCenter().addObserver(self,
             selector: "preferredAppearance",
@@ -24,7 +19,13 @@ class RootTableViewController: UITableViewController {
             object: nil)
     }
     
-    deinit {
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.updateAppearance()
+    }
+    
+    override func viewDidDisappear(animated: Bool) {
+        super.viewDidDisappear(animated)
         NSNotificationCenter.defaultCenter().removeObserver(self,
             name: MyRedditAppearanceDidChangeNotification,
             object: nil)

@@ -704,6 +704,11 @@ AddCommentViewControllerDelegate {
     }
     
     override func preferredAppearance() {
+        
+        self.navigationController?.navigationBar.backgroundColor = MyRedditBackgroundColor
+        self.navigationController?.navigationBar.barTintColor = MyRedditBackgroundColor
+        self.navigationController?.navigationBar.tintColor = MyRedditLabelColor
+        
         self.navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName : MyRedditLabelColor,
             NSFontAttributeName : MyRedditTitleFont]
         self.navigationController?.toolbar.barTintColor = MyRedditBackgroundColor

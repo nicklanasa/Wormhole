@@ -13,11 +13,6 @@ class RootViewController: UIViewController {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         self.updateAppearance()
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        self.updateAppearance()
         
         NSNotificationCenter.defaultCenter().addObserver(self,
             selector: "preferredAppearance",
@@ -25,10 +20,16 @@ class RootViewController: UIViewController {
             object: nil)
     }
     
-    deinit {
-        NSNotificationCenter.defaultCenter().removeObserver(self,
+    override func viewDidDisappear(animated: Bool) {
+        super.viewDidDisappear(animated)
+        NSNotificationCenter.defaultCenter().removeObserver(self, 
             name: MyRedditAppearanceDidChangeNotification,
             object: nil)
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.updateAppearance()
     }
     
     private func updateAppearance() {

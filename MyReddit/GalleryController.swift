@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-class GalleryController: UIViewController,
+class GalleryController: RootViewController,
 UIPageViewControllerDataSource,
 UIPageViewControllerDelegate,
 ImageViewControllerDelegate,
@@ -104,14 +104,6 @@ UICollectionViewDelegate {
         
         self.seeMoreButton.hidden = false
         self.seeLessButton.hidden = true
-    
-        self.view.backgroundColor = MyRedditBackgroundColor
-        self.collectionView.backgroundColor = MyRedditBackgroundColor
-        self.containerView.backgroundColor = MyRedditBackgroundColor
-        self.postTitleView.backgroundColor = MyRedditBackgroundColor
-        self.postTitleLabel.textColor = MyRedditLabelColor
-        
-        self.navigationController?.navigationBar.tintColor = MyRedditLabelColor
         
         RedditSession.sharedSession.markLinkAsViewed(self.link,
             completion: { (error) -> () in })
@@ -130,13 +122,11 @@ UICollectionViewDelegate {
         
         self.navigationItem.rightBarButtonItems = [self.photosBarButtonItem, self.saveButtonItem]
         
-        if self.link.saved {
-            self.navigationItem.rightBarButtonItem?.tintColor = MyRedditColor
-        }
-        
         self.pagesBarbutton.title = "\(1)/\(self.images!.count)"
         
         self.configureNav()
+        
+        self.preferredAppearance()
     }
     
     func showGrid() {
@@ -186,8 +176,6 @@ UICollectionViewDelegate {
         infoString.addAttributes(subAttrs, range: NSMakeRange("\(self.link.title)\nby \(self.link.author) on ".characters.count, "/r/\(link.subreddit)".characters.count))
         
         self.postTitleLabel.attributedText = infoString
-        
-        self.view.backgroundColor = MyRedditBackgroundColor
         
         let score = self.link.score.abbreviateNumber()
         let comments = self.link.totalComments
@@ -453,6 +441,37 @@ UICollectionViewDelegate {
                     animated: false,
                     completion: nil)
             })
+        }
+    }
+    
+    override func preferredAppearance() {
+        self.configureNav()
+        
+        self.pageViewController.view.backgroundColor = MyRedditBackgroundColor
+        
+        if let imageViewController = self.pageViewController.viewControllers?.first as? ImageViewController {
+            imageViewController.view.backgroundColor = MyRedditBackgroundColor
+            imageViewController.imageView.backgroundColor = MyRedditBackgroundColor
+        }
+        
+        self.navigationController?.navigationBar.backgroundColor = MyRedditBackgroundColor
+        self.navigationController?.navigationBar.barTintColor = MyRedditBackgroundColor
+        self.navigationController?.navigationBar.tintColor = MyRedditLabelColor
+        
+        self.view.backgroundColor = MyRedditBackgroundColor
+        self.collectionView.backgroundColor = MyRedditBackgroundColor
+        self.containerView.backgroundColor = MyRedditBackgroundColor
+        self.postTitleView.backgroundColor = MyRedditBackgroundColor
+        self.postTitleLabel.textColor = MyRedditLabelColor
+        
+        self.navigationController?.navigationBar.tintColor = MyRedditLabelColor
+        
+        self.toolbar.barTintColor = MyRedditBackgroundColor
+        self.toolbar.backgroundColor = MyRedditBackgroundColor
+        self.toolbar.tintColor = MyRedditLabelColor
+        
+        if self.link.saved {
+            self.navigationItem.rightBarButtonItem?.tintColor = MyRedditColor
         }
     }
 }

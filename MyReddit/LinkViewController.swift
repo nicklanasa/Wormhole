@@ -151,7 +151,8 @@ class LinkViewController: RootViewController, UITextViewDelegate {
             
             self.updateVoteButtons()
             
-            NSUserDefaults.standardUserDefaults().setObject(true, forKey: self.link.identifier)
+            NSUserDefaults.standardUserDefaults().setObject(true,
+                forKey: self.link.identifier)
         }
     }
     
@@ -345,13 +346,19 @@ class LinkViewController: RootViewController, UITextViewDelegate {
     }
     
     override func didRotateFromInterfaceOrientation(fromInterfaceOrientation: UIInterfaceOrientation) {
-        let mutableString = self.content.content.html2AttributedString
-        self.textView.attributedText = mutableString
-        self.preferredAppearance()
+        if let content = self.content.content {
+            let mutableString = content.html2AttributedString
+            self.textView.attributedText = mutableString
+            self.preferredAppearance()
+        }
     }
     
     override func preferredAppearance() {
         self.configureNav()
+    
+        self.navigationController?.navigationBar.backgroundColor = MyRedditBackgroundColor
+        self.navigationController?.navigationBar.barTintColor = MyRedditBackgroundColor
+        self.navigationController?.navigationBar.tintColor = MyRedditLabelColor
         
         self.toolbar.barTintColor = MyRedditBackgroundColor
         self.toolbar.backgroundColor = MyRedditBackgroundColor
