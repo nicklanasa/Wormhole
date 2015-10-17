@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-class UserContentViewController: UIViewController,
+class UserContentViewController: RootViewController,
 UITableViewDelegate,
 UITableViewDataSource,
 JZSwipeCellDelegate,
@@ -503,5 +503,16 @@ PostImageCellDelegate {
             self.tableView.beginUpdates()
             self.tableView.endUpdates()
         }
+    }
+    
+    override func preferredAppearance() {
+        self.navigationController?.navigationBar.backgroundColor = MyRedditBackgroundColor
+        self.navigationController?.navigationBar.barTintColor = MyRedditBackgroundColor
+        self.navigationController?.navigationBar.tintColor = MyRedditLabelColor
+        self.navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName : MyRedditLabelColor]
+        
+        self.tableView.backgroundColor = MyRedditDarkBackgroundColor
+        
+        self.tableView.reloadData()
     }
 }

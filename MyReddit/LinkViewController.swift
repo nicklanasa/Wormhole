@@ -373,9 +373,7 @@ class LinkViewController: RootViewController, UITextViewDelegate {
         self.view.backgroundColor = MyRedditBackgroundColor
         
         self.webView.backgroundColor = MyRedditDarkBackgroundColor
-        
-        self.navigationController?.navigationBar.tintColor = MyRedditLabelColor
-        
+                
         if self.link.saved {
             self.navigationItem.rightBarButtonItem?.tintColor = MyRedditColor
         }

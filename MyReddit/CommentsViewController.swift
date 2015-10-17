@@ -705,6 +705,8 @@ AddCommentViewControllerDelegate {
     
     override func preferredAppearance() {
         
+        self.tableView.separatorColor = MyRedditBackgroundColor
+        self.tableView.backgroundColor = MyRedditBackgroundColor
         self.navigationController?.navigationBar.backgroundColor = MyRedditBackgroundColor
         self.navigationController?.navigationBar.barTintColor = MyRedditBackgroundColor
         self.navigationController?.navigationBar.tintColor = MyRedditLabelColor

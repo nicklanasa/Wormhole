@@ -9,7 +9,9 @@
 import Foundation
 import UIKit
 
-class ProfileViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class ProfileViewController: RootViewController,
+UITableViewDataSource,
+UITableViewDelegate {
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var toolbar: UIToolbar!
@@ -60,7 +62,7 @@ class ProfileViewController: UIViewController, UITableViewDataSource, UITableVie
     }
     
     override func viewDidLoad() {
-        self.tableView.backgroundColor = MyRedditDarkBackgroundColor
+        self.preferredAppearance()
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -77,6 +79,10 @@ class ProfileViewController: UIViewController, UITableViewDataSource, UITableVie
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("UserInfoCell") as! UserInfoCell
+        
+        cell.titleLabel.textColor = MyRedditLabelColor
+        cell.infoLabel.textColor = MyRedditLabelColor
+        cell.backgroundColor = MyRedditBackgroundColor
         
         if let searchedUser = self.user {
             if indexPath.section == 0 {
@@ -194,5 +200,20 @@ class ProfileViewController: UIViewController, UITableViewDataSource, UITableVie
                 }
             }
         }
+    }
+    
+    override func preferredAppearance() {
+        self.navigationController?.navigationBar.backgroundColor = MyRedditBackgroundColor
+        self.navigationController?.navigationBar.barTintColor = MyRedditBackgroundColor
+        self.navigationController?.navigationBar.tintColor = MyRedditLabelColor
+        self.navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName : MyRedditLabelColor]
+        
+        self.toolbar.barTintColor = MyRedditBackgroundColor
+        self.toolbar.backgroundColor = MyRedditBackgroundColor
+        self.toolbar.tintColor = MyRedditLabelColor
+        
+        self.tableView.backgroundColor = MyRedditDarkBackgroundColor
+            
+        self.tableView.reloadData()
     }
 }

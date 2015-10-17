@@ -463,9 +463,7 @@ UICollectionViewDelegate {
         self.containerView.backgroundColor = MyRedditBackgroundColor
         self.postTitleView.backgroundColor = MyRedditBackgroundColor
         self.postTitleLabel.textColor = MyRedditLabelColor
-        
-        self.navigationController?.navigationBar.tintColor = MyRedditLabelColor
-        
+                
         self.toolbar.barTintColor = MyRedditBackgroundColor
         self.toolbar.backgroundColor = MyRedditBackgroundColor
         self.toolbar.tintColor = MyRedditLabelColor
