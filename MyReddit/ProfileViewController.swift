@@ -13,6 +13,7 @@ class ProfileViewController: UIViewController, UITableViewDataSource, UITableVie
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var toolbar: UIToolbar!
+    @IBOutlet weak var listButton: UIBarButtonItem!
     
     var userTitles = ["Overview", "Comments", "Submitted", "Gilded", "Liked", "Disliked", "Hidden", "Saved"]
     var karmaTitles = ["Link Karma", "Comment Karma"]
@@ -51,6 +52,10 @@ class ProfileViewController: UIViewController, UITableViewDataSource, UITableVie
             if let user = UserSession.sharedSession.currentUser {
                 self.navigationItem.title = user.username
             }
+        }
+        
+        if let _ = self.splitViewController {
+            self.listButton.action = self.splitViewController!.displayModeButtonItem().action
         }
     }
     
@@ -170,6 +175,22 @@ class ProfileViewController: UIViewController, UITableViewDataSource, UITableVie
                         
                         LocalyticsSession.shared().tagEvent("UserContent segue")
                     }
+                }
+            } else if let controller = segue.destinationViewController as? UserContentViewController {
+                if let cell = sender as? UITableViewCell {
+                    
+                    let indexPath: NSIndexPath = self.tableView.indexPathForCell(cell)!
+                    let category = RKUserContentCategory(rawValue: UInt(indexPath.row+1))
+                    controller.category = category
+                    controller.categoryTitle = self.userTitles[indexPath.row] as String
+                    
+                    if let searchedUser = self.user {
+                        controller.user = searchedUser
+                    } else {
+                        controller.user = RKClient.sharedClient().currentUser
+                    }
+                    
+                    LocalyticsSession.shared().tagEvent("UserContent segue")
                 }
             }
         }

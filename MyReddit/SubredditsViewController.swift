@@ -30,7 +30,7 @@ UISearchBarDelegate {
     var syncSubreddits = Array<AnyObject>()
     var syncMultiSubreddits = Array<AnyObject>()
     
-    var refreshControl = MyRedditRefreshControl()
+    var refreshControl: UIRefreshControl!
 
     var subreddits = Array<AnyObject>() {
         didSet {
@@ -79,9 +79,11 @@ UISearchBarDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.refreshControl.addToScrollView(self.tableView, withRefreshBlock: { () -> Void in
-            self.refresh(self.tableView)
-        })
+        self.refreshControl = UIRefreshControl()
+        self.refreshControl.addTarget(self,
+            action: "refresh:",
+            forControlEvents: .ValueChanged)
+        self.tableView.addSubview(self.refreshControl)
         
         NSNotificationCenter.defaultCenter().addObserver(self,
             selector: "didUpdateSubreddits",
@@ -216,7 +218,7 @@ UISearchBarDelegate {
         
         if let barButton = sender as? UIBarButtonItem {
             barButton.action = "editButtonTApped:"
-            barButton.title = "Edit"
+            barButton.title = "edit"
         }
     }
     
@@ -618,7 +620,7 @@ UISearchBarDelegate {
         
         if let barButton = sender as? UIBarButtonItem {
             barButton.action = "finishEditing:"
-            barButton.title = "Done"
+            barButton.title = "done"
         }
     }
     
@@ -683,7 +685,13 @@ UISearchBarDelegate {
             if let controller = segue.destinationViewController as? ProfileViewController {
                 if let user = sender as? RKUser {
                     controller.user = user
-                    self.toggleMaster()
+                }
+            } else if let controller = segue.destinationViewController as? UINavigationController {
+                if let profileViewController = controller.viewControllers[0] as? ProfileViewController {
+                    if let user = sender as? RKUser {
+                        profileViewController.user = user
+                        self.toggleMaster()
+                    }
                 }
             }
         } else if segue.identifier == "EditMultiRedditSegue" {

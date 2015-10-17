@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-class LinkViewController: UIViewController, UITextViewDelegate {
+class LinkViewController: RootViewController, UITextViewDelegate {
     
     var link: RKLink!
     var optionsController: LinkShareOptionsViewController!
@@ -34,9 +34,6 @@ class LinkViewController: UIViewController, UITextViewDelegate {
                     
                     self.textView.attributedText = self.content!.content.html2AttributedString
                     
-                    self.textView.textColor = MyRedditLabelColor
-                    self.textView.font = MyRedditSelfTextFont
-                    
                     self.readerBarButtonItem = UIBarButtonItem(image: UIImage(named: "ReaderSelected"),
                         style: .Plain,
                         target: self,
@@ -44,6 +41,8 @@ class LinkViewController: UIViewController, UITextViewDelegate {
                     
                     self.navigationItem.rightBarButtonItems = [self.readerBarButtonItem, self.saveButtonItem]
                 }
+                
+                self.preferredAppearance()
             })
         }
     }
@@ -91,8 +90,6 @@ class LinkViewController: UIViewController, UITextViewDelegate {
             frame.size.height += (newHeight - offsetToolBarHeight)
             self.postTitleView.frame = frame
             
-            print(frame)
-            
             }) { (s) -> Void in
                 UIView.animateWithDuration(0.3, animations: { () -> Void in
                     self.postTitleLabel.alpha = 1.0
@@ -125,9 +122,6 @@ class LinkViewController: UIViewController, UITextViewDelegate {
         self.seeMoreButton.hidden = false
         self.seeLessButton.hidden = true
         
-        self.postTitleView.backgroundColor = MyRedditBackgroundColor
-        self.postTitleLabel.textColor = MyRedditLabelColor
-        
         self.textView.delegate = self
         
         self.configureNav()
@@ -137,6 +131,11 @@ class LinkViewController: UIViewController, UITextViewDelegate {
         } else {
             self.setupWebView()
         }
+        
+        RedditSession.sharedSession.markLinkAsViewed(self.link,
+            completion: { (error) -> () in })
+        
+        self.preferredAppearance()
     }
     
     private func setupWebView() {
@@ -148,22 +147,11 @@ class LinkViewController: UIViewController, UITextViewDelegate {
         if let link = self.link {
             let request = NSURLRequest(URL: link.URL)
             self.webView.loadRequest(request)
-            self.webView.backgroundColor = MyRedditDarkBackgroundColor
             self.webView.hidden = false
             
             self.updateVoteButtons()
             
-            self.navigationController?.navigationBar.tintColor = MyRedditLabelColor
-            
-            RedditSession.sharedSession.markLinkAsViewed(self.link, completion: { (error) -> () in
-                
-            })
-            
             NSUserDefaults.standardUserDefaults().setObject(true, forKey: self.link.identifier)
-            
-            if self.link.saved {
-                self.navigationItem.rightBarButtonItem?.tintColor = MyRedditColor
-            }
         }
     }
     
@@ -176,10 +164,8 @@ class LinkViewController: UIViewController, UITextViewDelegate {
         
         self.postTitleLabel.attributedText = infoString
         
-        self.view.backgroundColor = MyRedditBackgroundColor
-        
         let score = self.link.score.abbreviateNumber()
-        let comments = Int(self.link.totalComments).abbreviateNumber()
+        let comments = self.link.totalComments
         
         let titleString = NSMutableAttributedString(string: "\(score)\n\(comments) comments")
         let fontAttrs = [NSFontAttributeName : MyRedditCommentTextFont, NSForegroundColorAttributeName : MyRedditLabelColor]
@@ -361,7 +347,30 @@ class LinkViewController: UIViewController, UITextViewDelegate {
     override func didRotateFromInterfaceOrientation(fromInterfaceOrientation: UIInterfaceOrientation) {
         let mutableString = self.content.content.html2AttributedString
         self.textView.attributedText = mutableString
+        self.preferredAppearance()
+    }
+    
+    override func preferredAppearance() {
+        self.configureNav()
+        
+        self.toolbar.barTintColor = MyRedditBackgroundColor
+        self.toolbar.backgroundColor = MyRedditBackgroundColor
+        self.toolbar.tintColor = MyRedditLabelColor
+        
         self.textView.textColor = MyRedditLabelColor
         self.textView.font = MyRedditSelfTextFont
+        
+        self.postTitleView.backgroundColor = MyRedditBackgroundColor
+        self.postTitleLabel.textColor = MyRedditLabelColor
+        
+        self.view.backgroundColor = MyRedditBackgroundColor
+        
+        self.webView.backgroundColor = MyRedditDarkBackgroundColor
+        
+        self.navigationController?.navigationBar.tintColor = MyRedditLabelColor
+        
+        if self.link.saved {
+            self.navigationItem.rightBarButtonItem?.tintColor = MyRedditColor
+        }
     }
 }

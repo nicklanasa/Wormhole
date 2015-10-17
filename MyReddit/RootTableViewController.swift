@@ -17,6 +17,17 @@ class RootTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.updateAppearance()
+        
+        NSNotificationCenter.defaultCenter().addObserver(self,
+            selector: "preferredAppearance",
+            name: MyRedditAppearanceDidChangeNotification,
+            object: nil)
+    }
+    
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(self,
+            name: MyRedditAppearanceDidChangeNotification,
+            object: nil)
     }
     
     private func updateAppearance() {
@@ -26,5 +37,9 @@ class RootTableViewController: UITableViewController {
             NSFontAttributeName : MyRedditTitleFont]
         self.tableView.backgroundColor = MyRedditBackgroundColor
         self.tableView.tableFooterView = UIView()
+    }
+    
+    func preferredAppearance() {
+        self.updateAppearance()
     }
 }

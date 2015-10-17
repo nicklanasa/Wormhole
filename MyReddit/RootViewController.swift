@@ -18,6 +18,17 @@ class RootViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.updateAppearance()
+        
+        NSNotificationCenter.defaultCenter().addObserver(self,
+            selector: "preferredAppearance",
+            name: MyRedditAppearanceDidChangeNotification,
+            object: nil)
+    }
+    
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(self,
+            name: MyRedditAppearanceDidChangeNotification,
+            object: nil)
     }
     
     private func updateAppearance() {
@@ -38,5 +49,9 @@ class RootViewController: UIViewController {
         SDImageCache.sharedImageCache().cleanDisk()
         SDImageCache.sharedImageCache().clearDisk()
         SDImageCache.sharedImageCache().setValue(nil, forKey: "memCache")
+    }
+    
+    func preferredAppearance() {
+        self.updateAppearance()
     }
 }

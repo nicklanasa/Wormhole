@@ -17,6 +17,7 @@ AddCommentViewControllerDelegate {
     
     @IBOutlet weak var filterButton: UIBarButtonItem!
     @IBOutlet weak var shareButton: UIBarButtonItem!
+    @IBOutlet weak var addButton: UIBarButtonItem!
     
     var hiddenIndexPaths = [NSIndexPath]()
     var closedIndexPaths = [NSIndexPath]()
@@ -37,7 +38,7 @@ AddCommentViewControllerDelegate {
             RedditSession.sharedSession.fetchCommentsWithFilter(filter,
                 pagination: nil, link: self.link, completion: { (pagination, results, error) -> () in
                 self.comments = results
-                self.refreshCommentsControl.endRefreshing()
+                self.refreshControl?.endRefreshing()
                 self.hud.hide(true)
             })
         }
@@ -90,8 +91,6 @@ AddCommentViewControllerDelegate {
         }
     }
     
-    var refreshCommentsControl = MyRedditRefreshControl()
-    
     func refresh(sender: AnyObject) {
         
         RedditSession.sharedSession.linkWithFullName(self.link, completion: { (pagination, results, error) -> () in
@@ -116,18 +115,25 @@ AddCommentViewControllerDelegate {
         
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
             self.navigationItem.title =  "\(self.link.totalComments) comments"
+            if let _ = self.splitViewController {
+                self.navigationController?.setToolbarHidden(false, animated: false)
+            }
         })
-        
-        self.navigationController?.setToolbarHidden(false, animated: true)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.syncComments()
         
-        self.refreshCommentsControl.addToScrollView(self.tableView, withRefreshBlock: { () -> Void in
-            self.refresh(self.tableView)
-        })
+        self.refreshControl = UIRefreshControl()
+        self.refreshControl!.addTarget(self,
+            action: "refresh:",
+            forControlEvents: .ValueChanged)
+        
+        RedditSession.sharedSession.markLinkAsViewed(self.link,
+            completion: { (error) -> () in })
+        
+        self.preferredAppearance()
     }
     
     func syncComments() {
@@ -135,7 +141,7 @@ AddCommentViewControllerDelegate {
         RedditSession.sharedSession.fetchComments(nil, link: self.link) { (pagination, results, error) -> () in
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
                 self.comments = results
-                self.refreshCommentsControl.endRefreshing()
+                self.refreshControl?.endRefreshing()
                 self.hud.hide(true)
             })
         }
@@ -695,5 +701,21 @@ AddCommentViewControllerDelegate {
         let linkOptions = LinkShareOptionsViewController(link: self.link)
         linkOptions.barbuttonItem = self.shareButton
         linkOptions.showInView(self.view)
+    }
+    
+    override func preferredAppearance() {
+        self.navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName : MyRedditLabelColor,
+            NSFontAttributeName : MyRedditTitleFont]
+        self.navigationController?.toolbar.barTintColor = MyRedditBackgroundColor
+        self.navigationController?.toolbar.backgroundColor = MyRedditBackgroundColor
+        self.navigationController?.toolbar.tintColor = MyRedditLabelColor
+        self.navigationController?.toolbar.translucent = false
+        self.addButton.tintColor = MyRedditLabelColor
+        
+        if let _ = self.splitViewController {
+            self.navigationController?.setToolbarHidden(false, animated: false)
+        }
+        
+        self.tableView.reloadData()
     }
 }

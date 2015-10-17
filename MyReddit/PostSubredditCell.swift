@@ -22,10 +22,10 @@ class PostSubredditCell: UITableViewCell {
             attributes: [NSForegroundColorAttributeName : UIColor.lightGrayColor()])
         
         if SettingsManager.defaultManager.valueForSetting(.NightMode) {
-            var image = UIImage(named: "CircleAddWhite")?.imageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal)
+            let image = UIImage(named: "CircleAddWhite")?.imageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal)
             self.addbutton.setImage(image, forState: .Normal)
         } else {
-            var image = UIImage(named: "CircleAdd")?.imageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal)
+            let image = UIImage(named: "CircleAdd")?.imageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal)
             self.addbutton.setImage(image, forState: .Normal)
         }
         

@@ -19,11 +19,11 @@ extension Int {
             return "\(sign)\(num)"
         }
         
-        let exp:Int = Int(log10(num) / log10(1000))
+        let exp: Int = Int(log10(num) / log10(1000))
         
-        let units:[String] = ["K","M","G","T","P","E"]
+        let units: [String] = ["K","M","G","T","P","E"]
         
-        let roundedNum:Double = round(10 * num / pow(1000.0,Double(exp))) / 10
+        let roundedNum: Int = Int(floor(round(10 * num / pow(1000.0, Double(exp))) / 10))
         
         return "\(sign)\(roundedNum)\(units[exp-1])"
     }

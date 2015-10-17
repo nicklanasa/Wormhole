@@ -10,6 +10,8 @@ import Foundation
 
 let _sharedUserSession = UserSession()
 
+let MyRedditAppearanceDidChangeNotification = "MyRedditAppearanceDidChangeNotification"
+
 class UserSession {
     
     typealias PaginationCompletion = (pagination: RKPagination?, results: [AnyObject]?, error: NSError?) -> ()
@@ -71,16 +73,19 @@ class UserSession {
         }
     }
     
+    let nightModeBackgroundColor = UIColor(red: 12/255,
+        green: 16/255,
+        blue: 33/255,
+        alpha: 1.0)
+    let nightModeForegroundColor = UIColor(red: 248/255,
+        green: 248/255,
+        blue: 248/255,
+        alpha: 1.0)
+    
     func nightMode() {
         
-        let backgroundColor = UIColor(red: 12/255,
-            green: 16/255,
-            blue: 33/255,
-            alpha: 1.0)
-        let foregroundColor = UIColor(red: 248/255,
-            green: 248/255,
-            blue: 248/255,
-            alpha: 1.0)
+        let backgroundColor = self.nightModeBackgroundColor
+        let foregroundColor = self.nightModeForegroundColor
         
         LocalyticsSession.shared().tagEvent("Night mode toggled")
         
@@ -140,7 +145,8 @@ class UserSession {
         
         UIActivityIndicatorView.appearance().tintColor = MyRedditColor
         
-        UISegmentedControl.appearance().setTitleTextAttributes([NSFontAttributeName: MyRedditSelfTextFont, NSForegroundColorAttributeName : MyRedditLabelColor], forState: .Normal)
+        UISegmentedControl.appearance().setTitleTextAttributes([NSFontAttributeName: MyRedditSelfTextFont,
+            NSForegroundColorAttributeName : MyRedditLabelColor], forState: .Normal)
     }
     
     func dayMode() {

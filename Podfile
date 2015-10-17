@@ -2,8 +2,8 @@ platform :ios, '8.0'
 
 use_frameworks!
 
-target 'MyReddit' do
-        
+link_with 'MyReddit', 'MyReddit-iPad', 'MyRedditTests'
+
 pod 'Localytics-AMP', '~> 2.0'
 pod 'RedditKit', '~> 1.3'
 pod 'SDWebImage'
@@ -20,10 +20,3 @@ pod 'DateTools'
 pod 'JHPullToRefreshKit'
 pod 'UIImage-ResizeMagick'
 pod 'FZImageUtilCategory'
-
-end
-
-target 'MyRedditTests' do
-
-end
-

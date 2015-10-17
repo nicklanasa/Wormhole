@@ -29,7 +29,7 @@ class Datastore {
     
     private func configure() {
         
-        let modelURL = NSBundle.mainBundle().URLForResource("Kickserv", withExtension: "momd")
+        let modelURL = NSBundle.mainBundle().URLForResource("MyReddit", withExtension: "momd")
         self.managedObjectModel = NSManagedObjectModel(contentsOfURL: modelURL!)!
         
         let storeUrlString = NSString(format: "%@.sqlite", self.storeName)

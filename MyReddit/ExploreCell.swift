@@ -32,7 +32,6 @@ class ExploreCell: UITableViewCell {
         case .MyReddit:
             self.contentLabel.text = "myreddit subreddit"
             self.accessoryType = .None
-        default: break
         }
         
         self.contentLabel.textColor = MyRedditLabelColor

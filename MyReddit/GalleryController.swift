@@ -113,9 +113,8 @@ UICollectionViewDelegate {
         
         self.navigationController?.navigationBar.tintColor = MyRedditLabelColor
         
-        RedditSession.sharedSession.markLinkAsViewed(self.link, completion: { (error) -> () in
-            
-        })
+        RedditSession.sharedSession.markLinkAsViewed(self.link,
+            completion: { (error) -> () in })
         
         NSUserDefaults.standardUserDefaults().setObject(true, forKey: self.link.identifier)
         
@@ -191,7 +190,7 @@ UICollectionViewDelegate {
         self.view.backgroundColor = MyRedditBackgroundColor
         
         let score = self.link.score.abbreviateNumber()
-        let comments = Int(self.link.totalComments).abbreviateNumber()
+        let comments = self.link.totalComments
         
         let titleString = NSMutableAttributedString(string: "\(score)\n\(comments) comments")
         let fontAttrs = [NSFontAttributeName : MyRedditCommentTextFont,

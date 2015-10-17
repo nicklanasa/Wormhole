@@ -17,11 +17,10 @@ enum FilterSwitchType: Int {
     case Top
 }
 
-class SubredditViewController: UIViewController,
+class SubredditViewController: RootViewController,
 UITableViewDataSource,
 UITableViewDelegate,
 NSFetchedResultsControllerDelegate,
-LoadMoreHeaderDelegate,
 UIGestureRecognizerDelegate,
 JZSwipeCellDelegate,
 UISplitViewControllerDelegate,
@@ -49,12 +48,12 @@ PostCellDelegate {
     var currentCategory: RKSubredditCategory?
     var optionsController: LinkShareOptionsViewController!
     var refreshControl: UIRefreshControl!
-    //var refreshControl = MyRedditRefreshControl(type: .SlideDown)
     var heightsCache = [String : AnyObject]()
     
     @IBOutlet weak var noPostsLabel: UILabel!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var noPostsView: UIView!
+    @IBOutlet weak var toolBar: UIToolbar!
     
     @IBOutlet var headerImage: UIImageView! {
         didSet {
@@ -88,8 +87,7 @@ PostCellDelegate {
             action: "refresh:",
             forControlEvents: .ValueChanged)
         self.tableView.addSubview(self.refreshControl)
-        
-        self.refresh(nil)
+
         self.updateAndFetch()
         self.tableView.tableFooterView = UIView()
      
@@ -100,7 +98,7 @@ PostCellDelegate {
         default: break
         }
     }
-    
+
     // MARK: Filtering
     
     func filterLinks(filterSwtichType: FilterSwitchType) {
@@ -295,7 +293,6 @@ PostCellDelegate {
         LocalyticsSession.shared().tagScreen("Subreddit")
         self.updateUI()
         self.fetchUnread()
-        //self.refreshControl.forceRefresh()
         self.refresh(nil)
         self.updateSubscribeButton()
     }
@@ -507,16 +504,6 @@ PostCellDelegate {
         self.updateAndFetch()
     }
     
-    // MARK: LoadMoreHeaderDelegate
-    
-    func loadMoreHeader(header: LoadMoreHeader, didTapButton sender: AnyObject) {
-        if self.pagination != nil {
-            self.fetchLinks()
-        } else {
-            self.tableView.reloadData()
-        }
-    }
-    
     // MARK: UITableViewDataSource
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -619,6 +606,7 @@ PostCellDelegate {
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         self.tableView.deselectRowAtIndexPath(indexPath, animated: true)
         self.hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
+        
         if let link = self.links[indexPath.row] as? RKLink {
             self.selectedLink = link
             if link.selfPost {
@@ -655,6 +643,12 @@ PostCellDelegate {
                     self.performSegueWithIdentifier("SubredditLink", sender: link)
                 }
             }
+        }
+        
+        if let titleCell = tableView.cellForRowAtIndexPath(indexPath) as? TitleCell {
+            titleCell.titleLabel.textColor = UIColor.grayColor()
+        } else if let imageCell = tableView.cellForRowAtIndexPath(indexPath) as? PostImageCell {
+            imageCell.titleLabel.textColor = UIColor.grayColor()
         }
     }
     
@@ -770,9 +764,10 @@ PostCellDelegate {
     // MARK: PostImageCellDelegate
     
     func postImageCell(cell: PostImageCell, didDownloadImageWithHeight height: CGFloat, url: NSURL) {
-        if let _ = self.tableView.indexPathForCell(cell) {
+        if let indexPath = self.tableView.indexPathForCell(cell) {
             self.heightsCache[url.description] = NSNumber(float: Float(height))
             self.tableView.beginUpdates()
+            self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
             self.tableView.endUpdates()
         }
     }
@@ -886,5 +881,18 @@ PostCellDelegate {
             self.fetchingMore = true
             self.fetchLinks()
         }
+    }
+    
+    override func preferredAppearance() {
+        self.navigationController?.navigationBar.barTintColor = MyRedditBackgroundColor
+        self.navigationController?.navigationBar.backgroundColor = MyRedditBackgroundColor
+        self.navigationController?.navigationBar.tintColor = MyRedditLabelColor
+        self.navigationItem.leftBarButtonItem?.tintColor = MyRedditLabelColor
+        self.toolBar.tintColor = MyRedditLabelColor
+        self.toolBar.backgroundColor = MyRedditBackgroundColor
+        self.toolBar.barTintColor = MyRedditBackgroundColor
+        
+        self.updateUI()
+        self.tableView.reloadData()
     }
 }

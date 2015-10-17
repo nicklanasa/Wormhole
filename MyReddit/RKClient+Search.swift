@@ -13,16 +13,14 @@ extension RKClient {
     typealias ResultsCompletion = (results: [AnyObject]?, error: NSError?) -> ()
     
     func searchForSubreddit(name: String, completion: ResultsCompletion) {
-        var stringURL = "http://www.reddit.com/reddits/search.json?q=\(name.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet()))"
-        var url = NSURL(string: stringURL)!
-        var request = NSURLRequest(URL: url)
-        var queue = NSOperationQueue()
+        let stringURL = "http://www.reddit.com/reddits/search.json?q=\(name.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet()))"
+        let url = NSURL(string: stringURL)!
+        let request = NSURLRequest(URL: url)
+        let queue = NSOperationQueue()
         NSURLConnection.cancelPreviousPerformRequestsWithTarget(self)
         NSURLConnection.sendAsynchronousRequest(request, queue: queue) { (response, data, error) -> Void in
             if data != nil && error == nil {
                 if data!.length > 0 {
-                    var dictError: NSError?
-                    
                     do {
                         let responseDict = try NSJSONSerialization.JSONObjectWithData(data!, options: .AllowFragments)
                         if let dataDict = responseDict["data"] as? [String:AnyObject] {
@@ -40,7 +38,7 @@ extension RKClient {
                             }
                         }
                     } catch {
-                    completion(results: nil, error: dictError)
+                        completion(results: nil, error: nil)
                     }
                 } else {
                     completion(results: nil, error: error)

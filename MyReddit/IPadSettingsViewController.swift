@@ -15,7 +15,7 @@ class IPadSettingsViewController: UITableViewController, BDGIAPDelegate {
     @IBOutlet weak var showNSFWSwitch: UISwitch!
     @IBOutlet weak var showSubredditLogosSwitch: UISwitch!
     @IBOutlet weak var fullWidthImagesSwitch: UISwitch!
-    @IBOutlet weak var infiniteScrollingSwitch: UISwitch!
+    @IBOutlet weak var nightModeSwitch: UISwitch!
     @IBOutlet weak var textSizeLabel: UILabel!
     
     @IBOutlet weak var showFlairCell: UserInfoCell!
@@ -58,7 +58,7 @@ class IPadSettingsViewController: UITableViewController, BDGIAPDelegate {
             self.showNSFWSwitch.on = SettingsManager.defaultManager.valueForSetting(.NSFW)
             self.showSubredditLogosSwitch.on = SettingsManager.defaultManager.valueForSetting(.SubredditLogos)
             self.fullWidthImagesSwitch.on = SettingsManager.defaultManager.valueForSetting(.FullWidthImages)
-            self.infiniteScrollingSwitch.on = SettingsManager.defaultManager.valueForSetting(.InfiniteScrolling)
+            self.nightModeSwitch.on = SettingsManager.defaultManager.valueForSetting(.NightMode)
             self.textSizeLabel.text = SettingsManager.defaultManager.valueForTextSizeSetting(currentTextSize)
             
             self.showFlairCell.backgroundColor = MyRedditBackgroundColor
@@ -101,23 +101,42 @@ class IPadSettingsViewController: UITableViewController, BDGIAPDelegate {
     }
     
     @IBAction func hideFullWidthImagesValueChanged(sender: AnyObject) {
-        SettingsManager.defaultManager.updateValueForSetting(.FullWidthImages, value: self.fullWidthImagesSwitch.on)
+        SettingsManager.defaultManager.updateValueForSetting(.FullWidthImages,
+            value: self.fullWidthImagesSwitch.on)
     }
     
     @IBAction func showSubredditLogosValueChanged(sender: AnyObject) {
-        SettingsManager.defaultManager.updateValueForSetting(.SubredditLogos, value: self.showSubredditLogosSwitch.on)
+        SettingsManager.defaultManager.updateValueForSetting(.SubredditLogos,
+            value: self.showSubredditLogosSwitch.on)
     }
     
     @IBAction func showNSFWValueChanged(sender: AnyObject) {
-        SettingsManager.defaultManager.updateValueForSetting(.NSFW, value: self.showNSFWSwitch.on)
+        SettingsManager.defaultManager.updateValueForSetting(.NSFW,
+            value: self.showNSFWSwitch.on)
     }
     
     @IBAction func showFlairValueChanged(sender: AnyObject) {
-        SettingsManager.defaultManager.updateValueForSetting(.Flair, value: self.showFlairSwitch.on)
+        SettingsManager.defaultManager.updateValueForSetting(.Flair,
+            value: self.showFlairSwitch.on)
     }
-    
-    @IBAction func infiniteScrollingSwitchValueChanged(sender: AnyObject) {
-        SettingsManager.defaultManager.updateValueForSetting(.InfiniteScrolling, value: self.infiniteScrollingSwitch.on)
+
+    @IBAction func nightModeValueChanged(sender: AnyObject) {
+        if !SettingsManager.defaultManager.purchased {
+            self.performSegueWithIdentifier("PurchaseSegue", sender: self)
+        } else {
+            SettingsManager.defaultManager.updateValueForSetting(.NightMode, value: self.nightModeSwitch.on)
+            
+            if SettingsManager.defaultManager.valueForSetting(.NightMode) {
+                UserSession.sharedSession.nightMode()
+            } else {
+                UserSession.sharedSession.dayMode()
+            }
+            
+            self.updateTable()
+            
+            NSNotificationCenter.defaultCenter().postNotificationName(MyRedditAppearanceDidChangeNotification,
+                object: nil)
+        }
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
