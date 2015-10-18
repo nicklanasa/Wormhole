@@ -12,7 +12,6 @@ import UIKit
 class PostTextCell: UITableViewCell, UITextViewDelegate {
     @IBOutlet weak var textView: UITextView!
     
-    
     override func awakeFromNib() {
         self.textView.delegate = self
         self.textView.font = MyRedditSelfTextFont
@@ -64,5 +63,12 @@ class PostTextCell: UITableViewCell, UITextViewDelegate {
                 tableView?.scrollToRowAtIndexPath(thisIndexPath, atScrollPosition: .Bottom, animated: false)
             }
         }
+    }
+    
+    override func prepareForReuse() {
+        self.backgroundColor = MyRedditBackgroundColor
+        self.textView.font = MyRedditSelfTextFont
+        self.textView.textColor = MyRedditPostTitleTextLabelColor
+        self.textView.backgroundColor = MyRedditBackgroundColor
     }
 }

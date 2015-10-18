@@ -120,9 +120,9 @@ class SettingsTableViewController: UITableViewController, BDGIAPDelegate {
             } else {
                 UserSession.sharedSession.dayMode()
             }
-            
-            self.updateTable()
         }
+        
+        self.updateTable()
     }
     
     @IBAction func defaultToReaderModeValueChanged(sender: AnyObject) {

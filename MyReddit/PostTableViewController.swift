@@ -14,7 +14,7 @@ enum PostType: Int {
     case Text
 }
 
-class PostTableViewController: UITableViewController,
+class PostTableViewController: RootTableViewController,
 PostTypeCellDelegate,
 PostSubredditCellDelegate,
 LinkCellDelegate,
@@ -51,18 +51,14 @@ UINavigationControllerDelegate {
     }
     
     @IBOutlet weak var listButton: UIBarButtonItem!
+    @IBOutlet weak var postButton: UIBarButtonItem!
     
     override func viewDidLoad() {
-        self.tableView.backgroundColor = MyRedditBackgroundColor
         
-        self.tableView.tableFooterView = UIView()
+        self.preferredAppearance()
         
         tableView.estimatedRowHeight = 44.0
         tableView.rowHeight = UITableViewAutomaticDimension
-        
-        self.tableView.reloadData()
-        
-        self.view.backgroundColor = MyRedditBackgroundColor
         
         if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 1, inSection: 0)) as? PostSubredditCell {
             cell.subredditTextField.becomeFirstResponder()
@@ -94,7 +90,10 @@ UINavigationControllerDelegate {
         
         if self.postType == .Text && indexPath.row == 3 {
             let cell = tableView.dequeueReusableCellWithIdentifier("PostTextCell") as! PostTextCell
-            cell.separatorInset = UIEdgeInsets(top: 0, left: self.tableView.frame.size.width, bottom: 0, right: 0)
+            cell.separatorInset = UIEdgeInsets(top: 0,
+                left: self.tableView.frame.size.width,
+                bottom: 0,
+                right: 0)
             return cell
         } else {
             if indexPath.row == 3 {
@@ -172,7 +171,12 @@ UINavigationControllerDelegate {
                         UIAlertView.showErrorWithError(error)
                         LocalyticsSession.shared().tagEvent("Unable to upload image")
                     } else {
-                        RedditSession.sharedSession.submitLink(link, subredditName: subredditName, text: nil, url: url, postType: .Link, captchaIdentifier: self.captchaIdentifier, captchaValue: self.captchaValue, completion: { (error) -> () in
+                        RedditSession.sharedSession.submitLink(link,
+                            subredditName: subredditName,
+                            text: nil, url: url,
+                            postType: .Link,
+                            captchaIdentifier: self.captchaIdentifier,
+                            captchaValue: self.captchaValue, completion: { (error) -> () in
                             if error != nil {
                                 self.hud.hide(true)
                                 UIAlertView.showErrorWithError(error)
@@ -193,7 +197,13 @@ UINavigationControllerDelegate {
     func postLink(link: String, subredditName: String, url: String) {
         self.showCaptchaDialog { (result, error) -> () in
             if result {
-                RedditSession.sharedSession.submitLink(link, subredditName: subredditName, text: nil, url: NSURL(string: url), postType: .Link, captchaIdentifier: self.captchaIdentifier, captchaValue: self.captchaValue, completion: { (error) -> () in
+                RedditSession.sharedSession.submitLink(link,
+                    subredditName: subredditName,
+                    text: nil,
+                    url: NSURL(string: url),
+                    postType: .Link,
+                    captchaIdentifier: self.captchaIdentifier,
+                    captchaValue: self.captchaValue, completion: { (error) -> () in
                     if error != nil {
                         self.hud.hide(true)
                         UIAlertView.showErrorWithError(error)
@@ -390,5 +400,22 @@ UINavigationControllerDelegate {
         }
         
         self.presentViewController(alertController, animated: true, completion: nil)
+    }
+    
+    override func preferredAppearance() {
+        
+        self.postButton.tintColor = MyRedditLabelColor
+        self.tableView.backgroundColor = MyRedditBackgroundColor
+        self.tableView.tableFooterView = UIView()
+        self.view.backgroundColor = MyRedditBackgroundColor
+        
+        self.navigationController?.navigationBar.backgroundColor = MyRedditBackgroundColor
+        self.navigationController?.navigationBar.barTintColor = MyRedditBackgroundColor
+        self.navigationController?.navigationBar.tintColor = MyRedditLabelColor
+        
+        self.navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName : MyRedditLabelColor,
+            NSFontAttributeName : MyRedditTitleFont]
+        
+        self.tableView.reloadData()
     }
 }

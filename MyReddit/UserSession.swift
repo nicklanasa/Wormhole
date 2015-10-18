@@ -121,7 +121,7 @@ class UserSession {
         UIBarButtonItem.appearance().tintColor = MyRedditLabelColor
         
         UITableView.appearance().backgroundColor = MyRedditDarkBackgroundColor
-        UITableView.appearance().separatorColor = UIColor.darkGrayColor()
+        UITableView.appearance().separatorColor = UIColor.whiteColor().colorWithAlphaComponent(0.5)
         UITableView.appearance().backgroundView = nil
         UITableView.appearance().sectionIndexBackgroundColor = UIColor.clearColor()
         
@@ -144,9 +144,6 @@ class UserSession {
         UIRefreshControl.appearance().tintColor = MyRedditColor
         
         UIActivityIndicatorView.appearance().tintColor = MyRedditColor
-        
-        UISegmentedControl.appearance().setTitleTextAttributes([NSFontAttributeName: MyRedditSelfTextFont,
-            NSForegroundColorAttributeName : MyRedditLabelColor], forState: .Normal)
     }
     
     func dayMode() {
@@ -206,10 +203,8 @@ class UserSession {
         UITextField.appearance().font = MyRedditSelfTextFont
         UITextField.appearance().keyboardAppearance = .Light
         
-        
         UIActivityIndicatorView.appearance().tintColor = MyRedditColor
         
         UIRefreshControl.appearance().tintColor = MyRedditColor
-        UISegmentedControl.appearance().setTitleTextAttributes([NSFontAttributeName: MyRedditSelfTextFont, NSForegroundColorAttributeName : MyRedditLabelColor], forState: .Normal)
     }
 }

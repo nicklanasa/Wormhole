@@ -14,8 +14,17 @@ class PostTitleCell: UITableViewCell {
     @IBOutlet weak var titleTextField: UITextField!
     
     override func awakeFromNib() {
+        self.updateAppearance()
+    }
+    
+    private func updateAppearance() {
         self.titleTextField.attributedPlaceholder = NSAttributedString(string: "enter title...",
             attributes: [NSForegroundColorAttributeName : UIColor.lightGrayColor()])
         self.titleTextField.textColor = MyRedditLabelColor
+        self.backgroundColor = MyRedditBackgroundColor
+    }
+    
+    override func prepareForReuse() {
+        self.updateAppearance()
     }
 }

@@ -891,6 +891,7 @@ PostCellDelegate {
         self.toolBar.tintColor = MyRedditLabelColor
         self.toolBar.backgroundColor = MyRedditBackgroundColor
         self.toolBar.barTintColor = MyRedditBackgroundColor
+        self.tableView.backgroundColor = MyRedditBackgroundColor
         
         self.updateUI()
         self.tableView.reloadData()

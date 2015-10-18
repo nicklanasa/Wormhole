@@ -18,6 +18,17 @@ class PostSubredditCell: UITableViewCell {
     var delegate: PostSubredditCellDelegate?
     
     override func awakeFromNib() {
+        self.updateAppearance()
+    }
+    
+    @IBOutlet weak var subredditTextField: UITextField!
+    @IBOutlet weak var addbutton: UIButton!
+    
+    @IBAction func addButtonTapped(sender: AnyObject) {
+        self.delegate?.postSubredditCell(self, didTapAddButton: sender)
+    }
+    
+    private func updateAppearance() {
         self.subredditTextField.attributedPlaceholder = NSAttributedString(string: "enter subreddit...",
             attributes: [NSForegroundColorAttributeName : UIColor.lightGrayColor()])
         
@@ -30,12 +41,10 @@ class PostSubredditCell: UITableViewCell {
         }
         
         self.subredditTextField.textColor = MyRedditLabelColor
+        self.backgroundColor = MyRedditBackgroundColor
     }
     
-    @IBOutlet weak var subredditTextField: UITextField!
-    @IBOutlet weak var addbutton: UIButton!
-    
-    @IBAction func addButtonTapped(sender: AnyObject) {
-        self.delegate?.postSubredditCell(self, didTapAddButton: sender)
+    override func prepareForReuse() {
+        self.updateAppearance()
     }
 }

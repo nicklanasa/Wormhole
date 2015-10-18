@@ -103,6 +103,8 @@ class IPadSettingsViewController: UITableViewController, BDGIAPDelegate {
     @IBAction func hideFullWidthImagesValueChanged(sender: AnyObject) {
         SettingsManager.defaultManager.updateValueForSetting(.FullWidthImages,
             value: self.fullWidthImagesSwitch.on)
+        NSNotificationCenter.defaultCenter().postNotificationName(MyRedditAppearanceDidChangeNotification,
+            object: nil)
     }
     
     @IBAction func showSubredditLogosValueChanged(sender: AnyObject) {
@@ -113,11 +115,15 @@ class IPadSettingsViewController: UITableViewController, BDGIAPDelegate {
     @IBAction func showNSFWValueChanged(sender: AnyObject) {
         SettingsManager.defaultManager.updateValueForSetting(.NSFW,
             value: self.showNSFWSwitch.on)
+        NSNotificationCenter.defaultCenter().postNotificationName(MyRedditAppearanceDidChangeNotification,
+            object: nil)
     }
     
     @IBAction func showFlairValueChanged(sender: AnyObject) {
         SettingsManager.defaultManager.updateValueForSetting(.Flair,
             value: self.showFlairSwitch.on)
+        NSNotificationCenter.defaultCenter().postNotificationName(MyRedditAppearanceDidChangeNotification,
+            object: nil)
     }
 
     @IBAction func nightModeValueChanged(sender: AnyObject) {
@@ -131,12 +137,12 @@ class IPadSettingsViewController: UITableViewController, BDGIAPDelegate {
             } else {
                 UserSession.sharedSession.dayMode()
             }
-            
-            self.updateTable()
-            
+
             NSNotificationCenter.defaultCenter().postNotificationName(MyRedditAppearanceDidChangeNotification,
                 object: nil)
         }
+        
+        self.updateTable()
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
@@ -151,16 +157,25 @@ class IPadSettingsViewController: UITableViewController, BDGIAPDelegate {
                 alert.addAction(UIAlertAction(title: "Small", style: .Default, handler: { (action) -> Void in
                     SettingsManager.defaultManager.updateValueForTextSizeSetting(.Small)
                     self.updateTable()
+                    
+                    NSNotificationCenter.defaultCenter().postNotificationName(MyRedditAppearanceDidChangeNotification,
+                        object: nil)
                 }))
                 
                 alert.addAction(UIAlertAction(title: "Medium", style: .Default, handler: { (action) -> Void in
                     SettingsManager.defaultManager.updateValueForTextSizeSetting(.Medium)
                     self.updateTable()
+                    
+                    NSNotificationCenter.defaultCenter().postNotificationName(MyRedditAppearanceDidChangeNotification,
+                        object: nil)
                 }))
                 
                 alert.addAction(UIAlertAction(title: "Large", style: .Default, handler: { (action) -> Void in
                     SettingsManager.defaultManager.updateValueForTextSizeSetting(.Large)
                     self.updateTable()
+                    
+                    NSNotificationCenter.defaultCenter().postNotificationName(MyRedditAppearanceDidChangeNotification,
+                        object: nil)
                 }))
                 
                 alert.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
@@ -175,18 +190,39 @@ class IPadSettingsViewController: UITableViewController, BDGIAPDelegate {
         } else if indexPath.section == 2 {
             switch indexPath.row {
             case 0:
-                RedditSession.sharedSession.subredditWithSubredditName("myreddit_app", completion: { (pagination, results, error) -> () in
-                    if error != nil {
-                        UIAlertView(title: "Error!",
-                            message: "Unable to find that subreddit! Please check your internet connection.",
-                            delegate: self,
-                            cancelButtonTitle: "Ok").show()
-                        LocalyticsSession.shared().tagEvent("Unable to load Myreddit subreddit")
-                    } else {
-                        if let subreddit = results?.first as? RKSubreddit {
-                            self.performSegueWithIdentifier("MyRedditSubredditSegue", sender: subreddit)
+                
+                let subredditName = "myreddit_app"
+                
+                RedditSession.sharedSession.searchForSubredditByName(subredditName, pagination: nil, completion: { (pagination, results, error) -> () in
+                    
+                    var foundSubreddit: RKSubreddit?
+                    
+                    if let subreddits = results as? [RKSubreddit] {
+                        for subreddit in subreddits {
+                            if subreddit.name.lowercaseString == subredditName.lowercaseString {
+                                foundSubreddit = subreddit
+                                break
+                            }
+                        }
+                        
+                        if foundSubreddit == nil {
+                            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                                UIAlertView(title: "Error!",
+                                    message: "Unable to find subreddit by that name.",
+                                    delegate: self,
+                                    cancelButtonTitle: "OK").show()
+                            })
+                        } else {
+                            self.performSegueWithIdentifier("MyRedditSubredditSegue", sender: foundSubreddit)
                             LocalyticsSession.shared().tagEvent("Loaded Myreddit subreddit")
                         }
+                    } else {
+                        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                            UIAlertView(title: "Error!",
+                                message: "Unable to find subreddit by that name.",
+                                delegate: self,
+                                cancelButtonTitle: "OK").show()
+                        })
                     }
                 })
             case 1:

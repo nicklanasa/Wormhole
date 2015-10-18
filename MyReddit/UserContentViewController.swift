@@ -13,17 +13,26 @@ class UserContentViewController: RootViewController,
 UITableViewDelegate,
 UITableViewDataSource,
 JZSwipeCellDelegate,
-LoadMoreHeaderDelegate,
 PostImageCellDelegate {
     
     var category: RKUserContentCategory!
     var categoryTitle: String!
-    var pagination: RKPagination?
+    
+    var pagination: RKPagination? {
+        didSet {
+            self.fetchingMore = false
+            dispatch_async(dispatch_get_main_queue()) { () -> Void in
+                self.hud?.hide(true)
+            }
+        }
+    }
+    
     var content = Array<AnyObject>()
     var optionsController: LinkShareOptionsViewController!
     var selectedLink: RKLink!
     var user: RKUser!
     var heightsCache = [String : AnyObject]()
+    var fetchingMore = false
     
     var hud: MBProgressHUD! {
         didSet {
@@ -58,46 +67,34 @@ PostImageCellDelegate {
     }
 
     private func syncContent() {
-        if let cell =  self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 1)) as? LoadMoreHeader {
-            cell.startAnimating()
-            UserSession.sharedSession.userContent(self.user,
-                category: self.category,
-                pagination: self.pagination,
-                completion: { (pagination, results, error) -> () in
-                self.pagination = pagination
-                if let moreContent = results {
-                    self.content.appendContentsOf(moreContent)
-                }
-                
-                if self.content.count == 25 || self.content.count == 0 {
-                    self.tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: .Fade)
-                } else {
-                    self.tableView.reloadData()
-                }
-                
-                cell.stopAnimating()
-            })
-        }
+        UserSession.sharedSession.userContent(self.user,
+            category: self.category,
+            pagination: self.pagination,
+            completion: { (pagination, results, error) -> () in
+            self.pagination = pagination
+            if let moreContent = results {
+                self.content.appendContentsOf(moreContent)
+            }
+            
+            if self.content.count == 25 || self.content.count == 0 {
+                self.tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: .Fade)
+            } else {
+                self.tableView.reloadData()
+            }
+        })
     }
     
+    // MARK: UITableViewDatasource
+    
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 2
+        return 1
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if section == 1 {
-            return 1
-        }
-        
         return content.count
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        
-        if indexPath.section == 1 {
-            return 60
-        }
-        
         if let link = self.content[indexPath.row] as? RKLink {
             if link.isImageLink() || link.domain == "imgur.com" {
                 // Image
@@ -168,13 +165,6 @@ PostImageCellDelegate {
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-
-        if indexPath.section == 1 {
-            let cell =  tableView.dequeueReusableCellWithIdentifier("LoadMoreHeader") as! LoadMoreHeader
-            cell.delegate = self
-            cell.loadMoreButton.hidden = false
-            return cell
-        }
         
         var cell = tableView.dequeueReusableCellWithIdentifier("PostImageCell") as! PostCell
         
@@ -200,6 +190,7 @@ PostImageCellDelegate {
             let cell = tableView.dequeueReusableCellWithIdentifier("CommentCell") as! CommentCell
             cell.indentationLevel = 1
             cell.indentationWidth = 15
+            cell.commentTextView.userInteractionEnabled = false
             cell.configueForComment(comment: comment, isLinkAuthor: true)
             cell.delegate = self
             return cell
@@ -212,80 +203,52 @@ PostImageCellDelegate {
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         self.tableView.deselectRowAtIndexPath(indexPath, animated: true)
-        if indexPath.section == 0 {
-            if let link = self.content[indexPath.row] as? RKLink {
-                self.selectedLink = link
-                if link.selfPost {
-                    self.performSegueWithIdentifier("CommentsSegue", sender: link)
-                } else {
-                    if link.domain == "imgur.com" || link.isImageLink() {
-                        if link.domain == "imgur.com" && !link.URL.absoluteString.hasExtension() {
-                            var urlComponents = link.URL.absoluteString.componentsSeparatedByString("/")
-                            if urlComponents.count > 4 {
-                                let albumID = urlComponents[4]
-                                IMGAlbumRequest.albumWithID(albumID, success: { (album) -> Void in
-                                    self.performSegueWithIdentifier("GallerySegue", sender: album.images)
-                                    }) { (error) -> Void in
-                                        self.performSegueWithIdentifier("SubredditLink", sender: link)
-                                }
-                            } else {
-                                if urlComponents.count > 3 {
-                                    let imageID = urlComponents[3]
-                                    IMGImageRequest.imageWithID(imageID, success: { (image) -> Void in
-                                        self.performSegueWithIdentifier("GallerySegue", sender: [image])
-                                        }, failure: { (error) -> Void in
-                                            self.performSegueWithIdentifier("SubredditLink", sender: link)
-                                    })
-                                } else {
-                                    self.performSegueWithIdentifier("GallerySegue", sender: [link.URL])
-                                }
+        if let link = self.content[indexPath.row] as? RKLink {
+            self.selectedLink = link
+            if link.selfPost {
+                self.performSegueWithIdentifier("CommentsSegue", sender: link)
+            } else {
+                if link.domain == "imgur.com" || link.isImageLink() {
+                    if link.domain == "imgur.com" && !link.URL.absoluteString.hasExtension() {
+                        var urlComponents = link.URL.absoluteString.componentsSeparatedByString("/")
+                        if urlComponents.count > 4 {
+                            let albumID = urlComponents[4]
+                            IMGAlbumRequest.albumWithID(albumID, success: { (album) -> Void in
+                                self.performSegueWithIdentifier("GallerySegue", sender: album.images)
+                                }) { (error) -> Void in
+                                    self.performSegueWithIdentifier("SubredditLink", sender: link)
                             }
                         } else {
-                            self.performSegueWithIdentifier("GallerySegue", sender: [link.URL!])
+                            if urlComponents.count > 3 {
+                                let imageID = urlComponents[3]
+                                IMGImageRequest.imageWithID(imageID, success: { (image) -> Void in
+                                    self.performSegueWithIdentifier("GallerySegue", sender: [image])
+                                    }, failure: { (error) -> Void in
+                                        self.performSegueWithIdentifier("SubredditLink", sender: link)
+                                })
+                            } else {
+                                self.performSegueWithIdentifier("GallerySegue", sender: [link.URL])
+                            }
                         }
                     } else {
-                        self.performSegueWithIdentifier("SubredditLink", sender: link)
+                        self.performSegueWithIdentifier("GallerySegue", sender: [link.URL!])
                     }
-                }
-            } else if let comment = self.content[indexPath.row] as? RKComment {
-                if self.category == .Overview {
-                    RedditSession.sharedSession.fetchLinkWithComment(comment, completion: { (pagination, results, error) -> () in
-                        if let link = results?.first as? RKLink {
-                            if link.selfPost {
-                                self.performSegueWithIdentifier("CommentsSegue", sender: link)
-                            } else {
-                                self.performSegueWithIdentifier("SubredditLink", sender: link)
-                            }
-                        } else {
-                            UIAlertView(title: "Error!",
-                                message: "Unable to get link!",
-                                delegate: self,
-                                cancelButtonTitle: "Ok").show()
-                        }
-                    })
                 } else {
-                    RedditSession.sharedSession.fetchLinkWithComment(comment, completion: { (pagination, results, error) -> () in
-                        if let link = results?.first as? RKLink {
-                            if link.selfPost {
-                                self.performSegueWithIdentifier("CommentsSegue", sender: link)
-                            } else {
-                                self.performSegueWithIdentifier("SubredditLink", sender: link)
-                            }
-                        } else {
-                            UIAlertView(title: "Error!",
-                                message: "Unable to get link!",
-                                delegate: self,
-                                cancelButtonTitle: "Ok").show()
-                        }
-                    })
+                    self.performSegueWithIdentifier("SubredditLink", sender: link)
                 }
             }
+        } else if let comment = self.content[indexPath.row] as? RKComment {
+            self.fetchLinkForComment(comment)
         }
     }
+    
+    // MARK: IBActions
     
     @IBAction func cancelButtonTapped(sender: AnyObject) {
         self.dismissViewControllerAnimated(true, completion: nil)
     }
+    
+    // MARK: Segues
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "SubredditLink" {
@@ -309,6 +272,8 @@ PostImageCellDelegate {
             }
         }
     }
+    
+    // MARK: JZSwipeCellDelegate
     
     func swipeCell(cell: JZSwipeCell!, triggeredSwipeWithType swipeType: JZSwipeType) {
         if swipeType.rawValue != JZSwipeTypeNone.rawValue {
@@ -456,14 +421,7 @@ PostImageCellDelegate {
         
     }
     
-    func loadMoreHeader(header: LoadMoreHeader, didTapButton sender: AnyObject) {
-        if self.pagination != nil {
-            self.syncContent()
-        } else {
-            self.tableView.reloadData()
-            header.stopAnimating()
-        }
-    }
+    // MARK: Private
     
     private func downvote(link: RKLink) {
         LocalyticsSession.shared().tagEvent("Swipe Downvote")
@@ -496,6 +454,36 @@ PostImageCellDelegate {
             }
         })
     }
+    
+    private func fetchLinkForComment(comment: RKComment) {
+        RedditSession.sharedSession.fetchLinkWithComment(comment, completion: { (pagination, results, error) -> () in
+            if let link = results?.first as? RKLink {
+                if link.selfPost {
+                    self.performSegueWithIdentifier("CommentsSegue", sender: link)
+                } else {
+                    self.performSegueWithIdentifier("SubredditLink", sender: link)
+                }
+            } else {
+                UIAlertView(title: "Error!",
+                    message: "Unable to get link!",
+                    delegate: self,
+                    cancelButtonTitle: "Ok").show()
+            }
+        })
+    }
+    
+    // MARK: UIScrollViewDelegate
+    
+    func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
+        let endScrolling = scrollView.contentOffset.y + scrollView.frame.size.height
+        if endScrolling >= scrollView.contentSize.height && !self.fetchingMore {
+            self.hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
+            self.fetchingMore = true
+            self.syncContent()
+        }
+    }
+    
+    // MARK: PostImageCellDelegate
     
     func postImageCell(cell: PostImageCell, didDownloadImageWithHeight height: CGFloat, url: NSURL) {
         if let _ = self.tableView.indexPathForCell(cell) {

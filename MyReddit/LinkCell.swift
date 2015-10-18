@@ -18,6 +18,17 @@ class LinkCell: UITableViewCell {
     var delegate: LinkCellDelegate?
     
     override func awakeFromNib() {
+        self.updateAppearance()
+    }
+    
+    @IBOutlet weak var linkTextField: UITextField!
+    @IBOutlet weak var addImageButton: UIButton!
+    
+    @IBAction func addImageButtonTapped(sender: AnyObject) {
+        self.delegate?.linkCell(self, didTapImageButton: sender)
+    }
+    
+    private func updateAppearance() {
         self.linkTextField.attributedPlaceholder = NSAttributedString(string: "enter link...",
             attributes: [NSForegroundColorAttributeName : UIColor.lightGrayColor()])
         
@@ -29,13 +40,12 @@ class LinkCell: UITableViewCell {
             self.addImageButton.setImage(image, forState: .Normal)
         }
         
+        self.backgroundColor = MyRedditBackgroundColor
+
         self.linkTextField.textColor = MyRedditLabelColor
     }
     
-    @IBOutlet weak var linkTextField: UITextField!
-    @IBOutlet weak var addImageButton: UIButton!
-    
-    @IBAction func addImageButtonTapped(sender: AnyObject) {
-        self.delegate?.linkCell(self, didTapImageButton: sender)
+    override func prepareForReuse() {
+        self.updateAppearance()
     }
 }

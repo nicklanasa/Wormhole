@@ -20,7 +20,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view hidden="YES" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ah1-5p-a03">
+                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ah1-5p-a03">
                                 <rect key="frame" x="0.0" y="64" width="600" height="492"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="TopLeft" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Unable to get posts. Tap submit a post or try again to reload." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.69999998807907104" translatesAutoresizingMaskIntoConstraints="NO" id="jjf-5v-2bx">
@@ -40,7 +40,7 @@
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Z6b-xu-nc1">
                                         <rect key="frame" x="8" y="403" width="584" height="46"/>
                                         <animations/>
-                                        <color key="backgroundColor" red="1" green="0.3411764706" blue="0.3411764706" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="46" id="ijF-hi-yIU"/>
                                             <constraint firstAttribute="height" constant="46" id="kY9-jp-2Xg"/>
@@ -49,13 +49,12 @@
                                         </constraints>
                                         <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="16"/>
                                         <state key="normal" title="try again">
-                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                            <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="string" keyPath="layer.borderWidth" value="1"/>
                                             <userDefinedRuntimeAttribute type="color" keyPath="layer.borderColor">
-                                                <color key="value" red="1" green="0.3411764706" blue="0.3411764706" alpha="1" colorSpace="calibratedRGB"/>
+                                                <color key="value" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                             </userDefinedRuntimeAttribute>
                                             <userDefinedRuntimeAttribute type="string" keyPath="layer.cornerRadius" value="22"/>
                                         </userDefinedRuntimeAttributes>
@@ -78,7 +77,7 @@
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OdN-FM-AaN">
                                         <rect key="frame" x="8" y="344" width="584" height="46"/>
                                         <animations/>
-                                        <color key="backgroundColor" red="0.96078431369999995" green="0.52156862749999999" blue="0.3921568627" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="276" id="2ZQ-II-PSx"/>
                                             <constraint firstAttribute="height" constant="46" id="LpH-1E-lDH"/>
@@ -87,13 +86,12 @@
                                         </constraints>
                                         <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="16"/>
                                         <state key="normal" title="submit a post">
-                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                            <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="string" keyPath="layer.borderWidth" value="1"/>
                                             <userDefinedRuntimeAttribute type="color" keyPath="layer.borderColor">
-                                                <color key="value" red="1" green="0.3411764706" blue="0.3411764706" alpha="1" colorSpace="calibratedRGB"/>
+                                                <color key="value" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                             </userDefinedRuntimeAttribute>
                                             <userDefinedRuntimeAttribute type="string" keyPath="layer.cornerRadius" value="22"/>
                                         </userDefinedRuntimeAttributes>
@@ -414,7 +412,7 @@
                                 <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="EmailCell" id="aoH-FF-Hbg" customClass="EmailCell" customModule="MyReddit" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="50" width="600" height="44"/>
+                                        <rect key="frame" x="0.0" y="114" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="aoH-FF-Hbg" id="3X3-wu-QYC">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
@@ -460,7 +458,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="PasswordCell" id="Qsm-lL-wuW" customClass="PasswordCell" customModule="MyReddit" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="94" width="600" height="44"/>
+                                        <rect key="frame" x="0.0" y="158" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Qsm-lL-wuW" id="v0k-de-mL3">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
@@ -697,7 +695,7 @@
                                         </attributes>
                                     </fragment>
                                     <fragment>
-                                        <string key="content">  - Use your reddit.com account w/ multiple account support - Voting, posting, hiding, saving, and sharing - Manage multireddits - Subscribed subreddits - Messages - Support the development of MyReddit.</string>
+                                        <string key="content">  Use your reddit.com account w/ multiple account support Voting, posting, hiding, saving, and sharing Manage multireddits Subscribed subreddits Messages Night Mode Support the development of MyReddit.</string>
                                         <attributes>
                                             <color key="NSColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <font key="NSFont" size="20" name="AvenirNext-Regular"/>
@@ -1095,13 +1093,13 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="107" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="cYO-aZ-ouF">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="107" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="cYO-aZ-ouF">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="556"/>
                                 <animations/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="LoadMoreHeader" rowHeight="60" id="x1D-qs-6mY" customClass="LoadMoreHeader" customModule="MyReddit" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="22" width="600" height="60"/>
+                                        <rect key="frame" x="0.0" y="86" width="600" height="60"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="x1D-qs-6mY" id="BKv-iT-k1O">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="59"/>
@@ -1141,7 +1139,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="MessageCell" rowHeight="107" id="l0H-gQ-1ug" customClass="MessageCell" customModule="MyReddit" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="82" width="600" height="107"/>
+                                        <rect key="frame" x="0.0" y="146" width="600" height="107"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="l0H-gQ-1ug" id="TRq-x4-wld">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="106"/>
@@ -1213,7 +1211,7 @@
                                     <outlet property="delegate" destination="EL8-G3-WsF" id="Tjp-bZ-8q4"/>
                                 </connections>
                             </tableView>
-                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="WzC-zn-tpo">
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WzC-zn-tpo">
                                 <rect key="frame" x="0.0" y="556" width="600" height="44"/>
                                 <animations/>
                                 <items>
@@ -1297,7 +1295,7 @@
                             <tableViewSection id="Kcr-oe-efR">
                                 <cells>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="iPy-Ne-9r0">
-                                        <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                                        <rect key="frame" x="0.0" y="64" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="iPy-Ne-9r0" id="EJK-WT-dSF">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
@@ -1316,7 +1314,7 @@
                                         <animations/>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="4uc-Sx-bXz">
-                                        <rect key="frame" x="0.0" y="44" width="600" height="44"/>
+                                        <rect key="frame" x="0.0" y="108" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="4uc-Sx-bXz" id="CEN-xr-wAV">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
@@ -1335,7 +1333,7 @@
                                         <animations/>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="400" id="Z3u-F5-KhL">
-                                        <rect key="frame" x="0.0" y="88" width="600" height="400"/>
+                                        <rect key="frame" x="0.0" y="152" width="600" height="400"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Z3u-F5-KhL" id="QgF-4H-JAY">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="399"/>
@@ -1415,7 +1413,7 @@
                                 <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="UserInfoCell" id="8l4-Uo-dZV" customClass="UserInfoCell" customModule="MyReddit" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="50" width="600" height="44"/>
+                                        <rect key="frame" x="0.0" y="114" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="8l4-Uo-dZV" id="voe-U5-u67">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
@@ -1432,7 +1430,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="100k" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QcM-es-Sch">
-                                                    <rect key="frame" x="184" y="11" width="408" height="21"/>
+                                                    <rect key="frame" x="178" y="11" width="408" height="21"/>
                                                     <animations/>
                                                     <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="16"/>
                                                     <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
@@ -1444,9 +1442,9 @@
                                                 <constraint firstItem="QcM-es-Sch" firstAttribute="baseline" secondItem="PO7-aW-FMP" secondAttribute="baseline" id="Abh-z7-0PK"/>
                                                 <constraint firstItem="QcM-es-Sch" firstAttribute="centerY" secondItem="voe-U5-u67" secondAttribute="centerY" id="Iem-5E-glp"/>
                                                 <constraint firstItem="QcM-es-Sch" firstAttribute="firstBaseline" secondItem="PO7-aW-FMP" secondAttribute="firstBaseline" id="Upa-Ir-Aaa"/>
-                                                <constraint firstAttribute="trailingMargin" secondItem="QcM-es-Sch" secondAttribute="trailing" id="ZTV-f7-CaO"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="QcM-es-Sch" secondAttribute="trailing" constant="6" id="ZTV-f7-CaO"/>
                                                 <constraint firstItem="PO7-aW-FMP" firstAttribute="leading" secondItem="voe-U5-u67" secondAttribute="leadingMargin" constant="7" id="b4N-fb-qax"/>
-                                                <constraint firstItem="QcM-es-Sch" firstAttribute="leading" secondItem="PO7-aW-FMP" secondAttribute="trailing" constant="35" id="cgE-xG-EPj"/>
+                                                <constraint firstItem="QcM-es-Sch" firstAttribute="leading" secondItem="PO7-aW-FMP" secondAttribute="trailing" constant="29" id="cgE-xG-EPj"/>
                                                 <constraint firstItem="PO7-aW-FMP" firstAttribute="top" secondItem="voe-U5-u67" secondAttribute="topMargin" constant="3" id="nxF-Hu-3Dh"/>
                                             </constraints>
                                         </tableViewCellContentView>
@@ -1492,6 +1490,7 @@
                     <navigationItem key="navigationItem" title="profile" id="3vD-yK-4bK"/>
                     <connections>
                         <outlet property="listButton" destination="fOM-qN-lyA" id="D1T-DG-znH"/>
+                        <outlet property="logoutButton" destination="yov-oE-6nv" id="PfR-eX-0T6"/>
                         <outlet property="tableView" destination="tzE-is-hre" id="zZu-ip-lhl"/>
                         <outlet property="toolbar" destination="0ud-5K-tEr" id="kTG-wF-9xy"/>
                         <segue destination="mxz-U6-d5C" kind="show" identifier="UserContentSegue" id="Wgk-72-ydW"/>
@@ -1513,13 +1512,13 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="jbe-cM-QBI">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="jbe-cM-QBI">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <animations/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TitleCell" rowHeight="122" id="FnY-jB-2wS" customClass="TitleCell" customModule="MyReddit" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="22" width="600" height="122"/>
+                                        <rect key="frame" x="0.0" y="86" width="600" height="122"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="FnY-jB-2wS" id="fvB-WE-yVP">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="121"/>
@@ -1597,7 +1596,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="PostImageCell" rowHeight="392" id="BeB-eR-AXY" customClass="PostImageCell" customModule="MyReddit" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="144" width="600" height="392"/>
+                                        <rect key="frame" x="0.0" y="208" width="600" height="392"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="BeB-eR-AXY" id="Vrc-d5-dtx">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="391"/>
@@ -1687,7 +1686,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="LoadMoreHeader" rowHeight="60" id="BKN-Gg-mdu" customClass="LoadMoreHeader" customModule="MyReddit" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="536" width="600" height="60"/>
+                                        <rect key="frame" x="0.0" y="600" width="600" height="60"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="BKN-Gg-mdu" id="V0o-cY-UGA">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="59"/>
@@ -1727,7 +1726,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="CommentCell" rowHeight="95" id="fLr-4z-oN3" customClass="CommentCell" customModule="MyReddit" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="596" width="600" height="95"/>
+                                        <rect key="frame" x="0.0" y="660" width="600" height="95"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="fLr-4z-oN3" id="8ST-jz-vCw">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="94"/>
@@ -1806,7 +1805,7 @@
                         <constraints>
                             <constraint firstItem="jbe-cM-QBI" firstAttribute="top" secondItem="Z9L-Eh-LZc" secondAttribute="top" id="0sT-O8-gav"/>
                             <constraint firstAttribute="trailing" secondItem="jbe-cM-QBI" secondAttribute="trailing" id="jxT-RO-iD1"/>
-                            <constraint firstItem="jbe-cM-QBI" firstAttribute="bottom" secondItem="VBp-ke-dQX" secondAttribute="top" constant="44" id="lZH-5P-0K0"/>
+                            <constraint firstItem="jbe-cM-QBI" firstAttribute="bottom" secondItem="VBp-ke-dQX" secondAttribute="top" id="lZH-5P-0K0"/>
                             <constraint firstItem="jbe-cM-QBI" firstAttribute="leading" secondItem="Z9L-Eh-LZc" secondAttribute="leading" id="xbS-fs-djx"/>
                         </constraints>
                     </view>
@@ -1973,7 +1972,7 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TitleCell" rowHeight="122" id="6Eq-Nn-blf" customClass="TitleCell" customModule="MyReddit" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="22" width="600" height="122"/>
+                                        <rect key="frame" x="0.0" y="86" width="600" height="122"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="6Eq-Nn-blf" id="0Uc-Mj-fqb">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="121"/>
@@ -2051,7 +2050,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="PostImageCell" rowHeight="392" id="mTx-eB-AVm" customClass="PostImageCell" customModule="MyReddit" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="144" width="600" height="392"/>
+                                        <rect key="frame" x="0.0" y="208" width="600" height="392"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="mTx-eB-AVm" id="m7J-N4-O8e">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="391"/>
@@ -2141,7 +2140,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="SubredditCell" rowHeight="55" id="2fx-2n-VBu" customClass="SubredditCell" customModule="MyReddit" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="536" width="600" height="55"/>
+                                        <rect key="frame" x="0.0" y="600" width="600" height="55"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="2fx-2n-VBu" id="MG6-wl-cXg">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="54"/>
@@ -2861,6 +2860,7 @@
                         <outlet property="textSizeCell" destination="mbg-AU-7yY" id="xOh-vZ-Tqc"/>
                         <outlet property="textSizeLabel" destination="Kaj-QC-ywh" id="bsK-Wh-nyJ"/>
                         <segue destination="BuP-V6-G2K" kind="presentation" identifier="WebViewSegue" modalTransitionStyle="crossDissolve" id="Diw-V8-n62"/>
+                        <segue destination="Hdo-ax-c9X" kind="presentation" identifier="PurchaseSegue" modalTransitionStyle="crossDissolve" id="zMx-9J-SCH"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4Eq-Je-PQ9" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -2991,7 +2991,7 @@
                             <tableViewSection id="2wL-0H-j3o">
                                 <cells>
                                     <tableViewCell tag="1" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="UserInfoCell" id="6Hg-WU-BEm" customClass="UserInfoCell" customModule="MyReddit" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="35" width="600" height="44"/>
+                                        <rect key="frame" x="0.0" y="99" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="6Hg-WU-BEm" id="9kd-y0-kbW">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
@@ -3036,7 +3036,7 @@
                             <tableViewSection id="32l-7d-Dw9">
                                 <cells>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="UserInfoCell" id="flY-OR-Vwl" customClass="UserInfoCell" customModule="MyReddit" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="99" width="600" height="44"/>
+                                        <rect key="frame" x="0.0" y="163" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="flY-OR-Vwl" id="E2p-R9-lWf">
                                             <rect key="frame" x="0.0" y="0.0" width="567" height="43"/>
@@ -3065,7 +3065,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell tag="2" contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="UserInfoCell" id="CYN-b6-oqh" customClass="UserInfoCell" customModule="MyReddit" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="143" width="600" height="44"/>
+                                        <rect key="frame" x="0.0" y="207" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="CYN-b6-oqh" id="usj-NN-oxl">
                                             <rect key="frame" x="0.0" y="0.0" width="567" height="43"/>
@@ -3094,7 +3094,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell tag="3" contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="UserInfoCell" id="ZN8-UH-fZ9" customClass="UserInfoCell" customModule="MyReddit" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="187" width="600" height="44"/>
+                                        <rect key="frame" x="0.0" y="251" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ZN8-UH-fZ9" id="Cia-r5-OKB">
                                             <rect key="frame" x="0.0" y="0.0" width="567" height="43"/>
@@ -3123,7 +3123,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell tag="4" contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="UserInfoCell" id="jza-UU-Fy6" customClass="UserInfoCell" customModule="MyReddit" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="231" width="600" height="44"/>
+                                        <rect key="frame" x="0.0" y="295" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="jza-UU-Fy6" id="27j-Fo-nWt">
                                             <rect key="frame" x="0.0" y="0.0" width="567" height="43"/>
@@ -3152,7 +3152,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell tag="5" contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="UserInfoCell" id="cAt-9T-pXV" customClass="UserInfoCell" customModule="MyReddit" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="275" width="600" height="44"/>
+                                        <rect key="frame" x="0.0" y="339" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="cAt-9T-pXV" id="1pS-qF-Nap">
                                             <rect key="frame" x="0.0" y="0.0" width="567" height="43"/>
@@ -3181,7 +3181,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell tag="6" contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="UserInfoCell" id="Nqn-yJ-3hK" customClass="UserInfoCell" customModule="MyReddit" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="319" width="600" height="44"/>
+                                        <rect key="frame" x="0.0" y="383" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Nqn-yJ-3hK" id="hEK-Q8-gMP">
                                             <rect key="frame" x="0.0" y="0.0" width="567" height="43"/>
@@ -3210,7 +3210,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell tag="7" contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="UserInfoCell" id="wWY-nZ-fXk" customClass="UserInfoCell" customModule="MyReddit" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="363" width="600" height="44"/>
+                                        <rect key="frame" x="0.0" y="427" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="wWY-nZ-fXk" id="PXv-a9-2bJ">
                                             <rect key="frame" x="0.0" y="0.0" width="567" height="43"/>
@@ -3339,7 +3339,7 @@
                                 <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="AccountCell" id="CLk-6Q-cq6" customClass="UserInfoCell" customModule="MyReddit" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="50" width="600" height="44"/>
+                                        <rect key="frame" x="0.0" y="114" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="CLk-6Q-cq6" id="Khm-xB-s5m">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
@@ -3547,7 +3547,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="PostTypeCell" id="aTU-Yp-hDZ" customClass="PostTypeCell" customModule="MyReddit" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="22" width="600" height="44"/>
+                                <rect key="frame" x="0.0" y="86" width="600" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="aTU-Yp-hDZ" id="DcH-g5-Riq">
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
@@ -3563,7 +3563,7 @@
                                                 <segment title="link"/>
                                                 <segment title="text"/>
                                             </segments>
-                                            <color key="tintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                            <color key="tintColor" red="0.60000002379999995" green="0.60000002379999995" blue="0.60000002379999995" alpha="1" colorSpace="calibratedRGB"/>
                                             <connections>
                                                 <action selector="segmentationControlValueChanged:" destination="aTU-Yp-hDZ" eventType="valueChanged" id="cAy-80-tHr"/>
                                             </connections>
@@ -3581,7 +3581,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="PostSubredditCell" id="X2A-OR-T2a" customClass="PostSubredditCell" customModule="MyReddit" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="66" width="600" height="44"/>
+                                <rect key="frame" x="0.0" y="130" width="600" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="X2A-OR-T2a" id="XNv-IN-GxM">
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
@@ -3633,7 +3633,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="PostTitleCell" id="GbX-1w-RWa" customClass="PostTitleCell" customModule="MyReddit" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="110" width="600" height="44"/>
+                                <rect key="frame" x="0.0" y="174" width="600" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="GbX-1w-RWa" id="Lr7-fz-yZc">
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
@@ -3665,7 +3665,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="LinkCell" id="Bm1-Vu-nfY" customClass="LinkCell" customModule="MyReddit" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="154" width="600" height="44"/>
+                                <rect key="frame" x="0.0" y="218" width="600" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Bm1-Vu-nfY" id="yHz-dV-BpS">
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
@@ -3712,7 +3712,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="PostTextCell" rowHeight="400" id="7Vc-fC-OYC" customClass="PostTextCell" customModule="MyReddit" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="198" width="600" height="400"/>
+                                <rect key="frame" x="0.0" y="262" width="600" height="400"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="7Vc-fC-OYC" id="EYR-M8-WWg">
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="399"/>
@@ -3763,6 +3763,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="listButton" destination="ffG-Me-gQs" id="AWT-zL-wpx"/>
+                        <outlet property="postButton" destination="urU-xa-g0F" id="gUG-Tt-hh4"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Xah-XU-haB" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -4001,7 +4002,7 @@
             <objects>
                 <tableViewController storyboardIdentifier="CommentsViewController" id="aMs-PM-aaW" customClass="CommentsViewController" customModule="MyReddit" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="95" sectionHeaderHeight="22" sectionFooterHeight="22" id="J0R-v8-atX">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="64" width="600" height="492"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -4082,7 +4083,7 @@
                             <outlet property="delegate" destination="aMs-PM-aaW" id="oph-aP-mo6"/>
                         </connections>
                     </tableView>
-                    <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
+                    <extendedEdge key="edgesForExtendedLayout"/>
                     <toolbarItems>
                         <barButtonItem image="Filter" id="437-eq-NQ7">
                             <connections>
@@ -4644,18 +4645,18 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="DoA-ah-cSI"/>
-        <segue reference="hRM-OU-Wxy"/>
-        <segue reference="LBr-8a-npu"/>
-        <segue reference="sq5-7f-uVx"/>
-        <segue reference="zjV-QU-TbQ"/>
-        <segue reference="Udn-dz-6HG"/>
+        <segue reference="Wtj-lP-kFa"/>
         <segue reference="nb3-Xk-rNn"/>
+        <segue reference="ykc-Jy-SLH"/>
         <segue reference="zGH-Se-Daq"/>
+        <segue reference="4cv-GS-zeB"/>
+        <segue reference="eRB-Ss-EVK"/>
         <segue reference="vvu-K9-HER"/>
-        <segue reference="Bsu-Nf-8xk"/>
-        <segue reference="cNt-ex-e8B"/>
         <segue reference="psA-tl-Zoj"/>
         <segue reference="O8K-LF-8mj"/>
         <segue reference="Wgk-72-ydW"/>
+        <segue reference="Udn-dz-6HG"/>
+        <segue reference="UaU-57-R6Z"/>
+        <segue reference="VJj-qs-Aci"/>
     </inferredMetricsTieBreakers>
 </document>

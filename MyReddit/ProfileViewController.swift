@@ -16,6 +16,7 @@ UITableViewDelegate {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var toolbar: UIToolbar!
     @IBOutlet weak var listButton: UIBarButtonItem!
+    @IBOutlet weak var logoutButton: UIBarButtonItem!
     
     var userTitles = ["Overview", "Comments", "Submitted", "Gilded", "Liked", "Disliked", "Hidden", "Saved"]
     var karmaTitles = ["Link Karma", "Comment Karma"]
@@ -211,6 +212,9 @@ UITableViewDelegate {
         self.toolbar.barTintColor = MyRedditBackgroundColor
         self.toolbar.backgroundColor = MyRedditBackgroundColor
         self.toolbar.tintColor = MyRedditLabelColor
+        self.toolbar.translucent = false
+        
+        self.logoutButton.tintColor = MyRedditLabelColor
         
         self.tableView.backgroundColor = MyRedditDarkBackgroundColor
             

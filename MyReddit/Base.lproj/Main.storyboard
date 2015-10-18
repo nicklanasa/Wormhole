@@ -1946,6 +1946,7 @@
                     </navigationItem>
                     <nil key="simulatedBottomBarMetrics"/>
                     <connections>
+                        <outlet property="logoutButton" destination="yov-oE-6nv" id="g9f-xV-cYN"/>
                         <outlet property="tableView" destination="tzE-is-hre" id="zZu-ip-lhl"/>
                         <segue destination="SpP-xf-ygO" kind="show" identifier="UserContentSegue" id="ym1-ru-k1R"/>
                     </connections>
@@ -4491,6 +4492,9 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <outlet property="postButton" destination="urU-xa-g0F" id="0aG-4m-z5x"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Xah-XU-haB" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -5026,20 +5030,20 @@
         <image name="Up" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="7YE-ws-eyS"/>
+        <segue reference="q6K-ip-lpO"/>
+        <segue reference="7mV-eF-gvZ"/>
+        <segue reference="fLo-75-wzd"/>
         <segue reference="s4Y-Y8-M2P"/>
-        <segue reference="ryX-hT-yj2"/>
-        <segue reference="gh5-lw-0Sc"/>
-        <segue reference="nEx-7L-vW5"/>
+        <segue reference="pMg-rh-ZMv"/>
+        <segue reference="Abo-Jz-JcR"/>
+        <segue reference="vvu-K9-HER"/>
+        <segue reference="Voj-m4-hcP"/>
+        <segue reference="MQa-bF-U0r"/>
         <segue reference="bxZ-6W-PbQ"/>
         <segue reference="sND-y2-DTj"/>
+        <segue reference="O8K-LF-8mj"/>
         <segue reference="zMo-OM-Z5J"/>
-        <segue reference="pMg-rh-ZMv"/>
-        <segue reference="vvu-K9-HER"/>
-        <segue reference="Abo-Jz-JcR"/>
-        <segue reference="6WJ-xS-zTe"/>
-        <segue reference="Voj-m4-hcP"/>
-        <segue reference="xsL-ln-a3I"/>
-        <segue reference="MQa-bF-U0r"/>
-        <segue reference="fLo-75-wzd"/>
+        <segue reference="ym1-ru-k1R"/>
     </inferredMetricsTieBreakers>
 </document>

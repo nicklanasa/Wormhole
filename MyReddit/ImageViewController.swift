@@ -54,7 +54,7 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
         
         self.scrollView.contentSize = self.imageView.frame.size
 
-        self.scrollView.minimumZoomScale = 0.75
+        self.scrollView.minimumZoomScale = 1.0
         
         let tap = UITapGestureRecognizer(target: self, action: "imageViewTapped:")
         tap.numberOfTapsRequired = 1
