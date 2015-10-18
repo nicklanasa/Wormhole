@@ -48,9 +48,10 @@ UITableViewDelegate {
         super.viewWillAppear(animated)
         LocalyticsSession.shared().tagScreen("Profile")
         
-        if let _ = user {
+        if let _ = self.user {
             self.userTitles =  ["Overview", "Comments", "Submitted", "Gilded"]
-            self.navigationItem.rightBarButtonItem = nil
+            self.logoutButton.title = ""
+            self.logoutButton.action = nil
         } else {
             if let user = UserSession.sharedSession.currentUser {
                 self.navigationItem.title = user.username
@@ -214,7 +215,9 @@ UITableViewDelegate {
         self.toolbar.tintColor = MyRedditLabelColor
         self.toolbar.translucent = false
         
-        self.logoutButton.tintColor = MyRedditLabelColor
+        if let logoutButton = self.logoutButton {
+            logoutButton.tintColor = MyRedditLabelColor
+        }
         
         self.tableView.backgroundColor = MyRedditDarkBackgroundColor
             

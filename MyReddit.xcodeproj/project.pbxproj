@@ -51,7 +51,6 @@
 		79B875B71BC9B84400473E7B /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79B875B21BC9951400473E7B /* DataManager.swift */; };
 		79B875B91BC9B88300473E7B /* MyReddit copy-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 79B875B81BC9B88300473E7B /* MyReddit copy-Info.plist */; settings = {ASSET_TAGS = (); }; };
 		7DF301D1864DA2F77913EF1F /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17E86E6737E2DEE7AE1AE9C5 /* Pods.framework */; };
-		83001D606510BE9ABA6E27FE /* Pods_MyReddit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0258EE66436D29614ED727B1 /* Pods_MyReddit.framework */; };
 		B77BD0382F0EEA5C3ACFE53F /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17E86E6737E2DEE7AE1AE9C5 /* Pods.framework */; };
 		CE046EC91AC3521100DF59B4 /* PostImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE046EC81AC3521100DF59B4 /* PostImageCell.swift */; };
 		CE046ECF1AC421EF00DF59B4 /* Int+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE046ECE1AC421EF00DF59B4 /* Int+Helpers.swift */; };
@@ -297,7 +296,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				CE3AA4CC1B0565E7000DEDD2 /* StoreKit.framework in Frameworks */,
-				83001D606510BE9ABA6E27FE /* Pods_MyReddit.framework in Frameworks */,
 				7DF301D1864DA2F77913EF1F /* Pods.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

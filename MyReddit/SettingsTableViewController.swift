@@ -16,7 +16,6 @@ class SettingsTableViewController: UITableViewController, BDGIAPDelegate {
     @IBOutlet weak var showSubredditLogosSwitch: UISwitch!
     @IBOutlet weak var nightModeSwitch: UISwitch!
     @IBOutlet weak var fullWidthImagesSwitch: UISwitch!
-    @IBOutlet weak var infiniteScrollingSwitch: UISwitch!
     @IBOutlet weak var defaultToReaderModeSwitch: UISwitch!
     @IBOutlet weak var textSizeLabel: UILabel!
     
@@ -25,7 +24,6 @@ class SettingsTableViewController: UITableViewController, BDGIAPDelegate {
     @IBOutlet weak var hideSubredditLogosCell: UserInfoCell!
     @IBOutlet weak var nightModeCell: UserInfoCell!
     @IBOutlet weak var textSizeCell: UserInfoCell!
-    @IBOutlet weak var infinitePostScrollingCell: UserInfoCell!
     @IBOutlet weak var goToMyRedditCell: UserInfoCell!
     @IBOutlet weak var rateThisAppCell: UserInfoCell!
     @IBOutlet weak var likeUsOnFacebookCell: UserInfoCell!
@@ -63,7 +61,6 @@ class SettingsTableViewController: UITableViewController, BDGIAPDelegate {
             self.showSubredditLogosSwitch.on = SettingsManager.defaultManager.valueForSetting(.SubredditLogos)
             self.fullWidthImagesSwitch.on = SettingsManager.defaultManager.valueForSetting(.FullWidthImages)
             self.nightModeSwitch.on = SettingsManager.defaultManager.valueForSetting(.NightMode)
-            self.infiniteScrollingSwitch.on = SettingsManager.defaultManager.valueForSetting(.InfiniteScrolling)
             self.defaultToReaderModeSwitch.on = SettingsManager.defaultManager.valueForSetting(.DefaultToReaderMode)
             self.textSizeLabel.text = SettingsManager.defaultManager.valueForTextSizeSetting(currentTextSize)
             
@@ -77,8 +74,6 @@ class SettingsTableViewController: UITableViewController, BDGIAPDelegate {
             self.nightModeCell.backgroundColor = MyRedditBackgroundColor
             self.textSizeCell.titleLabel.textColor = MyRedditLabelColor
             self.textSizeCell.backgroundColor = MyRedditBackgroundColor
-            self.infinitePostScrollingCell.titleLabel.textColor = MyRedditLabelColor
-            self.infinitePostScrollingCell.backgroundColor = MyRedditBackgroundColor
             self.goToMyRedditCell.titleLabel.textColor = MyRedditLabelColor
             self.goToMyRedditCell.backgroundColor = MyRedditBackgroundColor
             self.rateThisAppCell.titleLabel.textColor = MyRedditLabelColor
@@ -120,6 +115,9 @@ class SettingsTableViewController: UITableViewController, BDGIAPDelegate {
             } else {
                 UserSession.sharedSession.dayMode()
             }
+            
+            NSNotificationCenter.defaultCenter().postNotificationName(MyRedditAppearanceDidChangeNotification,
+                object: nil)
         }
         
         self.updateTable()
@@ -145,14 +143,10 @@ class SettingsTableViewController: UITableViewController, BDGIAPDelegate {
         SettingsManager.defaultManager.updateValueForSetting(.Flair, value: self.showFlairSwitch.on)
     }
     
-    @IBAction func infiniteScrollingSwitchValueChanged(sender: AnyObject) {
-        SettingsManager.defaultManager.updateValueForSetting(.InfiniteScrolling, value: self.infiniteScrollingSwitch.on)
-    }
-    
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
         if indexPath.section == 1 {
-            if indexPath.row == 3 {
+            if indexPath.row == 2 {
                 // Text Size
                 let alert = UIAlertController(title: "Text Size",
                     message: "Please select the text size. This will change the text size for both comments and posts.",

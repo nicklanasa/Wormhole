@@ -115,7 +115,6 @@ PostCellDelegate {
         self.links = Array<AnyObject>()
         self.pagination = nil
         self.fetchLinks()
-        self.refreshControl.endRefreshing()
     }
     
     // Private
@@ -239,6 +238,8 @@ PostCellDelegate {
         
         LocalyticsSession.shared().tagEvent("Fetched links")
         
+        self.hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
+        
         if self.front {
             self.fetchFrontPagePosts({ () -> () in
                 self.endRefreshing()
@@ -341,16 +342,14 @@ PostCellDelegate {
     }
     
     private func endRefreshing() {
-        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+        dispatch_async(dispatch_get_main_queue()) { () -> Void in
             self.reload()
-            self.refreshControl.endRefreshing()
             self.fetchingMore = false
             self.checkIfNoContent()
             
-            if let hud = self.hud {
-                hud.hide(true)
-            }
-        })
+            self.hud.hide(true)
+            self.refreshControl.endRefreshing()
+        }
     }
     
     // MARK: IBActions
@@ -766,9 +765,7 @@ PostCellDelegate {
     func postImageCell(cell: PostImageCell, didDownloadImageWithHeight height: CGFloat, url: NSURL) {
         if let indexPath = self.tableView.indexPathForCell(cell) {
             self.heightsCache[url.description] = NSNumber(float: Float(height))
-            self.tableView.beginUpdates()
             self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-            self.tableView.endUpdates()
         }
     }
     
@@ -877,7 +874,6 @@ PostCellDelegate {
     func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
         let endScrolling = scrollView.contentOffset.y + scrollView.frame.size.height
         if endScrolling >= scrollView.contentSize.height && !self.fetchingMore {
-            self.hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
             self.fetchingMore = true
             self.fetchLinks()
         }
