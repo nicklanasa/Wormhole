@@ -81,4 +81,41 @@ class InboxesTableViewController: RootTableViewController {
             }
         }
     }
+    
+    override func preferredAppearance() {
+        self.tableView.separatorColor = UIColor.lightGrayColor()
+        self.tableView.backgroundColor = MyRedditBackgroundColor
+        
+        self.navigationController?.navigationBar.backgroundColor = MyRedditBackgroundColor
+        self.navigationController?.navigationBar.barTintColor = MyRedditBackgroundColor
+        self.navigationController?.navigationBar.tintColor = MyRedditLabelColor
+        
+        self.navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName : MyRedditLabelColor,
+            NSFontAttributeName : MyRedditTitleFont]
+        
+        self.navigationController?.toolbar.barTintColor = MyRedditBackgroundColor
+        self.navigationController?.toolbar.backgroundColor = MyRedditBackgroundColor
+        self.navigationController?.toolbar.tintColor = MyRedditLabelColor
+        self.navigationController?.toolbar.translucent = false
+        
+        self.inboxCell.backgroundColor = MyRedditBackgroundColor
+        self.unreadCell.backgroundColor = MyRedditBackgroundColor
+        self.messagesCell.backgroundColor = MyRedditBackgroundColor
+        self.sentCell.backgroundColor = MyRedditBackgroundColor
+        self.commentRepliesCell.backgroundColor = MyRedditBackgroundColor
+        self.postRepliesCell.backgroundColor = MyRedditBackgroundColor
+        self.mentionsCell.backgroundColor = MyRedditBackgroundColor
+        self.moderatorCell.backgroundColor = MyRedditBackgroundColor
+        
+        self.inboxCell.titleLabel.textColor = MyRedditLabelColor
+        self.unreadCell.titleLabel.textColor = MyRedditLabelColor
+        self.messagesCell.titleLabel.textColor = MyRedditLabelColor
+        self.sentCell.titleLabel.textColor = MyRedditLabelColor
+        self.commentRepliesCell.titleLabel.textColor = MyRedditLabelColor
+        self.postRepliesCell.titleLabel.textColor = MyRedditLabelColor
+        self.mentionsCell.titleLabel.textColor = MyRedditLabelColor
+        self.moderatorCell.titleLabel.textColor = MyRedditLabelColor
+
+        self.tableView.reloadData()
+    }
 }

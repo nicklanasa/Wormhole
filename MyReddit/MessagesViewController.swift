@@ -14,11 +14,28 @@ class MessagesViewController: RootViewController,
 UITableViewDataSource,
 UITableViewDelegate,
 MessageCellDelegate,
-LoadMoreHeaderDelegate,
 JZSwipeCellDelegate {
     
     var category: RKMessageCategory!
-    var pagination: RKPagination?
+    
+    var pagination: RKPagination? {
+        didSet {
+            self.fetchingMore = false
+            dispatch_async(dispatch_get_main_queue()) { () -> Void in
+                self.hud?.hide(true)
+            }
+        }
+    }
+    
+    var fetchingMore = false
+    
+    var hud: MBProgressHUD? {
+        didSet {
+            hud?.labelFont = MyRedditSelfTextFont
+            hud?.mode = .Indeterminate
+            hud?.labelText = "Loading"
+        }
+    }
     
     var messages = Array<AnyObject>() {
         didSet {
@@ -36,8 +53,7 @@ JZSwipeCellDelegate {
         return control
     }()
     
-    func refresh(sender: AnyObject)
-    {
+    func refresh(sender: AnyObject) {
         self.fetchMessages()
     }
     
@@ -47,13 +63,13 @@ JZSwipeCellDelegate {
         self.tableView.addSubview(refreshControl)
         
         self.tableView.rowHeight = UITableViewAutomaticDimension
-        self.tableView.separatorColor = UIColor.lightGrayColor()
-        self.tableView.backgroundColor = MyRedditBackgroundColor
         
         self.tableView.tableFooterView = UIView()
         
         self.tableView.reloadData()
         self.fetchMessages()
+        
+        self.preferredAppearance()
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -80,7 +96,9 @@ JZSwipeCellDelegate {
             }
         }
         
-        RedditSession.sharedSession.fetchMessages(self.pagination, category: self.category, read: true) { (pagination, results, error) -> () in
+        RedditSession.sharedSession.fetchMessages(self.pagination,
+            category: self.category,
+            read: true) { (pagination, results, error) -> () in
             self.pagination = pagination
             
             if let messages = results{
@@ -104,7 +122,7 @@ JZSwipeCellDelegate {
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.messages.count + 1
+        return self.messages.count
     }
     
     func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
@@ -116,12 +134,7 @@ JZSwipeCellDelegate {
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        if indexPath.row == self.messages.count {
-            let header = tableView.dequeueReusableCellWithIdentifier("LoadMoreHeader") as! LoadMoreHeader
-            header.delegate = self
-            return header
-        }
-        
+
         let cell = tableView.dequeueReusableCellWithIdentifier("MessageCell") as! MessageCell
         
         let message = self.messages[indexPath.row] as! RKMessage
@@ -147,23 +160,6 @@ JZSwipeCellDelegate {
             if let message = sender as? RKMessage {
                 controller.message = message
             }
-        }
-    }
-    
-    func loadMoreHeader(header: LoadMoreHeader, didTapButton sender: AnyObject) {
-        header.startAnimating()
-        
-        RedditSession.sharedSession.fetchMessages(self.pagination, category: self.category, read: false) { (pagination, results, error) -> () in
-            if self.pagination != nil {
-                self.pagination = pagination
-                if let messages = results {
-                    self.messages.appendContentsOf(messages)
-                }
-            }
-            
-            header.stopAnimating()
-            
-            LocalyticsSession.shared().tagEvent("Fetch Messages")
         }
     }
     
@@ -252,5 +248,33 @@ JZSwipeCellDelegate {
                 }
             }
         }
+    }
+    
+    func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
+        let endScrolling = scrollView.contentOffset.y + scrollView.frame.size.height
+        if endScrolling >= scrollView.contentSize.height && !self.fetchingMore {
+            self.hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
+            self.fetchingMore = true
+            self.fetchMessages()
+        }
+    }
+    
+    override func preferredAppearance() {
+        self.tableView.separatorColor = UIColor.lightGrayColor()
+        self.tableView.backgroundColor = MyRedditBackgroundColor
+        
+        self.navigationController?.navigationBar.backgroundColor = MyRedditBackgroundColor
+        self.navigationController?.navigationBar.barTintColor = MyRedditBackgroundColor
+        self.navigationController?.navigationBar.tintColor = MyRedditLabelColor
+        
+        self.navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName : MyRedditLabelColor,
+            NSFontAttributeName : MyRedditTitleFont]
+        
+        self.navigationController?.toolbar.barTintColor = MyRedditBackgroundColor
+        self.navigationController?.toolbar.backgroundColor = MyRedditBackgroundColor
+        self.navigationController?.toolbar.tintColor = MyRedditLabelColor
+        self.navigationController?.toolbar.translucent = false
+        
+        self.tableView.reloadData()
     }
 }
