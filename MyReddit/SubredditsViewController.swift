@@ -648,14 +648,14 @@ UISearchBarDelegate {
                             }
                         }
                         
-                        self.toggleMaster()
+                        self.splitViewController?.toggleMaster()
                     } else {
                         if let subreddit = sender as? RKSubreddit {
                             subredditViewController.subreddit = subreddit
                             subredditViewController.front = false
                         }
                         
-                        self.toggleMaster()
+                        self.splitViewController?.toggleMaster()
                     }
                 }
             }
@@ -666,19 +666,19 @@ UISearchBarDelegate {
                     controller.categoryTitle = "Saved"
                     controller.user = RKClient.sharedClient().currentUser
                     
-                    self.toggleMaster()
+                    self.splitViewController?.toggleMaster()
                 }
             }
         } else if segue.identifier == "AccountsSegue" {
-            self.toggleMaster()
+            self.splitViewController?.toggleMaster()
         } else if segue.identifier == "FrontSegue" {
-            self.toggleMaster()
+            self.splitViewController?.toggleMaster()
         } else if segue.identifier == "AllSegue" {
             if let controller = segue.destinationViewController as? NavBarController {
                 if let subredditViewController = controller.viewControllers[0] as? SubredditViewController {
                     subredditViewController.front = false
                     subredditViewController.all = true
-                    self.toggleMaster()
+                    self.splitViewController?.toggleMaster()
                 }
             }
         } else if segue.identifier == "UserSegue" {
@@ -690,7 +690,7 @@ UISearchBarDelegate {
                 if let profileViewController = controller.viewControllers[0] as? ProfileViewController {
                     if let user = sender as? RKUser {
                         profileViewController.user = user
-                        self.toggleMaster()
+                        self.splitViewController?.toggleMaster()
                     }
                 }
             }
@@ -700,16 +700,6 @@ UISearchBarDelegate {
                     controller.multireddit = multireddit
                 }
             }
-        }
-    }
-    
-    private func toggleMaster() {
-        if let splitViewController = self.splitViewController {
-            let barButtonItem = splitViewController.displayModeButtonItem()
-            UIApplication.sharedApplication().sendAction(barButtonItem.action,
-                to: barButtonItem.target,
-                from: nil,
-                forEvent: nil)
         }
     }
 }

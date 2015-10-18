@@ -707,16 +707,19 @@ AddCommentViewControllerDelegate {
         
         self.tableView.separatorColor = MyRedditBackgroundColor
         self.tableView.backgroundColor = MyRedditBackgroundColor
+        
         self.navigationController?.navigationBar.backgroundColor = MyRedditBackgroundColor
         self.navigationController?.navigationBar.barTintColor = MyRedditBackgroundColor
         self.navigationController?.navigationBar.tintColor = MyRedditLabelColor
         
         self.navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName : MyRedditLabelColor,
             NSFontAttributeName : MyRedditTitleFont]
+        
         self.navigationController?.toolbar.barTintColor = MyRedditBackgroundColor
         self.navigationController?.toolbar.backgroundColor = MyRedditBackgroundColor
         self.navigationController?.toolbar.tintColor = MyRedditLabelColor
         self.navigationController?.toolbar.translucent = false
+        
         self.addButton.tintColor = MyRedditLabelColor
         
         if let _ = self.splitViewController {

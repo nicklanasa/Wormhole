@@ -92,6 +92,8 @@ class SubredditsByCategoryTableViewController: RootTableViewController {
                 if let subreddit = sender as? RKSubreddit {
                     subredditViewController.subreddit = subreddit
                     subredditViewController.front = false
+                    
+                    self.splitViewController?.toggleMaster()
                 }
             }
         }

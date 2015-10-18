@@ -2050,48 +2050,8 @@
                                             <outlet property="titleLabel" destination="grY-Lx-H5A" id="aY8-kj-JAD"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="LoadMoreHeader" rowHeight="60" id="85W-7M-14z" customClass="LoadMoreHeader" customModule="MyReddit" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="144" width="600" height="60"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="85W-7M-14z" id="f0B-0M-D55">
-                                            <rect key="frame" x="0.0" y="0.0" width="600" height="59"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uKN-4X-Qme">
-                                                    <rect key="frame" x="8" y="15" width="584" height="30"/>
-                                                    <animations/>
-                                                    <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="15"/>
-                                                    <state key="normal" title="Load More">
-                                                        <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                                    </state>
-                                                    <connections>
-                                                        <action selector="loadMoreButttonTapped:" destination="85W-7M-14z" eventType="touchUpInside" id="xFW-hW-SsT"/>
-                                                    </connections>
-                                                </button>
-                                                <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="CGM-Qe-rQ6">
-                                                    <rect key="frame" x="290" y="20" width="20" height="20"/>
-                                                    <animations/>
-                                                </activityIndicatorView>
-                                            </subviews>
-                                            <animations/>
-                                            <constraints>
-                                                <constraint firstAttribute="bottomMargin" secondItem="uKN-4X-Qme" secondAttribute="bottom" constant="6" id="3ha-ET-Sf6"/>
-                                                <constraint firstItem="CGM-Qe-rQ6" firstAttribute="centerY" secondItem="uKN-4X-Qme" secondAttribute="centerY" id="Iai-1Q-kKs"/>
-                                                <constraint firstItem="uKN-4X-Qme" firstAttribute="top" secondItem="f0B-0M-D55" secondAttribute="topMargin" constant="7" id="LIX-cV-9aK"/>
-                                                <constraint firstItem="uKN-4X-Qme" firstAttribute="centerX" secondItem="f0B-0M-D55" secondAttribute="centerX" id="jIi-hJ-vd8"/>
-                                                <constraint firstItem="CGM-Qe-rQ6" firstAttribute="centerX" secondItem="uKN-4X-Qme" secondAttribute="centerX" id="nK9-8b-9TT"/>
-                                                <constraint firstItem="uKN-4X-Qme" firstAttribute="leading" secondItem="f0B-0M-D55" secondAttribute="leadingMargin" id="suZ-IP-7zv"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                        <animations/>
-                                        <connections>
-                                            <outlet property="activityIndicator" destination="CGM-Qe-rQ6" id="K9K-kN-7x4"/>
-                                            <outlet property="loadMoreButton" destination="uKN-4X-Qme" id="AHt-Vp-KV8"/>
-                                        </connections>
-                                    </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="PostImageCell" rowHeight="392" id="mTx-eB-AVm" customClass="PostImageCell" customModule="MyReddit" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="204" width="600" height="392"/>
+                                        <rect key="frame" x="0.0" y="144" width="600" height="392"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="mTx-eB-AVm" id="m7J-N4-O8e">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="391"/>
@@ -2181,7 +2141,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="SubredditCell" rowHeight="55" id="2fx-2n-VBu" customClass="SubredditCell" customModule="MyReddit" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="596" width="600" height="55"/>
+                                        <rect key="frame" x="0.0" y="536" width="600" height="55"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="2fx-2n-VBu" id="MG6-wl-cXg">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="54"/>
@@ -2293,6 +2253,7 @@
                         <barButtonItem key="leftBarButtonItem" title="search" id="9WT-7C-6MB"/>
                     </navigationItem>
                     <connections>
+                        <outlet property="bottomNavigationBar" destination="fss-vF-smf" id="MHB-e7-zOf"/>
                         <outlet property="filterButton" destination="tVO-eQ-7pg" id="VIm-7w-M29"/>
                         <outlet property="filterControl" destination="7X1-kU-pVg" id="43K-FV-0Qe"/>
                         <outlet property="listButton" destination="IBw-JI-GDj" id="GQt-s2-uDe"/>
@@ -4682,19 +4643,19 @@
         <image name="Up" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="Wtj-lP-kFa"/>
         <segue reference="DoA-ah-cSI"/>
-        <segue reference="4cv-GS-zeB"/>
-        <segue reference="zGH-Se-Daq"/>
+        <segue reference="hRM-OU-Wxy"/>
+        <segue reference="LBr-8a-npu"/>
+        <segue reference="sq5-7f-uVx"/>
+        <segue reference="zjV-QU-TbQ"/>
+        <segue reference="Udn-dz-6HG"/>
         <segue reference="nb3-Xk-rNn"/>
-        <segue reference="Sqq-hV-0SI"/>
-        <segue reference="8Oe-kS-a5r"/>
-        <segue reference="UaU-57-R6Z"/>
-        <segue reference="VJj-qs-Aci"/>
+        <segue reference="zGH-Se-Daq"/>
         <segue reference="vvu-K9-HER"/>
+        <segue reference="Bsu-Nf-8xk"/>
+        <segue reference="cNt-ex-e8B"/>
         <segue reference="psA-tl-Zoj"/>
         <segue reference="O8K-LF-8mj"/>
         <segue reference="Wgk-72-ydW"/>
-        <segue reference="Udn-dz-6HG"/>
     </inferredMetricsTieBreakers>
 </document>

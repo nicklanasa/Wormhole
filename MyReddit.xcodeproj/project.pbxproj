@@ -23,6 +23,8 @@
 		01F9654D1AC4F12000DE0CD6 /* MessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01F9654C1AC4F12000DE0CD6 /* MessagesViewController.swift */; };
 		01F965531AC4F4B500DE0CD6 /* MessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01F965521AC4F4B500DE0CD6 /* MessageCell.swift */; };
 		5EDFA7DC0AED7CB612AB9C38 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17E86E6737E2DEE7AE1AE9C5 /* Pods.framework */; };
+		7922CA6F1BD33FCE0042E484 /* SplitViewController+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7922CA6E1BD33FCE0042E484 /* SplitViewController+Helpers.swift */; settings = {ASSET_TAGS = (); }; };
+		7922CA701BD33FCE0042E484 /* SplitViewController+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7922CA6E1BD33FCE0042E484 /* SplitViewController+Helpers.swift */; settings = {ASSET_TAGS = (); }; };
 		7938747A1B6D358000C780C5 /* MyRedditRefreshControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 793874791B6D358000C780C5 /* MyRedditRefreshControl.swift */; };
 		7938747B1B6D358000C780C5 /* MyRedditRefreshControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 793874791B6D358000C780C5 /* MyRedditRefreshControl.swift */; };
 		795FD2851B6BD9F7008DF15C /* ExploreCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 795FD2841B6BD9F7008DF15C /* ExploreCell.swift */; };
@@ -203,6 +205,7 @@
 		15EC45AB568566F68E59569F /* Pods-MyReddit.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyReddit.release.xcconfig"; path = "Pods/Target Support Files/Pods-MyReddit/Pods-MyReddit.release.xcconfig"; sourceTree = "<group>"; };
 		17E86E6737E2DEE7AE1AE9C5 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7047AFFBDD6CBEEDDCA19D07 /* Pods-MyReddit.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyReddit.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MyReddit/Pods-MyReddit.debug.xcconfig"; sourceTree = "<group>"; };
+		7922CA6E1BD33FCE0042E484 /* SplitViewController+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SplitViewController+Helpers.swift"; sourceTree = "<group>"; };
 		793874791B6D358000C780C5 /* MyRedditRefreshControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyRedditRefreshControl.swift; sourceTree = "<group>"; };
 		795FD2841B6BD9F7008DF15C /* ExploreCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreCell.swift; sourceTree = "<group>"; };
 		795FD29E1B6BF904008DF15C /* SubredditCategoriesTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubredditCategoriesTableViewController.swift; sourceTree = "<group>"; };
@@ -328,6 +331,7 @@
 				CE4B9E961AE1858C00018742 /* NavBarController.swift */,
 				795FD2AA1B6C58ED008DF15C /* RootTableViewController.swift */,
 				797C9C2B1B6D22070090FB49 /* RootViewController.swift */,
+				7922CA6E1BD33FCE0042E484 /* SplitViewController+Helpers.swift */,
 			);
 			name = Root;
 			sourceTree = "<group>";
@@ -898,6 +902,7 @@
 				CE3AA4921B0549E9000DEDD2 /* RKClient+Search.swift in Sources */,
 				795FD2A31B6C01BE008DF15C /* SubredditsByCategoryTableViewController.swift in Sources */,
 				CE3AA4931B0549E9000DEDD2 /* PostTitleCell.swift in Sources */,
+				7922CA701BD33FCE0042E484 /* SplitViewController+Helpers.swift in Sources */,
 				CE6E43831B07A387001D961F /* NSString+Helpers.swift in Sources */,
 				CE3AA4941B0549E9000DEDD2 /* LinkViewController.swift in Sources */,
 				CE3AA4951B0549E9000DEDD2 /* PostTableViewController.swift in Sources */,
@@ -956,6 +961,7 @@
 				CEAC71BD1AF14856006DC831 /* LoadMoreHeader.swift in Sources */,
 				CEA3E2FE1AFAE635008323A6 /* ImageViewController.swift in Sources */,
 				CE046EC91AC3521100DF59B4 /* PostImageCell.swift in Sources */,
+				7922CA6F1BD33FCE0042E484 /* SplitViewController+Helpers.swift in Sources */,
 				E00B35E21B648D6D00AD096D /* GalleryImageCollectionViewCell.swift in Sources */,
 				797C9C241B6D128C0090FB49 /* AttributedString+Helpers.swift in Sources */,
 				CEC59EB01AF2628800D0D62B /* EmailCell.swift in Sources */,

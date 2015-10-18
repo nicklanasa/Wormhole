@@ -9,21 +9,29 @@
 import Foundation
 import UIKit
 
-class SearchViewController: UIViewController,
+class SearchViewController: RootViewController,
 UITableViewDelegate,
 UITableViewDataSource,
 UISearchDisplayDelegate,
 UISearchBarDelegate,
 UISearchControllerDelegate,
 JZSwipeCellDelegate,
-LoadMoreHeaderDelegate,
 PostImageCellDelegate,
 PostCellDelegate {
     
-    var pagination: RKPagination?
+    var pagination: RKPagination? {
+        didSet {
+            self.fetchingMore = false
+            dispatch_async(dispatch_get_main_queue()) { () -> Void in
+                self.hud?.hide(true)
+            }
+        }
+    }
+    
     var optionsController: LinkShareOptionsViewController!
     var subreddit: RKSubreddit!
     var selectedSubreddit: RKSubreddit!
+    var fetchingMore = false
     
     @IBOutlet weak var filterControl: UISegmentedControl!
     @IBOutlet weak var tableView: UITableView!
@@ -31,6 +39,7 @@ PostCellDelegate {
     @IBOutlet weak var restrictSubreddit: UISwitch!
     @IBOutlet weak var listButton: UIBarButtonItem!
     @IBOutlet weak var filterButton: UIBarButtonItem!
+    @IBOutlet weak var bottomNavigationBar: UINavigationBar!
     
     var heightsCache = [String : AnyObject]()
     
@@ -50,11 +59,11 @@ PostCellDelegate {
         }
     }
     
-    var hud: MBProgressHUD! {
+    var hud: MBProgressHUD? {
         didSet {
-            hud.labelFont = MyRedditSelfTextFont
-            hud.mode = .Indeterminate
-            hud.labelText = "Loading"
+            hud?.labelFont = MyRedditSelfTextFont
+            hud?.mode = .Indeterminate
+            hud?.labelText = "Loading"
         }
     }
     
@@ -144,15 +153,17 @@ PostCellDelegate {
             self.subreddits = Array<AnyObject>()
             self.tableView.reloadData()
         }
-        
     }
     
     private func searchSubs(searchText: String) {
-        
         RedditSession.sharedSession.searchForSubredditByName(searchText, pagination: nil) { (pagination, results, error) -> () in
             if let subreddits = results {
                 self.subreddits = subreddits
             }
+            
+            self.fetchingMore = false
+            
+            self.hud?.hide(true)
         }
     }
     
@@ -230,13 +241,8 @@ PostCellDelegate {
         super.viewDidLoad()
         
         self.tableView.rowHeight = UITableViewAutomaticDimension
-        self.tableView.backgroundColor = MyRedditBackgroundColor
-        
-        let textFieldInsideSearchBar = self.searchController.searchBar.valueForKey("searchField") as? UITextField
-        
-        textFieldInsideSearchBar?.textColor = MyRedditLabelColor
-        
-        self.view.backgroundColor = MyRedditBackgroundColor
+       
+        self.preferredAppearance()
         
         if let _ = self.splitViewController {
             self.navigationItem.titleView = self.searchController.searchBar
@@ -261,7 +267,7 @@ PostCellDelegate {
             }
         } else {
             if self.links.count > 0 {
-                return self.links.count + 1
+                return self.links.count
             }
         }
         
@@ -277,13 +283,6 @@ PostCellDelegate {
         if self.filterControl.selectedSegmentIndex == 1 {
             let cell = tableView.dequeueReusableCellWithIdentifier("SubredditCell") as! SubredditCell
             cell.rkSubreddit = self.subreddits[indexPath.row] as! RKSubreddit
-            return cell
-        }
-        
-        if indexPath.row == self.links.count {
-            let cell =  tableView.dequeueReusableCellWithIdentifier("LoadMoreHeader") as! LoadMoreHeader
-            cell.delegate = self
-            cell.stopAnimating()
             return cell
         }
         
@@ -433,8 +432,19 @@ PostCellDelegate {
         return label.frame.height + 80
     }
     
+    // MARK: UIScrollViewDelegate
+    
     func scrollViewDidScroll(scrollView: UIScrollView) {
         self.searchController.searchBar.resignFirstResponder()
+    }
+    
+    func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
+        let endScrolling = scrollView.contentOffset.y + scrollView.frame.size.height
+        if endScrolling >= scrollView.contentSize.height && !self.fetchingMore {
+            self.hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
+            self.fetchingMore = true
+            self.search()
+        }
     }
     
     func swipeCell(cell: JZSwipeCell!, triggeredSwipeWithType swipeType: JZSwipeType) {
@@ -452,7 +462,7 @@ PostCellDelegate {
                             // Upvote
                             LocalyticsSession.shared().tagEvent("Swipe upvote")
                             RedditSession.sharedSession.upvote(link, completion: { (error) -> () in
-                                self.hud.hide(true)
+                                self.hud?.hide(true)
                                 
                                 if error != nil {
                                     UIAlertView(title: "Error!",
@@ -467,7 +477,7 @@ PostCellDelegate {
                             LocalyticsSession.shared().tagEvent("Swipe downvote")
                             // Downvote
                             RedditSession.sharedSession.downvote(link, completion: { (error) -> () in
-                                self.hud.hide(true)
+                                self.hud?.hide(true)
                                 
                                 if error != nil {
                                     UIAlertView(title: "Error!",
@@ -481,20 +491,20 @@ PostCellDelegate {
                         } else if swipeType.rawValue == JZSwipeTypeLongLeft.rawValue {
                             LocalyticsSession.shared().tagEvent("Swipe more")
                             // More
-                            self.hud.hide(true)
+                            self.hud?.hide(true)
                             let alertController = UIAlertController(title: "Select option", message: nil, preferredStyle: .ActionSheet)
                             
                             if link.saved() {
                                 alertController.addAction(UIAlertAction(title: "unsave", style: .Default, handler: { (action) -> Void in
                                     RedditSession.sharedSession.unSaveLink(link, completion: { (error) -> () in
-                                        self.hud.hide(true)
+                                        self.hud?.hide(true)
                                         link.unSaveLink()
                                     })
                                 }))
                             } else {
                                 alertController.addAction(UIAlertAction(title: "save", style: .Default, handler: { (action) -> Void in
                                     RedditSession.sharedSession.saveLink(link, completion: { (error) -> () in
-                                        self.hud.hide(true)
+                                        self.hud?.hide(true)
                                         link.saveLink()
                                     })
                                 }))
@@ -502,7 +512,7 @@ PostCellDelegate {
                             
                             alertController.addAction(UIAlertAction(title: "hide", style: .Default, handler: { (action) -> Void in
                                 RedditSession.sharedSession.hideLink(link, completion: { (error) -> () in
-                                    self.hud.hide(true)
+                                    self.hud?.hide(true)
                                     link.saveLink()
                                     
                                     self.links.removeAtIndex(indexPath.row)
@@ -529,7 +539,7 @@ PostCellDelegate {
                         } else {
                             LocalyticsSession.shared().tagEvent("Swipe share")
                             // Share
-                            self.hud.hide(true)
+                            self.hud?.hide(true)
                             self.optionsController = LinkShareOptionsViewController(link: link)
                             self.optionsController.sourceView = cell
                             self.optionsController.showInView(self.view)
@@ -542,11 +552,6 @@ PostCellDelegate {
     
     func swipeCell(cell: JZSwipeCell!, swipeTypeChangedFrom from: JZSwipeType, to: JZSwipeType) {
         
-    }
-    
-    func loadMoreHeader(header: LoadMoreHeader, didTapButton sender: AnyObject) {
-        header.startAnimating()
-        self.search()
     }
     
     func postImageCell(cell: PostImageCell, didDownloadImageWithHeight height: CGFloat, url: NSURL) {
@@ -592,5 +597,36 @@ PostCellDelegate {
                 }
             })
         }
+    }
+    
+    override func preferredAppearance() {
+        
+        self.navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName : MyRedditLabelColor,
+            NSFontAttributeName : MyRedditTitleFont]
+        
+        self.navigationController?.navigationBar.backgroundColor = MyRedditBackgroundColor
+        self.navigationController?.navigationBar.barTintColor = MyRedditBackgroundColor
+        self.navigationController?.navigationBar.tintColor = MyRedditLabelColor
+        
+        self.navigationItem.titleView?.backgroundColor = MyRedditBackgroundColor
+        
+        self.tableView.backgroundColor = MyRedditBackgroundColor
+        
+        let textFieldInsideSearchBar = self.searchController.searchBar.valueForKey("searchField") as? UITextField
+        
+        textFieldInsideSearchBar?.textColor = MyRedditLabelColor
+        
+        self.view.backgroundColor = MyRedditBackgroundColor
+        self.restrictToSubredditSwitch.tintColor = MyRedditLabelColor
+        self.navigationItem.leftBarButtonItem?.tintColor = MyRedditLabelColor
+        self.filterControl.tintColor = MyRedditLabelColor
+        
+        if let _ = self.splitViewController {
+            self.bottomNavigationBar.backgroundColor = MyRedditBackgroundColor
+            self.bottomNavigationBar.barTintColor = MyRedditBackgroundColor
+            self.bottomNavigationBar.tintColor = MyRedditLabelColor
+        }
+        
+        self.tableView.reloadData()
     }
 }

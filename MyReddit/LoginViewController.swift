@@ -49,8 +49,10 @@ class LoginViewController: UIViewController, UITableViewDataSource, UITableViewD
                             NSNotificationCenter.defaultCenter().postNotificationName("RefreshSubreddits", object: nil)
                         }
                         
-                        self.hud.hide(true)
-                        self.cancelButtonPressed(sender)
+                        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                            self.hud.hide(true)
+                            self.cancelButtonPressed(sender)
+                        })
                     }
             }
         } else {
