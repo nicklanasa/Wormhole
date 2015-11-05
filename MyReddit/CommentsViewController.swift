@@ -115,9 +115,7 @@ AddCommentViewControllerDelegate {
         
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
             self.navigationItem.title =  "\(self.link.totalComments) comments"
-            if let _ = self.splitViewController {
-                self.navigationController?.setToolbarHidden(false, animated: false)
-            }
+            self.navigationController?.setToolbarHidden(false, animated: false)
         })
     }
     
@@ -284,24 +282,18 @@ AddCommentViewControllerDelegate {
             comment = commentDictionary["comment"] as! RKComment
             
             var hidden = false
-            var collapsed = false
             
             for hiddenIndexPath in self.hiddenIndexPaths {
                 if indexPath.section == hiddenIndexPath.section {
                     hidden = true
                 }
             }
-            
-            for closedIndexPath in self.closedIndexPaths {
-                if indexPath.section == closedIndexPath.section {
-                    collapsed = true
-                }
-            }
-            
+
             if !hidden {
                 cell.configueForComment(comment: comment,
                     isLinkAuthor: self.link.author == comment.author)
             }
+            
             
             cell.separatorInset = UIEdgeInsets(top: 0,
                 left: self.tableView.frame.size.width,
@@ -704,7 +696,7 @@ AddCommentViewControllerDelegate {
     }
     
     override func preferredAppearance() {
-        
+    
         self.tableView.backgroundColor = MyRedditBackgroundColor
         
         self.navigationController?.navigationBar.backgroundColor = MyRedditBackgroundColor

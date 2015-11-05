@@ -106,6 +106,8 @@ class LinkViewController: RootViewController, UITextViewDelegate {
         super.viewWillAppear(animated)
         LocalyticsSession.shared().tagScreen("Link")
         self.navigationController?.setToolbarHidden(true, animated: true)
+        
+        self.preferredAppearance()
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -136,6 +138,18 @@ class LinkViewController: RootViewController, UITextViewDelegate {
             completion: { (error) -> () in })
         
         self.preferredAppearance()
+        
+        self.readerBarButtonItem = UIBarButtonItem(image: UIImage(named: "Reader"),
+            style: .Plain,
+            target: self,
+            action: "showReader")
+        
+        self.saveButtonItem = UIBarButtonItem(image: UIImage(named: "Saved"),
+            style: .Plain,
+            target: self,
+            action: "saveLink")
+        
+        self.navigationItem.rightBarButtonItems = [self.readerBarButtonItem, self.saveButtonItem]
     }
     
     private func setupWebView() {
@@ -180,18 +194,6 @@ class LinkViewController: RootViewController, UITextViewDelegate {
         navLabel.numberOfLines = 2
         navLabel.sizeToFit()
         self.navigationItem.titleView = navLabel
-        
-        self.readerBarButtonItem = UIBarButtonItem(image: UIImage(named: "Reader"),
-            style: .Plain,
-            target: self,
-            action: "showReader")
-        
-        self.saveButtonItem = UIBarButtonItem(image: UIImage(named: "Saved"),
-            style: .Plain,
-            target: self,
-            action: "saveLink")
-        
-        self.navigationItem.rightBarButtonItems = [self.readerBarButtonItem, self.saveButtonItem]
     }
     
     func showReader() {
@@ -354,8 +356,7 @@ class LinkViewController: RootViewController, UITextViewDelegate {
     }
     
     override func preferredAppearance() {
-        self.configureNav()
-    
+        
         self.navigationController?.navigationBar.backgroundColor = MyRedditBackgroundColor
         self.navigationController?.navigationBar.barTintColor = MyRedditBackgroundColor
         self.navigationController?.navigationBar.tintColor = MyRedditLabelColor
@@ -377,5 +378,7 @@ class LinkViewController: RootViewController, UITextViewDelegate {
         if self.link.saved {
             self.navigationItem.rightBarButtonItem?.tintColor = MyRedditColor
         }
+        
+        self.configureNav()
     }
 }

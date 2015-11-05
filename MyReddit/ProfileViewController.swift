@@ -166,40 +166,31 @@ UITableViewDelegate {
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "UserContentSegue" {
+            
+            var contentController: UserContentViewController!
+            
             if let nav = segue.destinationViewController as? UINavigationController {
                 if let controller = nav.viewControllers[0] as? UserContentViewController {
-                    if let cell = sender as? UITableViewCell {
-                        
-                        let indexPath: NSIndexPath = self.tableView.indexPathForCell(cell)!
-                        let category = RKUserContentCategory(rawValue: UInt(indexPath.row+1))
-                        controller.category = category
-                        controller.categoryTitle = self.userTitles[indexPath.row] as String
-                        
-                        if let searchedUser = self.user {
-                            controller.user = searchedUser
-                        } else {
-                            controller.user = RKClient.sharedClient().currentUser
-                        }
-                        
-                        LocalyticsSession.shared().tagEvent("UserContent segue")
-                    }
+                    contentController = controller
                 }
             } else if let controller = segue.destinationViewController as? UserContentViewController {
-                if let cell = sender as? UITableViewCell {
-                    
-                    let indexPath: NSIndexPath = self.tableView.indexPathForCell(cell)!
-                    let category = RKUserContentCategory(rawValue: UInt(indexPath.row+1))
-                    controller.category = category
-                    controller.categoryTitle = self.userTitles[indexPath.row] as String
-                    
-                    if let searchedUser = self.user {
-                        controller.user = searchedUser
-                    } else {
-                        controller.user = RKClient.sharedClient().currentUser
-                    }
-                    
-                    LocalyticsSession.shared().tagEvent("UserContent segue")
+                contentController = controller
+            }
+            
+            if let cell = sender as? UITableViewCell {
+                
+                let indexPath: NSIndexPath = self.tableView.indexPathForCell(cell)!
+                let category = RKUserContentCategory(rawValue: UInt(indexPath.row+1))
+                contentController.category = category
+                contentController.categoryTitle = self.userTitles[indexPath.row] as String
+                
+                if let searchedUser = self.user {
+                    contentController.user = searchedUser
+                } else {
+                    contentController.user = RKClient.sharedClient().currentUser
                 }
+                
+                LocalyticsSession.shared().tagEvent("UserContent segue")
             }
         }
     }

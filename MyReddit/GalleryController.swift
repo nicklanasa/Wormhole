@@ -84,6 +84,8 @@ UICollectionViewDelegate {
         super.viewWillAppear(animated)
         LocalyticsSession.shared().tagScreen("Gallery")
         self.navigationController?.setToolbarHidden(true, animated: true)
+        
+        self.preferredAppearance()
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -110,6 +112,12 @@ UICollectionViewDelegate {
         
         NSUserDefaults.standardUserDefaults().setObject(true, forKey: self.link.identifier)
         
+        self.pagesBarbutton.title = "\(1)/\(self.images!.count)"
+        
+        self.configureNav()
+        
+        self.preferredAppearance()
+        
         self.photosBarButtonItem = UIBarButtonItem(image: UIImage(named: "Grid"),
             style: .Plain,
             target: self,
@@ -121,12 +129,6 @@ UICollectionViewDelegate {
             action: "saveLink")
         
         self.navigationItem.rightBarButtonItems = [self.photosBarButtonItem, self.saveButtonItem]
-        
-        self.pagesBarbutton.title = "\(1)/\(self.images!.count)"
-        
-        self.configureNav()
-        
-        self.preferredAppearance()
     }
     
     func showGrid() {
@@ -445,7 +447,6 @@ UICollectionViewDelegate {
     }
     
     override func preferredAppearance() {
-        self.configureNav()
         
         self.pageViewController.view.backgroundColor = MyRedditBackgroundColor
         
@@ -471,5 +472,7 @@ UICollectionViewDelegate {
         if self.link.saved {
             self.navigationItem.rightBarButtonItem?.tintColor = MyRedditColor
         }
+        
+        self.configureNav()
     }
 }

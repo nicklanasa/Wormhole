@@ -16,7 +16,7 @@ extension Int {
         num = fabs(num)
         
         if (num < 1000.0){
-            return "\(sign)\(num)"
+            return "\(sign)\(Int(floor(num)))"
         }
         
         let exp: Int = Int(log10(num) / log10(1000))

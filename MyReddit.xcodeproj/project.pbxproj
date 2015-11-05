@@ -22,9 +22,10 @@
 		01E39F451AF52E9900C544EA /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01E39F441AF52E9900C544EA /* User.swift */; };
 		01F9654D1AC4F12000DE0CD6 /* MessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01F9654C1AC4F12000DE0CD6 /* MessagesViewController.swift */; };
 		01F965531AC4F4B500DE0CD6 /* MessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01F965521AC4F4B500DE0CD6 /* MessageCell.swift */; };
-		5EDFA7DC0AED7CB612AB9C38 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17E86E6737E2DEE7AE1AE9C5 /* Pods.framework */; };
-		7922CA6F1BD33FCE0042E484 /* SplitViewController+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7922CA6E1BD33FCE0042E484 /* SplitViewController+Helpers.swift */; settings = {ASSET_TAGS = (); }; };
-		7922CA701BD33FCE0042E484 /* SplitViewController+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7922CA6E1BD33FCE0042E484 /* SplitViewController+Helpers.swift */; settings = {ASSET_TAGS = (); }; };
+		7922CA6F1BD33FCE0042E484 /* SplitViewController+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7922CA6E1BD33FCE0042E484 /* SplitViewController+Helpers.swift */; };
+		7922CA701BD33FCE0042E484 /* SplitViewController+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7922CA6E1BD33FCE0042E484 /* SplitViewController+Helpers.swift */; };
+		793163BA1BD9258900E474EF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE712EE61AC2F1A20042B071 /* Main.storyboard */; };
+		793163BB1BD9259100E474EF /* Main-iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE3AA4C41B054A3B000DEDD2 /* Main-iPad.storyboard */; };
 		7938747A1B6D358000C780C5 /* MyRedditRefreshControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 793874791B6D358000C780C5 /* MyRedditRefreshControl.swift */; };
 		7938747B1B6D358000C780C5 /* MyRedditRefreshControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 793874791B6D358000C780C5 /* MyRedditRefreshControl.swift */; };
 		795FD2851B6BD9F7008DF15C /* ExploreCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 795FD2841B6BD9F7008DF15C /* ExploreCell.swift */; };
@@ -45,11 +46,13 @@
 		797C9C251B6D128C0090FB49 /* AttributedString+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 797C9C231B6D128C0090FB49 /* AttributedString+Helpers.swift */; };
 		797C9C2C1B6D22070090FB49 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 797C9C2B1B6D22070090FB49 /* RootViewController.swift */; };
 		797C9C2D1B6D22070090FB49 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 797C9C2B1B6D22070090FB49 /* RootViewController.swift */; };
-		79B875B31BC9951400473E7B /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79B875B21BC9951400473E7B /* DataManager.swift */; settings = {ASSET_TAGS = (); }; };
-		79B875B51BC9952E00473E7B /* Datastore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79B875B41BC9952E00473E7B /* Datastore.swift */; settings = {ASSET_TAGS = (); }; };
+		79AF9B4A1BD85C3B0058A649 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 79AF9B491BD85C3B0058A649 /* Pods.framework */; };
+		79AF9B4B1BD85DB30058A649 /* MyReddit copy-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 79B875B81BC9B88300473E7B /* MyReddit copy-Info.plist */; };
+		79AF9B4C1BD85DBB0058A649 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CE712EDF1AC2F1A20042B071 /* Info.plist */; };
+		79B875B31BC9951400473E7B /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79B875B21BC9951400473E7B /* DataManager.swift */; };
+		79B875B51BC9952E00473E7B /* Datastore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79B875B41BC9952E00473E7B /* Datastore.swift */; };
 		79B875B61BC9B84300473E7B /* Datastore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79B875B41BC9952E00473E7B /* Datastore.swift */; };
 		79B875B71BC9B84400473E7B /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79B875B21BC9951400473E7B /* DataManager.swift */; };
-		79B875B91BC9B88300473E7B /* MyReddit copy-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 79B875B81BC9B88300473E7B /* MyReddit copy-Info.plist */; settings = {ASSET_TAGS = (); }; };
 		7DF301D1864DA2F77913EF1F /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17E86E6737E2DEE7AE1AE9C5 /* Pods.framework */; };
 		B77BD0382F0EEA5C3ACFE53F /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17E86E6737E2DEE7AE1AE9C5 /* Pods.framework */; };
 		CE046EC91AC3521100DF59B4 /* PostImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE046EC81AC3521100DF59B4 /* PostImageCell.swift */; };
@@ -124,7 +127,6 @@
 		CE3AA4B01B0549E9000DEDD2 /* UserContentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE538FA91AF3B02E008050B6 /* UserContentViewController.swift */; };
 		CE3AA4B11B0549E9000DEDD2 /* TitleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01332D871AC37F4B0054E05C /* TitleCell.swift */; };
 		CE3AA4B21B0549E9000DEDD2 /* FrontCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE769F2A1AF6A17000031657 /* FrontCell.swift */; };
-		CE3AA4B71B0549E9000DEDD2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE712EE61AC2F1A20042B071 /* Main.storyboard */; };
 		CE3AA4B91B0549E9000DEDD2 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CE712EE91AC2F1A20042B071 /* Images.xcassets */; };
 		CE3AA4C31B0549EA000DEDD2 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE3AA4C11B0549EA000DEDD2 /* LaunchScreen.xib */; };
 		CE3AA4C71B054A49000DEDD2 /* Main-iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE3AA4C41B054A3B000DEDD2 /* Main-iPad.storyboard */; };
@@ -215,6 +217,7 @@
 		797C9C201B6C768F0090FB49 /* UIAlert+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIAlert+Helpers.swift"; sourceTree = "<group>"; };
 		797C9C231B6D128C0090FB49 /* AttributedString+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AttributedString+Helpers.swift"; sourceTree = "<group>"; };
 		797C9C2B1B6D22070090FB49 /* RootViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
+		79AF9B491BD85C3B0058A649 /* Pods.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Pods.framework; path = "Pods/../build/Release-iphoneos/Pods.framework"; sourceTree = "<group>"; };
 		79B875B21BC9951400473E7B /* DataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
 		79B875B41BC9952E00473E7B /* Datastore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Datastore.swift; sourceTree = "<group>"; };
 		79B875B81BC9B88300473E7B /* MyReddit copy-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "MyReddit copy-Info.plist"; sourceTree = "<group>"; };
@@ -286,8 +289,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				79AF9B4A1BD85C3B0058A649 /* Pods.framework in Frameworks */,
 				CE3AA4CB1B056063000DEDD2 /* StoreKit.framework in Frameworks */,
-				5EDFA7DC0AED7CB612AB9C38 /* Pods.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -314,6 +317,7 @@
 		56F9729499FEB82D9F376BF0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				79AF9B491BD85C3B0058A649 /* Pods.framework */,
 				018CC9C21BCDA8B500DBC967 /* Pods_MyReddit.framework */,
 				CE3AA4CA1B056063000DEDD2 /* StoreKit.framework */,
 				0258EE66436D29614ED727B1 /* Pods_MyReddit.framework */,
@@ -690,8 +694,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CE3AA4B71B0549E9000DEDD2 /* Main.storyboard in Resources */,
 				CE3AA4C31B0549EA000DEDD2 /* LaunchScreen.xib in Resources */,
+				79AF9B4B1BD85DB30058A649 /* MyReddit copy-Info.plist in Resources */,
+				793163BA1BD9258900E474EF /* Main.storyboard in Resources */,
 				CE3AA4B91B0549E9000DEDD2 /* Images.xcassets in Resources */,
 				CE3AA4C71B054A49000DEDD2 /* Main-iPad.storyboard in Resources */,
 			);
@@ -701,8 +706,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				79B875B91BC9B88300473E7B /* MyReddit copy-Info.plist in Resources */,
 				CE712EE81AC2F1A20042B071 /* Main.storyboard in Resources */,
+				793163BB1BD9259100E474EF /* Main-iPad.storyboard in Resources */,
+				79AF9B4C1BD85DBB0058A649 /* Info.plist in Resources */,
 				CE712EED1AC2F1A20042B071 /* LaunchScreen.xib in Resources */,
 				CE712EEA1AC2F1A20042B071 /* Images.xcassets in Resources */,
 			);
@@ -1077,6 +1083,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = CB38B9FFF29557E07DBAC730 /* Pods.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
@@ -1085,7 +1092,7 @@
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/build/Debug-iphoneos",
+					"$(PROJECT_DIR)/build/Release-iphoneos",
 				);
 				INFOPLIST_FILE = "MyReddit copy-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
@@ -1097,6 +1104,7 @@
 				SWIFT_OBJC_BRIDGING_HEADER = "MyReddit/MyReddit-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = 2;
+				USER_HEADER_SEARCH_PATHS = "Pods/**";
 			};
 			name = Debug;
 		};
@@ -1104,6 +1112,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 1550E4C632DA217C2AFF77DB /* Pods.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
@@ -1112,18 +1121,19 @@
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/build/Debug-iphoneos",
+					"$(PROJECT_DIR)/build/Release-iphoneos",
 				);
 				INFOPLIST_FILE = "MyReddit copy-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				ONLY_ACTIVE_ARCH = YES;
+				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = 6Q4UNB2LAJ.iPad;
 				PRODUCT_NAME = MyReddit;
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "MyReddit/MyReddit-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = 2;
+				USER_HEADER_SEARCH_PATHS = "Pods/**";
 			};
 			name = Release;
 		};

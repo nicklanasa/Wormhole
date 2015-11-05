@@ -8,8 +8,8 @@
 
 #import "NSError+MTLModelException.h"
 #import "MTLModel.h"
-#import "EXTRuntimeExtensions.h"
-#import "EXTScope.h"
+#import "MTLEXTRuntimeExtensions.h"
+#import "MTLEXTScope.h"
 #import "MTLReflection.h"
 #import <objc/runtime.h>
 
@@ -45,7 +45,7 @@ static BOOL MTLValidateAndSetValue(id obj, NSString *key, id value, BOOL forceUp
 		if (![obj validateValue:&validatedValue forKey:key error:error]) return NO;
 
 		if (forceUpdate || value != validatedValue) {
-            if (validatedValue != nil) { [obj setValue:validatedValue forKey:key]; }
+			[obj setValue:validatedValue forKey:key];
 		}
 
 		return YES;

@@ -14,6 +14,7 @@ class IPadSettingsViewController: UITableViewController, BDGIAPDelegate {
     @IBOutlet weak var showFlairSwitch: UISwitch!
     @IBOutlet weak var showNSFWSwitch: UISwitch!
     @IBOutlet weak var showSubredditLogosSwitch: UISwitch!
+    @IBOutlet weak var defaultToReaderModeSwitch: UISwitch!
     @IBOutlet weak var fullWidthImagesSwitch: UISwitch!
     @IBOutlet weak var nightModeSwitch: UISwitch!
     @IBOutlet weak var textSizeLabel: UILabel!
@@ -33,6 +34,7 @@ class IPadSettingsViewController: UITableViewController, BDGIAPDelegate {
     @IBOutlet weak var samanthaLanasaCreatorCell: UserInfoCell!
     @IBOutlet weak var otherAppMuzCell: UserInfoCell!
     @IBOutlet weak var hideFullWidthImagesCell: UserInfoCell!
+    @IBOutlet weak var defaultToReaderModeCell: UserInfoCell!
     
     var hud: MBProgressHUD! {
         didSet {
@@ -60,6 +62,7 @@ class IPadSettingsViewController: UITableViewController, BDGIAPDelegate {
             self.fullWidthImagesSwitch.on = SettingsManager.defaultManager.valueForSetting(.FullWidthImages)
             self.nightModeSwitch.on = SettingsManager.defaultManager.valueForSetting(.NightMode)
             self.textSizeLabel.text = SettingsManager.defaultManager.valueForTextSizeSetting(currentTextSize)
+            self.defaultToReaderModeSwitch.on = SettingsManager.defaultManager.valueForSetting(.DefaultToReaderMode)
             
             self.showFlairCell.backgroundColor = MyRedditBackgroundColor
             self.showFlairCell.titleLabel.textColor = MyRedditLabelColor
@@ -89,6 +92,8 @@ class IPadSettingsViewController: UITableViewController, BDGIAPDelegate {
             self.samanthaLanasaCreatorCell.backgroundColor = MyRedditBackgroundColor
             self.otherAppMuzCell.titleLabel.textColor = MyRedditLabelColor
             self.otherAppMuzCell.backgroundColor = MyRedditBackgroundColor
+            self.defaultToReaderModeCell.titleLabel.textColor = MyRedditLabelColor
+            self.defaultToReaderModeCell.backgroundColor = MyRedditBackgroundColor
             
             self.hideFullWidthImagesCell.titleLabel.textColor = MyRedditLabelColor
             self.hideFullWidthImagesCell.backgroundColor = MyRedditBackgroundColor
@@ -98,6 +103,10 @@ class IPadSettingsViewController: UITableViewController, BDGIAPDelegate {
             self.navigationController?.navigationBar.tintColor = MyRedditLabelColor
             self.navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName : MyRedditLabelColor]
         })
+    }
+    
+    @IBAction func defaultToReaderModeValueChanged(sender: AnyObject) {
+        SettingsManager.defaultManager.updateValueForSetting(.DefaultToReaderMode, value: self.defaultToReaderModeSwitch.on)
     }
     
     @IBAction func hideFullWidthImagesValueChanged(sender: AnyObject) {

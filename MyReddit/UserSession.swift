@@ -99,6 +99,7 @@ class UserSession {
         MyRedditCommentLinesColor = UIColor.darkGrayColor().colorWithAlphaComponent(0.2)
         
         UISwitch.appearance().onTintColor = MyRedditColor
+        UISegmentedControl.appearance().tintColor = MyRedditLabelColor
         
         UINavigationBar.appearance().translucent = false
         UINavigationBar.appearance().tintColor = MyRedditLabelColor
@@ -121,7 +122,7 @@ class UserSession {
         UIBarButtonItem.appearance().tintColor = MyRedditLabelColor
         
         UITableView.appearance().backgroundColor = MyRedditDarkBackgroundColor
-        UITableView.appearance().separatorColor = UIColor.whiteColor().colorWithAlphaComponent(0.5)
+        UITableView.appearance().separatorColor = UIColor.whiteColor().colorWithAlphaComponent(0.2)
         UITableView.appearance().backgroundView = nil
         UITableView.appearance().sectionIndexBackgroundColor = UIColor.clearColor()
         
@@ -164,6 +165,7 @@ class UserSession {
             forState: UIControlState.Normal)
         
         UISwitch.appearance().onTintColor = MyRedditColor
+        UISegmentedControl.appearance().tintColor = MyRedditLabelColor
         
         UINavigationBar.appearance().translucent = false
         UINavigationBar.appearance().tintColor = MyRedditLabelColor

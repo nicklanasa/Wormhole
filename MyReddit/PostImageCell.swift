@@ -40,7 +40,7 @@ class PostImageCell: PostCell {
     
     private func resetViews() {
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
-            self.titleLabel.frame = CGRectMake(15, 26, self.contentView.frame.size.width - 20, 50)
+            self.titleLabel.frame = CGRectMake(14, 30, self.contentView.frame.size.width - 20, 50)
             self.subredditButton.frame = CGRectMake(15, 6, self.contentView.frame.size.width - 20, 21)
             self.scoreLabel.frame = CGRectMake(self.contentView.frame.size.width - 80, 4, 70, 18)
             self.postInfoLabel.frame = CGRectMake(15, self.contentView.frame.size.height - 25, self.contentView.frame.size.width - 20, 14)
@@ -112,7 +112,8 @@ class PostImageCell: PostCell {
             let attrs = [NSForegroundColorAttributeName : MyRedditLabelColor]
             let commentsAttr = [NSForegroundColorAttributeName : MyRedditColor]
             infoString.addAttributes(attrs, range: NSMakeRange(0, showFlair.characters.count == 0 ? 0 : showFlair.characters.count - 1))
-            infoString.addAttributes(commentsAttr, range: NSMakeRange(infoString.string.characters.count - "\(link.totalComments.description) comments".characters.count, "\(link.totalComments.description) comments".characters.count))
+            infoString.addAttributes(commentsAttr,
+                range: NSMakeRange(infoString.string.characters.count - "\(link.totalComments.description) comments".characters.count, "\(link.totalComments.description) comments".characters.count))
             
             self.postInfoLabel.attributedText = infoString
             self.titleLabel.font = UIFont(name: self.titleLabel.font.fontName,

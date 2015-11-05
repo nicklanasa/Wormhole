@@ -8,10 +8,10 @@
 
 import UIKit
 
-let MyRedditColor = UIColor(red: 245.0/255.0, green: 133.0/255.0, blue: 100.0/255.0, alpha: 1.0)
-let MyRedditUpvoteColor = UIColor(red: 150.0/255.0, green: 217.0/255.0, blue: 81.0/255.0, alpha: 1.0)
-let MyRedditDownvoteColor = UIColor(red: 255.0/255.0, green: 87.0/255.0, blue: 87.0/255.0, alpha: 1.0)
-let MyRedditReplyColor = UIColor(red: 94.0/255.0, green: 227.0/255.0, blue: 255.0/255.0, alpha: 1.0)
+let MyRedditColor = UIColor(red: 189.0/255.0, green: 102.0/255.0, blue: 68.0/255.0, alpha: 1.0)
+let MyRedditUpvoteColor = UIColor(red: 155.0/255.0, green: 189.0/255.0, blue: 68.0/255.0, alpha: 1.0)
+let MyRedditDownvoteColor = UIColor(red: 189.0/255.0, green: 68.0/255.0, blue: 94.0/255.0, alpha: 1.0)
+let MyRedditReplyColor = UIColor(red: 68.0/255.0, green: 155.0/255.0, blue: 189.0/255.0, alpha: 1.0)
 let MyRedditFont = UIFont(name: "AvenirNext-Regular", size: 13)!
 let MyRedditCommentInfoFont = UIFont(name: "AvenirNext-Regular", size: 11)!
 let MyRedditCommentInfoMediumFont = UIFont(name: "AvenirNext-Medium", size: 11)!
@@ -38,18 +38,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, IMGSessionDelegate {
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
                 
         IMGSession.anonymousSessionWithClientID("e97d1faf5a39e09", withDelegate: self)
-        
+                        
         if SettingsManager.defaultManager.valueForSetting(.NightMode) {
             UserSession.sharedSession.nightMode()
         } else {
             UserSession.sharedSession.dayMode()
-        }
-        
-        if let username = NSUserDefaults.standardUserDefaults().objectForKey("username") as? String {
-            if let password = NSUserDefaults.standardUserDefaults().objectForKey("password") as? String {
-                UserSession.sharedSession.loginWithUsername(username, password: password, completion: { (error) -> () in
-                })
-            }
         }
         
         LocalyticsSession.shared().integrateLocalytics("fda6cd374a0e9cec3f11237-09533afc-9cc5-11e3-974b-005cf8cbabd8",

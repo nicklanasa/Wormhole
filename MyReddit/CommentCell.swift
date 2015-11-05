@@ -40,6 +40,7 @@ class CommentCell: JZSwipeCell, UITextViewDelegate {
         
         self.commentTextView.backgroundColor = MyRedditBackgroundColor
         self.contentView.backgroundColor = MyRedditBackgroundColor
+        self.backgroundColor = MyRedditBackgroundColor
     }
     
     override func awakeFromNib() {
@@ -144,6 +145,26 @@ class CommentCell: JZSwipeCell, UITextViewDelegate {
         parser.linkFontName = MyRedditCommentTextBoldFont.familyName
         
         let parsedString = NSMutableAttributedString(attributedString: parser.attributedStringFromMarkdownString("\(body)"))
+        parsedString.addAttribute(NSForegroundColorAttributeName,
+            value: MyRedditLabelColor,
+            range: NSMakeRange(0, parsedString.string.characters.count))
+        
+        if parsedString.string.localizedCaseInsensitiveContainsString(">") {
+            do {
+                let regex = try NSRegularExpression(pattern: ">(.*)\\b\\n", options: .CaseInsensitive)
+                regex.enumerateMatchesInString(body,
+                    options: .Anchored,
+                    range: NSMakeRange(0, body.characters.count),
+                    usingBlock: { (result, flags, error) -> Void in
+                    if let foundRange = result?.range {
+                        parsedString.addAttribute(NSForegroundColorAttributeName,
+                            value: UIColor.lightGrayColor(),
+                            range: foundRange)
+                    }
+                })
+            } catch {}
+        }
+        
         self.commentTextView.attributedText = parsedString
         
         let timeAgo = self.comment.created.timeAgoSinceNow()
@@ -169,7 +190,6 @@ class CommentCell: JZSwipeCell, UITextViewDelegate {
             self.scoreLabel.textColor = UIColor.lightGrayColor()
         }
     
-        self.commentTextView.textColor = MyRedditLabelColor
         self.commentTextView.font = MyRedditCommentTextFont
         self.commentTextView.backgroundColor = MyRedditBackgroundColor
         self.contentView.backgroundColor = MyRedditBackgroundColor

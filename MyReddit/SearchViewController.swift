@@ -167,6 +167,20 @@ PostCellDelegate {
         }
     }
     
+    private func sortLinks() {
+        if !SettingsManager.defaultManager.valueForSetting(.NSFW) {
+            self.links = self.links.filter({ (obj) -> Bool in
+                if let link = obj as? RKLink {
+                    if link.NSFW {
+                        return false
+                    }
+                }
+                
+                return true
+            })
+        }
+    }
+    
     private func searchLinks(searchText: String) {
         if searchText.characters.count > 0 {
             if self.restrictSubreddit.on {
@@ -178,6 +192,7 @@ PostCellDelegate {
                             if error == nil {
                                 if let links = results {
                                     self.links.appendContentsOf(links)
+                                    self.sortLinks()
                                     self.pagination = pagination
                                 }
                             }
@@ -190,6 +205,7 @@ PostCellDelegate {
                             if error == nil {
                                 if let links = results {
                                     self.links.appendContentsOf(links)
+                                    self.sortLinks()
                                     self.pagination = pagination
                                 }
                             }
@@ -203,6 +219,7 @@ PostCellDelegate {
                         if error == nil {
                             if let links = results {
                                 self.links.appendContentsOf(links)
+                                self.sortLinks()
                                 self.pagination = pagination
                             }
                         }

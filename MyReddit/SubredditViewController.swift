@@ -88,7 +88,18 @@ PostCellDelegate {
             forControlEvents: .ValueChanged)
         self.tableView.addSubview(self.refreshControl)
 
-        self.updateAndFetch()
+        if let username = NSUserDefaults.standardUserDefaults().objectForKey("username") as? String {
+            if let password = NSUserDefaults.standardUserDefaults().objectForKey("password") as? String {
+                UserSession.sharedSession.loginWithUsername(username, password: password, completion: { (error) -> () in
+                    self.updateAndFetch()
+                })
+            } else {
+                self.updateAndFetch()
+            }
+        } else {
+            self.updateAndFetch()
+        }
+        
         self.tableView.tableFooterView = UIView()
      
         switch UIDevice.currentDevice().userInterfaceIdiom {
@@ -316,9 +327,6 @@ PostCellDelegate {
             style: .Plain,
             target: self,
             action: nil)
-        
-        self.navigationController?.navigationBarHidden = false
-        self.navigationItem.title = ""
         
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
             self.updateSubscribeButton()
@@ -763,9 +771,10 @@ PostCellDelegate {
     // MARK: PostImageCellDelegate
     
     func postImageCell(cell: PostImageCell, didDownloadImageWithHeight height: CGFloat, url: NSURL) {
-        if let indexPath = self.tableView.indexPathForCell(cell) {
+        if let _ = self.tableView.indexPathForCell(cell) {
             self.heightsCache[url.description] = NSNumber(float: Float(height))
-            self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+            self.tableView.beginUpdates()
+            self.tableView.endUpdates()
         }
     }
     
