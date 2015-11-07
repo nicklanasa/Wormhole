@@ -306,7 +306,7 @@ PostCellDelegate {
         var cell = tableView.dequeueReusableCellWithIdentifier("PostImageCell") as! PostCell
         
         if let link = self.links[indexPath.row] as? RKLink {
-            if link.isImageLink() || link.domain == "imgur.com" || link.media != nil {
+            if link.hasImage() {
                 
                 if SettingsManager.defaultManager.valueForSetting(.FullWidthImages) {
                     cell = tableView.dequeueReusableCellWithIdentifier("TitleCell") as! TitleCell
@@ -396,7 +396,7 @@ PostCellDelegate {
         }
         
         if let link = self.links[indexPath.row] as? RKLink {
-            if link.isImageLink() || link.domain == "imgur.com" || link.media != nil {
+            if link.hasImage() {
                 // Image
                 
                 if SettingsManager.defaultManager.valueForSetting(.FullWidthImages) {
@@ -404,18 +404,7 @@ PostCellDelegate {
                     return self.heightForLink(link)
                 } else {
                     
-                    var url: String?
-                    
-                    if link.isImageLink() {
-                        url = link.URL.absoluteString
-                    } else if link.media != nil {
-                        if let thumbnailURL = link.media.thumbnailURL {
-                            url = thumbnailURL.description
-                        }
-                    } else if link.domain == "imgur.com" {
-                        let stringURL = link.URL.absoluteString + ".jpg"
-                        url = stringURL
-                    }
+                    let url = link.urlForLink()
                     
                     if url != nil {
                         if let height = self.heightsCache[url!] as? NSNumber {
@@ -506,8 +495,12 @@ PostCellDelegate {
                                 }
                             })
                         } else if swipeType.rawValue == JZSwipeTypeLongLeft.rawValue {
+                            LocalyticsSession.shared().tagEvent("Swipe comments")
+                            self.performSegueWithIdentifier("CommentsSegue", sender: link)
+                            
+                        } else {
                             LocalyticsSession.shared().tagEvent("Swipe more")
-                            // More
+                            
                             self.hud?.hide(true)
                             let alertController = UIAlertController(title: "Select option", message: nil, preferredStyle: .ActionSheet)
                             
@@ -532,19 +525,26 @@ PostCellDelegate {
                                     self.hud?.hide(true)
                                     link.saveLink()
                                     
-                                    self.links.removeAtIndex(indexPath.row)
                                     dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                                        self.tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: .Fade)
+                                        self.links.removeAtIndex(indexPath.row)
+                                        self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
                                     })
                                 })
                             }))
                             
-                            alertController.addAction(UIAlertAction(title: "see comments", style: .Default, handler: { (action) -> Void in
-                                self.performSegueWithIdentifier("CommentsSegue", sender: link)
+                            alertController.addAction(UIAlertAction(title: "open in safari", style: .Default, handler: { (action) -> Void in
+                                UIApplication.sharedApplication().openURL(link.URL)
+                            }))
+                            
+                            alertController.addAction(UIAlertAction(title: "more options", style: .Default, handler: { (action) -> Void in
+                                // Share
+                                self.hud?.hide(true)
+                                self.optionsController = LinkShareOptionsViewController(link: link)
+                                self.optionsController.sourceView = cell
+                                self.optionsController.showInView(self.view)
                             }))
                             
                             alertController.addAction(UIAlertAction(title: "cancel", style: .Cancel, handler: nil))
-                            
                             
                             if let popoverController = alertController.popoverPresentationController {
                                 popoverController.sourceView = cell
@@ -552,14 +552,6 @@ PostCellDelegate {
                             }
                             
                             alertController.present(animated: true, completion: nil)
-                            
-                        } else {
-                            LocalyticsSession.shared().tagEvent("Swipe share")
-                            // Share
-                            self.hud?.hide(true)
-                            self.optionsController = LinkShareOptionsViewController(link: link)
-                            self.optionsController.sourceView = cell
-                            self.optionsController.showInView(self.view)
                         }
                     }
                 }
@@ -576,6 +568,14 @@ PostCellDelegate {
             self.heightsCache[url.description] = NSNumber(float: Float(height))
             self.tableView.beginUpdates()
             self.tableView.endUpdates()
+        }
+    }
+    
+    func postImageCell(cell: PostImageCell, didLongHoldOnImage image: UIImage?) {
+        if let selectedImage = image {
+            self.presentViewController(UIAlertController.saveImageAlertController(selectedImage),
+                animated: true,
+                completion: nil)
         }
     }
     

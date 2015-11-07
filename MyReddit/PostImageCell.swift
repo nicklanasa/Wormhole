@@ -12,11 +12,12 @@ import UIKit
 protocol PostImageCellDelegate {
     func postImageCell(cell: PostImageCell,
         didDownloadImageWithHeight height: CGFloat, url: NSURL)
+    func postImageCell(cell: PostImageCell, didLongHoldOnImage image: UIImage?)
 }
 
 class PostImageCell: PostCell {
     
-    @IBOutlet weak var postImageView: UIImageView!
+    @IBOutlet weak var postImageView: FLAnimatedImageView!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var scoreLabel: UILabel!
     @IBOutlet weak var postInfoLabel: UILabel!
@@ -31,11 +32,21 @@ class PostImageCell: PostCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        
+        let longHold = UILongPressGestureRecognizer(target: self, action: "longHold")
+        self.postImageView.gestureRecognizers = [longHold]
+        
+        self.postImageView.userInteractionEnabled = true
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
         self.resetViews()
+    }
+    
+    func longHold() {
+        self.postImageDelegate?.postImageCell(self,
+            didLongHoldOnImage: self.postImageView.image)
     }
     
     private func resetViews() {
@@ -50,39 +61,31 @@ class PostImageCell: PostCell {
     override var link: RKLink! {
         didSet {
             self.postImageView.alpha = 0.0
-            
-            var url: NSURL!
-            
-            if self.link.isImageLink() {
-                url = self.link.URL
-            } else if self.link.media != nil {
-                if let thumbnailURL = link.media.thumbnailURL {
-                    url = thumbnailURL
-                }
-            } else if self.link.domain == "imgur.com" {
-                let stringURL = self.link.URL.absoluteString + ".jpg"
-                url = NSURL(string: stringURL)
-            }
-            
-            self.postImageView.sd_setImageWithURL(url, completed: { (image, error, cacheType, url) -> Void in
-                self.postImageView.alpha = 1.0
-                if error != nil {
-                    self.postImageView.image = UIImage(named: "Reddit")
-                    self.postImageView.contentMode = UIViewContentMode.ScaleAspectFit
-                    self.resetViews()
-                } else {
-                    if let resizedImage = image?.imageWithImage(image, toSize: self.postImageView.frame.size) {
-                        self.postImageView.contentMode = UIViewContentMode.ScaleAspectFill
-                        self.postImageView.image = resizedImage
-                        self.postImageDelegate?.postImageCell(self, didDownloadImageWithHeight: resizedImage.size.height + 123, url: url)
+            if let url = link.urlForLink() {
+                self.postImageView.sd_setImageWithURL(NSURL(string: url), completed: { (image, error, cacheType, url) -> Void in
+                    self.postImageView.alpha = 1.0
+                    if error != nil {
+                        self.postImageView.image = UIImage(named: "Reddit")
+                        self.postImageView.contentMode = UIViewContentMode.ScaleAspectFit
                         self.resetViews()
                     } else {
-                        self.postImageView.image = UIImage(named: "Reddit")
-                        self.postImageView.contentMode = UIViewContentMode.ScaleToFill
-                        self.resetViews()
+                        if let resizedImage = image?.imageWithImage(image, toSize: self.postImageView.frame.size) {
+                            self.postImageView.contentMode = UIViewContentMode.ScaleAspectFill
+                            self.postImageView.image = resizedImage
+                            self.postImageDelegate?.postImageCell(self, didDownloadImageWithHeight: resizedImage.size.height + 123, url: url)
+                            self.resetViews()
+                        } else {
+                            self.postImageView.image = UIImage(named: "Reddit")
+                            self.postImageView.contentMode = UIViewContentMode.ScaleToFill
+                            self.resetViews()
+                        }
                     }
-                }
-            })
+                })
+            } else {
+                self.postImageView.image = UIImage(named: "Reddit")
+                self.postImageView.contentMode = UIViewContentMode.ScaleAspectFit
+                self.resetViews()
+            }
 
             if self.link.upvoted() {
                 self.scoreLabel.textColor = MyRedditUpvoteColor

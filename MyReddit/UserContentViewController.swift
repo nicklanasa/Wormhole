@@ -96,7 +96,7 @@ PostImageCellDelegate {
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         if let link = self.content[indexPath.row] as? RKLink {
-            if link.isImageLink() || link.domain == "imgur.com" {
+            if link.hasImage() {
                 // Image
                 
                 if indexPath.row == 0 || SettingsManager.defaultManager.valueForSetting(.FullWidthImages) {
@@ -104,18 +104,7 @@ PostImageCellDelegate {
                     return self.heightForLink(link)
                 } else {
                     
-                    var url: String?
-                    
-                    if link.isImageLink() {
-                        url = link.URL.absoluteString
-                    } else if link.media != nil {
-                        if let thumbnailURL = link.media.thumbnailURL {
-                            url = thumbnailURL.description
-                        }
-                    } else if link.domain == "imgur.com" {
-                        let stringURL = link.URL.absoluteString + ".jpg"
-                        url = stringURL
-                    }
+                    let url = link.urlForLink()
                     
                     if url != nil {
                         if let height = self.heightsCache[url!] as? NSNumber {
@@ -169,7 +158,7 @@ PostImageCellDelegate {
         var cell = tableView.dequeueReusableCellWithIdentifier("PostImageCell") as! PostCell
         
         if let link = self.content[indexPath.row] as? RKLink {
-            if link.isImageLink() || link.domain == "imgur.com" {
+            if link.hasImage() {
                 
                 if indexPath.row == 0 || SettingsManager.defaultManager.valueForSetting(.FullWidthImages) {
                     cell = tableView.dequeueReusableCellWithIdentifier("TitleCell") as! TitleCell
@@ -282,8 +271,8 @@ PostImageCellDelegate {
                 self.performSegueWithIdentifier("PurchaseSegue", sender: self)
             } else {
                 if let indexPath = self.tableView.indexPathForCell(cell) {
-                    let postCell = cell as! PostCell
                     if let link = self.content[indexPath.row] as? RKLink  {
+                        let postCell = cell as! PostCell
                         self.hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
                         if swipeType.rawValue == JZSwipeTypeShortLeft.rawValue {
                             // Upvote
@@ -294,6 +283,15 @@ PostImageCellDelegate {
                             self.downvote(link)
                             postCell.downvote()
                         } else if swipeType.rawValue == JZSwipeTypeLongLeft.rawValue {
+                            LocalyticsSession.shared().tagEvent("Swipe comments")
+                            self.performSegueWithIdentifier("CommentsSegue", sender: link)
+                        } else {
+                            // Share
+                            self.hud.hide(true)
+                            self.optionsController = LinkShareOptionsViewController(link: link)
+                            self.optionsController.sourceView = cell
+                            self.optionsController.showInView(self.view)
+                            
                             // More
                             
                             LocalyticsSession.shared().tagEvent("Swipe more")
@@ -355,9 +353,12 @@ PostImageCellDelegate {
                                 }
                             }
                             
-                            alertController.addAction(UIAlertAction(title: "see comments", style: .Default, handler: { (action) -> Void in
-                                LocalyticsSession.shared().tagEvent("Swipe comments")
-                                self.performSegueWithIdentifier("CommentsSegue", sender: link)
+                            alertController.addAction(UIAlertAction(title: "more options", style: .Default, handler: { (action) -> Void in
+                                // Share
+                                self.hud.hide(true)
+                                self.optionsController = LinkShareOptionsViewController(link: link)
+                                self.optionsController.sourceView = cell
+                                self.optionsController.showInView(self.view)
                             }))
                             
                             alertController.addAction(UIAlertAction(title: "cancel", style: .Cancel, handler: nil))
@@ -368,12 +369,6 @@ PostImageCellDelegate {
                             }
                             
                             alertController.present(animated: true, completion: nil)
-                        } else {
-                            // Share
-                            self.hud.hide(true)
-                            self.optionsController = LinkShareOptionsViewController(link: link)
-                            self.optionsController.sourceView = cell
-                            self.optionsController.showInView(self.view)
                         }
                     } else if let comment = self.content[indexPath.row] as? RKComment {
                         self.hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
@@ -490,6 +485,14 @@ PostImageCellDelegate {
             self.heightsCache[url.description] = NSNumber(float: Float(height))
             self.tableView.beginUpdates()
             self.tableView.endUpdates()
+        }
+    }
+    
+    func postImageCell(cell: PostImageCell, didLongHoldOnImage image: UIImage?) {
+        if let selectedImage = image {
+            self.presentViewController(UIAlertController.saveImageAlertController(selectedImage),
+                animated: true,
+                completion: nil)
         }
     }
     

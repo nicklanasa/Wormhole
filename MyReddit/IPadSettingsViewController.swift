@@ -18,11 +18,13 @@ class IPadSettingsViewController: UITableViewController, BDGIAPDelegate {
     @IBOutlet weak var fullWidthImagesSwitch: UISwitch!
     @IBOutlet weak var nightModeSwitch: UISwitch!
     @IBOutlet weak var textSizeLabel: UILabel!
+    @IBOutlet weak var commentTextSizeLabel: UILabel!
     
     @IBOutlet weak var showFlairCell: UserInfoCell!
     @IBOutlet weak var showNSFWCell: UserInfoCell!
     @IBOutlet weak var hideSubredditLogosCell: UserInfoCell!
     @IBOutlet weak var textSizeCell: UserInfoCell!
+    @IBOutlet weak var commentTextSizeCell: UserInfoCell!
     @IBOutlet weak var infinitePostScrollingCell: UserInfoCell!
     @IBOutlet weak var goToMyRedditCell: UserInfoCell!
     @IBOutlet weak var rateThisAppCell: UserInfoCell!
@@ -62,6 +64,7 @@ class IPadSettingsViewController: UITableViewController, BDGIAPDelegate {
             self.fullWidthImagesSwitch.on = SettingsManager.defaultManager.valueForSetting(.FullWidthImages)
             self.nightModeSwitch.on = SettingsManager.defaultManager.valueForSetting(.NightMode)
             self.textSizeLabel.text = SettingsManager.defaultManager.valueForTextSizeSetting(currentTextSize)
+            self.commentTextSizeLabel.text = SettingsManager.defaultManager.valueForCommentTextSizeSetting(currentTextSize)
             self.defaultToReaderModeSwitch.on = SettingsManager.defaultManager.valueForSetting(.DefaultToReaderMode)
             
             self.showFlairCell.backgroundColor = MyRedditBackgroundColor
@@ -154,86 +157,95 @@ class IPadSettingsViewController: UITableViewController, BDGIAPDelegate {
         self.updateTable()
     }
     
+    private func showTextSizeDialogForType(type: TextSizeType) {
+        let alert = UIAlertController(title: "Text Size",
+            message: "Please select the text size. This will change the text size for both comments and posts.",
+            preferredStyle: .ActionSheet)
+        
+        alert.addAction(UIAlertAction(title: "small", style: .Default, handler: { (action) -> Void in
+            SettingsManager.defaultManager.updateValueForTextSizeSetting(.Small)
+            self.updateTable()
+            
+            NSNotificationCenter.defaultCenter().postNotificationName(MyRedditAppearanceDidChangeNotification,
+                object: nil)
+        }))
+        
+        alert.addAction(UIAlertAction(title: "medium", style: .Default, handler: { (action) -> Void in
+            SettingsManager.defaultManager.updateValueForTextSizeSetting(.Medium)
+            self.updateTable()
+            
+            NSNotificationCenter.defaultCenter().postNotificationName(MyRedditAppearanceDidChangeNotification,
+                object: nil)
+        }))
+        
+        alert.addAction(UIAlertAction(title: "large", style: .Default, handler: { (action) -> Void in
+            SettingsManager.defaultManager.updateValueForTextSizeSetting(.Large)
+            self.updateTable()
+            
+            NSNotificationCenter.defaultCenter().postNotificationName(MyRedditAppearanceDidChangeNotification,
+                object: nil)
+        }))
+        
+        alert.addAction(UIAlertAction(title: "cancel", style: .Cancel, handler: nil))
+        
+        if let popoverController = alert.popoverPresentationController {
+            popoverController.sourceRect = textSizeCell.bounds
+            popoverController.sourceView = textSizeCell
+        }
+        
+        self.presentViewController(alert, animated: true, completion: nil)
+    }
+    
+    private func loadMyRedditSubreddit() {
+        let subredditName = "myreddit_app"
+        
+        RedditSession.sharedSession.searchForSubredditByName(subredditName, pagination: nil, completion: { (pagination, results, error) -> () in
+            
+            var foundSubreddit: RKSubreddit?
+            
+            if let subreddits = results as? [RKSubreddit] {
+                for subreddit in subreddits {
+                    if subreddit.name.lowercaseString == subredditName.lowercaseString {
+                        foundSubreddit = subreddit
+                        break
+                    }
+                }
+                
+                if foundSubreddit == nil {
+                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                        UIAlertView(title: "Error!",
+                            message: "Unable to find subreddit by that name.",
+                            delegate: self,
+                            cancelButtonTitle: "OK").show()
+                    })
+                } else {
+                    self.performSegueWithIdentifier("MyRedditSubredditSegue", sender: foundSubreddit)
+                    LocalyticsSession.shared().tagEvent("Loaded Myreddit subreddit")
+                }
+            } else {
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    UIAlertView(title: "Error!",
+                        message: "Unable to find subreddit by that name.",
+                        delegate: self,
+                        cancelButtonTitle: "OK").show()
+                })
+            }
+        })
+    }
+    
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
         if indexPath.section == 1 {
             if indexPath.row == 0 {
                 // Text Size
-                let alert = UIAlertController(title: "Text Size",
-                    message: "Please select the text size. This will change the text size for both comments and posts.",
-                    preferredStyle: .ActionSheet)
-                
-                alert.addAction(UIAlertAction(title: "Small", style: .Default, handler: { (action) -> Void in
-                    SettingsManager.defaultManager.updateValueForTextSizeSetting(.Small)
-                    self.updateTable()
-                    
-                    NSNotificationCenter.defaultCenter().postNotificationName(MyRedditAppearanceDidChangeNotification,
-                        object: nil)
-                }))
-                
-                alert.addAction(UIAlertAction(title: "Medium", style: .Default, handler: { (action) -> Void in
-                    SettingsManager.defaultManager.updateValueForTextSizeSetting(.Medium)
-                    self.updateTable()
-                    
-                    NSNotificationCenter.defaultCenter().postNotificationName(MyRedditAppearanceDidChangeNotification,
-                        object: nil)
-                }))
-                
-                alert.addAction(UIAlertAction(title: "Large", style: .Default, handler: { (action) -> Void in
-                    SettingsManager.defaultManager.updateValueForTextSizeSetting(.Large)
-                    self.updateTable()
-                    
-                    NSNotificationCenter.defaultCenter().postNotificationName(MyRedditAppearanceDidChangeNotification,
-                        object: nil)
-                }))
-                
-                alert.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
-                
-                if let popoverController = alert.popoverPresentationController {
-                    popoverController.sourceRect = textSizeCell.bounds
-                    popoverController.sourceView = textSizeCell
-                }
-                
-                self.presentViewController(alert, animated: true, completion: nil)
+                self.showTextSizeDialogForType(.Post)
+            } else if indexPath.row == 1 {
+                self.showTextSizeDialogForType(.Comment)
             }
         } else if indexPath.section == 2 {
             switch indexPath.row {
             case 0:
-                
-                let subredditName = "myreddit_app"
-                
-                RedditSession.sharedSession.searchForSubredditByName(subredditName, pagination: nil, completion: { (pagination, results, error) -> () in
-                    
-                    var foundSubreddit: RKSubreddit?
-                    
-                    if let subreddits = results as? [RKSubreddit] {
-                        for subreddit in subreddits {
-                            if subreddit.name.lowercaseString == subredditName.lowercaseString {
-                                foundSubreddit = subreddit
-                                break
-                            }
-                        }
-                        
-                        if foundSubreddit == nil {
-                            dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                                UIAlertView(title: "Error!",
-                                    message: "Unable to find subreddit by that name.",
-                                    delegate: self,
-                                    cancelButtonTitle: "OK").show()
-                            })
-                        } else {
-                            self.performSegueWithIdentifier("MyRedditSubredditSegue", sender: foundSubreddit)
-                            LocalyticsSession.shared().tagEvent("Loaded Myreddit subreddit")
-                        }
-                    } else {
-                        dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                            UIAlertView(title: "Error!",
-                                message: "Unable to find subreddit by that name.",
-                                delegate: self,
-                                cancelButtonTitle: "OK").show()
-                        })
-                    }
-                })
+                self.loadMyRedditSubreddit()
             case 1:
                 LocalyticsSession.shared().tagEvent("Rate app button tapped")
                 UIApplication.sharedApplication().openURL(NSURL(string: "itms://itunes.apple.com/us/app/apple-store/id995067625?mt=8")!)

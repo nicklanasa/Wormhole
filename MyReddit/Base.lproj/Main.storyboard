@@ -32,7 +32,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="391.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView autoresizesSubviews="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="gHD-KG-wcY">
+                                                <imageView autoresizesSubviews="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="gHD-KG-wcY" customClass="FLAnimatedImageView">
                                                     <rect key="frame" x="0.0" y="87" width="600" height="269"/>
                                                     <animations/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -1950,7 +1950,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="391.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView autoresizesSubviews="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="eXb-8L-0QK">
+                                                <imageView autoresizesSubviews="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="eXb-8L-0QK" customClass="FLAnimatedImageView">
                                                     <rect key="frame" x="0.0" y="87" width="600" height="269"/>
                                                     <animations/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -2535,7 +2535,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="391.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView autoresizesSubviews="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="pno-sL-hfl">
+                                                <imageView autoresizesSubviews="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="pno-sL-hfl" customClass="FLAnimatedImageView">
                                                     <rect key="frame" x="0.0" y="87" width="600" height="269"/>
                                                     <animations/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -3141,7 +3141,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="text size" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Aji-uk-Hlo">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="post text size" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Aji-uk-Hlo">
                                                     <rect key="frame" x="18" y="11" width="361" height="22"/>
                                                     <animations/>
                                                     <constraints>
@@ -3183,12 +3183,61 @@
                                             <outlet property="titleLabel" destination="Aji-uk-Hlo" id="xvQ-g2-Xy2"/>
                                         </connections>
                                     </tableViewCell>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="vK1-TA-yx9" customClass="UserInfoCell" customModule="MyReddit" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="427" width="600" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="vK1-TA-yx9" id="N1v-8V-6GZ">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="comment text size" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0A6-c9-yzH">
+                                                    <rect key="frame" x="18" y="11" width="361" height="22"/>
+                                                    <animations/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="361" id="g12-jO-elw"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="16"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="medium" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="U5x-jj-S7S">
+                                                    <rect key="frame" x="419" y="11" width="167" height="21"/>
+                                                    <animations/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="21" id="37B-82-gXR"/>
+                                                        <constraint firstAttribute="width" constant="167" id="GdS-G8-SVP"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="16"/>
+                                                    <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <animations/>
+                                            <constraints>
+                                                <constraint firstItem="U5x-jj-S7S" firstAttribute="leading" secondItem="0A6-c9-yzH" secondAttribute="trailing" constant="40" id="5dO-gc-4am"/>
+                                                <constraint firstItem="U5x-jj-S7S" firstAttribute="centerY" secondItem="N1v-8V-6GZ" secondAttribute="centerY" id="B96-5R-nWV"/>
+                                                <constraint firstItem="0A6-c9-yzH" firstAttribute="top" secondItem="N1v-8V-6GZ" secondAttribute="topMargin" constant="3" id="GGc-H5-itg"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="U5x-jj-S7S" secondAttribute="trailing" constant="6" id="Sn9-cg-9RI"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="U5x-jj-S7S" secondAttribute="bottom" constant="3" id="Svz-I1-Zpf"/>
+                                                <constraint firstItem="0A6-c9-yzH" firstAttribute="leading" secondItem="N1v-8V-6GZ" secondAttribute="leadingMargin" constant="10" id="adp-Zl-cRq"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="U5x-jj-S7S" secondAttribute="trailing" constant="6" id="buw-gQ-05H"/>
+                                                <constraint firstItem="U5x-jj-S7S" firstAttribute="leading" secondItem="0A6-c9-yzH" secondAttribute="trailing" constant="40" id="kvp-YS-iTl"/>
+                                                <constraint firstItem="U5x-jj-S7S" firstAttribute="top" secondItem="N1v-8V-6GZ" secondAttribute="topMargin" constant="3" id="m6p-VL-2cW"/>
+                                                <constraint firstItem="0A6-c9-yzH" firstAttribute="firstBaseline" secondItem="U5x-jj-S7S" secondAttribute="firstBaseline" id="usu-NC-ZqZ"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <animations/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <connections>
+                                            <outlet property="titleLabel" destination="0A6-c9-yzH" id="OUI-EZ-Tno"/>
+                                        </connections>
+                                    </tableViewCell>
                                 </cells>
                             </tableViewSection>
                             <tableViewSection id="j9r-pV-54K">
                                 <cells>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="Bis-Gr-TOr" customClass="UserInfoCell" customModule="MyReddit" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="447" width="600" height="44"/>
+                                        <rect key="frame" x="0.0" y="491" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Bis-Gr-TOr" id="o9V-lV-r6g">
                                             <rect key="frame" x="0.0" y="0.0" width="567" height="43.5"/>
@@ -3218,7 +3267,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="fKF-VS-hJF" customClass="UserInfoCell" customModule="MyReddit" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="491" width="600" height="44"/>
+                                        <rect key="frame" x="0.0" y="535" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="fKF-VS-hJF" id="nOf-k3-OBa">
                                             <rect key="frame" x="0.0" y="0.0" width="567" height="43.5"/>
@@ -3248,7 +3297,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="twe-Rs-mcc" customClass="UserInfoCell" customModule="MyReddit" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="535" width="600" height="44"/>
+                                        <rect key="frame" x="0.0" y="579" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="twe-Rs-mcc" id="l05-gL-kXE">
                                             <rect key="frame" x="0.0" y="0.0" width="567" height="43.5"/>
@@ -3278,7 +3327,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="nVn-BA-Ug3" customClass="UserInfoCell" customModule="MyReddit" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="579" width="600" height="44"/>
+                                        <rect key="frame" x="0.0" y="623" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="nVn-BA-Ug3" id="KLf-Jf-v7n">
                                             <rect key="frame" x="0.0" y="0.0" width="567" height="43.5"/>
@@ -3308,7 +3357,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="sDi-eD-WOi" customClass="UserInfoCell" customModule="MyReddit" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="623" width="600" height="44"/>
+                                        <rect key="frame" x="0.0" y="667" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="sDi-eD-WOi" id="yfZ-lc-Tyy">
                                             <rect key="frame" x="0.0" y="0.0" width="567" height="43.5"/>
@@ -3342,7 +3391,7 @@
                             <tableViewSection headerTitle="Creators" id="COZ-zW-OQs">
                                 <cells>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="Z0X-gH-QdM" customClass="UserInfoCell" customModule="MyReddit" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="709" width="600" height="44"/>
+                                        <rect key="frame" x="0.0" y="753" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Z0X-gH-QdM" id="Vjn-kQ-K6E">
                                             <rect key="frame" x="0.0" y="0.0" width="567" height="43.5"/>
@@ -3372,7 +3421,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="zMV-Nw-cEI" customClass="UserInfoCell" customModule="MyReddit" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="753" width="600" height="44"/>
+                                        <rect key="frame" x="0.0" y="797" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="zMV-Nw-cEI" id="U5A-UJ-e0a">
                                             <rect key="frame" x="0.0" y="0.0" width="567" height="43.5"/>
@@ -3402,7 +3451,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="Zfo-MK-a7C" customClass="UserInfoCell" customModule="MyReddit" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="797" width="600" height="44"/>
+                                        <rect key="frame" x="0.0" y="841" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Zfo-MK-a7C" id="d2h-Y2-Qxx">
                                             <rect key="frame" x="0.0" y="0.0" width="567" height="43.5"/>
@@ -3436,7 +3485,7 @@
                             <tableViewSection headerTitle="Other Apps" id="ce0-Df-ofw">
                                 <cells>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="tJZ-lD-bgb" customClass="UserInfoCell" customModule="MyReddit" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="883" width="600" height="44"/>
+                                        <rect key="frame" x="0.0" y="927" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="tJZ-lD-bgb" id="uw7-ib-9Ux">
                                             <rect key="frame" x="0.0" y="0.0" width="567" height="43.5"/>
@@ -3476,6 +3525,8 @@
                     <toolbarItems/>
                     <nil key="simulatedBottomBarMetrics"/>
                     <connections>
+                        <outlet property="commentTextSizeCell" destination="vK1-TA-yx9" id="CeX-wb-kkT"/>
+                        <outlet property="commentTextSizeLabel" destination="U5x-jj-S7S" id="B6r-kJ-vMd"/>
                         <outlet property="defaultToReaderModeCell" destination="yts-UR-InG" id="npM-mh-2M7"/>
                         <outlet property="defaultToReaderModeSwitch" destination="4G3-63-Ea6" id="n72-zA-41w"/>
                         <outlet property="fullWidthImagesSwitch" destination="oHK-ta-mxW" id="7JJ-rm-b6R"/>
@@ -4521,7 +4572,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="87" height="87"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Unz-3f-bso">
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Unz-3f-bso" customClass="FLAnimatedImageView">
                                                     <rect key="frame" x="0.0" y="0.0" width="87" height="87"/>
                                                     <animations/>
                                                 </imageView>
@@ -4705,7 +4756,7 @@
                                         <rect key="frame" x="290" y="310" width="20" height="20"/>
                                         <animations/>
                                     </activityIndicatorView>
-                                    <imageView contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="U3k-rs-51T">
+                                    <imageView contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="U3k-rs-51T" customClass="FLAnimatedImageView">
                                         <rect key="frame" x="14" y="0.0" width="572" height="600"/>
                                         <animations/>
                                         <rect key="contentStretch" x="0.0" y="0.0" width="0.0" height="0.0"/>
@@ -4940,7 +4991,7 @@
         <image name="BookmarkSwipe" width="50" height="50"/>
         <image name="Camera" width="22" height="18"/>
         <image name="Cancel" width="25" height="25"/>
-        <image name="Chat" width="22" height="20"/>
+        <image name="Chat" width="50" height="50"/>
         <image name="CircleAdd" width="22" height="22"/>
         <image name="Compose" width="22" height="22"/>
         <image name="Down" width="25" height="25"/>
@@ -4959,20 +5010,20 @@
         <image name="Up" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="zMo-OM-Z5J"/>
+        <segue reference="nb3-Xk-rNn"/>
+        <segue reference="FtF-gF-eJb"/>
+        <segue reference="2ez-RP-QcH"/>
         <segue reference="TYz-B9-bLR"/>
         <segue reference="nEx-7L-vW5"/>
-        <segue reference="FtF-gF-eJb"/>
-        <segue reference="Voj-m4-hcP"/>
+        <segue reference="q6K-ip-lpO"/>
+        <segue reference="7mV-eF-gvZ"/>
+        <segue reference="xgG-eu-NoT"/>
         <segue reference="aev-Tk-Wb5"/>
-        <segue reference="xsL-ln-a3I"/>
-        <segue reference="6WJ-xS-zTe"/>
         <segue reference="MQa-bF-U0r"/>
+        <segue reference="DoA-ah-cSI"/>
         <segue reference="Abo-Jz-JcR"/>
         <segue reference="vvu-K9-HER"/>
-        <segue reference="sND-y2-DTj"/>
-        <segue reference="SWo-82-5L3"/>
-        <segue reference="bxZ-6W-PbQ"/>
-        <segue reference="zMo-OM-Z5J"/>
-        <segue reference="xgG-eu-NoT"/>
+        <segue reference="Udn-dz-6HG"/>
     </inferredMetricsTieBreakers>
 </document>

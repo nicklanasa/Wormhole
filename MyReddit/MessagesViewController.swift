@@ -137,8 +137,13 @@ JZSwipeCellDelegate {
 
         let cell = tableView.dequeueReusableCellWithIdentifier("MessageCell") as! MessageCell
         
-        let message = self.messages[indexPath.row] as! RKMessage
-        cell.message = message
+        if let commentReplyMessage = self.messages[indexPath.row] as? RKCommentReplyMessage {
+            cell.replyMessage = commentReplyMessage
+        } else {
+            let message = self.messages[indexPath.row] as! RKMessage
+            cell.message = message
+        }
+        
         cell.messageCellDelegate = self
         cell.delegate = self
     
@@ -260,7 +265,6 @@ JZSwipeCellDelegate {
     }
     
     override func preferredAppearance() {
-        self.tableView.separatorColor = UIColor.lightGrayColor()
         self.tableView.backgroundColor = MyRedditBackgroundColor
         
         self.navigationController?.navigationBar.backgroundColor = MyRedditBackgroundColor

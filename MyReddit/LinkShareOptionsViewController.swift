@@ -56,10 +56,14 @@ class LinkShareOptionsViewController: UIViewController {
             }
         }
         
-        self.alertController.addAction(UIAlertAction(title: "open in Safari", style: .Default, handler: { (action) -> Void in
-            UIApplication.sharedApplication().openURL(self.link.URL)
-            
-            LocalyticsSession.shared().tagEvent("Opened link in safari")
+        alertController.addAction(UIAlertAction(title: "copy link", style: .Default, handler: { (action) -> Void in
+            UIPasteboard.generalPasteboard().string = self.link.URL.absoluteString
+            LocalyticsSession.shared().tagEvent("Copy link tapped")
+        }))
+        
+        alertController.addAction(UIAlertAction(title: "copy post link", style: .Default, handler: { (action) -> Void in
+            UIPasteboard.generalPasteboard().string = self.link.permalink.absoluteString
+            LocalyticsSession.shared().tagEvent("Copy comments link tapped")
         }))
         
         self.alertController.addAction(UIAlertAction(title: "share", style: .Default, handler: { (action) -> Void in

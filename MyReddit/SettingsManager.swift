@@ -25,6 +25,11 @@ enum TextSizeSetting: NSInteger {
     case Large
 }
 
+enum TextSizeType {
+    case Comment
+    case Post
+}
+
 let _defaultManager = SettingsManager()
 
 class SettingsManager {
@@ -93,14 +98,14 @@ class SettingsManager {
                 return textSize
             }
             
-            return "Medium"
+            return "small"
         case .Medium:
             if let textSize = NSUserDefaults.standardUserDefaults().objectForKey("TextSize") as? String {
                 LocalyticsSession.shared().tagEvent("Medium text toggled")
                 return textSize
             }
             
-            return "Medium"
+            return "medium"
             
         case .Large:
             if let textSize = NSUserDefaults.standardUserDefaults().objectForKey("TextSize") as? String {
@@ -108,7 +113,34 @@ class SettingsManager {
                 return textSize
             }
             
-            return "Medium"
+            return "large"
+        }
+    }
+    
+    func valueForCommentTextSizeSetting(setting: TextSizeSetting) -> String {
+        switch setting {
+        case .Small:
+            if let textSize = NSUserDefaults.standardUserDefaults().objectForKey("CommentTextSize") as? String {
+                LocalyticsSession.shared().tagEvent("Small comment text toggled")
+                return textSize
+            }
+            
+            return "small"
+        case .Medium:
+            if let textSize = NSUserDefaults.standardUserDefaults().objectForKey("CommentTextSize") as? String {
+                LocalyticsSession.shared().tagEvent("Medium comment text toggled")
+                return textSize
+            }
+            
+            return "medium"
+            
+        case .Large:
+            if let textSize = NSUserDefaults.standardUserDefaults().objectForKey("CommentTextSize") as? String {
+                LocalyticsSession.shared().tagEvent("Large comment text toggled")
+                return textSize
+            }
+            
+            return "large"
         }
     }
     
@@ -138,14 +170,32 @@ class SettingsManager {
         }
     }
     
-    func updateValueForTextSizeSetting(setting: TextSizeSetting) {
+    func updateValueForTextSizeType(type: TextSizeType, setting: TextSizeSetting) {
+        switch type {
+        case .Comment: self.updateValueForCommentTextSizeSetting(setting)
+        default: self.updateValueForTextSizeSetting(setting)
+        }
+    }
+    
+    private func updateValueForTextSizeSetting(setting: TextSizeSetting) {
         switch setting {
         case .Small:
-            NSUserDefaults.standardUserDefaults().setObject("Small", forKey: "TextSize")
+            NSUserDefaults.standardUserDefaults().setObject("small", forKey: "TextSize")
         case .Medium:
-            NSUserDefaults.standardUserDefaults().setObject("Medium", forKey: "TextSize")
+            NSUserDefaults.standardUserDefaults().setObject("medium", forKey: "TextSize")
         case .Large:
-            NSUserDefaults.standardUserDefaults().setObject("Large", forKey: "TextSize")            
+            NSUserDefaults.standardUserDefaults().setObject("large", forKey: "TextSize")
+        }
+    }
+    
+    private func updateValueForCommentTextSizeSetting(setting: TextSizeSetting) {
+        switch setting {
+        case .Small:
+            NSUserDefaults.standardUserDefaults().setObject("small", forKey: "CommentTextSize")
+        case .Medium:
+            NSUserDefaults.standardUserDefaults().setObject("medium", forKey: "CommentTextSize")
+        case .Large:
+            NSUserDefaults.standardUserDefaults().setObject("large", forKey: "CommentTextSize")
         }
     }
     
@@ -153,8 +203,22 @@ class SettingsManager {
         get {
             if let textSize = NSUserDefaults.standardUserDefaults().objectForKey("TextSize") as? String {
                 switch textSize {
-                case "Small": return .Small
-                case "Large": return .Large
+                case "small": return .Small
+                case "large": return .Large
+                default: return .Medium
+                }
+            }
+            
+            return .Medium
+        }
+    }
+    
+    var defaultCommentTextSize: TextSizeSetting! {
+        get {
+            if let textSize = NSUserDefaults.standardUserDefaults().objectForKey("CommentTextSize") as? String {
+                switch textSize {
+                case "small": return .Small
+                case "large": return .Large
                 default: return .Medium
                 }
             }
@@ -173,9 +237,18 @@ class SettingsManager {
         }
     }
     
+    var commentFontSizeForDefaultTextSize: CGFloat! {
+        get {
+            switch self.defaultCommentTextSize.rawValue {
+            case TextSizeSetting.Small.rawValue: return 12.0
+            case TextSizeSetting.Large.rawValue: return 18.0
+            default: return 14.0
+            }
+        }
+    }
+    
     var purchased: Bool! {
         get {
-            return true
             if NSUserDefaults.standardUserDefaults().objectForKey("purchased") == nil {
                 return false
             } else {

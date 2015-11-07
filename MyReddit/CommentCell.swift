@@ -138,7 +138,8 @@ class CommentCell: JZSwipeCell, UITextViewDelegate {
             range: nil).stringByReplacingOccurrencesOfString("&amp;", withString: "&", options: .CaseInsensitiveSearch, range: nil)
         
         let parser = XNGMarkdownParser()
-        parser.paragraphFont = self.commentTextView.font
+        parser.paragraphFont = UIFont(name: self.commentTextView.font!.fontName,
+            size: SettingsManager.defaultManager.commentFontSizeForDefaultTextSize)
         parser.boldFontName = MyRedditCommentTextBoldFont.familyName
         parser.boldItalicFontName = MyRedditCommentTextItalicFont.familyName
         parser.italicFontName = MyRedditCommentTextItalicFont.familyName
@@ -190,7 +191,8 @@ class CommentCell: JZSwipeCell, UITextViewDelegate {
             self.scoreLabel.textColor = UIColor.lightGrayColor()
         }
     
-        self.commentTextView.font = MyRedditCommentTextFont
+        self.commentTextView.font = UIFont(name: self.commentTextView.font!.fontName,
+            size: SettingsManager.defaultManager.commentFontSizeForDefaultTextSize)
         self.commentTextView.backgroundColor = MyRedditBackgroundColor
         self.contentView.backgroundColor = MyRedditBackgroundColor
         self.infoLabel.backgroundColor = MyRedditBackgroundColor

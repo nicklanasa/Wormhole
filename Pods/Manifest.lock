@@ -23,6 +23,7 @@ PODS:
   - Appirater (2.0.5)
   - BDGInAppPurchase (0.0.2)
   - DateTools (1.7.0)
+  - FLAnimatedImage (1.0.8)
   - FZImageUtilCategory (0.0.2)
   - ImgurAnonymousAPIClient (0.3.2):
     - AFNetworking (>= 2.3.1)
@@ -52,6 +53,7 @@ DEPENDENCIES:
   - Appirater
   - BDGInAppPurchase
   - DateTools
+  - FLAnimatedImage (~> 1.0)
   - FZImageUtilCategory
   - ImgurAnonymousAPIClient
   - ImgurSession
@@ -71,6 +73,7 @@ SPEC CHECKSUMS:
   Appirater: e7c0a47fb67ee5041ce8479e6ba960927fb40264
   BDGInAppPurchase: 9f466e82a4a3e1d8b744268280748c1d91ddda67
   DateTools: 53288ee8b905fdc75897a1e6b5cc0144b14cba60
+  FLAnimatedImage: f9422f796135aff80d8c00b2afc48015bb746e24
   FZImageUtilCategory: 6d9407c679a3878e2bd0761588766c35120e2c01
   ImgurAnonymousAPIClient: d1887ebe11b64a44ede12928b101d1f1c0099c2b
   ImgurSession: 3ded7eec93121fcf8d1e9f3f1783b8d764c846d3

@@ -31,7 +31,7 @@ class PostCell: JZSwipeCell {
         let upVoteImage = UIImage(named: "Up")!.imageWithRenderingMode(.AlwaysOriginal)
         let downVoteImage = UIImage(named: "Down")!.imageWithRenderingMode(.AlwaysOriginal)
         
-        self.imageSet = SwipeCellImageSetMake(downVoteImage, UIImage(named: "ShareWhite"), upVoteImage, UIImage(named: "moreWhite"))
+        self.imageSet = SwipeCellImageSetMake(downVoteImage, UIImage(named: "moreWhite"), upVoteImage, UIImage(named: "Chat"))
         self.colorSet = SwipeCellColorSetMake(MyRedditDownvoteColor, MyRedditColor, MyRedditUpvoteColor, MyRedditReplyColor)
     }
     

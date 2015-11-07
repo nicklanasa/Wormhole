@@ -216,6 +216,7 @@ class RedditSession {
         UIApplication.sharedApplication().networkActivityIndicatorVisible = true
         RKClient.sharedClient().storeVisitedLink(link, completion: { (error) -> Void in
             UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+            NSUserDefaults.standardUserDefaults().setObject(true, forKey: link.identifier)
             completion(error: error)
         })
     }

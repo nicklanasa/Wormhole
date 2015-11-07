@@ -18,12 +18,14 @@ class SettingsTableViewController: UITableViewController, BDGIAPDelegate {
     @IBOutlet weak var fullWidthImagesSwitch: UISwitch!
     @IBOutlet weak var defaultToReaderModeSwitch: UISwitch!
     @IBOutlet weak var textSizeLabel: UILabel!
+    @IBOutlet weak var commentTextSizeLabel: UILabel!
     
     @IBOutlet weak var showFlairCell: UserInfoCell!
     @IBOutlet weak var showNSFWCell: UserInfoCell!
     @IBOutlet weak var hideSubredditLogosCell: UserInfoCell!
     @IBOutlet weak var nightModeCell: UserInfoCell!
     @IBOutlet weak var textSizeCell: UserInfoCell!
+    @IBOutlet weak var commentTextSizeCell: UserInfoCell!
     @IBOutlet weak var goToMyRedditCell: UserInfoCell!
     @IBOutlet weak var rateThisAppCell: UserInfoCell!
     @IBOutlet weak var likeUsOnFacebookCell: UserInfoCell!
@@ -63,6 +65,7 @@ class SettingsTableViewController: UITableViewController, BDGIAPDelegate {
             self.nightModeSwitch.on = SettingsManager.defaultManager.valueForSetting(.NightMode)
             self.defaultToReaderModeSwitch.on = SettingsManager.defaultManager.valueForSetting(.DefaultToReaderMode)
             self.textSizeLabel.text = SettingsManager.defaultManager.valueForTextSizeSetting(currentTextSize)
+            self.commentTextSizeLabel.text = SettingsManager.defaultManager.valueForCommentTextSizeSetting(currentTextSize)
             
             self.showFlairCell.backgroundColor = MyRedditBackgroundColor
             self.showFlairCell.titleLabel.textColor = MyRedditLabelColor
@@ -143,33 +146,43 @@ class SettingsTableViewController: UITableViewController, BDGIAPDelegate {
         SettingsManager.defaultManager.updateValueForSetting(.Flair, value: self.showFlairSwitch.on)
     }
     
+    private func showTextSizeDialogForType(type: TextSizeType) {
+        // Text Size
+        let alert = UIAlertController(title: "Text Size",
+            message: "Please select the text size. This will change the text size for both comments and posts.",
+            preferredStyle: .ActionSheet)
+        
+        alert.addAction(UIAlertAction(title: "small", style: .Default, handler: { (action) -> Void in
+            SettingsManager.defaultManager.updateValueForTextSizeType(type, setting: .Small)
+            self.updateTable()
+        }))
+        
+        alert.addAction(UIAlertAction(title: "medium", style: .Default, handler: { (action) -> Void in
+            SettingsManager.defaultManager.updateValueForTextSizeType(type, setting: .Medium)
+            self.updateTable()
+        }))
+        
+        alert.addAction(UIAlertAction(title: "large", style: .Default, handler: { (action) -> Void in
+            SettingsManager.defaultManager.updateValueForTextSizeType(type, setting: .Large)
+            self.updateTable()
+        }))
+        
+        alert.addAction(UIAlertAction(title: "cancel", style: .Cancel, handler: nil))
+        
+        self.presentViewController(alert, animated: true, completion: nil)
+    }
+    
+    private func showMyRedditSubreddit() {
+        
+    }
+    
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
         if indexPath.section == 1 {
             if indexPath.row == 2 {
-                // Text Size
-                let alert = UIAlertController(title: "Text Size",
-                    message: "Please select the text size. This will change the text size for both comments and posts.",
-                    preferredStyle: .ActionSheet)
-                
-                alert.addAction(UIAlertAction(title: "Small", style: .Default, handler: { (action) -> Void in
-                    SettingsManager.defaultManager.updateValueForTextSizeSetting(.Small)
-                    self.updateTable()
-                }))
-                
-                alert.addAction(UIAlertAction(title: "Medium", style: .Default, handler: { (action) -> Void in
-                    SettingsManager.defaultManager.updateValueForTextSizeSetting(.Medium)
-                    self.updateTable()
-                }))
-                
-                alert.addAction(UIAlertAction(title: "Large", style: .Default, handler: { (action) -> Void in
-                    SettingsManager.defaultManager.updateValueForTextSizeSetting(.Large)
-                    self.updateTable()
-                }))
-                
-                alert.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
-                
-                self.presentViewController(alert, animated: true, completion: nil)
+                self.showTextSizeDialogForType(.Post)
+            } else if indexPath.row == 3 {
+                self.showTextSizeDialogForType(.Comment)
             }
         } else if indexPath.section == 2 {
             switch indexPath.row {

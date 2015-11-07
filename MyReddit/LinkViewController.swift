@@ -316,6 +316,8 @@ class LinkViewController: RootViewController, UITextViewDelegate {
         self.optionsController = LinkShareOptionsViewController(link: self.link)
         self.optionsController.barbuttonItem = self.shareButton
         self.optionsController.showInView(self.view)
+        
+        LocalyticsSession.shared().tagEvent("Link share button tapped")
     }
     
     @IBAction func downvoteButtonTapped(sender: AnyObject) {

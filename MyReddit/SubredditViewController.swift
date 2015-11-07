@@ -328,6 +328,14 @@ PostCellDelegate {
             target: self,
             action: nil)
         
+        self.navigationItem.leftBarButtonItem!.setTitleTextAttributes([
+            NSFontAttributeName: MyRedditTitleBigFont, NSForegroundColorAttributeName : MyRedditLabelColor],
+            forState: UIControlState.Normal)
+        
+        self.navigationItem.rightBarButtonItem!.setTitleTextAttributes([
+            NSFontAttributeName: MyRedditTitleFont],
+            forState: UIControlState.Normal)
+        
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
             self.updateSubscribeButton()
             self.filterButton.tintColor = MyRedditLabelColor
@@ -337,13 +345,6 @@ PostCellDelegate {
             self.messages.tintColor = MyRedditLabelColor
             self.noPostsView.backgroundColor = MyRedditBackgroundColor
             self.noPostsLabel.textColor = MyRedditLabelColor
-            
-            self.navigationItem.leftBarButtonItem!.setTitleTextAttributes([
-                NSFontAttributeName: MyRedditTitleBigFont, NSForegroundColorAttributeName : MyRedditLabelColor],
-                forState: UIControlState.Normal)
-            self.navigationItem.rightBarButtonItem!.setTitleTextAttributes([
-                NSFontAttributeName: MyRedditTitleFont],
-                forState: UIControlState.Normal)
         })
         
         self.navigationController?.setToolbarHidden(true, animated: true)
@@ -450,7 +451,8 @@ PostCellDelegate {
                                 UIAlertView.showSubscribeError()
                             } else {
                                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                                    RedditSession.sharedSession.searchForSubredditByName(self.subreddit.name, pagination: nil) { (pagination, results, error) -> () in
+                                    RedditSession.sharedSession.searchForSubredditByName(self.subreddit.name,
+                                        pagination: nil) { (pagination, results, error) -> () in
                                         if let subreddits = results as? [RKSubreddit] {
                                             var foundSubreddit: RKSubreddit?
                                             for subreddit in subreddits {
@@ -527,7 +529,7 @@ PostCellDelegate {
         
         if indexPath.row < self.links.count {
             if let link = self.links[indexPath.row] as? RKLink {
-                if link.isImageLink() || link.domain == "imgur.com" || link.media != nil {
+                if link.hasImage() {
                     
                     if SettingsManager.defaultManager.valueForSetting(.FullWidthImages) {
                         cell = tableView.dequeueReusableCellWithIdentifier("TitleCell") as! TitleCell
@@ -556,7 +558,7 @@ PostCellDelegate {
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         if indexPath.row < self.links.count {
             if let link = self.links[indexPath.row] as? RKLink {
-                if link.isImageLink() || link.domain == "imgur.com" || link.media != nil {
+                if link.hasImage() {
                     // Image
                     
                     if SettingsManager.defaultManager.valueForSetting(.FullWidthImages) {
@@ -564,18 +566,7 @@ PostCellDelegate {
                         return self.heightForTitlePost(link)
                     } else {
                         
-                        var url: String?
-                        
-                        if link.isImageLink() {
-                            url = link.URL.absoluteString
-                        } else if link.media != nil {
-                            if let thumbnailURL = link.media.thumbnailURL {
-                                url = thumbnailURL.description
-                            }
-                        } else if link.domain == "imgur.com" {
-                            let stringURL = link.URL.absoluteString + ".jpg"
-                            url = stringURL
-                        }
+                        let url = link.urlForLink()
                         
                         if url != nil {
                             if let height = self.heightsCache[url!] as? NSNumber {
@@ -619,7 +610,7 @@ PostCellDelegate {
             if link.selfPost {
                 self.performSegueWithIdentifier("CommentsSegue", sender: link)
             } else {
-                if (link.domain == "imgur.com" || link.isImageLink()) && link.URL.absoluteString.rangeOfString("gif") == nil {
+                if (link.domain == "imgur.com" || link.isImageOrGifLink()) {
                     if link.domain == "imgur.com" && !link.URL.absoluteString.hasExtension() {
                         var urlComponents = link.URL.absoluteString.componentsSeparatedByString("/")
                         if urlComponents.count > 4 {
@@ -704,8 +695,12 @@ PostCellDelegate {
                                 }
                             })
                         } else if swipeType.rawValue == JZSwipeTypeLongLeft.rawValue {
+                            LocalyticsSession.shared().tagEvent("Swipe comments")
+                            self.performSegueWithIdentifier("CommentsSegue", sender: link)
+
+                        } else {
                             LocalyticsSession.shared().tagEvent("Swipe more")
-                            // More
+                            
                             self.hud.hide(true)
                             let alertController = UIAlertController(title: "Select option", message: nil, preferredStyle: .ActionSheet)
                             
@@ -737,8 +732,16 @@ PostCellDelegate {
                                 })
                             }))
                             
-                            alertController.addAction(UIAlertAction(title: "see comments", style: .Default, handler: { (action) -> Void in
-                                self.performSegueWithIdentifier("CommentsSegue", sender: link)
+                            alertController.addAction(UIAlertAction(title: "open in safari", style: .Default, handler: { (action) -> Void in
+                                UIApplication.sharedApplication().openURL(link.URL)
+                            }))
+                            
+                            alertController.addAction(UIAlertAction(title: "more options", style: .Default, handler: { (action) -> Void in
+                                // Share
+                                self.hud.hide(true)
+                                self.optionsController = LinkShareOptionsViewController(link: link)
+                                self.optionsController.sourceView = cell
+                                self.optionsController.showInView(self.view)
                             }))
                             
                             alertController.addAction(UIAlertAction(title: "cancel", style: .Cancel, handler: nil))
@@ -749,14 +752,6 @@ PostCellDelegate {
                             }
                             
                             alertController.present(animated: true, completion: nil)
-                            
-                        } else {
-                            LocalyticsSession.shared().tagEvent("Swipe share")
-                            // Share
-                            self.hud.hide(true)
-                            self.optionsController = LinkShareOptionsViewController(link: link)
-                            self.optionsController.sourceView = cell
-                            self.optionsController.showInView(self.view)
                         }
                     }
                 }
@@ -814,6 +809,14 @@ PostCellDelegate {
                     })
                 }
             })
+        }
+    }
+    
+    func postImageCell(cell: PostImageCell, didLongHoldOnImage image: UIImage?) {
+        if let selectedImage = image {
+            self.presentViewController(UIAlertController.saveImageAlertController(selectedImage),
+                animated: true,
+                completion: nil)
         }
     }
     

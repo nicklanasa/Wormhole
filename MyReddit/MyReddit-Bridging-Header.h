@@ -23,3 +23,5 @@
 #import "JHRefreshControl.h"
 #import "UIImage+ResizeMagick.h"
 #import "UIImage+FZUtil.h"
+#import "FLAnimatedImageView.h"
+#import "FLAnimatedImage.h"

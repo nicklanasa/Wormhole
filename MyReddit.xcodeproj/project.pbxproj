@@ -379,6 +379,9 @@
 		CE10072F1AF2FDE8000ED144 /* Subreddits */ = {
 			isa = PBXGroup;
 			children = (
+				CE538FAD1AF3F19B008050B6 /* RKClient+Search.swift */,
+				CE25FBCF1AF93E0600A40C3B /* RKLink+Helpers.swift */,
+				018E40271AC39C1C0055384D /* User+Helpers.swift */,
 				CEA3E2FF1AFAE65B008323A6 /* GalleryController.swift */,
 				018E40211AC38A060055384D /* LinkViewController.swift */,
 				CE35881F1AC30DEE00294684 /* SubredditViewController.swift */,
@@ -535,20 +538,9 @@
 		CE8C9F001B1CDB1C00DD2235 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				CE8C9F011B1CDB3100DD2235 /* Helpers */,
 				01E39F441AF52E9900C544EA /* User.swift */,
 			);
 			name = Models;
-			sourceTree = "<group>";
-		};
-		CE8C9F011B1CDB3100DD2235 /* Helpers */ = {
-			isa = PBXGroup;
-			children = (
-				CE538FAD1AF3F19B008050B6 /* RKClient+Search.swift */,
-				CE25FBCF1AF93E0600A40C3B /* RKLink+Helpers.swift */,
-				018E40271AC39C1C0055384D /* User+Helpers.swift */,
-			);
-			name = Helpers;
 			sourceTree = "<group>";
 		};
 		CE8C9F021B1CDB7100DD2235 /* Extensions */ = {
@@ -1234,6 +1226,7 @@
 				INFOPLIST_FILE = MyReddit/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = 6Q4UNB2LAJ;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";

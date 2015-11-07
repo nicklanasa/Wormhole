@@ -15,7 +15,7 @@ protocol ImageViewControllerDelegate {
 
 class ImageViewController: UIViewController, UIScrollViewDelegate {
     
-    @IBOutlet weak var imageView: UIImageView!
+    @IBOutlet weak var imageView: FLAnimatedImageView!
     @IBOutlet weak var scrollView: CenteringScrollView!
     @IBOutlet weak var indicator: UIActivityIndicatorView!
     
@@ -27,6 +27,7 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
     override func viewDidDisappear(animated: Bool) {
         self.imageView.backgroundColor = MyRedditBackgroundColor
         self.imageView.image = nil
+        self.imageView.gestureRecognizers = []
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -36,20 +37,44 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
         self.view.backgroundColor = MyRedditBackgroundColor
     }
     
+    func longHold() {
+        if let selectedImage = self.imageView.image {
+            self.presentViewController(UIAlertController.saveImageAlertController(selectedImage),
+                animated: true,
+                completion: nil)
+        }
+    }
+    
     override func viewDidAppear(animated: Bool) {
         self.indicator.tintColor = MyRedditLabelColor
         self.indicator.startAnimating()
         self.imageView.contentMode = .ScaleAspectFit
-        self.imageView.sd_setImageWithURL(self.imageURL) { (image, error, cacheType, url) -> Void in
-            if error != nil {
-                UIAlertView(title: "Error!",
-                    message: "Unable to load image.",
-                    delegate: self,
-                    cancelButtonTitle: "Ok").show()
-            } else {
-                self.imageView.image = image
+        
+        if self.imageURL.absoluteString.containsString("gif") {
+            if self.imageURL.absoluteString.containsString("gifv") {
+                self.imageURL = NSURL(string: self.imageURL.absoluteString.stringByReplacingOccurrencesOfString("gifv", withString: "gif"))
+                
+                let priority = DISPATCH_QUEUE_PRIORITY_DEFAULT
+                dispatch_async(dispatch_get_global_queue(priority, 0)) {
+                    let image = FLAnimatedImage(GIFData: NSData(contentsOfURL: self.imageURL))
+                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                        self.imageView.animatedImage = image
+                        self.indicator.stopAnimating()
+                    })
+                }
             }
-            self.indicator.stopAnimating()
+        } else {
+            self.imageView.sd_setImageWithURL(self.imageURL) { (image, error, cacheType, url) -> Void in
+                if error != nil {
+                    UIAlertView(title: "Error!",
+                        message: "Unable to load image.",
+                        delegate: self,
+                        cancelButtonTitle: "Ok").show()
+                } else {
+                    self.imageView.image = image
+                }
+                self.indicator.stopAnimating()
+            }
         }
         
         self.scrollView.contentSize = self.imageView.frame.size
@@ -58,7 +83,10 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
         
         let tap = UITapGestureRecognizer(target: self, action: "imageViewTapped:")
         tap.numberOfTapsRequired = 1
-        self.imageView.gestureRecognizers = [tap]
+        
+        let longHold = UILongPressGestureRecognizer(target: self, action: "longHold")
+        
+        self.imageView.gestureRecognizers = [tap, longHold]
         self.view.gestureRecognizers = [tap]
     }
 

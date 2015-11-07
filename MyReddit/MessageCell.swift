@@ -71,6 +71,39 @@ class MessageCell: JZSwipeCell, UITextViewDelegate {
         }
     }
     
+    var replyMessage: RKCommentReplyMessage! {
+        didSet {
+            
+            self.titleLabel.text = replyMessage.subject.stringByReplacingOccurrencesOfString("&gt;", withString: ">", options: .CaseInsensitiveSearch, range: nil)
+            
+            let parser = XNGMarkdownParser()
+            parser.paragraphFont = MyRedditSelfTextFont
+            parser.boldFontName = MyRedditCommentTextBoldFont.familyName
+            parser.boldItalicFontName = MyRedditCommentTextItalicFont.familyName
+            parser.italicFontName = MyRedditCommentTextItalicFont.familyName
+            parser.linkFontName = MyRedditCommentTextBoldFont.familyName
+            
+            let parsedString = NSMutableAttributedString(attributedString: parser.attributedStringFromMarkdownString(replyMessage.messageBody.stringByReplacingOccurrencesOfString("&gt;", withString: ">", options: .CaseInsensitiveSearch, range: nil)))
+            let messageAttr = [NSForegroundColorAttributeName : UIColor.darkGrayColor()]
+            parsedString.addAttributes(messageAttr,
+                range: NSMakeRange(0, parsedString.string.characters.count))
+            
+            self.bodyTextView.attributedText = parsedString
+            
+            let infoString = NSMutableAttributedString(string:"\(replyMessage.created.timeAgoSinceNow()) | \(replyMessage.author)")
+            let attrs = [NSForegroundColorAttributeName : MyRedditColor]
+            infoString.addAttributes(attrs, range: NSMakeRange(0, replyMessage.created.timeAgoSinceNow().characters.count))
+            
+            self.infoLabel.attributedText = infoString
+            
+            self.titleLabel.textColor = MyRedditLabelColor
+            self.bodyTextView.textColor = SettingsManager.defaultManager.valueForSetting(.NightMode) ? UIColor.whiteColor() : UIColor.darkGrayColor()
+            self.bodyTextView.backgroundColor = MyRedditBackgroundColor
+            
+            self.contentView.backgroundColor = MyRedditBackgroundColor
+        }
+    }
+    
     func textView(textView: UITextView, shouldInteractWithURL URL: NSURL, inRange characterRange: NSRange) -> Bool {
         
         self.currentTappedURL = URL

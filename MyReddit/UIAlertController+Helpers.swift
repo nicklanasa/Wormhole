@@ -31,4 +31,22 @@ extension UIViewController {
                 controller.presentViewController(self, animated: animated, completion: completion)
         }
     }
+    
+    class func saveImageAlertController(image: UIImage) -> UIAlertController {
+        let alertController = UIAlertController(title: "Select action",
+            message: nil,
+            preferredStyle: .ActionSheet)
+        
+        alertController.addAction(UIAlertAction(title: "copy image", style: .Default, handler: { (action) -> Void in
+            UIPasteboard.generalPasteboard().image = image
+        }))
+        
+        alertController.addAction(UIAlertAction(title: "save image", style: .Default, handler: { (action) -> Void in
+            UIImageWriteToSavedPhotosAlbum(image, self, nil, nil)
+        }))
+        
+        alertController.addAction(UIAlertAction(title: "cancel", style: .Cancel, handler: nil))
+        
+        return alertController
+    }
 }

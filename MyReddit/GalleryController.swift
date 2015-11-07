@@ -110,8 +110,6 @@ UICollectionViewDelegate {
         RedditSession.sharedSession.markLinkAsViewed(self.link,
             completion: { (error) -> () in })
         
-        NSUserDefaults.standardUserDefaults().setObject(true, forKey: self.link.identifier)
-        
         self.pagesBarbutton.title = "\(1)/\(self.images!.count)"
         
         self.configureNav()
@@ -422,9 +420,9 @@ UICollectionViewDelegate {
             forIndexPath: indexPath) as! GalleryImageCollectionViewCell
         if let imgImage = self.images?[indexPath.row] as? IMGImage {
             let thumbnailImageURL = imgImage.URLWithSize(IMGSize(rawValue: IMGSize.MediumThumbnailSize.rawValue)!)
-            cell.imageView.sd_setImageWithURL(thumbnailImageURL)
+            cell.imageURL = thumbnailImageURL
         } else if let imageURL = self.images?[indexPath.row] as? NSURL {
-            cell.imageView.sd_setImageWithURL(imageURL)
+            cell.imageURL = imageURL
         }
         
         return cell
