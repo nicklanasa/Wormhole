@@ -29,6 +29,7 @@ var MyRedditPostTitleTextLabelColor = UIColor.lightGrayColor()
 var MyRedditBackgroundColor = UIColor.whiteColor()
 var MyRedditDarkBackgroundColor = UIColor.groupTableViewBackgroundColor()
 var MyRedditCommentLinesColor = UIColor.groupTableViewBackgroundColor().colorWithAlphaComponent(0.4)
+var MyRedditTableSeparatorColor = UIColor.groupTableViewBackgroundColor()
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, IMGSessionDelegate {
@@ -62,6 +63,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, IMGSessionDelegate {
         Appirater.appLaunched(true)
         
         SDWebImageDownloader.sharedDownloader().shouldDecompressImages = false
+        
+        
         
         return true
     }

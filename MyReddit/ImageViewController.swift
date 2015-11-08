@@ -46,7 +46,6 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
     }
     
     override func viewDidAppear(animated: Bool) {
-        self.indicator.tintColor = MyRedditLabelColor
         self.indicator.startAnimating()
         self.imageView.contentMode = .ScaleAspectFit
         

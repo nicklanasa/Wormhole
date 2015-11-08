@@ -4752,18 +4752,19 @@
                             <scrollView multipleTouchEnabled="YES" contentMode="scaleAspectFit" maximumZoomScale="5" translatesAutoresizingMaskIntoConstraints="NO" id="25k-Kp-oFF" customClass="CenteringScrollView" customModule="MyReddit" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="640"/>
                                 <subviews>
-                                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="Q3f-cV-8t6">
-                                        <rect key="frame" x="290" y="310" width="20" height="20"/>
-                                        <animations/>
-                                    </activityIndicatorView>
                                     <imageView contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="U3k-rs-51T" customClass="FLAnimatedImageView">
-                                        <rect key="frame" x="14" y="0.0" width="572" height="600"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                         <animations/>
                                         <rect key="contentStretch" x="0.0" y="0.0" width="0.0" height="0.0"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="600" id="cbo-VW-jtU"/>
                                         </constraints>
                                     </imageView>
+                                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="Q3f-cV-8t6">
+                                        <rect key="frame" x="282" y="301" width="37" height="37"/>
+                                        <animations/>
+                                        <color key="color" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                    </activityIndicatorView>
                                 </subviews>
                                 <animations/>
                                 <constraints>
@@ -4772,9 +4773,9 @@
                                     <constraint firstAttribute="bottom" secondItem="U3k-rs-51T" secondAttribute="bottom" constant="40" id="I49-hz-LQy"/>
                                     <constraint firstAttribute="centerY" secondItem="U3k-rs-51T" secondAttribute="centerY" constant="20" id="KwJ-xL-cSg"/>
                                     <constraint firstAttribute="width" constant="600" id="Pu7-rA-vWj"/>
-                                    <constraint firstItem="U3k-rs-51T" firstAttribute="leading" secondItem="25k-Kp-oFF" secondAttribute="leading" constant="14" id="VUd-uZ-tT7"/>
+                                    <constraint firstItem="U3k-rs-51T" firstAttribute="leading" secondItem="25k-Kp-oFF" secondAttribute="leading" id="VUd-uZ-tT7"/>
                                     <constraint firstItem="U3k-rs-51T" firstAttribute="centerX" secondItem="25k-Kp-oFF" secondAttribute="centerX" id="cP5-kM-sqm"/>
-                                    <constraint firstAttribute="trailing" secondItem="U3k-rs-51T" secondAttribute="trailing" constant="14" id="e9F-vf-EXC"/>
+                                    <constraint firstAttribute="trailing" secondItem="U3k-rs-51T" secondAttribute="trailing" id="e9F-vf-EXC"/>
                                     <constraint firstAttribute="height" constant="640" id="l5e-CY-g9E"/>
                                     <constraint firstItem="Q3f-cV-8t6" firstAttribute="centerY" secondItem="25k-Kp-oFF" secondAttribute="centerY" id="ue3-33-PjP"/>
                                 </constraints>
@@ -5010,20 +5011,20 @@
         <image name="Up" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="zMo-OM-Z5J"/>
-        <segue reference="nb3-Xk-rNn"/>
+        <segue reference="Udn-dz-6HG"/>
         <segue reference="FtF-gF-eJb"/>
-        <segue reference="2ez-RP-QcH"/>
+        <segue reference="WQy-bn-n3r"/>
+        <segue reference="xgG-eu-NoT"/>
         <segue reference="TYz-B9-bLR"/>
         <segue reference="nEx-7L-vW5"/>
         <segue reference="q6K-ip-lpO"/>
-        <segue reference="7mV-eF-gvZ"/>
-        <segue reference="xgG-eu-NoT"/>
         <segue reference="aev-Tk-Wb5"/>
+        <segue reference="IKJ-Uc-imU"/>
         <segue reference="MQa-bF-U0r"/>
         <segue reference="DoA-ah-cSI"/>
+        <segue reference="nb3-Xk-rNn"/>
         <segue reference="Abo-Jz-JcR"/>
         <segue reference="vvu-K9-HER"/>
-        <segue reference="Udn-dz-6HG"/>
+        <segue reference="zMo-OM-Z5J"/>
     </inferredMetricsTieBreakers>
 </document>

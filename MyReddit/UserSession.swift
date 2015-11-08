@@ -97,6 +97,7 @@ class UserSession {
         MyRedditBackgroundColor = backgroundColor
         MyRedditDarkBackgroundColor = backgroundColor
         MyRedditCommentLinesColor = UIColor.darkGrayColor().colorWithAlphaComponent(0.2)
+        MyRedditTableSeparatorColor = UIColor.whiteColor().colorWithAlphaComponent(0.2)
         
         UISwitch.appearance().onTintColor = MyRedditColor
         UISegmentedControl.appearance().tintColor = MyRedditLabelColor
@@ -122,7 +123,7 @@ class UserSession {
         UIBarButtonItem.appearance().tintColor = MyRedditLabelColor
         
         UITableView.appearance().backgroundColor = MyRedditDarkBackgroundColor
-        UITableView.appearance().separatorColor = UIColor.whiteColor().colorWithAlphaComponent(0.2)
+        UITableView.appearance().separatorColor = MyRedditTableSeparatorColor
         UITableView.appearance().backgroundView = nil
         UITableView.appearance().sectionIndexBackgroundColor = UIColor.clearColor()
         
@@ -144,7 +145,7 @@ class UserSession {
         
         UIRefreshControl.appearance().tintColor = MyRedditColor
         
-        UIActivityIndicatorView.appearance().tintColor = MyRedditColor
+        UIActivityIndicatorView.appearance().tintColor = UIColor.whiteColor()
     }
     
     func dayMode() {
@@ -159,6 +160,7 @@ class UserSession {
         MyRedditBackgroundColor = UIColor.whiteColor()
         MyRedditDarkBackgroundColor = UIColor.groupTableViewBackgroundColor()
         MyRedditCommentLinesColor = UIColor.groupTableViewBackgroundColor().colorWithAlphaComponent(0.4)
+        MyRedditTableSeparatorColor = UIColor.lightGrayColor()
         
         UIBarButtonItem.appearance().setTitleTextAttributes([
             NSFontAttributeName: MyRedditTitleFont, NSForegroundColorAttributeName : MyRedditLabelColor],
@@ -186,7 +188,7 @@ class UserSession {
         UIBarButtonItem.appearance().tintColor = MyRedditLabelColor
         
         UITableView.appearance().backgroundColor = MyRedditDarkBackgroundColor
-        UITableView.appearance().separatorColor = UIColor.lightGrayColor()
+        UITableView.appearance().separatorColor = MyRedditTableSeparatorColor
         UITableView.appearance().backgroundView = nil
         UITableView.appearance().sectionIndexBackgroundColor = UIColor.clearColor()
         
@@ -207,6 +209,6 @@ class UserSession {
         
         UIActivityIndicatorView.appearance().tintColor = MyRedditColor
         
-        UIRefreshControl.appearance().tintColor = MyRedditColor
+        UIRefreshControl.appearance().tintColor = UIColor.lightGrayColor()
     }
 }

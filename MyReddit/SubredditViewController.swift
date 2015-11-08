@@ -100,6 +100,11 @@ PostCellDelegate {
             self.updateAndFetch()
         }
         
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "front",
+            style: .Plain,
+            target: self,
+            action: nil)
+        
         self.tableView.tableFooterView = UIView()
      
         switch UIDevice.currentDevice().userInterfaceIdiom {
@@ -323,18 +328,7 @@ PostCellDelegate {
             }
         }
         
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: title,
-            style: .Plain,
-            target: self,
-            action: nil)
-        
-        self.navigationItem.leftBarButtonItem!.setTitleTextAttributes([
-            NSFontAttributeName: MyRedditTitleBigFont, NSForegroundColorAttributeName : MyRedditLabelColor],
-            forState: UIControlState.Normal)
-        
-        self.navigationItem.rightBarButtonItem!.setTitleTextAttributes([
-            NSFontAttributeName: MyRedditTitleFont],
-            forState: UIControlState.Normal)
+        self.navigationItem.leftBarButtonItem?.title = title
         
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
             self.updateSubscribeButton()
@@ -345,6 +339,10 @@ PostCellDelegate {
             self.messages.tintColor = MyRedditLabelColor
             self.noPostsView.backgroundColor = MyRedditBackgroundColor
             self.noPostsLabel.textColor = MyRedditLabelColor
+            
+            self.navigationItem.leftBarButtonItem!.setTitleTextAttributes([
+                NSFontAttributeName: MyRedditTitleBigFont, NSForegroundColorAttributeName : MyRedditLabelColor],
+                forState: UIControlState.Normal)
         })
         
         self.navigationController?.setToolbarHidden(true, animated: true)

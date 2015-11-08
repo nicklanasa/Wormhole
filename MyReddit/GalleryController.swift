@@ -84,8 +84,9 @@ UICollectionViewDelegate {
         super.viewWillAppear(animated)
         LocalyticsSession.shared().tagScreen("Gallery")
         self.navigationController?.setToolbarHidden(true, animated: true)
-        
         self.preferredAppearance()
+        
+        self.view.autoresizesSubviews = false
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -401,11 +402,15 @@ UICollectionViewDelegate {
             UIView.animateWithDuration(0.3, animations: { () -> Void in
                 self.postTitleView.alpha = 1.0
                 self.toolbar.alpha = 1.0
+                
+                self.navigationController?.setNavigationBarHidden(false, animated: true)
             })
         } else {
             UIView.animateWithDuration(0.3, animations: { () -> Void in
                 self.postTitleView.alpha = 0.0
                 self.toolbar.alpha = 0.0
+                
+                self.navigationController?.setNavigationBarHidden(true, animated: true)
             })
         }
     }

@@ -75,6 +75,8 @@ class IPadSettingsViewController: UITableViewController, BDGIAPDelegate {
             self.hideSubredditLogosCell.backgroundColor = MyRedditBackgroundColor
             self.textSizeCell.titleLabel.textColor = MyRedditLabelColor
             self.textSizeCell.backgroundColor = MyRedditBackgroundColor
+            self.commentTextSizeCell.titleLabel.textColor = MyRedditLabelColor
+            self.commentTextSizeCell.backgroundColor = MyRedditBackgroundColor
             self.infinitePostScrollingCell.titleLabel.textColor = MyRedditLabelColor
             self.infinitePostScrollingCell.backgroundColor = MyRedditBackgroundColor
             self.goToMyRedditCell.titleLabel.textColor = MyRedditLabelColor
@@ -101,6 +103,7 @@ class IPadSettingsViewController: UITableViewController, BDGIAPDelegate {
             self.hideFullWidthImagesCell.titleLabel.textColor = MyRedditLabelColor
             self.hideFullWidthImagesCell.backgroundColor = MyRedditBackgroundColor
             
+            self.tableView.separatorColor = MyRedditTableSeparatorColor
             self.tableView.backgroundColor = MyRedditDarkBackgroundColor
             self.navigationController?.navigationBar.barTintColor = MyRedditBackgroundColor
             self.navigationController?.navigationBar.tintColor = MyRedditLabelColor
