@@ -112,11 +112,11 @@ AddCommentViewControllerDelegate {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         LocalyticsSession.shared().tagScreen("Comments")
-        
-        dispatch_async(dispatch_get_main_queue(), { () -> Void in
-            self.navigationItem.title =  "\(self.link.totalComments) comments"
-            self.navigationController?.setToolbarHidden(false, animated: false)
-        })
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        self.navigationItem.title =  "\(self.link.totalComments) comments"
+        self.navigationController?.setToolbarHidden(false, animated: false)
     }
     
     override func viewDidLoad() {
@@ -292,8 +292,7 @@ AddCommentViewControllerDelegate {
             if !hidden {
                 cell.configueForComment(comment: comment,
                     isLinkAuthor: self.link.author == comment.author)
-            }
-            
+            }            
             
             cell.separatorInset = UIEdgeInsets(top: 0,
                 left: self.tableView.frame.size.width,

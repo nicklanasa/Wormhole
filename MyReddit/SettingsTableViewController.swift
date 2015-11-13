@@ -231,8 +231,8 @@ class SettingsTableViewController: UITableViewController, BDGIAPDelegate {
                 self.performSegueWithIdentifier("WebViewSegue", sender: url)
             case 3:
                 LocalyticsSession.shared().tagEvent("Settings share button tapped")
-                let url = NSURL(string: "http://nytekproductions.com/myreddit/")
-                let shareText = "Check out MyReddit - A Reddit client for iOS that rocks!"
+                let url = NSURL(string: "http://myredditapp.com")
+                let shareText = "Check out MyReddit - an iOS app for reddit available on iPhone and iPad #getmyreddit - http://myredditapp.com"
                 let objectsToShare = [shareText, url!]
                 let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
                 if let popoverController = activityVC.popoverPresentationController {

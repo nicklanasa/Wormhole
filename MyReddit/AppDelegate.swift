@@ -63,9 +63,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, IMGSessionDelegate {
         Appirater.appLaunched(true)
         
         SDWebImageDownloader.sharedDownloader().shouldDecompressImages = false
-        
-        
-        
+
         return true
     }
 

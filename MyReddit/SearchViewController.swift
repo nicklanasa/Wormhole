@@ -456,14 +456,18 @@ PostCellDelegate {
     func swipeCell(cell: JZSwipeCell!, triggeredSwipeWithType swipeType: JZSwipeType) {
         if swipeType.rawValue != JZSwipeTypeNone.rawValue {
             cell.reset()
-            if !SettingsManager.defaultManager.purchased {
-                self.performSegueWithIdentifier("PurchaseSegue", sender: self)
-            } else {
-                
-                self.hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
-                
-                if let indexPath = self.tableView.indexPathForCell(cell) {
-                    if let link = self.links[indexPath.row] as? RKLink {
+            if let indexPath = self.tableView.indexPathForCell(cell) {
+                if let link = self.links[indexPath.row] as? RKLink {
+                    if !SettingsManager.defaultManager.purchased {
+                        if swipeType.rawValue == JZSwipeTypeLongLeft.rawValue {
+                            LocalyticsSession.shared().tagEvent("Swipe comments")
+                            self.performSegueWithIdentifier("CommentsSegue", sender: link)
+                        } else {
+                            self.performSegueWithIdentifier("PurchaseSegue", sender: self)
+                        }
+                    } else {
+                        self.hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
+                        
                         if swipeType.rawValue == JZSwipeTypeShortLeft.rawValue {
                             // Upvote
                             LocalyticsSession.shared().tagEvent("Swipe upvote")

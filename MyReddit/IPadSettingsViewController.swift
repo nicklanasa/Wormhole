@@ -166,7 +166,7 @@ class IPadSettingsViewController: UITableViewController, BDGIAPDelegate {
             preferredStyle: .ActionSheet)
         
         alert.addAction(UIAlertAction(title: "small", style: .Default, handler: { (action) -> Void in
-            SettingsManager.defaultManager.updateValueForTextSizeSetting(.Small)
+            SettingsManager.defaultManager.updateValueForTextSizeType(type, setting: .Small)
             self.updateTable()
             
             NSNotificationCenter.defaultCenter().postNotificationName(MyRedditAppearanceDidChangeNotification,
@@ -174,7 +174,7 @@ class IPadSettingsViewController: UITableViewController, BDGIAPDelegate {
         }))
         
         alert.addAction(UIAlertAction(title: "medium", style: .Default, handler: { (action) -> Void in
-            SettingsManager.defaultManager.updateValueForTextSizeSetting(.Medium)
+            SettingsManager.defaultManager.updateValueForTextSizeType(type, setting: .Medium)
             self.updateTable()
             
             NSNotificationCenter.defaultCenter().postNotificationName(MyRedditAppearanceDidChangeNotification,
@@ -182,7 +182,7 @@ class IPadSettingsViewController: UITableViewController, BDGIAPDelegate {
         }))
         
         alert.addAction(UIAlertAction(title: "large", style: .Default, handler: { (action) -> Void in
-            SettingsManager.defaultManager.updateValueForTextSizeSetting(.Large)
+            SettingsManager.defaultManager.updateValueForTextSizeType(type, setting: .Large)
             self.updateTable()
             
             NSNotificationCenter.defaultCenter().postNotificationName(MyRedditAppearanceDidChangeNotification,
@@ -258,8 +258,8 @@ class IPadSettingsViewController: UITableViewController, BDGIAPDelegate {
                 self.performSegueWithIdentifier("WebViewSegue", sender: url)
             case 3:
                 LocalyticsSession.shared().tagEvent("Settings share button tapped")
-                let url = NSURL(string: "http://nytekproductions.com/myreddit/")
-                let shareText = "Check out MyReddit - A Reddit client for iOS that rocks!"
+                let url = NSURL(string: "http://myredditapp.com")
+                let shareText = "Check out MyReddit - an iOS app for reddit available on iPhone and iPad #getmyreddit - http://myredditapp.com"
                 let objectsToShare = [shareText, url!]
                 let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
                 if let popoverController = activityVC.popoverPresentationController {

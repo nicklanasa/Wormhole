@@ -48,6 +48,7 @@ class PurchaseViewController: UIViewController, BDGIAPDelegate {
             if SLComposeViewController.isAvailableForServiceType(SLServiceTypeFacebook) {
                 let socialVC = SLComposeViewController(forServiceType: SLServiceTypeFacebook)
                 socialVC.addImage(UIImage(named: "MyRedditShare"))
+                socialVC.setInitialText("Check out MyReddit - an iOS app for reddit available on iPhone and iPad #getmyreddit - http://myredditapp.com")
                 
                 let completion: SLComposeViewControllerCompletionHandler = { (result) -> Void in
                     if result == .Done {
@@ -74,6 +75,7 @@ class PurchaseViewController: UIViewController, BDGIAPDelegate {
             if SLComposeViewController.isAvailableForServiceType(SLServiceTypeTwitter) {
                 let socialVC = SLComposeViewController(forServiceType: SLServiceTypeTwitter)
                 socialVC.addImage(UIImage(named: "MyRedditShare"))
+                socialVC.setInitialText("Check out MyReddit - an iOS app for reddit available on iPhone and iPad #getmyreddit - http://myredditapp.com")
                 
                 let completion: SLComposeViewControllerCompletionHandler = { (result) -> Void in
                     if result == .Done {

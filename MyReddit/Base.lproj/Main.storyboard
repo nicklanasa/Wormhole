@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9059" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="Wuv-iQ-z1V">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9060" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="Wuv-iQ-z1V">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9049"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
         <capability name="Alignment constraints to the first baseline" minToolsVersion="6.0"/>
         <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
@@ -2261,14 +2261,14 @@
             <objects>
                 <tableViewController storyboardIdentifier="CommentsViewController" id="qVg-dB-hBp" customClass="CommentsViewController" customModule="MyReddit" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="95" sectionHeaderHeight="22" sectionFooterHeight="22" id="AT1-Vl-QAR">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="64" width="600" height="492"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <inset key="separatorInset" minX="15" minY="0.0" maxX="0.0" maxY="0.0"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="CommentCell" rowHeight="95" id="cAM-uv-HZU" customClass="CommentCell" customModule="MyReddit" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="86" width="600" height="95"/>
+                                <rect key="frame" x="0.0" y="22" width="600" height="95"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="cAM-uv-HZU" id="0fl-cW-8LI">
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="94.5"/>
@@ -2301,8 +2301,7 @@
                                             <animations/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <constraints>
-                                                <constraint firstAttribute="height" constant="60" id="20l-q0-s34"/>
-                                                <constraint firstAttribute="width" constant="571" id="obx-i5-I8s"/>
+                                                <constraint firstAttribute="width" constant="571" id="igC-Qj-ba1"/>
                                             </constraints>
                                             <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                                             <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="14"/>
@@ -2313,15 +2312,14 @@
                                     <animations/>
                                     <constraints>
                                         <constraint firstItem="NpS-5U-pEy" firstAttribute="leading" secondItem="0fl-cW-8LI" secondAttribute="leading" constant="21" id="1m5-H3-aAt"/>
-                                        <constraint firstItem="ZsZ-g1-wiD" firstAttribute="top" secondItem="Ehj-sX-ayA" secondAttribute="bottom" constant="8" id="EcK-XE-EkU"/>
-                                        <constraint firstAttribute="bottom" secondItem="ZsZ-g1-wiD" secondAttribute="bottom" constant="2.5" id="Qia-np-7yF"/>
+                                        <constraint firstAttribute="trailing" secondItem="ZsZ-g1-wiD" secondAttribute="trailing" constant="8" id="Pzf-CW-4GP"/>
                                         <constraint firstItem="Ehj-sX-ayA" firstAttribute="leading" secondItem="NpS-5U-pEy" secondAttribute="trailing" constant="-2" id="RZX-Ae-oIa"/>
-                                        <constraint firstItem="ZsZ-g1-wiD" firstAttribute="top" secondItem="NpS-5U-pEy" secondAttribute="bottom" constant="8" id="Vg0-cK-Q4f"/>
-                                        <constraint firstItem="ZsZ-g1-wiD" firstAttribute="leading" secondItem="0fl-cW-8LI" secondAttribute="leading" constant="21" id="W36-sg-Q6h"/>
                                         <constraint firstItem="NpS-5U-pEy" firstAttribute="top" secondItem="0fl-cW-8LI" secondAttribute="top" constant="8" id="WH9-hZ-2hr"/>
+                                        <constraint firstAttribute="bottom" secondItem="ZsZ-g1-wiD" secondAttribute="bottom" constant="2.5" id="f74-wT-7G9"/>
+                                        <constraint firstItem="ZsZ-g1-wiD" firstAttribute="top" secondItem="NpS-5U-pEy" secondAttribute="bottom" constant="8" id="g4V-V3-Jw9"/>
                                         <constraint firstAttribute="trailingMargin" secondItem="Ehj-sX-ayA" secondAttribute="trailing" id="ggy-8e-3Y5"/>
+                                        <constraint firstItem="ZsZ-g1-wiD" firstAttribute="leading" secondItem="0fl-cW-8LI" secondAttribute="leading" constant="21" id="m6u-ig-Tbh"/>
                                         <constraint firstItem="Ehj-sX-ayA" firstAttribute="top" secondItem="0fl-cW-8LI" secondAttribute="topMargin" constant="-1" id="sFo-MG-bcH"/>
-                                        <constraint firstAttribute="trailing" secondItem="ZsZ-g1-wiD" secondAttribute="trailing" constant="8" id="u2B-6S-Dl8"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <animations/>
@@ -2329,11 +2327,7 @@
                                 <connections>
                                     <outlet property="commentTextView" destination="ZsZ-g1-wiD" id="1gE-NE-mBL"/>
                                     <outlet property="infoLabel" destination="NpS-5U-pEy" id="3kf-eW-fnk"/>
-                                    <outlet property="leadingTextViewConstraint" destination="W36-sg-Q6h" id="qJn-ra-sqH"/>
-                                    <outlet property="leadinginfoLabelConstraint" destination="1m5-H3-aAt" id="DB7-QO-eIC"/>
                                     <outlet property="scoreLabel" destination="Ehj-sX-ayA" id="Mkw-QE-Gbu"/>
-                                    <outlet property="textViewWidthConstraint" destination="obx-i5-I8s" id="eyf-e1-Jtq"/>
-                                    <outlet property="trailingTextViewConstraint" destination="u2B-6S-Dl8" id="Qo5-wi-uez"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -2342,6 +2336,7 @@
                             <outlet property="delegate" destination="qVg-dB-hBp" id="AZn-dc-zpy"/>
                         </connections>
                     </tableView>
+                    <extendedEdge key="edgesForExtendedLayout"/>
                     <toolbarItems>
                         <barButtonItem image="Filter" id="MWG-Vk-Xqs">
                             <connections>
@@ -5011,20 +5006,20 @@
         <image name="Up" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="Udn-dz-6HG"/>
         <segue reference="FtF-gF-eJb"/>
-        <segue reference="WQy-bn-n3r"/>
-        <segue reference="xgG-eu-NoT"/>
-        <segue reference="TYz-B9-bLR"/>
-        <segue reference="nEx-7L-vW5"/>
-        <segue reference="q6K-ip-lpO"/>
-        <segue reference="aev-Tk-Wb5"/>
-        <segue reference="IKJ-Uc-imU"/>
+        <segue reference="v8v-Am-6HY"/>
+        <segue reference="iqb-h7-VjS"/>
+        <segue reference="Na3-yg-xfC"/>
         <segue reference="MQa-bF-U0r"/>
-        <segue reference="DoA-ah-cSI"/>
         <segue reference="nb3-Xk-rNn"/>
+        <segue reference="DoA-ah-cSI"/>
+        <segue reference="Udn-dz-6HG"/>
         <segue reference="Abo-Jz-JcR"/>
         <segue reference="vvu-K9-HER"/>
         <segue reference="zMo-OM-Z5J"/>
+        <segue reference="nEx-7L-vW5"/>
+        <segue reference="TYz-B9-bLR"/>
+        <segue reference="aev-Tk-Wb5"/>
+        <segue reference="xgG-eu-NoT"/>
     </inferredMetricsTieBreakers>
 </document>

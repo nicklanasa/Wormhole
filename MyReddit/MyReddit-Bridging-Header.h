@@ -7,6 +7,7 @@
 @import DateTools;
 
 #import <Localytics-AMP/LocalyticsSession.h>
+#import <RATreeView.h>
 
 #import "RedditKit.h"
 #import "RKCompletionBlocks.h"
@@ -20,7 +21,6 @@
 #import "JZSwipeCell.h"
 #import "ImgurAnonymousAPIClient.h"
 #import "ImgurSession.h"
-#import "JHRefreshControl.h"
 #import "UIImage+ResizeMagick.h"
 #import "UIImage+FZUtil.h"
 #import "FLAnimatedImageView.h"
