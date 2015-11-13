@@ -2260,7 +2260,7 @@
         <scene sceneID="vZ4-hp-7Rx">
             <objects>
                 <tableViewController storyboardIdentifier="CommentsViewController" id="qVg-dB-hBp" customClass="CommentsViewController" customModule="MyReddit" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="95" sectionHeaderHeight="22" sectionFooterHeight="22" id="AT1-Vl-QAR">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="95" sectionHeaderHeight="22" sectionFooterHeight="22" id="AT1-Vl-QAR" customClass="RATableView">
                         <rect key="frame" x="0.0" y="64" width="600" height="492"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <animations/>
@@ -2331,10 +2331,6 @@
                                 </connections>
                             </tableViewCell>
                         </prototypes>
-                        <connections>
-                            <outlet property="dataSource" destination="qVg-dB-hBp" id="QVk-hu-052"/>
-                            <outlet property="delegate" destination="qVg-dB-hBp" id="AZn-dc-zpy"/>
-                        </connections>
                     </tableView>
                     <extendedEdge key="edgesForExtendedLayout"/>
                     <toolbarItems>
@@ -2368,6 +2364,7 @@
                         <outlet property="addButton" destination="40G-Am-f3t" id="miq-e4-0YV"/>
                         <outlet property="filterButton" destination="MWG-Vk-Xqs" id="rDD-pI-6eW"/>
                         <outlet property="shareButton" destination="MWG-Vk-Xqs" id="bsj-1h-4Ce"/>
+                        <outlet property="treeView" destination="AT1-Vl-QAR" id="MRg-jW-f8D"/>
                         <segue destination="BuP-V6-G2K" kind="presentation" identifier="CommentLinkSegue" modalTransitionStyle="crossDissolve" id="Na3-yg-xfC"/>
                         <segue destination="Rp1-52-6Wg" kind="presentation" identifier="AddCommentSegue" modalTransitionStyle="crossDissolve" id="MQa-bF-U0r"/>
                         <segue destination="Hdo-ax-c9X" kind="presentation" identifier="PurchaseSegue" modalTransitionStyle="crossDissolve" id="iqb-h7-VjS"/>
@@ -2378,6 +2375,25 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5bJ-vi-cDu" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="347" y="-2803"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="ais-Wo-ESn">
+            <objects>
+                <viewController id="jZ6-4i-JFg" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="BhM-KI-jLj"/>
+                        <viewControllerLayoutGuide type="bottom" id="xkL-86-awR"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="aP9-lc-lLB">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <animations/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="c8c-oy-xW8" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1003" y="-2803"/>
         </scene>
         <!--add comment-->
         <scene sceneID="EIv-EM-tfT">
