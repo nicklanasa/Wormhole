@@ -13,14 +13,15 @@ class CommentsViewController: RootTableViewController,
 CommentCellDelegate,
 JZSwipeCellDelegate,
 UITextFieldDelegate,
-AddCommentViewControllerDelegate,
-RATreeViewDataSource,
-RATreeViewDelegate {
+AddCommentViewControllerDelegate {
     
     @IBOutlet weak var filterButton: UIBarButtonItem!
     @IBOutlet weak var shareButton: UIBarButtonItem!
     @IBOutlet weak var addButton: UIBarButtonItem!
-    @IBOutlet var treeView: RATreeView!
+    
+    var hiddenIndexPaths = [NSIndexPath]()
+    var closedIndexPaths = [NSIndexPath]()
+    var collapsedIndexPaths = [NSIndexPath]()
     
     var link: RKLink! {
         didSet {
@@ -120,13 +121,7 @@ RATreeViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        self.treeView.dataSource = self
-        self.treeView.delegate = self
-        
         self.syncComments()
-        
-        self.treeView.reloadData()
         
         self.refreshControl = UIRefreshControl()
         self.refreshControl!.addTarget(self,
@@ -186,6 +181,84 @@ RATreeViewDelegate {
         actionSheet.present(animated: true, completion: nil)
     }
     
+    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        if indexPath.section == 0 {
+            return self.heightForLink()
+        }
+        
+        for closedIndexPath in self.closedIndexPaths {
+            if indexPath.section == closedIndexPath.section {
+                return 30
+            }
+        }
+        
+        for hiddenIndexPath in self.hiddenIndexPaths {
+            if indexPath.section == hiddenIndexPath.section {
+                return 0
+            }
+        }
+        
+        return self.heightForIndexPath(indexPath)
+    }
+    
+    private func heightForLink() -> CGFloat {
+        
+        var selfText = ""
+        
+        if link.selfPost && link.selfText.characters.count > 0 {
+            selfText = "\n\n\(link.selfText)".stringByReplacingOccurrencesOfString("&gt;",
+                withString: ">",
+                options: .CaseInsensitiveSearch,
+                range: nil)
+        }
+        
+        let parser = XNGMarkdownParser()
+        parser.paragraphFont = MyRedditSelfTextFont
+        parser.boldFontName = MyRedditCommentTextBoldFont.familyName
+        parser.boldItalicFontName = MyRedditCommentTextItalicFont.familyName
+        parser.italicFontName = MyRedditCommentTextItalicFont.familyName
+        parser.linkFontName = MyRedditCommentTextBoldFont.familyName
+        
+        let title = link.title.stringByReplacingOccurrencesOfString("&gt;", withString: ">", options: .CaseInsensitiveSearch, range: nil)
+        
+        let parsedString = NSMutableAttributedString(attributedString: parser.attributedStringFromMarkdownString("\(title)\(selfText)"))
+        
+        let str = parsedString.string as NSString
+        let rect = str.boundingRectWithSize(CGSizeMake(self.tableView.frame.size.width - 30, CGFloat.max),
+            options: NSStringDrawingOptions.UsesLineFragmentOrigin,
+            attributes: [NSFontAttributeName : MyRedditSelfTextFont],
+            context: nil)
+        return rect.height + 60
+    }
+    
+    private func heightForIndexPath(indexPath: NSIndexPath) -> CGFloat {
+        
+        var commentDictionary = self.self.commentsBySection?[indexPath.section - 1] as! [String : AnyObject]
+        let indentationLevel = commentDictionary["level"] as! Int
+        let indentationWidth = CGFloat(15)
+        let comment = commentDictionary["comment"] as! RKComment
+        
+        let body = comment.body.stringByReplacingOccurrencesOfString("&gt;", withString: ">",
+            options: .CaseInsensitiveSearch,
+            range: nil).stringByReplacingOccurrencesOfString("&amp;", withString: "&", options: .CaseInsensitiveSearch, range: nil)
+        
+        let parser = XNGMarkdownParser()
+        parser.paragraphFont = MyRedditCommentTextBoldFont
+        parser.boldFontName = MyRedditCommentTextBoldFont.familyName
+        parser.boldItalicFontName = MyRedditCommentTextItalicFont.familyName
+        parser.italicFontName = MyRedditCommentTextItalicFont.familyName
+        parser.linkFontName = MyRedditCommentTextBoldFont.familyName
+        
+        let parsedString = NSMutableAttributedString(attributedString: parser.attributedStringFromMarkdownString("\(body)"))
+    
+        let rect = parsedString.string.boundingRectWithSize(CGSizeMake((self.tableView.frame.size.width - 18) - (CGFloat(indentationLevel + 1) * indentationWidth), CGFloat.max),
+            options: NSStringDrawingOptions.UsesLineFragmentOrigin,
+            attributes: [NSFontAttributeName : MyRedditCommentTextFont],
+            context: nil)
+
+        return rect.height + 60
+    }
+    
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return (self.commentsBySection?.count ?? 0) + 1
     }
@@ -202,14 +275,26 @@ RATreeViewDelegate {
         if indexPath.section == 0 {
             cell.link = self.link
         } else {
+
+            
             var commentDictionary = self.commentsBySection?[indexPath.section - 1] as! [String : AnyObject]
             let indent = commentDictionary["level"] as! Int
             cell.indentationLevel = indent + 1
             cell.indentationWidth = 15
             comment = commentDictionary["comment"] as! RKComment
             
-            cell.configueForComment(comment: comment,
-                isLinkAuthor: self.link.author == comment.author)
+            var hidden = false
+            
+            for hiddenIndexPath in self.hiddenIndexPaths {
+                if indexPath.section == hiddenIndexPath.section {
+                    hidden = true
+                }
+            }
+
+            if !hidden {
+                cell.configueForComment(comment: comment,
+                    isLinkAuthor: self.link.author == comment.author)
+            }            
             
             cell.separatorInset = UIEdgeInsets(top: 0,
                 left: self.tableView.frame.size.width,
@@ -223,19 +308,72 @@ RATreeViewDelegate {
         return cell
     }
     
-    func treeView(treeView: RATreeView!, cellForItem item: AnyObject!) -> UITableViewCell! {
-        print(item)
-        let cell = tableView.dequeueReusableCellWithIdentifier("CommentCell") as! CommentCell
-        return cell
-    }
-    
-    func treeView(treeView: RATreeView!, child index: Int, ofItem item: AnyObject!) -> AnyObject! {
-        return NSNumber()
-    }
-    
-    func treeView(treeView: RATreeView!, numberOfChildrenOfItem item: AnyObject!) -> Int {
-        print(item)
-        return 1
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        })
+        
+        if indexPath.section != 0 {
+            var remove = false
+            
+            for collapsedIndexPath in self.closedIndexPaths {
+                if indexPath.section == collapsedIndexPath.section {
+                    remove = true
+                    break
+                }
+            }
+            
+            var commentDictionary = self.commentsBySection?[indexPath.section - 1] as! [String : AnyObject]
+            var collapsedIndexPaths = [NSIndexPath]()
+            var hiddenIndexPaths = [NSIndexPath]()
+            
+            // Get comment to start collapse
+            let comment = commentDictionary["comment"] as! RKComment
+            
+            // Get replies for comment
+            let repliesForComment = self.repliesForComment(comment, level: 0)
+            
+            collapsedIndexPaths.append(indexPath)
+            
+            if remove {
+
+                var sectionCount = indexPath.section
+                for _ in repliesForComment {
+                    sectionCount += 1
+                    hiddenIndexPaths.append(NSIndexPath(forRow: 0, inSection: sectionCount))
+                }
+                
+                for removedIndexPath in collapsedIndexPaths {
+                    for var i = 0; i < self.closedIndexPaths.count; i++ {
+                        let closedIndexPath = self.closedIndexPaths[i]
+                        if closedIndexPath.section == removedIndexPath.section {
+                            self.closedIndexPaths.removeAtIndex(i)
+                        }
+                    }
+                }
+                
+                for hiddenIndexPath in hiddenIndexPaths {
+                    for var i = 0; i < self.hiddenIndexPaths.count; i++ {
+                        let closedIndexPath = self.hiddenIndexPaths[i]
+                        if closedIndexPath.section == hiddenIndexPath.section {
+                            self.hiddenIndexPaths.removeAtIndex(i)
+                        }
+                    }
+                }
+            } else {
+                var sectionCount = indexPath.section
+                for _ in repliesForComment {
+                    sectionCount += 1
+                    hiddenIndexPaths.append(NSIndexPath(forRow: 0, inSection: sectionCount))
+                }
+                
+                self.hiddenIndexPaths.appendContentsOf(hiddenIndexPaths)
+                self.closedIndexPaths.appendContentsOf(collapsedIndexPaths)
+            }
+            
+            self.tableView.beginUpdates()
+            self.tableView.endUpdates()
+        }
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
