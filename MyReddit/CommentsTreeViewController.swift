@@ -1,95 +1,67 @@
 //
-//  CommentsViewController.swift
+//  CommentsTreeViewController.swift
 //  MyReddit
 //
-//  Created by Nickolas Lanasa on 4/27/15.
-//  Copyright (c) 2015 Nytek Production. All rights reserved.
+//  Created by Nickolas Lanasa on 11/14/15.
+//  Copyright © 2015 Nytek Production. All rights reserved.
 //
 
-import Foundation
 import UIKit
 import MBProgressHUD
+import RATreeView
 
-class CommentsViewController: RootViewController,
-CommentCellDelegate,
-JZSwipeCellDelegate,
-UITextFieldDelegate,
-AddCommentViewControllerDelegate {
-    
+class CommentsTreeViewController: RootViewController, RATreeViewDelegate, RATreeViewDataSource, CommentCellDelegate, JZSwipeCellDelegate, UITextFieldDelegate, AddCommentViewControllerDelegate {
+
+    @IBOutlet weak var treeView: RATreeView!
     @IBOutlet weak var filterButton: UIBarButtonItem!
-    @IBOutlet weak var shareButton: UIBarButtonItem!
     @IBOutlet weak var addButton: UIBarButtonItem!
-    
-    var hiddenIndexPaths = [NSIndexPath]()
-    var closedIndexPaths = [NSIndexPath]()
-    var collapsedIndexPaths = [NSIndexPath]()
-    
-    var link: RKLink! {
-        didSet {
-            // self.tableView.beginUpdates()
-            // self.tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: 0, inSection: 0)], withRowAnimation: .Fade)
-            // self.tableView.endUpdates()
-        }
-    }
-    
+
     var optionsController: LinkShareOptionsViewController!
-    
-    var filter: RKCommentSort! {
-        didSet {
-            self.hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
-            RedditSession.sharedSession.fetchCommentsWithFilter(filter,
-                pagination: nil, link: self.link, completion: { (pagination, results, error) -> () in
-                self.comments = results
-                //self.refreshControl?.endRefreshing()
-                self.hud.hide(true)
-            })
-        }
-    }
-        
-    var comments: [AnyObject]? {
-        didSet {
-            if self.comments?.count > 0 {
-                self.commentsBySection = self.buildCommentsBySection()
-                self.navigationItem.title =  "\(self.link.totalComments) comments"
-            }
-        }
-    }
-    
-    private func buildCommentsBySection() -> [NSDictionary] {
-        
-        var comments = [NSDictionary]()
-        
-        for comment in self.comments as! [RKComment] {
-            comments.append(["comment" : comment, "level" : 0])
-            let dictionary = self.repliesForComment(comment, level: 1)
-            comments.appendContentsOf(dictionary)
-        }
-        
-        return comments
-    }
-    
-    private func repliesForComment(comment: RKComment, level: Int) -> [NSDictionary] {
-        var replies = [NSDictionary]()
-        
-        for reply in comment.replies as! [RKComment] {
-            replies.append(["comment" : reply, "level" : level])
-            replies.appendContentsOf(self.repliesForComment(reply, level: level + 1))
-        }
-        
-        return replies
-    }
-    
-    var commentsBySection: [AnyObject]? {
-        didSet {
-            // self.tableView.reloadData()
-        }
-    }
+    var refreshControl: UIRefreshControl!
     
     var hud: MBProgressHUD! {
         didSet {
             hud.labelFont = MyRedditSelfTextFont
             hud.mode = .Indeterminate
             hud.labelText = "Loading"
+        }
+    }
+    
+    var link: RKLink! {
+        didSet {
+            if let treeView = self.treeView {
+                treeView.reloadData()
+            }
+        }
+    }
+
+    var filter: RKCommentSort! {
+        didSet {
+            self.hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
+            RedditSession.sharedSession.fetchCommentsWithFilter(filter,
+                                                                pagination: nil,
+                                                                link: self.link,
+                                                                completion: { (pagination, results, error) -> () in
+                                                                    self.comments = results
+                                                                    print(self.comments)
+                                                                    //self.refreshControl?.endRefreshing()
+                                                                    self.hud.hide(true)
+                                                                })
+        }
+    }
+    
+    var comments: [AnyObject]? {
+        didSet {
+            if self.comments?.count > 0 {
+                self.navigationItem.title =  "\(self.link.totalComments) comments"
+                self.treeView.reloadData()
+                
+                for item in self.treeView.itemsForRowsInRect(self.treeView.frame) as! [AnyObject] {
+                    self.treeView.expandRowForItem(item,
+                        expandChildren: true,
+                        withRowAnimation: RATreeViewRowAnimation.init(0))
+                }
+            }
         }
     }
     
@@ -120,61 +92,75 @@ AddCommentViewControllerDelegate {
         self.navigationItem.title =  "\(self.link.totalComments) comments"
         self.navigationController?.setToolbarHidden(false, animated: false)
     }
-    
+
     override func viewDidLoad() {
-        super.viewDidLoad()
-        self.syncComments()
+        super.viewDidLoad();
+
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Action,
+            target: self,
+            action: "shareButtonTapped:")
         
-//        self.refreshControl = UIRefreshControl()
-//        self.refreshControl!.addTarget(self,
-//            action: "refresh:",
-//            forControlEvents: .ValueChanged)
+        self.treeView.delegate = self
+        self.treeView.dataSource = self
+        self.treeView.rowsExpandingAnimation = RATreeViewRowAnimation.init(3)
+        self.treeView.rowsCollapsingAnimation = RATreeViewRowAnimation.init(3)
+        self.treeView.treeFooterView = UIView()
+        
+        self.treeView.registerNib(UINib(nibName: "CommentCell", bundle: NSBundle.mainBundle()),
+            forCellReuseIdentifier: "CommentCell")
+        
+        self.syncComments()
+
+        self.refreshControl = UIRefreshControl()
+        self.refreshControl!.addTarget(self,
+                                       action: "refresh:",
+                                       forControlEvents: .ValueChanged)
         
         RedditSession.sharedSession.markLinkAsViewed(self.link,
             completion: { (error) -> () in })
         
         self.preferredAppearance()
     }
-    
+
     func syncComments() {
         self.hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
         RedditSession.sharedSession.fetchComments(nil, link: self.link) { (pagination, results, error) -> () in
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                self.comments = results
-                //self.refreshControl?.endRefreshing()
-                self.hud.hide(true)
-            })
+                               self.comments = results
+                               //self.refreshControl?.endRefreshing()
+                               self.hud.hide(true)
+                })
         }
     }
-    
+
     @IBAction func filterButtonTapped(sender: AnyObject) {
         let actionSheet = UIAlertController(title: "Select sort", message: nil, preferredStyle: .ActionSheet)
         actionSheet.addAction(UIAlertAction(title: "Top", style: .Default, handler: { (action) -> Void in
-            self.filter = RKCommentSort.Top
-        }))
+                                                                             self.filter = RKCommentSort.Top
+                                                                         }))
         
         actionSheet.addAction(UIAlertAction(title: "Hot", style: .Default, handler: { (action) -> Void in
-            self.filter = RKCommentSort.Hot
-        }))
+                                                                             self.filter = RKCommentSort.Hot
+                                                                         }))
         
         actionSheet.addAction(UIAlertAction(title: "New", style: .Default, handler: { (action) -> Void in
-            self.filter = RKCommentSort.New
-        }))
+                                                                             self.filter = RKCommentSort.New
+                                                                         }))
         
         actionSheet.addAction(UIAlertAction(title: "Controversial", style: .Default, handler: { (action) -> Void in
-            self.filter = RKCommentSort.Controversial
-        }))
+                                                                                       self.filter = RKCommentSort.Controversial
+                                                                                   }))
         
         actionSheet.addAction(UIAlertAction(title: "Old", style: .Default, handler: { (action) -> Void in
-            self.filter = RKCommentSort.Old
-        }))
+                                                                             self.filter = RKCommentSort.Old
+                                                                         }))
         
         actionSheet.addAction(UIAlertAction(title: "Best", style: .Default, handler: { (action) -> Void in
-            self.filter = RKCommentSort.Best
-        }))
+                                                                              self.filter = RKCommentSort.Best
+                                                                          }))
         
         actionSheet.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: { (action) -> Void in
-        }))
+                                           }))
         
         if let popoverController = actionSheet.popoverPresentationController {
             popoverController.barButtonItem = self.filterButton
@@ -182,202 +168,53 @@ AddCommentViewControllerDelegate {
         
         actionSheet.present(animated: true, completion: nil)
     }
-    
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-//        if indexPath.section == 0 {
-//            return self.heightForLink()
-//        }
-//        
-//        for closedIndexPath in self.closedIndexPaths {
-//            if indexPath.section == closedIndexPath.section {
-//                return 30
-//            }
-//        }
-//        
-//        for hiddenIndexPath in self.hiddenIndexPaths {
-//            if indexPath.section == hiddenIndexPath.section {
-//                return 0
-//            }
-//        }
-//        
-//        return self.heightForIndexPath(indexPath)
-        return 70
-    }
-//    
-//    private func heightForLink() -> CGFloat {
-//        
-//        var selfText = ""
-//        
-//        if link.selfPost && link.selfText.characters.count > 0 {
-//            selfText = "\n\n\(link.selfText)".stringByReplacingOccurrencesOfString("&gt;",
-//                withString: ">",
-//                options: .CaseInsensitiveSearch,
-//                range: nil)
-//        }
-//        
-//        let parser = XNGMarkdownParser()
-//        parser.paragraphFont = MyRedditSelfTextFont
-//        parser.boldFontName = MyRedditCommentTextBoldFont.familyName
-//        parser.boldItalicFontName = MyRedditCommentTextItalicFont.familyName
-//        parser.italicFontName = MyRedditCommentTextItalicFont.familyName
-//        parser.linkFontName = MyRedditCommentTextBoldFont.familyName
-//        
-//        let title = link.title.stringByReplacingOccurrencesOfString("&gt;", withString: ">", options: .CaseInsensitiveSearch, range: nil)
-//        
-//        let parsedString = NSMutableAttributedString(attributedString: parser.attributedStringFromMarkdownString("\(title)\(selfText)"))
-//        
-//        let str = parsedString.string as NSString
-//        let rect = str.boundingRectWithSize(CGSizeMake(self.tableView.frame.size.width - 30, CGFloat.max),
-//            options: NSStringDrawingOptions.UsesLineFragmentOrigin,
-//            attributes: [NSFontAttributeName : MyRedditSelfTextFont],
-//            context: nil)
-//        return rect.height + 60
-//    }
-//    
-//    private func heightForIndexPath(indexPath: NSIndexPath) -> CGFloat {
-//        
-//        var commentDictionary = self.self.commentsBySection?[indexPath.section - 1] as! [String : AnyObject]
-//        let indentationLevel = commentDictionary["level"] as! Int
-//        let indentationWidth = CGFloat(15)
-//        let comment = commentDictionary["comment"] as! RKComment
-//        
-//        let body = comment.body.stringByReplacingOccurrencesOfString("&gt;", withString: ">",
-//            options: .CaseInsensitiveSearch,
-//            range: nil).stringByReplacingOccurrencesOfString("&amp;", withString: "&", options: .CaseInsensitiveSearch, range: nil)
-//        
-//        let parser = XNGMarkdownParser()
-//        parser.paragraphFont = MyRedditCommentTextBoldFont
-//        parser.boldFontName = MyRedditCommentTextBoldFont.familyName
-//        parser.boldItalicFontName = MyRedditCommentTextItalicFont.familyName
-//        parser.italicFontName = MyRedditCommentTextItalicFont.familyName
-//        parser.linkFontName = MyRedditCommentTextBoldFont.familyName
-//        
-//        let parsedString = NSMutableAttributedString(attributedString: parser.attributedStringFromMarkdownString("\(body)"))
-//    
-//        let rect = parsedString.string.boundingRectWithSize(CGSizeMake((self.tableView.frame.size.width - 18) - (CGFloat(indentationLevel + 1) * indentationWidth), CGFloat.max),
-//            options: NSStringDrawingOptions.UsesLineFragmentOrigin,
-//            attributes: [NSFontAttributeName : MyRedditCommentTextFont],
-//            context: nil)
-//
-//        return rect.height + 60
-//    }
-    
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return (self.commentsBySection?.count ?? 0) + 1
-    }
-    
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
-    }
-    
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("CommentCell") as! CommentCell
 
-        var comment: RKComment!
-        
-        if indexPath.section == 0 {
-            cell.link = self.link
+    // MARK: RATreeViewDatasource
+    
+    func treeView(treeView: RATreeView!, numberOfChildrenOfItem item: AnyObject!) -> Int {
+        if let _ = item as? RKLink {
+            return 0
+        } else if let comment = item as? RKComment {
+            return comment.replies?.count ?? 0
         } else {
-
-            
-            
-            var commentDictionary = self.commentsBySection?[indexPath.section - 1] as! [String : AnyObject]
-            let indent = commentDictionary["level"] as! Int
-            cell.indentationLevel = indent + 1
-            cell.indentationWidth = 15
-            comment = commentDictionary["comment"] as! RKComment
-            
-            var hidden = false
-            
-            for hiddenIndexPath in self.hiddenIndexPaths {
-                if indexPath.section == hiddenIndexPath.section {
-                    hidden = true
-                }
+            return self.comments?.count ?? 0
+        }
+    }
+    
+    func treeView(treeView: RATreeView!, child index: Int, ofItem item: AnyObject!) -> AnyObject! {
+        if let comment = item as? RKComment {
+            return comment.replies?[index]
+        } else {
+            if index == 0 {
+                return self.link
+            } else {
+                return self.comments?[index - 1]
             }
+        }
+    }
+    
+    func treeView(treeView: RATreeView!, cellForItem item: AnyObject!) -> UITableViewCell! {
+        let cell = treeView.dequeueReusableCellWithIdentifier("CommentCell") as! CommentCell
 
-            if !hidden {
-                cell.configueForComment(comment: comment,
-                    isLinkAuthor: self.link.author == comment.author)
-            }            
+        cell.indentationWidth = 15
+        
+        if let link = item as? RKLink {
+            cell.indentationLevel = 1
+            cell.link = link
+        } else if let comment = item as? RKComment {
+            cell.indentationLevel = treeView.levelForCellForItem(item) + 1
+            cell.configueForComment(comment: comment, isLinkAuthor: false)
             
-//            cell.separatorInset = UIEdgeInsets(top: 0,
-//                left: self.tableView.frame.size.width,
-//                bottom: 0,
-//                right: 0)
+            cell.separatorInset = UIEdgeInsets(top: 0,
+                left: self.treeView.frame.size.width,
+                bottom: 0,
+                right: 0)
         }
         
         cell.delegate = self
         cell.commentDelegate = self
         
         return cell
-    }
-    
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        dispatch_async(dispatch_get_main_queue(), { () -> Void in
-            tableView.deselectRowAtIndexPath(indexPath, animated: true)
-        })
-        
-        if indexPath.section != 0 {
-            var remove = false
-            
-            for collapsedIndexPath in self.closedIndexPaths {
-                if indexPath.section == collapsedIndexPath.section {
-                    remove = true
-                    break
-                }
-            }
-            
-            var commentDictionary = self.commentsBySection?[indexPath.section - 1] as! [String : AnyObject]
-            var collapsedIndexPaths = [NSIndexPath]()
-            var hiddenIndexPaths = [NSIndexPath]()
-            
-            // Get comment to start collapse
-            let comment = commentDictionary["comment"] as! RKComment
-            
-            // Get replies for comment
-            let repliesForComment = self.repliesForComment(comment, level: 0)
-            
-            collapsedIndexPaths.append(indexPath)
-            
-            if remove {
-
-                var sectionCount = indexPath.section
-                for _ in repliesForComment {
-                    sectionCount += 1
-                    hiddenIndexPaths.append(NSIndexPath(forRow: 0, inSection: sectionCount))
-                }
-                
-                for removedIndexPath in collapsedIndexPaths {
-                    for var i = 0; i < self.closedIndexPaths.count; i++ {
-                        let closedIndexPath = self.closedIndexPaths[i]
-                        if closedIndexPath.section == removedIndexPath.section {
-                            self.closedIndexPaths.removeAtIndex(i)
-                        }
-                    }
-                }
-                
-                for hiddenIndexPath in hiddenIndexPaths {
-                    for var i = 0; i < self.hiddenIndexPaths.count; i++ {
-                        let closedIndexPath = self.hiddenIndexPaths[i]
-                        if closedIndexPath.section == hiddenIndexPath.section {
-                            self.hiddenIndexPaths.removeAtIndex(i)
-                        }
-                    }
-                }
-            } else {
-                var sectionCount = indexPath.section
-                for _ in repliesForComment {
-                    sectionCount += 1
-                    hiddenIndexPaths.append(NSIndexPath(forRow: 0, inSection: sectionCount))
-                }
-                
-                self.hiddenIndexPaths.appendContentsOf(hiddenIndexPaths)
-                self.closedIndexPaths.appendContentsOf(collapsedIndexPaths)
-            }
-            
-//            self.tableView.beginUpdates()
-//            self.tableView.endUpdates()
-        }
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
@@ -438,49 +275,39 @@ AddCommentViewControllerDelegate {
             if !SettingsManager.defaultManager.purchased {
                 self.performSegueWithIdentifier("PurchaseSegue", sender: self)
             } else {
-                
                 self.hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
+                var votedable: RKVotable?
                 
-//                if let indexPath = self.tableView.indexPathForCell(cell) {
-//                    
-//                    var votedable: RKVotable?
-//                    
-//                    if indexPath.section == 0 {
-//                        votedable = self.link
-//                    } else {
-//                        var commentDictionary = self.self.commentsBySection?[indexPath.section - 1] as! [String : AnyObject]
-//                        votedable = commentDictionary["comment"] as! RKComment
-//                    }
-//                    
-//                    if let object = votedable {
-//                        
-//                        if swipeType.rawValue == JZSwipeTypeShortRight.rawValue {
-//                            self.downVote(object)
-//                        } else if swipeType.rawValue == JZSwipeTypeShortLeft.rawValue {
-//                            self.upVote(object)
-//                        } else if swipeType.rawValue == JZSwipeTypeLongLeft.rawValue {
-//                            if indexPath.section != 0 {
-//                                self.hud.hide(true)
-//                                var commentDictionary = self.self.commentsBySection?[indexPath.section - 1] as! [String : AnyObject]
-//                                let comment = commentDictionary["comment"] as! RKComment
-//                                self.commentMoreActions(cell, comment: comment)
-//                            } else {
-//                                self.linkMoreActions(cell)
-//                            }
-//                        } else {
-//                            if indexPath.section != 0 {
-//                                self.downVote(object)
-//                            } else {
-//                                LocalyticsSession.shared().tagEvent("Swipe share")
-//                                // Share
-//                                self.hud.hide(true)
-//                                self.optionsController = LinkShareOptionsViewController(link: link)
-//                                self.optionsController.sourceView = cell
-//                                self.optionsController.showInView(self.view)
-//                            }
-//                        }
-//                    }
-//                }
+                if let link = self.treeView.itemForCell(cell) as? RKLink {
+                    votedable = self.link
+                    
+                    if swipeType.rawValue == JZSwipeTypeLongLeft.rawValue {
+                        self.linkMoreActions(cell)
+                    } else if swipeType.rawValue == JZSwipeTypeLongRight.rawValue {
+                        LocalyticsSession.shared().tagEvent("Swipe share")
+                        // Share
+                        self.hud.hide(true)
+                        self.optionsController = LinkShareOptionsViewController(link: link)
+                        self.optionsController.sourceView = cell
+                        self.optionsController.showInView(self.view)
+                    }
+                } else if let comment = self.treeView.itemForCell(cell) as? RKComment {
+                    votedable = comment
+                    
+                    if swipeType.rawValue == JZSwipeTypeLongLeft.rawValue {
+                        self.commentMoreActions(cell, comment: comment)
+                    } else if swipeType.rawValue == JZSwipeTypeLongRight.rawValue {
+                        self.downVote(comment)
+                    }
+                }
+                
+                if let object = votedable {
+                    if swipeType.rawValue == JZSwipeTypeShortRight.rawValue {
+                        self.downVote(object)
+                    } else if swipeType.rawValue == JZSwipeTypeShortLeft.rawValue {
+                        self.upVote(object)
+                    }
+                }
             }
         }
     }
@@ -647,7 +474,7 @@ AddCommentViewControllerDelegate {
                     cancelButtonTitle: "Ok").show()
             } else {
                 LocalyticsSession.shared().tagEvent("Swipe downvote comment")
-                //self.tableView.reloadData()
+                self.treeView.reloadData()
             }
         })
     }
@@ -694,15 +521,15 @@ AddCommentViewControllerDelegate {
         self.linkMoreActions(sender)
     }
     
-    @IBAction func shareButtonTapped(sender: AnyObject) {
+    func shareButtonTapped(sender: AnyObject) {
         let linkOptions = LinkShareOptionsViewController(link: self.link)
-        linkOptions.barbuttonItem = self.shareButton
+        linkOptions.barbuttonItem = self.navigationItem.rightBarButtonItem
         linkOptions.showInView(self.view)
     }
     
     override func preferredAppearance() {
     
-        //self.tableView.backgroundColor = MyRedditBackgroundColor
+        self.treeView.backgroundColor = MyRedditBackgroundColor
         
         self.navigationController?.navigationBar.backgroundColor = MyRedditBackgroundColor
         self.navigationController?.navigationBar.barTintColor = MyRedditBackgroundColor
@@ -716,12 +543,12 @@ AddCommentViewControllerDelegate {
         self.navigationController?.toolbar.tintColor = MyRedditLabelColor
         self.navigationController?.toolbar.translucent = false
         
-        //self.addButton.tintColor = MyRedditLabelColor
+        self.addButton.tintColor = MyRedditLabelColor
         
         if let _ = self.splitViewController {
             self.navigationController?.setToolbarHidden(false, animated: false)
         }
         
-        //self.tableView.reloadData()
+        self.treeView.reloadData()
     }
 }

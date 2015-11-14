@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import MBProgressHUD
 
 protocol AddCommentViewControllerDelegate {
     func addCommentViewController(controller: AddCommentViewController, didAddComment success: Bool)

@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import MBProgressHUD
 
 enum FilterSwitchType: Int {
     case Hot
@@ -698,7 +699,6 @@ PostCellDelegate {
                         } else if swipeType.rawValue == JZSwipeTypeLongLeft.rawValue {
                             LocalyticsSession.shared().tagEvent("Swipe comments")
                             self.performSegueWithIdentifier("CommentsSegue", sender: link)
-                            
                         } else {
                             LocalyticsSession.shared().tagEvent("Swipe more")
                             
@@ -879,10 +879,10 @@ PostCellDelegate {
                     }
                 }
             }
-        } else {
+        } else if segue.identifier == "CommentsSegue" {
             if let link = sender as? RKLink {
                 self.hud.hide(true)
-                if let controller = segue.destinationViewController as? CommentsViewController {
+                if let controller = segue.destinationViewController as? CommentsTreeViewController {
                     controller.link = link
                 }
             }

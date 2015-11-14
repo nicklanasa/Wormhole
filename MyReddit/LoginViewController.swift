@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import MBProgressHUD
 
 class LoginViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, EmailCellDelegate, PasswordCellDelegate {
 

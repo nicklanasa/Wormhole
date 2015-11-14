@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 import Social
+import MBProgressHUD
 
 class PurchaseViewController: UIViewController, BDGIAPDelegate {
     

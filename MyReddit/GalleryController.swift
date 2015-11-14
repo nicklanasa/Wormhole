@@ -282,7 +282,7 @@ UICollectionViewDelegate {
                 self.pageViewController = controller
             }
         } else if segue.identifier == "CommentsSegue" {
-            if let controller = segue.destinationViewController as? CommentsViewController {
+            if let controller = segue.destinationViewController as? CommentsTreeViewController {
                 controller.link = self.link
             }
         }

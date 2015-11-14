@@ -8,13 +8,14 @@
 
 import Foundation
 import UIKit
+import MBProgressHUD
 
 class UserContentViewController: RootViewController,
 UITableViewDelegate,
 UITableViewDataSource,
 JZSwipeCellDelegate,
 PostImageCellDelegate {
-    
+
     var category: RKUserContentCategory!
     var categoryTitle: String!
     
@@ -255,7 +256,7 @@ PostImageCellDelegate {
             }
         } else {
             if let link = sender as? RKLink {
-                if let controller = segue.destinationViewController as? CommentsViewController {
+                if let controller = segue.destinationViewController as? CommentsTreeViewController {
                     controller.link = link
                 }
             }

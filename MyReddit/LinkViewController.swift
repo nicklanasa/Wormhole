@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import MBProgressHUD
 
 class LinkViewController: RootViewController, UITextViewDelegate {
     
@@ -298,7 +299,7 @@ class LinkViewController: RootViewController, UITextViewDelegate {
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "CommentsSegue" {
-            if let controller = segue.destinationViewController as? CommentsViewController {
+            if let controller = segue.destinationViewController as? CommentsTreeViewController {
                 controller.link = self.link
             }
         } else if segue.identifier == "WebSegue" {

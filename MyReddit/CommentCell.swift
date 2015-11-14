@@ -15,7 +15,6 @@ protocol CommentCellDelegate {
 
 class CommentCell: JZSwipeCell, UITextViewDelegate {
     
-    var lines = [UIView]()
     var commentDelegate: CommentCellDelegate?
     
     var currentTappedURL: NSURL! {
@@ -26,6 +25,7 @@ class CommentCell: JZSwipeCell, UITextViewDelegate {
     
     override func layoutSubviews() {
         super.layoutSubviews()
+        
         self.commentTextView.backgroundColor = MyRedditBackgroundColor
         self.contentView.backgroundColor = MyRedditBackgroundColor
         self.backgroundColor = MyRedditBackgroundColor
@@ -107,6 +107,10 @@ class CommentCell: JZSwipeCell, UITextViewDelegate {
             
             self.commentTextView.backgroundColor = MyRedditBackgroundColor
             self.contentView.backgroundColor = MyRedditBackgroundColor
+            
+            let indentPoints: CGFloat = CGFloat(self.indentationLevel) * self.indentationWidth
+            self.leadingTextViewConstraint.constant = indentPoints
+            self.leadinginfoLabelConstraint.constant = indentPoints
         }
     }
     
@@ -122,7 +126,36 @@ class CommentCell: JZSwipeCell, UITextViewDelegate {
             options: .CaseInsensitiveSearch,
             range: nil).stringByReplacingOccurrencesOfString("&amp;", withString: "&", options: .CaseInsensitiveSearch, range: nil)
         
-        self.commentTextView.text = body
+        let parser = XNGMarkdownParser()
+        parser.paragraphFont = UIFont(name: self.commentTextView.font!.fontName,
+            size: SettingsManager.defaultManager.commentFontSizeForDefaultTextSize)
+        parser.boldFontName = MyRedditCommentTextBoldFont.familyName
+        parser.boldItalicFontName = MyRedditCommentTextItalicFont.familyName
+        parser.italicFontName = MyRedditCommentTextItalicFont.familyName
+        parser.linkFontName = MyRedditCommentTextBoldFont.familyName
+        
+        let parsedString = NSMutableAttributedString(attributedString: parser.attributedStringFromMarkdownString("\(body)"))
+        parsedString.addAttribute(NSForegroundColorAttributeName,
+            value: MyRedditLabelColor,
+            range: NSMakeRange(0, parsedString.string.characters.count))
+        
+        if parsedString.string.localizedCaseInsensitiveContainsString(">") {
+            do {
+                let regex = try NSRegularExpression(pattern: ">(.*)\\b\\n", options: .CaseInsensitive)
+                regex.enumerateMatchesInString(body,
+                    options: .Anchored,
+                    range: NSMakeRange(0, body.characters.count),
+                    usingBlock: { (result, flags, error) -> Void in
+                        if let foundRange = result?.range {
+                            parsedString.addAttribute(NSForegroundColorAttributeName,
+                                value: UIColor.lightGrayColor(),
+                                range: foundRange)
+                        }
+                })
+            } catch {}
+        }
+        
+        self.commentTextView.attributedText = parsedString
         
         let timeAgo = self.comment.created.timeAgoSinceNow()
         
@@ -153,15 +186,13 @@ class CommentCell: JZSwipeCell, UITextViewDelegate {
         self.contentView.backgroundColor = MyRedditBackgroundColor
         self.infoLabel.backgroundColor = MyRedditBackgroundColor
         
-        // let indentPoints: CGFloat = CGFloat(self.indentationLevel) * self.indentationWidth
-        // self.leadingTextViewConstraint.constant = indentPoints
-        // self.leadinginfoLabelConstraint.constant = indentPoints
-        
-        // for view in self.lines {
-        //     view.backgroundColor = MyRedditCommentLinesColor
-        // }
+         let indentPoints: CGFloat = CGFloat(self.indentationLevel) * self.indentationWidth
+         self.leadingTextViewConstraint.constant = indentPoints
+         self.leadinginfoLabelConstraint.constant = indentPoints
     }
     
+    @IBOutlet weak var leadingTextViewConstraint: NSLayoutConstraint!
+    @IBOutlet weak var leadinginfoLabelConstraint: NSLayoutConstraint!
     @IBOutlet weak var infoLabel: UILabel!
     @IBOutlet weak var scoreLabel: UILabel!
     
@@ -172,6 +203,8 @@ class CommentCell: JZSwipeCell, UITextViewDelegate {
     
     override func prepareForReuse() {
         super.prepareForReuse()
+        self.indentationLevel = 0
+        self.indentationWidth = 0
         self.separatorInset = UIEdgeInsetsZero
     }
 }

@@ -7,7 +7,9 @@
 @import DateTools;
 
 #import <Localytics-AMP/LocalyticsSession.h>
-#import <RATreeView.h>
+#import <RATreeView/RATreeView.h>
+#import <RATreeView/RATreeNodeCollectionController.h>
+#import <RATreeView/RATreeNode.h>
 
 #import "RedditKit.h"
 #import "RKCompletionBlocks.h"

@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import MBProgressHUD
 
 class SearchViewController: RootViewController,
 UITableViewDelegate,
@@ -378,7 +379,7 @@ PostCellDelegate {
             }
         } else {
             if let link = sender as? RKLink {
-                if let controller = segue.destinationViewController as? CommentsViewController {
+                if let controller = segue.destinationViewController as? CommentsTreeViewController {
                     controller.link = link
                 }
             }
