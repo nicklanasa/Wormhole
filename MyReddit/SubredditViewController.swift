@@ -254,7 +254,7 @@ PostCellDelegate {
     private func fetchLinks() {
         
         LocalyticsSession.shared().tagEvent("Fetched links")
-        
+    
         self.hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
         
         if self.front {

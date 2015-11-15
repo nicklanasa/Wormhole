@@ -55,12 +55,6 @@ class CommentsTreeViewController: RootViewController, RATreeViewDelegate, RATree
             if self.comments?.count > 0 {
                 self.navigationItem.title =  "\(self.link.totalComments) comments"
                 self.treeView.reloadData()
-                
-                for item in self.treeView.itemsForRowsInRect(self.treeView.frame) as! [AnyObject] {
-                    self.treeView.expandRowForItem(item,
-                        expandChildren: true,
-                        withRowAnimation: RATreeViewRowAnimation.init(0))
-                }
             }
         }
     }
@@ -102,8 +96,8 @@ class CommentsTreeViewController: RootViewController, RATreeViewDelegate, RATree
         
         self.treeView.delegate = self
         self.treeView.dataSource = self
-        self.treeView.rowsExpandingAnimation = RATreeViewRowAnimation.init(3)
-        self.treeView.rowsCollapsingAnimation = RATreeViewRowAnimation.init(3)
+        self.treeView.rowsExpandingAnimation = RATreeViewRowAnimation.init(0)
+        self.treeView.rowsCollapsingAnimation = RATreeViewRowAnimation.init(0)
         self.treeView.treeFooterView = UIView()
         
         self.treeView.registerNib(UINib(nibName: "CommentCell", bundle: NSBundle.mainBundle()),
@@ -127,8 +121,13 @@ class CommentsTreeViewController: RootViewController, RATreeViewDelegate, RATree
         RedditSession.sharedSession.fetchComments(nil, link: self.link) { (pagination, results, error) -> () in
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
                                self.comments = results
-                               //self.refreshControl?.endRefreshing()
                                self.hud.hide(true)
+                
+                               for item in self.treeView.itemsForRowsInRect(self.treeView.frame) as! [AnyObject] {
+                                   self.treeView.expandRowForItem(item,
+                                                                  expandChildren: true,
+                                                                  withRowAnimation: RATreeViewRowAnimation.init(0))
+                               }
                 })
         }
     }
@@ -215,6 +214,18 @@ class CommentsTreeViewController: RootViewController, RATreeViewDelegate, RATree
         cell.commentDelegate = self
         
         return cell
+    }
+    
+    func treeView(treeView: RATreeView!, heightForRowForItem item: AnyObject!) -> CGFloat {
+        if !treeView.isCellForItemExpanded(item) {
+            return 40
+        } else {
+            return UITableViewAutomaticDimension
+        }
+    }
+    
+    func treeView(treeView: RATreeView!, editingStyleForRowForItem item: AnyObject!) -> UITableViewCellEditingStyle {
+        return .None
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
@@ -389,7 +400,7 @@ class CommentsTreeViewController: RootViewController, RATreeViewDelegate, RATree
     
     private func commentMoreActions(sourceView: AnyObject, comment: RKComment) {
         LocalyticsSession.shared().tagEvent("Swipe more")
-        
+        self.hud.hide(true)
         let alertController = UIAlertController(title: "Select comment options", message: nil, preferredStyle: .ActionSheet)
         
         alertController.addAction(UIAlertAction(title: "save", style: .Default, handler: { (action) -> Void in
@@ -459,7 +470,7 @@ class CommentsTreeViewController: RootViewController, RATreeViewDelegate, RATree
                     cancelButtonTitle: "Ok").show()
             } else {
                 LocalyticsSession.shared().tagEvent("Swipe upvote comment")
-                //self.tableView.reloadData()
+                self.treeView.reloadRowsForItems([object], withRowAnimation: RATreeViewRowAnimation.init(0))
             }
         })
     }
@@ -474,7 +485,7 @@ class CommentsTreeViewController: RootViewController, RATreeViewDelegate, RATree
                     cancelButtonTitle: "Ok").show()
             } else {
                 LocalyticsSession.shared().tagEvent("Swipe downvote comment")
-                self.treeView.reloadData()
+                self.treeView.reloadRowsForItems([object], withRowAnimation: RATreeViewRowAnimation.init(0))
             }
         })
     }
