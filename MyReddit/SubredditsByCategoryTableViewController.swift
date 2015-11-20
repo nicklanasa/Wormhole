@@ -21,7 +21,7 @@ class SubredditsByCategoryTableViewController: RootTableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.navigationItem.title = self.category
+        self.navigationItem.title = self.category.lowercaseString
         
         RedditSession.sharedSession.subredditsForCategory(self.category, completion: { (pagination, results, error) -> () in
             if let subreddits = results as? [String] {
@@ -48,7 +48,7 @@ class SubredditsByCategoryTableViewController: RootTableViewController {
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("SubredditCategoryCell") as! SubredditCell
         let subreddit = self.subreddits?[indexPath.row]
-        cell.nameLabel.text = subreddit
+        cell.nameLabel.text = subreddit?.lowercaseString
         return cell
     }
     

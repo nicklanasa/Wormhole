@@ -221,6 +221,7 @@
 		79B875B41BC9952E00473E7B /* Datastore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Datastore.swift; sourceTree = "<group>"; };
 		79B875B81BC9B88300473E7B /* MyReddit copy-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "MyReddit copy-Info.plist"; sourceTree = "<group>"; };
 		79BCC7581BF7D23100458A91 /* CommentCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CommentCell.xib; sourceTree = "<group>"; };
+		79D55FF41BFF8A0B002503EE /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
 		CB38B9FFF29557E07DBAC730 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		CE046EC81AC3521100DF59B4 /* PostImageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostImageCell.swift; sourceTree = "<group>"; };
 		CE046ECE1AC421EF00DF59B4 /* Int+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Int+Helpers.swift"; sourceTree = "<group>"; };
@@ -317,6 +318,7 @@
 		56F9729499FEB82D9F376BF0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				79D55FF41BFF8A0B002503EE /* iAd.framework */,
 				79AF9B491BD85C3B0058A649 /* Pods.framework */,
 				018CC9C21BCDA8B500DBC967 /* Pods_MyReddit.framework */,
 				CE3AA4CA1B056063000DEDD2 /* StoreKit.framework */,

@@ -101,10 +101,7 @@ PostCellDelegate {
             self.updateAndFetch()
         }
         
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "front",
-            style: .Plain,
-            target: self,
-            action: nil)
+        self.navigationItem.title = "front"
         
         self.tableView.tableFooterView = UIView()
      
@@ -178,12 +175,12 @@ PostCellDelegate {
                     self.subscribeButton.title = ""
                 } else {
                     if self.subreddit.subscriber.boolValue {
-                        self.subscribeButton.title = "Unsubscribe"
+                        self.subscribeButton.title = "unsubscribe"
                         self.subscribeButton.setTitleTextAttributes([NSForegroundColorAttributeName: MyRedditDownvoteColor,
                             NSFontAttributeName: MyRedditTitleFont],
                             forState: .Normal)
                     } else {
-                        self.subscribeButton.title = "Subscribe"
+                        self.subscribeButton.title = "subscribe"
                         self.subscribeButton.setTitleTextAttributes([NSForegroundColorAttributeName: MyRedditUpvoteColor,
                             NSFontAttributeName: MyRedditTitleFont],
                             forState: .Normal)
@@ -323,13 +320,13 @@ PostCellDelegate {
             title = multiReddit.name
         } else {
             if all {
-                title = "/r/all"
+                title = "all"
             } else {
-                title = front ? "front" : "/r/\(subreddit.name.lowercaseString)"
+                title = front ? "front" : "\(subreddit.name.lowercaseString)"
             }
         }
         
-        self.navigationItem.leftBarButtonItem?.title = title
+        self.navigationItem.title = title
         
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
             self.updateSubscribeButton()
@@ -340,10 +337,6 @@ PostCellDelegate {
             self.messages.tintColor = MyRedditLabelColor
             self.noPostsView.backgroundColor = MyRedditBackgroundColor
             self.noPostsLabel.textColor = MyRedditLabelColor
-            
-            self.navigationItem.leftBarButtonItem!.setTitleTextAttributes([
-                NSFontAttributeName: MyRedditTitleBigFont, NSForegroundColorAttributeName : MyRedditLabelColor],
-                forState: UIControlState.Normal)
         })
         
         self.navigationController?.setToolbarHidden(true, animated: true)
@@ -681,6 +674,8 @@ PostCellDelegate {
                                     self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
                                 }
                             })
+                            
+                            
                         } else if swipeType.rawValue == JZSwipeTypeShortRight.rawValue {
                             LocalyticsSession.shared().tagEvent("Swipe downvote")
                             // Downvote
@@ -798,8 +793,11 @@ PostCellDelegate {
                                 cancelButtonTitle: "OK").show()
                         })
                     } else {
-                        self.performSegueWithIdentifier("PostSubredditSegue",
-                            sender: foundSubreddit)
+                        let subredditViewController = self.storyboard?.instantiateViewControllerWithIdentifier("SubredditViewController") as! SubredditViewController
+                        subredditViewController.subreddit = foundSubreddit
+                        subredditViewController.front = false
+                        subredditViewController.all = false
+                        self.navigationController?.pushViewController(subredditViewController, animated: true)
                     }
                 } else {
                     dispatch_async(dispatch_get_main_queue(), { () -> Void in

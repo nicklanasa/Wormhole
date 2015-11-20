@@ -15,7 +15,7 @@ protocol ImageViewControllerDelegate {
 
 class ImageViewController: UIViewController, UIScrollViewDelegate {
     
-    @IBOutlet weak var imageView: FLAnimatedImageView!
+    @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var scrollView: CenteringScrollView!
     @IBOutlet weak var indicator: UIActivityIndicatorView!
     
@@ -52,28 +52,19 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
         if self.imageURL.absoluteString.containsString("gif") {
             if self.imageURL.absoluteString.containsString("gifv") {
                 self.imageURL = NSURL(string: self.imageURL.absoluteString.stringByReplacingOccurrencesOfString("gifv", withString: "gif"))
-                
-                let priority = DISPATCH_QUEUE_PRIORITY_DEFAULT
-                dispatch_async(dispatch_get_global_queue(priority, 0)) {
-                    let image = FLAnimatedImage(GIFData: NSData(contentsOfURL: self.imageURL))
-                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                        self.imageView.animatedImage = image
-                        self.indicator.stopAnimating()
-                    })
-                }
             }
-        } else {
-            self.imageView.sd_setImageWithURL(self.imageURL) { (image, error, cacheType, url) -> Void in
-                if error != nil {
-                    UIAlertView(title: "Error!",
-                        message: "Unable to load image.",
-                        delegate: self,
-                        cancelButtonTitle: "Ok").show()
-                } else {
-                    self.imageView.image = image
-                }
-                self.indicator.stopAnimating()
+        }
+        
+        self.imageView.sd_setImageWithURL(self.imageURL) { (image, error, cacheType, url) -> Void in
+            if error != nil {
+                UIAlertView(title: "Error!",
+                    message: "Unable to load image.",
+                    delegate: self,
+                    cancelButtonTitle: "Ok").show()
+            } else {
+                self.imageView.image = image
             }
+            self.indicator.stopAnimating()
         }
         
         self.scrollView.contentSize = self.imageView.frame.size

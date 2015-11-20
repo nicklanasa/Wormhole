@@ -17,7 +17,7 @@ protocol PostImageCellDelegate {
 
 class PostImageCell: PostCell {
     
-    @IBOutlet weak var postImageView: FLAnimatedImageView!
+    @IBOutlet weak var postImageView: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var scoreLabel: UILabel!
     @IBOutlet weak var postInfoLabel: UILabel!

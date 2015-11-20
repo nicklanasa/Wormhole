@@ -12,7 +12,7 @@
             <rect key="frame" x="0.0" y="0.0" width="600" height="95"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="F1p-Mz-S4W" id="HRh-Yo-ec9">
-                <rect key="frame" x="0.0" y="0.0" width="600" height="94.5"/>
+                <rect key="frame" x="0.0" y="0.0" width="600" height="95"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" clipsSubviews="YES" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Nytek1 - Yesterday @ 9PM" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="k44-OF-d5f">
@@ -37,7 +37,7 @@
                         <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" verticalCompressionResistancePriority="749" scrollEnabled="NO" editable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Cxq-SW-9hM">
+                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" verticalCompressionResistancePriority="749" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" editable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Cxq-SW-9hM">
                         <rect key="frame" x="21" y="32" width="571" height="60"/>
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -49,28 +49,39 @@
                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                         <dataDetectorType key="dataDetectorTypes" link="YES"/>
                     </textView>
+                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="t6l-rS-22L">
+                        <rect key="frame" x="0.0" y="93" width="600" height="1"/>
+                        <animations/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                    </view>
                 </subviews>
                 <animations/>
                 <constraints>
+                    <constraint firstAttribute="trailing" secondItem="t6l-rS-22L" secondAttribute="trailing" id="4Ef-R6-KYL"/>
                     <constraint firstAttribute="bottom" secondItem="Cxq-SW-9hM" secondAttribute="bottom" constant="2.5" id="5nh-Ez-Qme"/>
+                    <constraint firstItem="t6l-rS-22L" firstAttribute="leading" secondItem="HRh-Yo-ec9" secondAttribute="leading" id="L6G-bu-rqC"/>
                     <constraint firstAttribute="trailingMargin" secondItem="SuF-JW-4LV" secondAttribute="trailing" id="NA8-Ox-QNO"/>
                     <constraint firstItem="SuF-JW-4LV" firstAttribute="leading" secondItem="k44-OF-d5f" secondAttribute="trailing" constant="-2" id="OAN-Ib-5I2"/>
                     <constraint firstItem="k44-OF-d5f" firstAttribute="top" secondItem="HRh-Yo-ec9" secondAttribute="top" constant="8" id="bEU-8E-yMW"/>
                     <constraint firstItem="Cxq-SW-9hM" firstAttribute="top" secondItem="k44-OF-d5f" secondAttribute="bottom" constant="8" id="cMV-X7-vB5"/>
                     <constraint firstAttribute="trailing" secondItem="Cxq-SW-9hM" secondAttribute="trailing" constant="8" id="hEm-hv-K1J"/>
+                    <constraint firstAttribute="bottomMargin" secondItem="t6l-rS-22L" secondAttribute="bottom" constant="-7.5" id="ldx-XM-Afu"/>
                     <constraint firstItem="SuF-JW-4LV" firstAttribute="top" secondItem="HRh-Yo-ec9" secondAttribute="topMargin" constant="-1" id="mfX-sc-RNN"/>
+                    <constraint firstItem="t6l-rS-22L" firstAttribute="top" secondItem="Cxq-SW-9hM" secondAttribute="bottom" constant="1" id="ql2-kQ-icA"/>
                     <constraint firstItem="k44-OF-d5f" firstAttribute="leading" secondItem="HRh-Yo-ec9" secondAttribute="leading" constant="21" id="qoL-7T-eFK"/>
                     <constraint firstItem="Cxq-SW-9hM" firstAttribute="leading" secondItem="HRh-Yo-ec9" secondAttribute="leading" constant="21" id="yFb-Tg-zm3"/>
                 </constraints>
             </tableViewCellContentView>
             <animations/>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
             <connections>
                 <outlet property="commentTextView" destination="Cxq-SW-9hM" id="jFP-Pm-qGF"/>
                 <outlet property="infoLabel" destination="k44-OF-d5f" id="4aL-jX-83h"/>
                 <outlet property="leadingTextViewConstraint" destination="yFb-Tg-zm3" id="Ics-ia-adg"/>
                 <outlet property="leadinginfoLabelConstraint" destination="qoL-7T-eFK" id="XKm-Ym-IFu"/>
                 <outlet property="scoreLabel" destination="SuF-JW-4LV" id="uhX-PR-1od"/>
+                <outlet property="sepView" destination="t6l-rS-22L" id="gFF-pS-2Ne"/>
             </connections>
             <point key="canvasLocation" x="475" y="230.5"/>
         </tableViewCell>

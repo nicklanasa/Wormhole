@@ -52,12 +52,7 @@ class ComposeTableViewController: RootTableViewController, UITextViewDelegate {
         }
     }
     
-    @IBAction func cancelButtonTapped(sender: AnyObject) {
-        self.dismissViewControllerAnimated(true, completion: nil)
-    }
-    
-    @IBAction func sendButtonTapped(sender: AnyObject) {
-        
+    @IBAction func sendButtonTapped(sender: AnyObject) {        
         if self.textView.text.characters.count > 0 &&
             self.toTextField.text!.characters.count > 0 &&
             self.subjectTextField.text!.characters.count > 0 {
@@ -78,7 +73,7 @@ class ComposeTableViewController: RootTableViewController, UITextViewDelegate {
                         } else {
                             LocalyticsSession.shared().tagEvent("Send message")
                             self.hud.hide(true)
-                            self.dismissViewControllerAnimated(true, completion: nil)
+                            self.navigationController?.popViewControllerAnimated(true)
                         }
                     })
             })
@@ -89,13 +84,7 @@ class ComposeTableViewController: RootTableViewController, UITextViewDelegate {
         self.textView.resignFirstResponder()
     }
     
-    func textViewDidBeginEditing(textView: UITextView) {
-        
-        self.tableView.scrollToRowAtIndexPath(NSIndexPath(forRow: 2,
-            inSection: 0),
-            atScrollPosition: .Top,
-            animated: true)
-        
+    func textViewDidBeginEditing(textView: UITextView) {        
         if textView.text == "enter message..." {
             textView.text = ""
             textView.textColor = MyRedditLabelColor

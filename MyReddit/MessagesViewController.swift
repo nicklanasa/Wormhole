@@ -86,14 +86,14 @@ JZSwipeCellDelegate {
         
         if let messageCategory = self.category {
             switch messageCategory {
-            case .CommentReplies: self.navigationItem.title = "Comment Replies"
-            case .Messages: self.navigationItem.title = "Messages"
-            case .Moderator: self.navigationItem.title = "Moderator"
-            case .PostReplies: self.navigationItem.title = "Post Replies"
-            case .Sent: self.navigationItem.title = "Sent"
-            case .Unread: self.navigationItem.title = "Unread"
-            case .UsernameMentions: self.navigationItem.title = "Mentions"
-            default: self.navigationItem.title = "Inbox"
+            case .CommentReplies: self.navigationItem.title = "Comment Replies".lowercaseString
+            case .Messages: self.navigationItem.title = "Messages".lowercaseString
+            case .Moderator: self.navigationItem.title = "Moderator".lowercaseString
+            case .PostReplies: self.navigationItem.title = "Post Replies".lowercaseString
+            case .Sent: self.navigationItem.title = "Sent".lowercaseString
+            case .Unread: self.navigationItem.title = "Unread".lowercaseString
+            case .UsernameMentions: self.navigationItem.title = "Mentions".lowercaseString
+            default: self.navigationItem.title = "Inbox".lowercaseString
             }
         }
         
@@ -103,8 +103,10 @@ JZSwipeCellDelegate {
             self.pagination = pagination
             
             if let messages = results{
-                self.messages = messages
+                self.messages.appendContentsOf(messages)
             }
+                
+            self.fetchingMore = false
             
             self.refreshControl.endRefreshing()
         }

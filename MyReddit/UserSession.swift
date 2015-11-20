@@ -107,7 +107,8 @@ class UserSession {
         UINavigationBar.appearance().backgroundColor = MyRedditBackgroundColor
         UINavigationBar.appearance().barTintColor = MyRedditBackgroundColor
         
-        UINavigationBar.appearance().titleTextAttributes = [NSFontAttributeName: MyRedditTitleFont]
+        UINavigationBar.appearance().titleTextAttributes = [NSFontAttributeName: MyRedditTitleFont,
+            NSForegroundColorAttributeName : MyRedditLabelColor]
         
         UISearchBar.appearance().backgroundColor = MyRedditBackgroundColor
         
@@ -134,9 +135,6 @@ class UserSession {
         UITableViewCell.appearance().backgroundColor = MyRedditBackgroundColor
         
         UIImageView.appearance().backgroundColor = UIColor.clearColor()
-        
-        UINavigationBar.appearance().titleTextAttributes = [NSFontAttributeName: MyRedditTitleFont,
-            NSForegroundColorAttributeName : MyRedditLabelColor]
         
         UIWebView.appearance().backgroundColor = MyRedditBackgroundColor
         
@@ -199,8 +197,6 @@ class UserSession {
         UIImageView.appearance().backgroundColor = UIColor.clearColor()
         
         UITableViewCell.appearance().backgroundColor = MyRedditBackgroundColor
-        
-        UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName : MyRedditLabelColor]
         
         UIWebView.appearance().backgroundColor = MyRedditBackgroundColor
         

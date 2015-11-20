@@ -17,7 +17,6 @@ class CommentsTreeViewController: RootViewController, RATreeViewDelegate, RATree
     @IBOutlet weak var addButton: UIBarButtonItem!
 
     var optionsController: LinkShareOptionsViewController!
-    var refreshControl: UIRefreshControl!
     
     var hud: MBProgressHUD! {
         didSet {
@@ -30,7 +29,7 @@ class CommentsTreeViewController: RootViewController, RATreeViewDelegate, RATree
     var link: RKLink! {
         didSet {
             if let treeView = self.treeView {
-                treeView.reloadData()
+                treeView.reloadRowsForItems([self.link], withRowAnimation: RATreeViewRowAnimation.init(0))
             }
         }
     }
@@ -43,8 +42,6 @@ class CommentsTreeViewController: RootViewController, RATreeViewDelegate, RATree
                                                                 link: self.link,
                                                                 completion: { (pagination, results, error) -> () in
                                                                     self.comments = results
-                                                                    print(self.comments)
-                                                                    //self.refreshControl?.endRefreshing()
                                                                     self.hud.hide(true)
                                                                 })
         }
@@ -52,10 +49,8 @@ class CommentsTreeViewController: RootViewController, RATreeViewDelegate, RATree
     
     var comments: [AnyObject]? {
         didSet {
-            if self.comments?.count > 0 {
-                self.navigationItem.title =  "\(self.link.totalComments) comments"
-                self.treeView.reloadData()
-            }
+            self.navigationItem.title =  "\(self.link.totalComments) comments"
+            self.treeView.reloadData()
         }
     }
     
@@ -83,7 +78,7 @@ class CommentsTreeViewController: RootViewController, RATreeViewDelegate, RATree
     }
     
     override func viewDidAppear(animated: Bool) {
-        self.navigationItem.title =  "\(self.link.totalComments) comments"
+        self.title =  "\(self.link.totalComments) comments"
         self.navigationController?.setToolbarHidden(false, animated: false)
     }
 
@@ -100,16 +95,13 @@ class CommentsTreeViewController: RootViewController, RATreeViewDelegate, RATree
         self.treeView.rowsCollapsingAnimation = RATreeViewRowAnimation.init(0)
         self.treeView.treeFooterView = UIView()
         
+        self.treeView.separatorStyle = RATreeViewCellSeparatorStyle.init(0)
+        
         self.treeView.registerNib(UINib(nibName: "CommentCell", bundle: NSBundle.mainBundle()),
             forCellReuseIdentifier: "CommentCell")
         
         self.syncComments()
 
-        self.refreshControl = UIRefreshControl()
-        self.refreshControl!.addTarget(self,
-                                       action: "refresh:",
-                                       forControlEvents: .ValueChanged)
-        
         RedditSession.sharedSession.markLinkAsViewed(self.link,
             completion: { (error) -> () in })
         
@@ -122,11 +114,13 @@ class CommentsTreeViewController: RootViewController, RATreeViewDelegate, RATree
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
                                self.comments = results
                                self.hud.hide(true)
-                
+                               self.treeView.reloadData()
                                for item in self.treeView.itemsForRowsInRect(self.treeView.frame) as! [AnyObject] {
-                                   self.treeView.expandRowForItem(item,
-                                                                  expandChildren: true,
-                                                                  withRowAnimation: RATreeViewRowAnimation.init(0))
+                                   if let comment = item as? RKComment {
+                                       self.treeView.expandRowForItem(comment,
+                                                                      expandChildren: true,
+                                                                      withRowAnimation: RATreeViewRowAnimation.init(0))
+                                   }
                                }
                 })
         }
@@ -176,7 +170,15 @@ class CommentsTreeViewController: RootViewController, RATreeViewDelegate, RATree
         } else if let comment = item as? RKComment {
             return comment.replies?.count ?? 0
         } else {
-            return self.comments?.count ?? 0
+            if self.comments?.count == 0 {
+                return 1
+            } else {
+                if let comments = self.comments {
+                    return comments.count + 1
+                }
+                
+                return 1
+            }
         }
     }
     
@@ -200,14 +202,10 @@ class CommentsTreeViewController: RootViewController, RATreeViewDelegate, RATree
         if let link = item as? RKLink {
             cell.indentationLevel = 1
             cell.link = link
+            
         } else if let comment = item as? RKComment {
             cell.indentationLevel = treeView.levelForCellForItem(item) + 1
-            cell.configueForComment(comment: comment, isLinkAuthor: false)
-            
-            cell.separatorInset = UIEdgeInsets(top: 0,
-                left: self.treeView.frame.size.width,
-                bottom: 0,
-                right: 0)
+            cell.configueForComment(comment: comment, isLinkAuthor: self.link.author == comment.author)
         }
         
         cell.delegate = self
@@ -218,6 +216,9 @@ class CommentsTreeViewController: RootViewController, RATreeViewDelegate, RATree
     
     func treeView(treeView: RATreeView!, heightForRowForItem item: AnyObject!) -> CGFloat {
         if !treeView.isCellForItemExpanded(item) {
+            if let _ = item as? RKLink {
+                return UITableViewAutomaticDimension
+            }
             return 40
         } else {
             return UITableViewAutomaticDimension
@@ -226,6 +227,10 @@ class CommentsTreeViewController: RootViewController, RATreeViewDelegate, RATree
     
     func treeView(treeView: RATreeView!, editingStyleForRowForItem item: AnyObject!) -> UITableViewCellEditingStyle {
         return .None
+    }
+    
+    func treeView(treeView: RATreeView!, didExpandRowForItem item: AnyObject!) {
+        self.treeView.scrollToRowForItem(item, atScrollPosition: RATreeViewScrollPosition.init(0), animated: true)
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
@@ -331,6 +336,10 @@ class CommentsTreeViewController: RootViewController, RATreeViewDelegate, RATree
         
         alertController.addAction(UIAlertAction(title: "add comment", style: .Default, handler: { (action) -> Void in
             self.performSegueWithIdentifier("AddCommentSegue", sender: nil)
+        }))
+        
+        alertController.addAction(UIAlertAction(title: "refresh", style: .Default, handler: { (action) -> Void in
+            self.syncComments()
         }))
         
         alertController.addAction(UIAlertAction(title: "report", style: .Default, handler: { (action) -> Void in

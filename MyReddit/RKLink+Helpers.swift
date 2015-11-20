@@ -48,7 +48,7 @@ extension RKLink {
         NSUserDefaults.standardUserDefaults().setObject(true, forKey: self.identifier + "hidden")
     }
     
-    func unHideink() {
+    func unHideLink() {
         NSUserDefaults.standardUserDefaults().setObject(nil, forKey: self.identifier + "hidden")
     }
     
@@ -97,5 +97,41 @@ extension RKLink {
         }
         
         return self.URL
+    }
+
+    func unsave(completion: (error: NSError?) -> ()) {
+        LocalyticsSession.shared().tagEvent("Unsave")
+        RedditSession.sharedSession.unSaveLink(
+            self,
+            completion: { (error) -> () in
+                self.saveLink()
+            })
+    }
+
+    func save(completion: (error: NSError?) -> ()) {
+        LocalyticsSession.shared().tagEvent("Save")
+        RedditSession.sharedSession.saveLink(
+            self,
+            completion: { (error) -> () in
+                self.saveLink()
+            })
+    }
+
+    func unhide(completion: (error: NSError?) -> ()) {
+        LocalyticsSession.shared().tagEvent("unhide")
+        RedditSession.sharedSession.unHideLink(
+            self,
+            completion: { (error) -> () in
+                self.unHideLink()
+            })
+    }
+
+    func hide(completion: (error: NSError?) -> ()) {
+        LocalyticsSession.shared().tagEvent("unhide")
+        RedditSession.sharedSession.unHideLink(
+            self,
+            completion: { (error) -> () in
+                self.hideLink()
+            })
     }
 }

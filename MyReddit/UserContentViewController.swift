@@ -14,7 +14,8 @@ class UserContentViewController: RootViewController,
 UITableViewDelegate,
 UITableViewDataSource,
 JZSwipeCellDelegate,
-PostImageCellDelegate {
+PostImageCellDelegate,
+CommentCellDelegate {
 
     var category: RKUserContentCategory!
     var categoryTitle: String!
@@ -48,8 +49,12 @@ PostImageCellDelegate {
     
     override func viewDidLoad() {
         
-        self.tableView.reloadData()
+        self.tableView.registerNib(UINib(nibName: "CommentCell", bundle: NSBundle.mainBundle()),
+            forCellReuseIdentifier: "CommentCell")
         
+        tableView.estimatedRowHeight = 68.0
+        tableView.rowHeight = UITableViewAutomaticDimension
+                
         self.syncContent()
         
         self.navigationItem.title = self.categoryTitle.lowercaseString
@@ -72,7 +77,9 @@ PostImageCellDelegate {
             category: self.category,
             pagination: self.pagination,
             completion: { (pagination, results, error) -> () in
+                
             self.pagination = pagination
+                
             if let moreContent = results {
                 self.content.appendContentsOf(moreContent)
             }
@@ -120,11 +127,9 @@ PostImageCellDelegate {
                 // regular
                 return self.heightForLink(link)
             }
-        } else if let comment = self.content[indexPath.row] as? RKComment {
-            return self.heightForComment(comment)
+        } else {
+            return UITableViewAutomaticDimension
         }
-        
-        return 0
     }
     
     private func heightForLink(link: RKLink) -> CGFloat {
@@ -139,19 +144,6 @@ PostImageCellDelegate {
         label.sizeToFit()
         
         return label.frame.height + 80
-    }
-    
-    private func heightForComment(comment: RKComment) -> CGFloat {
- 
-        let frame = CGRectMake(0, 0, (self.tableView.frame.size.width - 18) - 15, CGFloat.max)
-        let label: UILabel = UILabel(frame: frame)
-        label.numberOfLines = 0
-        label.lineBreakMode = NSLineBreakMode.ByWordWrapping
-        label.font = MyRedditCommentTextFont
-        label.text = comment.body
-        label.sizeToFit()
-        
-        return label.frame.height + 60
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -177,13 +169,17 @@ PostImageCellDelegate {
             
             cell.link = link
         } else if let comment = self.content[indexPath.row] as? RKComment {
-            let cell = tableView.dequeueReusableCellWithIdentifier("CommentCell") as! CommentCell
-            cell.indentationLevel = 1
-            cell.indentationWidth = 15
-            cell.commentTextView.userInteractionEnabled = false
-            cell.configueForComment(comment: comment, isLinkAuthor: true)
-            cell.delegate = self
-            return cell
+            
+            let commentCell = tableView.dequeueReusableCellWithIdentifier("CommentCell") as! CommentCell
+            
+            commentCell.indentationLevel = 1
+            commentCell.indentationWidth = 15
+            
+            commentCell.configueForComment(comment: comment, isLinkAuthor: true)
+            commentCell.delegate = self
+            commentCell.commentDelegate = self
+            
+            return commentCell
         }
         
         cell.delegate = self
@@ -229,6 +225,12 @@ PostImageCellDelegate {
             }
         } else if let comment = self.content[indexPath.row] as? RKComment {
             self.fetchLinkForComment(comment)
+        }
+
+        if let titleCell = tableView.cellForRowAtIndexPath(indexPath) as? TitleCell {
+            titleCell.titleLabel.textColor = UIColor.grayColor()
+        } else if let imageCell = tableView.cellForRowAtIndexPath(indexPath) as? PostImageCell {
+            imageCell.titleLabel.textColor = UIColor.grayColor()
         }
     }
     
@@ -292,128 +294,14 @@ PostImageCellDelegate {
                                     postCell.downvote()
                                 } else if swipeType.rawValue == JZSwipeTypeLongLeft.rawValue {
                                     LocalyticsSession.shared().tagEvent("Swipe comments")
+                                    self.hud.hide(true)
                                     self.performSegueWithIdentifier("CommentsSegue", sender: link)
                                 } else {
-                                    // Share
-                                    self.hud.hide(true)
-                                    self.optionsController = LinkShareOptionsViewController(link: link)
-                                    self.optionsController.sourceView = cell
-                                    self.optionsController.showInView(self.view)
-                                    
                                     // More
-                                    
-                                    LocalyticsSession.shared().tagEvent("Swipe more")
-                                    
-                                    self.hud.hide(true)
-                                    let alertController = UIAlertController(title: "Select option", message: nil, preferredStyle: .ActionSheet)
-                                    
-                                    if link.saved() {
-                                        alertController.addAction(UIAlertAction(title: "unsave", style: .Default, handler: { (action) -> Void in
-                                            RedditSession.sharedSession.unSaveLink(link, completion: { (error) -> () in
-                                                self.hud.hide(true)
-                                                link.unSaveLink()
-                                            })
-                                        }))
-                                    } else {
-                                        alertController.addAction(UIAlertAction(title: "save", style: .Default, handler: { (action) -> Void in
-                                            LocalyticsSession.shared().tagEvent("Save")
-                                            RedditSession.sharedSession.saveLink(link, completion: { (error) -> () in
-                                                self.hud.hide(true)
-                                                link.saveLink()
-                                            })
-                                        }))
-                                    }
-                                    
-                                    if link.isHidden() {
-                                        if self.category != .Submissions {
-                                            RedditSession.sharedSession.unHideLink(link, completion: { (error) -> () in
-                                                self.hud.hide(true)
-                                                link.unHideink()
-                                                
-                                                if self.category == .Hidden {
-                                                    alertController.addAction(UIAlertAction(title: "unhide", style: .Default, handler: { (action) -> Void in
-                                                        RedditSession.sharedSession.unHideLink(link, completion: { (error) -> () in
-                                                            self.hud.hide(true)
-                                                            link.unHideink()
-                                                            
-                                                            self.content.removeAtIndex(indexPath.row)
-                                                            dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                                                                self.tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: .Fade)
-                                                            })
-                                                        })
-                                                    }))
-                                                }
-                                            })
-                                        }
-                                    } else {
-                                        if self.category != .Submissions {
-                                            alertController.addAction(UIAlertAction(title: "hide", style: .Default, handler: { (action) -> Void in
-                                                RedditSession.sharedSession.hideLink(link, completion: { (error) -> () in
-                                                    self.hud.hide(true)
-                                                    link.hideLink()
-                                                    
-                                                    self.content.removeAtIndex(indexPath.row)
-                                                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                                                        self.tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: .Fade)
-                                                    })
-                                                })
-                                            }))
-                                        }
-                                    }
-                                    
-                                    alertController.addAction(UIAlertAction(title: "more options", style: .Default, handler: { (action) -> Void in
-                                        // Share
-                                        self.hud.hide(true)
-                                        self.optionsController = LinkShareOptionsViewController(link: link)
-                                        self.optionsController.sourceView = cell
-                                        self.optionsController.showInView(self.view)
-                                    }))
-                                    
-                                    alertController.addAction(UIAlertAction(title: "cancel", style: .Cancel, handler: nil))
-                                    
-                                    if let popoverController = alertController.popoverPresentationController {
-                                        popoverController.sourceView = cell
-                                        popoverController.sourceRect = cell.bounds
-                                    }
-                                    
-                                    alertController.present(animated: true, completion: nil)
+                                    self.performMoreSwipeActionForLink(link, withCell: postCell)
                                 }
                             } else if let comment = self.content[indexPath.row] as? RKComment {
-                                self.hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
-                                
-                                if swipeType.rawValue == JZSwipeTypeShortRight.rawValue || swipeType.rawValue == JZSwipeTypeLongRight.rawValue {
-                                    LocalyticsSession.shared().tagEvent("Swipe downvote comment")
-                                    // Downvote
-                                    RedditSession.sharedSession.downvote(comment, completion: { (error) -> () in
-                                        self.hud.hide(true)
-                                        
-                                        if error != nil {
-                                            UIAlertView(title: "Error!",
-                                                message: error!.localizedDescription,
-                                                delegate: self,
-                                                cancelButtonTitle: "Ok").show()
-                                        } else {
-                                            self.tableView.reloadData()
-                                        }
-                                    })
-                                } else if swipeType.rawValue == JZSwipeTypeShortLeft.rawValue || swipeType.rawValue == JZSwipeTypeLongLeft.rawValue {
-                                    // Upvote
-                                    LocalyticsSession.shared().tagEvent("Swipe upvote comment")
-                                    RedditSession.sharedSession.upvote(comment, completion: { (error) -> () in
-                                        self.hud.hide(true)
-                                        
-                                        if error != nil {
-                                            UIAlertView(title: "Error!",
-                                                message: error!.localizedDescription,
-                                                delegate: self,
-                                                cancelButtonTitle: "Ok").show()
-                                        } else {
-                                            self.tableView.reloadData()
-                                        }
-                                    })
-                                } else {
-                                    self.hud.hide(true)
-                                }
+                                self.performSwipeActionForType(swipeType, forObject: comment)
                             }
                         }
                     }
@@ -428,8 +316,73 @@ PostImageCellDelegate {
     }
     
     // MARK: Private
+
+    private func performMoreSwipeActionForLink(link: RKLink, withCell cell: UITableViewCell) {
+        LocalyticsSession.shared().tagEvent("Swipe more")
+        
+        self.hud.hide(true)
+        
+        let alertController = UIAlertController(title: "Select option",
+                                                message: nil,
+                                                preferredStyle: .ActionSheet)
+        
+        if link.saved() {
+            let action = UIAlertAction(
+                    title: "unsave",
+                    style: .Default,
+                                   handler: { (action) -> Void in
+                                       link.unsave({ (error) -> Void in self.hud.hide(true) })
+                                   })
+            
+            alertController.addAction(action)
+        } else {
+            let action = UIAlertAction(
+                    title: "save",
+                    style: .Default,
+                                   handler: { (action) -> Void in
+                                       link.save({ (error) -> Void in self.hud.hide(true) })
+                                   })
+            
+            alertController.addAction(action)
+        }
+        
+        alertController.addAction(UIAlertAction(title: "share",
+            style: .Default, handler: { (action) -> Void in
+                // Share                
+                self.hud.hide(true)
+                self.optionsController = LinkShareOptionsViewController(link: link)
+                self.optionsController.sourceView = cell
+                self.optionsController.showInView(self.view)
+        }))
+        
+        alertController.addAction(UIAlertAction(title: "cancel", style: .Cancel, handler: nil))
+        
+        if let popoverController = alertController.popoverPresentationController {
+            popoverController.sourceView = cell
+            popoverController.sourceRect = cell.bounds
+        }
+        
+        alertController.present(animated: true, completion: nil)
+
+    }
+
+    private func performSwipeActionForType(swipeType: JZSwipeType, forObject obj: RKVotable) {
+        self.hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
+        
+        if swipeType.rawValue == JZSwipeTypeShortRight.rawValue || swipeType.rawValue == JZSwipeTypeLongRight.rawValue {
+            LocalyticsSession.shared().tagEvent("Swipe downvote comment")
+            // Downvote
+            self.downvote(obj)
+        } else if swipeType.rawValue == JZSwipeTypeShortLeft.rawValue || swipeType.rawValue == JZSwipeTypeLongLeft.rawValue {
+            // Upvote
+            LocalyticsSession.shared().tagEvent("Swipe upvote comment")
+            self.upvote(obj)
+        } else {
+            self.hud.hide(true)
+        }
+    }
     
-    private func downvote(link: RKLink) {
+    private func downvote(link: RKVotable) {
         LocalyticsSession.shared().tagEvent("Swipe Downvote")
         RedditSession.sharedSession.downvote(link, completion: { (error) -> () in
             self.hud.hide(true)
@@ -445,7 +398,7 @@ PostImageCellDelegate {
         })
     }
     
-    private func upvote(link: RKLink) {
+    private func upvote(link: RKVotable) {
         LocalyticsSession.shared().tagEvent("Swipe Upvote")
         RedditSession.sharedSession.upvote(link, completion: { (error) -> () in
             self.hud.hide(true)
@@ -505,6 +458,10 @@ PostImageCellDelegate {
                 animated: true,
                 completion: nil)
         }
+    }
+    
+    func commentCell(cell: CommentCell, didTapLink link: NSURL) {
+        
     }
     
     override func preferredAppearance() {

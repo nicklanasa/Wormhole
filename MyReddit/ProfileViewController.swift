@@ -60,6 +60,8 @@ UITableViewDelegate {
         
         if let _ = self.splitViewController {
             self.listButton.action = self.splitViewController!.displayModeButtonItem().action
+        } else {
+            self.navigationController?.setToolbarHidden(true, animated: true)
         }
     }
     

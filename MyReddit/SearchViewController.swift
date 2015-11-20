@@ -528,11 +528,11 @@ PostCellDelegate {
                             alertController.addAction(UIAlertAction(title: "hide", style: .Default, handler: { (action) -> Void in
                                 RedditSession.sharedSession.hideLink(link, completion: { (error) -> () in
                                     self.hud?.hide(true)
-                                    link.saveLink()
+                                    link.hideLink()
                                     
                                     dispatch_async(dispatch_get_main_queue(), { () -> Void in
                                         self.links.removeAtIndex(indexPath.row)
-                                        self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+                                        self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
                                     })
                                 })
                             }))

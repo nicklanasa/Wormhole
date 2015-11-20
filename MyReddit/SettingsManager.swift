@@ -249,7 +249,6 @@ class SettingsManager {
     
     var purchased: Bool! {
         get {
-            return true
             if NSUserDefaults.standardUserDefaults().objectForKey("purchased") == nil {
                 return false
             } else {
@@ -265,9 +264,9 @@ class SettingsManager {
     var productID: String! {
         get {
             if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
-                return "myreddit.premium.ipad"
+                return "myreddit.premium.ipad.december2015"
             } else {
-                return "myreddit.premium"
+                return "myreddit.premium.december2015"
             }
         }
     }

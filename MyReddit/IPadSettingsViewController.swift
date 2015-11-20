@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import MBProgressHUD
 
 class IPadSettingsViewController: UITableViewController, BDGIAPDelegate {
     

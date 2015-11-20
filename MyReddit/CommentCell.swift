@@ -111,6 +111,9 @@ class CommentCell: JZSwipeCell, UITextViewDelegate {
             let indentPoints: CGFloat = CGFloat(self.indentationLevel) * self.indentationWidth
             self.leadingTextViewConstraint.constant = indentPoints
             self.leadinginfoLabelConstraint.constant = indentPoints
+            
+            self.sepView.hidden = false
+            self.sepView.backgroundColor = UIColor.groupTableViewBackgroundColor()
         }
     }
     
@@ -127,7 +130,7 @@ class CommentCell: JZSwipeCell, UITextViewDelegate {
             range: nil).stringByReplacingOccurrencesOfString("&amp;", withString: "&", options: .CaseInsensitiveSearch, range: nil)
         
         let parser = XNGMarkdownParser()
-        parser.paragraphFont = UIFont(name: self.commentTextView.font!.fontName,
+        parser.paragraphFont = UIFont(name: "AvenirNext-Medium",
             size: SettingsManager.defaultManager.commentFontSizeForDefaultTextSize)
         parser.boldFontName = MyRedditCommentTextBoldFont.familyName
         parser.boldItalicFontName = MyRedditCommentTextItalicFont.familyName
@@ -159,7 +162,13 @@ class CommentCell: JZSwipeCell, UITextViewDelegate {
         
         let timeAgo = self.comment.created.timeAgoSinceNow()
         
-        let info = "\(comment.author) - \(timeAgo)"
+        var replies = "replies"
+        
+        if self.comment.replies.count == 1 {
+            replies = "reply"
+        }
+        
+        let info = "\(comment.author) - \(timeAgo) - \(self.comment.replies.count) \(replies)"
        
         if isLinkAuthor {
             let infoString = NSMutableAttributedString(string: info)
@@ -180,21 +189,24 @@ class CommentCell: JZSwipeCell, UITextViewDelegate {
             self.scoreLabel.textColor = UIColor.lightGrayColor()
         }
     
-        self.commentTextView.font = UIFont(name: self.commentTextView.font!.fontName,
+        self.commentTextView.font = UIFont(name: "AvenirNext-Medium",
             size: SettingsManager.defaultManager.commentFontSizeForDefaultTextSize)
         self.commentTextView.backgroundColor = MyRedditBackgroundColor
         self.contentView.backgroundColor = MyRedditBackgroundColor
         self.infoLabel.backgroundColor = MyRedditBackgroundColor
         
-         let indentPoints: CGFloat = CGFloat(self.indentationLevel) * self.indentationWidth
-         self.leadingTextViewConstraint.constant = indentPoints
-         self.leadinginfoLabelConstraint.constant = indentPoints
+        
+        let indentPoints: CGFloat = CGFloat(self.indentationLevel) * self.indentationWidth
+        self.leadingTextViewConstraint.constant = indentPoints
+        self.leadinginfoLabelConstraint.constant = indentPoints
+        self.sepView.hidden = true
     }
     
     @IBOutlet weak var leadingTextViewConstraint: NSLayoutConstraint!
     @IBOutlet weak var leadinginfoLabelConstraint: NSLayoutConstraint!
     @IBOutlet weak var infoLabel: UILabel!
     @IBOutlet weak var scoreLabel: UILabel!
+    @IBOutlet weak var sepView: UIView!
     
     func textView(textView: UITextView, shouldInteractWithURL URL: NSURL, inRange characterRange: NSRange) -> Bool {
         self.currentTappedURL = URL
@@ -205,6 +217,5 @@ class CommentCell: JZSwipeCell, UITextViewDelegate {
         super.prepareForReuse()
         self.indentationLevel = 0
         self.indentationWidth = 0
-        self.separatorInset = UIEdgeInsetsZero
     }
 }
