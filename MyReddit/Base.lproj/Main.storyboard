@@ -219,7 +219,7 @@
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ok4-02-13t">
                                         <rect key="frame" x="8" y="403" width="584" height="46"/>
                                         <animations/>
-                                        <color key="backgroundColor" red="1" green="0.3411764706" blue="0.3411764706" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="46" id="J98-VK-nBJ"/>
                                             <constraint firstAttribute="height" constant="46" id="Kcd-fo-c09"/>
@@ -228,13 +228,13 @@
                                         </constraints>
                                         <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="16"/>
                                         <state key="normal" title="try again">
-                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <color key="titleColor" red="0.33333333329999998" green="0.5450980392" blue="0.1843137255" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="string" keyPath="layer.borderWidth" value="1"/>
                                             <userDefinedRuntimeAttribute type="color" keyPath="layer.borderColor">
-                                                <color key="value" red="1" green="0.3411764706" blue="0.3411764706" alpha="1" colorSpace="calibratedRGB"/>
+                                                <color key="value" red="0.80000000000000004" green="0.80000000000000004" blue="0.80000000000000004" alpha="1" colorSpace="calibratedRGB"/>
                                             </userDefinedRuntimeAttribute>
                                             <userDefinedRuntimeAttribute type="string" keyPath="layer.cornerRadius" value="22"/>
                                         </userDefinedRuntimeAttributes>
@@ -261,7 +261,7 @@
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Rzq-kV-eKt">
                                         <rect key="frame" x="8" y="344" width="584" height="46"/>
                                         <animations/>
-                                        <color key="backgroundColor" red="0.96078431369999995" green="0.52156862749999999" blue="0.3921568627" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="584" id="97i-uD-Rtm"/>
                                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="584" id="HDf-wo-dEa"/>
@@ -272,13 +272,13 @@
                                         </constraints>
                                         <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="16"/>
                                         <state key="normal" title="submit a post">
-                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <color key="titleColor" red="0.92156862750000001" green="0.31764705879999999" blue="0.1137254902" alpha="1" colorSpace="calibratedRGB"/>
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="string" keyPath="layer.borderWidth" value="1"/>
                                             <userDefinedRuntimeAttribute type="color" keyPath="layer.borderColor">
-                                                <color key="value" red="1" green="0.3411764706" blue="0.3411764706" alpha="1" colorSpace="calibratedRGB"/>
+                                                <color key="value" red="0.80000000000000004" green="0.80000000000000004" blue="0.80000000000000004" alpha="1" colorSpace="calibratedRGB"/>
                                             </userDefinedRuntimeAttribute>
                                             <userDefinedRuntimeAttribute type="string" keyPath="layer.cornerRadius" value="22"/>
                                         </userDefinedRuntimeAttributes>
@@ -2197,17 +2197,17 @@
                         <outlet property="filterButton" destination="MWG-Vk-Xqs" id="ppe-fe-2tD"/>
                         <outlet property="treeView" destination="vCb-fT-h06" id="ooC-2n-YTL"/>
                         <segue destination="BuP-V6-G2K" kind="presentation" identifier="CommentLinkSegue" modalTransitionStyle="crossDissolve" id="4Rw-4P-Ibk"/>
-                        <segue destination="Rp1-52-6Wg" kind="presentation" identifier="AddCommentSegue" modalTransitionStyle="crossDissolve" id="wwv-d1-p0I"/>
                         <segue destination="Hdo-ax-c9X" kind="presentation" identifier="PurchaseSegue" modalTransitionStyle="crossDissolve" id="lZ0-wc-aH0"/>
-                        <segue destination="Rp1-52-6Wg" kind="presentation" identifier="EditCommentSegue" modalTransitionStyle="crossDissolve" id="ceX-c3-h6t"/>
                         <segue destination="Wuv-iQ-z1V" kind="custom" identifier="DeletePostSegue" customClass="DismissSegue" customModule="MyReddit" customModuleProvider="target" id="P0f-dc-Ltw"/>
+                        <segue destination="S2c-Ji-cZD" kind="show" identifier="AddCommentSegue" id="bhr-2o-TYK"/>
+                        <segue destination="S2c-Ji-cZD" kind="show" identifier="EditCommentSegue" id="vMB-6P-NDX"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="c8c-oy-xW8" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="287" y="-2803"/>
         </scene>
-        <!--add comment-->
+        <!--Add Comment View Controller-->
         <scene sceneID="EIv-EM-tfT">
             <objects>
                 <viewController id="S2c-Ji-cZD" customClass="AddCommentViewController" customModule="MyReddit" customModuleProvider="target" sceneMemberID="viewController">
@@ -2237,13 +2237,8 @@
                         </constraints>
                     </view>
                     <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
-                    <navigationItem key="navigationItem" title="add comment" id="hdy-OS-7Fj">
-                        <barButtonItem key="leftBarButtonItem" image="Cancel" id="PhV-4K-QVd">
-                            <connections>
-                                <action selector="cancelButtonTapped:" destination="S2c-Ji-cZD" id="h3t-KE-mmi"/>
-                            </connections>
-                        </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" title="Done" id="so1-iq-dN7">
+                    <navigationItem key="navigationItem" id="hdy-OS-7Fj">
+                        <barButtonItem key="rightBarButtonItem" title="done" id="so1-iq-dN7">
                             <connections>
                                 <action selector="doneButtonTapped:" destination="S2c-Ji-cZD" id="Mma-Fd-Sae"/>
                             </connections>
@@ -2256,7 +2251,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YLA-TV-r2t" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1304" y="1933"/>
+            <point key="canvasLocation" x="-950" y="1909"/>
         </scene>
         <!--Web View Controller-->
         <scene sceneID="ePa-YU-F9g">
@@ -3803,7 +3798,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pww-nK-Lzg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1308" y="1157"/>
+            <point key="canvasLocation" x="-1660" y="1909"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="2qh-jr-au1">
@@ -4833,20 +4828,19 @@
         <image name="Up" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="ryX-hT-yj2"/>
-        <segue reference="2S1-bb-L8b"/>
-        <segue reference="Abo-Jz-JcR"/>
-        <segue reference="bxZ-6W-PbQ"/>
-        <segue reference="sND-y2-DTj"/>
-        <segue reference="nEx-7L-vW5"/>
-        <segue reference="SWo-82-5L3"/>
+        <segue reference="P0f-dc-Ltw"/>
+        <segue reference="szf-5S-enI"/>
+        <segue reference="Bf8-BX-vnl"/>
+        <segue reference="4Rw-4P-Ibk"/>
+        <segue reference="lZ0-wc-aH0"/>
+        <segue reference="vMB-6P-NDX"/>
+        <segue reference="pMg-rh-ZMv"/>
+        <segue reference="nb3-Xk-rNn"/>
+        <segue reference="s4Y-Y8-M2P"/>
+        <segue reference="DoA-ah-cSI"/>
         <segue reference="zMo-OM-Z5J"/>
+        <segue reference="bxZ-6W-PbQ"/>
+        <segue reference="nEx-7L-vW5"/>
         <segue reference="TYz-B9-bLR"/>
-        <segue reference="xgG-eu-NoT"/>
-        <segue reference="aev-Tk-Wb5"/>
-        <segue reference="FIC-cf-s2T"/>
-        <segue reference="ceX-c3-h6t"/>
-        <segue reference="7mV-eF-gvZ"/>
-        <segue reference="q6K-ip-lpO"/>
     </inferredMetricsTieBreakers>
 </document>

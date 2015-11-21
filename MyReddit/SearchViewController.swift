@@ -67,6 +67,8 @@ PostCellDelegate {
             hud?.labelText = "Loading"
         }
     }
+
+    var searchText = ""
     
     lazy var searchController: UISearchController = {
         var controller = UISearchController(searchResultsController: nil)
@@ -136,14 +138,14 @@ PostCellDelegate {
     }
     
     func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
+        self.searchText = searchBar.text!.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
         self.links = Array<AnyObject>()
         self.search()
     }
     
     func search() {
-        let searchText = self.searchController.searchBar.text!.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
         
-        if searchText.characters.count > 0 {
+        if self.searchText.characters.count > 0 {
             if self.filterControl.selectedSegmentIndex == 1 {
                 self.searchSubs(searchText)
             } else {
@@ -335,6 +337,7 @@ PostCellDelegate {
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         self.tableView.deselectRowAtIndexPath(indexPath, animated: true)
+
         self.searchController.active = false
         
         if self.filterControl.selectedSegmentIndex == 0 {

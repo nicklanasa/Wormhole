@@ -519,7 +519,7 @@
                                 </constraints>
                                 <items>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="Bng-5x-a1C"/>
-                                    <barButtonItem title="Login" id="IVy-u8-kQ4">
+                                    <barButtonItem title="login" id="IVy-u8-kQ4">
                                         <connections>
                                             <action selector="loginButtonPressed:" destination="Cxf-Qd-xoU" id="syb-oo-m5V"/>
                                         </connections>
@@ -1098,48 +1098,8 @@
                                 <animations/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="LoadMoreHeader" rowHeight="60" id="x1D-qs-6mY" customClass="LoadMoreHeader" customModule="MyReddit" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="86" width="600" height="60"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="x1D-qs-6mY" id="BKv-iT-k1O">
-                                            <rect key="frame" x="0.0" y="0.0" width="600" height="59.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MzB-Z8-jER">
-                                                    <rect key="frame" x="8" y="15" width="584" height="30"/>
-                                                    <animations/>
-                                                    <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="15"/>
-                                                    <state key="normal" title="Load More">
-                                                        <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                                    </state>
-                                                    <connections>
-                                                        <action selector="loadMoreButttonTapped:" destination="x1D-qs-6mY" eventType="touchUpInside" id="1F0-Vb-Mx1"/>
-                                                    </connections>
-                                                </button>
-                                                <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="2Xm-oD-bXn">
-                                                    <rect key="frame" x="290" y="20" width="20" height="20"/>
-                                                    <animations/>
-                                                </activityIndicatorView>
-                                            </subviews>
-                                            <animations/>
-                                            <constraints>
-                                                <constraint firstItem="MzB-Z8-jER" firstAttribute="leading" secondItem="BKv-iT-k1O" secondAttribute="leadingMargin" id="BhV-nE-Ynf"/>
-                                                <constraint firstAttribute="bottomMargin" secondItem="MzB-Z8-jER" secondAttribute="bottom" constant="6" id="DNv-Pd-dx3"/>
-                                                <constraint firstItem="MzB-Z8-jER" firstAttribute="centerX" secondItem="BKv-iT-k1O" secondAttribute="centerX" id="R7p-HE-Zim"/>
-                                                <constraint firstItem="2Xm-oD-bXn" firstAttribute="centerY" secondItem="MzB-Z8-jER" secondAttribute="centerY" id="rbU-Xm-ZAW"/>
-                                                <constraint firstItem="2Xm-oD-bXn" firstAttribute="centerX" secondItem="MzB-Z8-jER" secondAttribute="centerX" id="tHx-IS-Rmh"/>
-                                                <constraint firstItem="MzB-Z8-jER" firstAttribute="top" secondItem="BKv-iT-k1O" secondAttribute="topMargin" constant="7" id="urU-LY-Hcx"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                        <animations/>
-                                        <connections>
-                                            <outlet property="activityIndicator" destination="2Xm-oD-bXn" id="xLa-jF-fcG"/>
-                                            <outlet property="loadMoreButton" destination="MzB-Z8-jER" id="B6V-Ml-DVs"/>
-                                        </connections>
-                                    </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="MessageCell" rowHeight="107" id="l0H-gQ-1ug" customClass="MessageCell" customModule="MyReddit" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="146" width="600" height="107"/>
+                                        <rect key="frame" x="0.0" y="86" width="600" height="107"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="l0H-gQ-1ug" id="TRq-x4-wld">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="106.5"/>
@@ -1858,12 +1818,7 @@
                     </view>
                     <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
                     <navigationItem key="navigationItem" title="add comment" id="hdy-OS-7Fj">
-                        <barButtonItem key="leftBarButtonItem" image="Cancel" id="PhV-4K-QVd">
-                            <connections>
-                                <action selector="cancelButtonTapped:" destination="S2c-Ji-cZD" id="h3t-KE-mmi"/>
-                            </connections>
-                        </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" title="Done" id="so1-iq-dN7">
+                        <barButtonItem key="rightBarButtonItem" title="done" id="so1-iq-dN7">
                             <connections>
                                 <action selector="doneButtonTapped:" destination="S2c-Ji-cZD" id="Mma-Fd-Sae"/>
                             </connections>
@@ -4623,7 +4578,6 @@
                         <barButtonItem title="add comment" id="oBK-Td-pbg">
                             <connections>
                                 <action selector="addCommentButtonTapped:" destination="pr5-Ec-nob" id="dYu-mL-AIP"/>
-                                <segue destination="Rp1-52-6Wg" kind="presentation" identifier="AddCommentSegue" modalTransitionStyle="crossDissolve" id="3ST-r2-kc1"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="WYZ-rB-pB9"/>
@@ -4639,6 +4593,8 @@
                         <outlet property="filterButton" destination="SA6-cm-KLo" id="7uc-8m-fFL"/>
                         <outlet property="treeView" destination="QzK-Xo-0Mu" id="A9V-lz-0f3"/>
                         <segue destination="BuP-V6-G2K" kind="presentation" identifier="CommentLinkSegue" modalTransitionStyle="crossDissolve" id="3mg-rp-ibf"/>
+                        <segue destination="S2c-Ji-cZD" kind="show" identifier="AddCommentSegue" id="sBe-da-JQw"/>
+                        <segue destination="Hdo-ax-c9X" kind="presentation" identifier="PurchaseSegue" modalTransitionStyle="crossDissolve" id="cyY-Cx-a2e"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wd2-ag-s3R" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -4672,16 +4628,16 @@
         <segue reference="sND-y2-DTj"/>
         <segue reference="vxb-cw-ipa"/>
         <segue reference="SWo-82-5L3"/>
-        <segue reference="Diw-V8-n62"/>
-        <segue reference="zMx-9J-SCH"/>
         <segue reference="7YE-ws-eyS"/>
         <segue reference="vvu-K9-HER"/>
-        <segue reference="zjV-QU-TbQ"/>
         <segue reference="psA-tl-Zoj"/>
         <segue reference="O8K-LF-8mj"/>
         <segue reference="Wgk-72-ydW"/>
         <segue reference="gaq-wm-saQ"/>
+        <segue reference="8m3-aM-aWB"/>
         <segue reference="Zhy-WS-VKe"/>
-        <segue reference="3ST-r2-kc1"/>
+        <segue reference="cyY-Cx-a2e"/>
+        <segue reference="3mg-rp-ibf"/>
+        <segue reference="sBe-da-JQw"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -353,6 +353,43 @@ PostCellDelegate {
         }
     }
     
+    private func reloadSubreddit() {
+        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            RedditSession.sharedSession.searchForSubredditByName(self.subreddit.name,
+                pagination: nil) { (pagination, results, error) -> () in
+                    if let subreddits = results as? [RKSubreddit] {
+                        var foundSubreddit: RKSubreddit?
+                        for subreddit in subreddits {
+                            if subreddit.name.lowercaseString == self.subreddit.name.lowercaseString {
+                                foundSubreddit = subreddit
+                                break
+                            }
+                        }
+                        
+                        if foundSubreddit == nil {
+                            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                                UIAlertView(title: "Error!",
+                                    message: "Unable to subscribe to subreddit.",
+                                    delegate: self,
+                                    cancelButtonTitle: "OK").show()
+                            })
+                        } else {
+                            self.subreddit = foundSubreddit
+                            self.updateSubscribeButton()
+                        }
+                    } else {
+                        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                            UIAlertView(title: "Error!",
+                                message: "Unable to find subreddit by that name.",
+                                delegate: self,
+                                cancelButtonTitle: "OK").show()
+                        })
+                    }
+            }
+        })
+
+    }
+    
     // MARK: IBActions
 
     @IBAction func filterButtonPressed(sender: AnyObject) {
@@ -425,8 +462,7 @@ PostCellDelegate {
                             if error != nil {
                                 UIAlertView.showUnableToUnsubscribeError()
                             } else {
-                                self.reset()
-                                self.updateAndFetch()
+                                self.reloadSubreddit()
                             }
                         })
                     } else {
@@ -442,39 +478,7 @@ PostCellDelegate {
                             if error != nil {
                                 UIAlertView.showSubscribeError()
                             } else {
-                                dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                                    RedditSession.sharedSession.searchForSubredditByName(self.subreddit.name,
-                                        pagination: nil) { (pagination, results, error) -> () in
-                                        if let subreddits = results as? [RKSubreddit] {
-                                            var foundSubreddit: RKSubreddit?
-                                            for subreddit in subreddits {
-                                                if subreddit.name.lowercaseString == self.subreddit.name.lowercaseString {
-                                                    foundSubreddit = subreddit
-                                                    break
-                                                }
-                                            }
-                                            
-                                            if foundSubreddit == nil {
-                                                dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                                                    UIAlertView(title: "Error!",
-                                                        message: "Unable to subscribe to subreddit.",
-                                                        delegate: self,
-                                                        cancelButtonTitle: "OK").show()
-                                                })
-                                            } else {
-                                                self.subreddit = foundSubreddit
-                                                self.updateSubscribeButton()
-                                            }
-                                        } else {
-                                            dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                                                UIAlertView(title: "Error!",
-                                                    message: "Unable to find subreddit by that name.",
-                                                    delegate: self,
-                                                    cancelButtonTitle: "OK").show()
-                                            })
-                                        }
-                                    }
-                                })
+                                self.reloadSubreddit()
                             }
                         })
                     } else {

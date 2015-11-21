@@ -113,7 +113,7 @@ class CommentCell: JZSwipeCell, UITextViewDelegate {
             self.leadinginfoLabelConstraint.constant = indentPoints
             
             self.sepView.hidden = false
-            self.sepView.backgroundColor = UIColor.groupTableViewBackgroundColor()
+            self.sepView.backgroundColor = MyRedditTableSeparatorColor
         }
     }
     
@@ -142,6 +142,7 @@ class CommentCell: JZSwipeCell, UITextViewDelegate {
             value: MyRedditLabelColor,
             range: NSMakeRange(0, parsedString.string.characters.count))
         
+        /*
         if parsedString.string.localizedCaseInsensitiveContainsString(">") {
             do {
                 let regex = try NSRegularExpression(pattern: ">(.*)\\b\\n", options: .CaseInsensitive)
@@ -157,6 +158,7 @@ class CommentCell: JZSwipeCell, UITextViewDelegate {
                 })
             } catch {}
         }
+        */
         
         self.commentTextView.attributedText = parsedString
         
@@ -199,6 +201,7 @@ class CommentCell: JZSwipeCell, UITextViewDelegate {
         let indentPoints: CGFloat = CGFloat(self.indentationLevel) * self.indentationWidth
         self.leadingTextViewConstraint.constant = indentPoints
         self.leadinginfoLabelConstraint.constant = indentPoints
+
         self.sepView.hidden = true
     }
     

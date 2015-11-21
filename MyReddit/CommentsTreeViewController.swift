@@ -42,7 +42,7 @@ class CommentsTreeViewController: RootViewController, RATreeViewDelegate, RATree
                                                                 link: self.link,
                                                                 completion: { (pagination, results, error) -> () in
                                                                     self.comments = results
-                                                                    self.hud.hide(true)
+                                                                    self.reloadComments()
                                                                 })
         }
     }
@@ -78,7 +78,7 @@ class CommentsTreeViewController: RootViewController, RATreeViewDelegate, RATree
     }
     
     override func viewDidAppear(animated: Bool) {
-        self.title =  "\(self.link.totalComments) comments"
+        self.navigationItem.title =  "\(self.link.totalComments) comments"
         self.navigationController?.setToolbarHidden(false, animated: false)
     }
 
@@ -93,9 +93,8 @@ class CommentsTreeViewController: RootViewController, RATreeViewDelegate, RATree
         self.treeView.dataSource = self
         self.treeView.rowsExpandingAnimation = RATreeViewRowAnimation.init(0)
         self.treeView.rowsCollapsingAnimation = RATreeViewRowAnimation.init(0)
-        self.treeView.treeFooterView = UIView()
-        
         self.treeView.separatorStyle = RATreeViewCellSeparatorStyle.init(0)
+        self.treeView.treeFooterView = UIView()
         
         self.treeView.registerNib(UINib(nibName: "CommentCell", bundle: NSBundle.mainBundle()),
             forCellReuseIdentifier: "CommentCell")
@@ -108,20 +107,25 @@ class CommentsTreeViewController: RootViewController, RATreeViewDelegate, RATree
         self.preferredAppearance()
     }
 
+    func reloadComments() {
+        self.hud.hide(true)
+        self.treeView.reloadData()
+        for item in self.treeView.itemsForRowsInRect(self.treeView.frame) as! [AnyObject] {
+            if let comment = item as? RKComment {
+                self.treeView.expandRowForItem(comment,
+                                               expandChildren: true,
+                                               withRowAnimation: RATreeViewRowAnimation.init(0))
+            }
+        }
+
+    }
+
     func syncComments() {
         self.hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
         RedditSession.sharedSession.fetchComments(nil, link: self.link) { (pagination, results, error) -> () in
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
                                self.comments = results
-                               self.hud.hide(true)
-                               self.treeView.reloadData()
-                               for item in self.treeView.itemsForRowsInRect(self.treeView.frame) as! [AnyObject] {
-                                   if let comment = item as? RKComment {
-                                       self.treeView.expandRowForItem(comment,
-                                                                      expandChildren: true,
-                                                                      withRowAnimation: RATreeViewRowAnimation.init(0))
-                                   }
-                               }
+                               self.reloadComments()
                 })
         }
     }
@@ -206,6 +210,11 @@ class CommentsTreeViewController: RootViewController, RATreeViewDelegate, RATree
         } else if let comment = item as? RKComment {
             cell.indentationLevel = treeView.levelForCellForItem(item) + 1
             cell.configueForComment(comment: comment, isLinkAuthor: self.link.author == comment.author)
+            
+            cell.separatorInset = UIEdgeInsets(top: 0,
+                left: self.treeView.frame.size.width,
+                bottom: 0,
+                right: 0)
         }
         
         cell.delegate = self
@@ -235,32 +244,28 @@ class CommentsTreeViewController: RootViewController, RATreeViewDelegate, RATree
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "AddCommentSegue" {
-            if let nav = segue.destinationViewController as? UINavigationController {
-                if let controller = nav.viewControllers[0] as? AddCommentViewController {
-                    
-                    if let replyComment = sender as? RKComment {
-                        controller.comment = replyComment
-                    } else {
-                        controller.link = self.link
-                    }
-                    
-                    controller.delegate = self
+            if let controller = segue.destinationViewController as? AddCommentViewController {
+                
+                if let replyComment = sender as? RKComment {
+                    controller.comment = replyComment
+                } else {
+                    controller.link = self.link
                 }
+                
+                controller.delegate = self
             }
         } else if segue.identifier == "EditCommentSegue" {
-            if let nav = segue.destinationViewController as? UINavigationController {
-                if let controller = nav.viewControllers[0] as? AddCommentViewController {
-                    
-                    if let editComment = sender as? RKComment {
-                        controller.comment = editComment
-                        controller.edit =  true
-                    } else if let editLink = sender as? RKLink {
-                        controller.link = editLink
-                        controller.edit = true
-                    }
-                    
-                    controller.delegate = self
+            if let controller = segue.destinationViewController as? AddCommentViewController {
+                
+                if let editComment = sender as? RKComment {
+                    controller.comment = editComment
+                    controller.edit =  true
+                } else if let editLink = sender as? RKLink {
+                    controller.link = editLink
+                    controller.edit = true
                 }
+                
+                controller.delegate = self
             }
         } else if segue.identifier == "DeletePostSegue" {
             
