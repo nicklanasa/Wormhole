@@ -264,9 +264,9 @@ class SettingsManager {
     var productID: String! {
         get {
             if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
-                return "myreddit.premium.ipad.december2015"
+                return "myreddit.premium.ipad"
             } else {
-                return "myreddit.premium.december2015"
+                return "myreddit.premium"
             }
         }
     }
