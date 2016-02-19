@@ -144,7 +144,9 @@ PostCellDelegate {
         
         LocalyticsSession.shared().tagEvent("Fetched links")
     
-        self.hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
+        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            self.hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
+        })
         
         let c: PaginationCompletion = {
             pagination,

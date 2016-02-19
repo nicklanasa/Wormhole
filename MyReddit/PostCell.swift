@@ -17,7 +17,7 @@ import UIKit
     optional func postCell(cell: PostCell, didLongLeftSwipeForLink link: RKLink)
 }
 
-class PostCell: JZSwipeCell, JZSwipeCellDelegate {
+class PostCell: SwipeCell, SwipeCellDelegate {
     
     var link: RKLink!
     var linkComment: RKComment!
@@ -25,36 +25,23 @@ class PostCell: JZSwipeCell, JZSwipeCellDelegate {
     var postCellDelegate: PostCellDelegate?
     
     override func awakeFromNib() {
-        super.awakeFromNib()
-        
-        if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
-            self.shortSwipeLength = 300
-        } else {
-            self.shortSwipeLength = 150
-        }
-        
         let upVoteImage = UIImage(named: "Up")!.imageWithRenderingMode(.AlwaysOriginal)
         let downVoteImage = UIImage(named: "Down")!.imageWithRenderingMode(.AlwaysOriginal)
         
-        self.imageSet = SwipeCellImageSetMake(downVoteImage, UIImage(named: "moreWhite"), upVoteImage, UIImage(named: "Chat"))
-        self.colorSet = SwipeCellColorSetMake(MyRedditDownvoteColor, MyRedditColor, MyRedditUpvoteColor, MyRedditReplyColor)
+        self.images = [downVoteImage, UIImage(named: "moreWhite")!, upVoteImage, UIImage(named: "Chat")!]
+        self.colors = [MyRedditDownvoteColor, MyRedditColor, MyRedditUpvoteColor, MyRedditReplyColor]
         
-        self.delegate = self
+        super.awakeFromNib()
+
+        self.swipeDelegate = self
     }
     
-    func swipeCell(cell: JZSwipeCell!, triggeredSwipeWithType swipeType: JZSwipeType) {
-        if swipeType.rawValue != JZSwipeTypeNone.rawValue {
-            cell.reset()
-            cell.layoutSubviews()
-            if swipeType.rawValue == JZSwipeTypeShortLeft.rawValue {
-                self.postCellDelegate?.postCell?(self, didShortLeftSwipeForLink: self.link)
-            } else if swipeType.rawValue == JZSwipeTypeShortRight.rawValue {
-                self.postCellDelegate?.postCell?(self, didShortRightSwipeForLink: self.link)
-            } else if swipeType.rawValue == JZSwipeTypeLongLeft.rawValue {
-                self.postCellDelegate?.postCell?(self, didLongLeftSwipeForLink: self.link)
-            } else {
-                self.postCellDelegate?.postCell?(self, didLongRightSwipeForLink: self.link)
-            }
+    func swipeCell(cell: SwipeCell, didTriggerSwipeWithType swipeType: SwipeType) {
+        switch swipeType {
+        case .LongRight: self.postCellDelegate?.postCell?(self, didLongRightSwipeForLink: self.link)
+        case .LongLeft: self.postCellDelegate?.postCell?(self, didLongLeftSwipeForLink: self.link)
+        case .ShortRight: self.postCellDelegate?.postCell?(self, didShortRightSwipeForLink: self.link)
+        default: self.postCellDelegate?.postCell?(self, didShortLeftSwipeForLink: self.link)
         }
     }
 }

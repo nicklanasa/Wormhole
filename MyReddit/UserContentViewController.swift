@@ -13,9 +13,8 @@ import MBProgressHUD
 class UserContentViewController: RootViewController,
 UITableViewDelegate,
 UITableViewDataSource,
-JZSwipeCellDelegate,
-PostImageCellDelegate,
-CommentCellDelegate {
+PostCellDelegate,
+PostImageCellDelegate {
 
     var category: RKUserContentCategory!
     var categoryTitle: String!
@@ -159,7 +158,6 @@ CommentCellDelegate {
                     let imageCell = tableView.dequeueReusableCellWithIdentifier("PostImageCell") as! PostImageCell
                     imageCell.postImageDelegate = self
                     imageCell.link = link
-                    imageCell.delegate = self
                     return imageCell
                 }
                 
@@ -176,13 +174,11 @@ CommentCellDelegate {
             commentCell.indentationWidth = 15
             
             commentCell.configueForComment(comment: comment, isLinkAuthor: true)
-            commentCell.delegate = self
-            commentCell.commentDelegate = self
             
             return commentCell
         }
         
-        cell.delegate = self
+        cell.postCellDelegate = self
         
         return cell
     }
@@ -265,54 +261,24 @@ CommentCellDelegate {
         }
     }
     
-    // MARK: JZSwipeCellDelegate
+    // MARK: PostCellDelegate
     
-    func swipeCell(cell: JZSwipeCell!, triggeredSwipeWithType swipeType: JZSwipeType) {
-        if swipeType.rawValue != JZSwipeTypeNone.rawValue {
-            cell.reset()
-            if let indexPath = self.tableView.indexPathForCell(cell) {
-                if let link = self.content[indexPath.row] as? RKLink  {
-                    if !SettingsManager.defaultManager.purchased {
-                        if swipeType.rawValue == JZSwipeTypeLongLeft.rawValue {
-                            LocalyticsSession.shared().tagEvent("Swipe comments")
-                            self.performSegueWithIdentifier("CommentsSegue", sender: link)
-                        } else {
-                            self.performSegueWithIdentifier("PurchaseSegue", sender: self)
-                        }
-                    } else {
-                        if let indexPath = self.tableView.indexPathForCell(cell) {
-                            if let link = self.content[indexPath.row] as? RKLink  {
-                                let postCell = cell as! PostCell
-                                self.hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
-                                if swipeType.rawValue == JZSwipeTypeShortLeft.rawValue {
-                                    // Upvote
-                                    self.upvote(link)
-                                    //postCell.upvote()
-                                } else if swipeType.rawValue == JZSwipeTypeShortRight.rawValue {
-                                    // Downvote
-                                    self.downvote(link)
-                                    //postCell.downvote()
-                                } else if swipeType.rawValue == JZSwipeTypeLongLeft.rawValue {
-                                    LocalyticsSession.shared().tagEvent("Swipe comments")
-                                    self.hud.hide(true)
-                                    self.performSegueWithIdentifier("CommentsSegue", sender: link)
-                                } else {
-                                    // More
-                                    self.performMoreSwipeActionForLink(link, withCell: postCell)
-                                }
-                            } else if let comment = self.content[indexPath.row] as? RKComment {
-                                self.performSwipeActionForType(swipeType, forObject: comment)
-                            }
-                        }
-                    }
-
-                }
-            }
-        }
+    func postCell(cell: PostCell, didShortLeftSwipeForLink link: RKLink) {
+        // Upvote
+        self.upvote(link)
     }
     
-    func swipeCell(cell: JZSwipeCell!, swipeTypeChangedFrom from: JZSwipeType, to: JZSwipeType) {
-        
+    func postCell(cell: PostCell, didShortRightSwipeForLink link: RKLink) {
+        // Downvote
+        self.downvote(link)
+    }
+    
+    func postCell(cell: PostCell, didLongRightSwipeForLink link: RKLink) {
+        self.performMoreSwipeActionForLink(link, withCell: cell)
+    }
+    
+    func postCell(cell: PostCell, didLongLeftSwipeForLink link: RKLink) {
+        self.performSegueWithIdentifier("CommentsSegue", sender: link)
     }
     
     // MARK: Private

@@ -2090,7 +2090,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="391"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView autoresizesSubviews="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="pno-sL-hfl" customClass="FLAnimatedImageView">
+                                                <imageView autoresizesSubviews="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="pno-sL-hfl">
                                                     <rect key="frame" x="0.0" y="87" width="600" height="269"/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <constraints>
@@ -4377,19 +4377,19 @@
         <image name="Up" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="yNw-36-nQb"/>
-        <segue reference="pMg-rh-ZMv"/>
-        <segue reference="pqF-Zz-63s"/>
-        <segue reference="ykc-Jy-SLH"/>
-        <segue reference="DoA-ah-cSI"/>
-        <segue reference="s4Y-Y8-M2P"/>
-        <segue reference="nb3-Xk-rNn"/>
+        <segue reference="eWX-LR-CuE"/>
+        <segue reference="ybH-Av-VF3"/>
+        <segue reference="aPe-Za-FV1"/>
+        <segue reference="lWs-ak-HDh"/>
+        <segue reference="Udn-dz-6HG"/>
         <segue reference="vMB-6P-NDX"/>
         <segue reference="4Rw-4P-Ibk"/>
+        <segue reference="pMg-rh-ZMv"/>
+        <segue reference="DoA-ah-cSI"/>
+        <segue reference="nb3-Xk-rNn"/>
         <segue reference="Bf8-BX-vnl"/>
-        <segue reference="Udn-dz-6HG"/>
+        <segue reference="zMo-OM-Z5J"/>
         <segue reference="nEx-7L-vW5"/>
         <segue reference="TYz-B9-bLR"/>
-        <segue reference="zMo-OM-Z5J"/>
     </inferredMetricsTieBreakers>
 </document>
