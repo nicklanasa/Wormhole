@@ -28,6 +28,15 @@ UISplitViewControllerDelegate,
 PostImageCellDelegate,
 PostCellDelegate {
     
+    @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var toolBar: UIToolbar!
+    @IBOutlet weak var subscribeButton: UIBarButtonItem!
+    @IBOutlet weak var filterButton: UIBarButtonItem!
+    @IBOutlet weak var listButton: UIBarButtonItem!
+    @IBOutlet weak var postButton: UIBarButtonItem!
+    @IBOutlet weak var searchButton: UIBarButtonItem!
+    @IBOutlet weak var messages: UIBarButtonItem!
+    
     var hud: MBProgressHUD! {
         didSet {
             hud.labelFont = MyRedditSelfTextFont
@@ -58,40 +67,25 @@ PostCellDelegate {
         }
     }
     
-    var subreddit: RKSubreddit!
-    var multiReddit: RKMultireddit!
     
     var fetchingMore = false
     var front = true
     var all = false
+    
+    var subreddit: RKSubreddit!
+    var multiReddit: RKMultireddit!
     var pagination: RKPagination?
     var selectedLink: RKLink!
     var currentCategory: RKSubredditCategory?
+    
     var optionsController: LinkShareOptionsViewController!
     var refreshControl: UIRefreshControl!
     var heightsCache = [String : AnyObject]()
     
-    @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var toolBar: UIToolbar!
-    
-    @IBOutlet weak var subscribeButton: UIBarButtonItem!
-    @IBOutlet weak var filterButton: UIBarButtonItem!
-    @IBOutlet weak var listButton: UIBarButtonItem!
-    @IBOutlet weak var postButton: UIBarButtonItem!
-    @IBOutlet weak var searchButton: UIBarButtonItem!
-    @IBOutlet weak var messages: UIBarButtonItem!
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-    }
-    
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
-        LocalyticsSession.shared().tagScreen("Subreddit")
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        LocalyticsSession.shared().tagScreen("Subreddit")
         
         self.tableView.tableFooterView = UIView()
         
@@ -115,7 +109,10 @@ PostCellDelegate {
         
         switch UIDevice.currentDevice().userInterfaceIdiom {
         case .Pad:
-            configureForPad()
+            self.preferredContentSize = CGSizeMake(500, 350)
+            self.listButton.action = self.splitViewController!.displayModeButtonItem().action
+            self.splitViewController?.presentsWithGesture = false
+            self.splitViewController?.delegate = self
         case .Phone: break
         default: break
         }
@@ -137,19 +134,6 @@ PostCellDelegate {
         self.links = Array<AnyObject>()
         self.pagination = nil
         self.fetchLinks()
-    }
-    
-    // Private
-    
-    private func configureForPad() {
-        let width: CGFloat = 500
-        let height: CGFloat = 350
-        
-        preferredContentSize = CGSizeMake(width, height)
-        self.splitViewController?.presentsWithGesture = false
-        self.listButton.action = self.splitViewController!.displayModeButtonItem().action
-        
-        self.splitViewController?.delegate = self
     }
     
     private func fetchLinks() {
@@ -197,7 +181,7 @@ PostCellDelegate {
         }
     }
     
-    // MARK: Private Updating
+    // MARK: Private
 
     private func updateUI() {
         
@@ -305,7 +289,6 @@ PostCellDelegate {
                     }
             }
         })
-
     }
     
     // MARK: IBActions
@@ -421,10 +404,6 @@ PostCellDelegate {
                 self.performSegueWithIdentifier("AccountsSegue", sender: self)
             }
         }
-    }
-    
-    @IBAction func tryAgainButtonPressed(sender: AnyObject) {
-        self.fetchLinks()
     }
     
     // MARK: UITableViewDataSource

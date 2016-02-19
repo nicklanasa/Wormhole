@@ -52,6 +52,16 @@
                ReferencedContainer = "container:MyReddit.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "01A622FB1C76C62700A8F857"
+               BuildableName = "MyRedditUITests.xctest"
+               BlueprintName = "MyRedditUITests"
+               ReferencedContainer = "container:MyReddit.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
