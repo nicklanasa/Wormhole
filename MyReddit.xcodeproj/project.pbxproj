@@ -46,8 +46,6 @@
 		797C9C2C1B6D22070090FB49 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 797C9C2B1B6D22070090FB49 /* RootViewController.swift */; };
 		797C9C2D1B6D22070090FB49 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 797C9C2B1B6D22070090FB49 /* RootViewController.swift */; };
 		79AF9B4A1BD85C3B0058A649 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 79AF9B491BD85C3B0058A649 /* Pods.framework */; };
-		79AF9B4B1BD85DB30058A649 /* MyReddit copy-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 79B875B81BC9B88300473E7B /* MyReddit copy-Info.plist */; };
-		79AF9B4C1BD85DBB0058A649 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CE712EDF1AC2F1A20042B071 /* Info.plist */; };
 		79B875B31BC9951400473E7B /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79B875B21BC9951400473E7B /* DataManager.swift */; };
 		79B875B51BC9952E00473E7B /* Datastore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79B875B41BC9952E00473E7B /* Datastore.swift */; };
 		79B875B61BC9B84300473E7B /* Datastore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79B875B41BC9952E00473E7B /* Datastore.swift */; };
@@ -634,7 +632,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0700;
-				LastUpgradeCheck = 0700;
+				LastUpgradeCheck = 0720;
 				ORGANIZATIONNAME = "Nytek Production";
 				TargetAttributes = {
 					CE3AA4681B0549E9000DEDD2 = {
@@ -689,7 +687,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				CE3AA4C31B0549EA000DEDD2 /* LaunchScreen.xib in Resources */,
-				79AF9B4B1BD85DB30058A649 /* MyReddit copy-Info.plist in Resources */,
 				793163BA1BD9258900E474EF /* Main.storyboard in Resources */,
 				79BCC75A1BF7D23100458A91 /* CommentCell.xib in Resources */,
 				CE3AA4B91B0549E9000DEDD2 /* Images.xcassets in Resources */,
@@ -703,7 +700,6 @@
 			files = (
 				CE712EE81AC2F1A20042B071 /* Main.storyboard in Resources */,
 				793163BB1BD9259100E474EF /* Main-iPad.storyboard in Resources */,
-				79AF9B4C1BD85DBB0058A649 /* Info.plist in Resources */,
 				79BCC7591BF7D23100458A91 /* CommentCell.xib in Resources */,
 				CE712EED1AC2F1A20042B071 /* LaunchScreen.xib in Resources */,
 				CE712EEA1AC2F1A20042B071 /* Images.xcassets in Resources */,
