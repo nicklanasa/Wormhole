@@ -10,7 +10,14 @@ import UIKit
 import MBProgressHUD
 import RATreeView
 
-class CommentsTreeViewController: RootViewController, RATreeViewDelegate, RATreeViewDataSource, CommentCellDelegate, JZSwipeCellDelegate, UITextFieldDelegate, AddCommentViewControllerDelegate {
+class CommentsTreeViewController: RootViewController,
+UIScrollViewDelegate,
+RATreeViewDelegate,
+RATreeViewDataSource,
+CommentCellDelegate,
+JZSwipeCellDelegate,
+UITextFieldDelegate,
+AddCommentViewControllerDelegate {
 
     @IBOutlet weak var treeView: RATreeView!
     @IBOutlet weak var filterButton: UIBarButtonItem!
@@ -91,8 +98,8 @@ class CommentsTreeViewController: RootViewController, RATreeViewDelegate, RATree
         
         self.treeView.delegate = self
         self.treeView.dataSource = self
-        self.treeView.rowsExpandingAnimation = RATreeViewRowAnimation.init(0)
-        self.treeView.rowsCollapsingAnimation = RATreeViewRowAnimation.init(0)
+        self.treeView.expandsChildRowsWhenRowExpands = true
+        self.treeView.collapsesChildRowsWhenRowCollapses = true
         self.treeView.separatorStyle = RATreeViewCellSeparatorStyle.init(0)
         self.treeView.treeFooterView = UIView()
         
@@ -168,7 +175,7 @@ class CommentsTreeViewController: RootViewController, RATreeViewDelegate, RATree
 
     // MARK: RATreeViewDatasource
     
-    func treeView(treeView: RATreeView!, numberOfChildrenOfItem item: AnyObject!) -> Int {
+    func treeView(treeView: RATreeView, numberOfChildrenOfItem item: AnyObject?) -> Int {
         if let _ = item as? RKLink {
             return 0
         } else if let comment = item as? RKComment {
@@ -186,21 +193,21 @@ class CommentsTreeViewController: RootViewController, RATreeViewDelegate, RATree
         }
     }
     
-    func treeView(treeView: RATreeView!, child index: Int, ofItem item: AnyObject!) -> AnyObject! {
+    func treeView(treeView: RATreeView, child index: Int, ofItem item: AnyObject?) -> AnyObject {
         if let comment = item as? RKComment {
-            return comment.replies?[index]
+            return comment.replies[index]
         } else {
             if index == 0 {
                 return self.link
             } else {
-                return self.comments?[index - 1]
+                return self.comments![index - 1]
             }
         }
     }
     
-    func treeView(treeView: RATreeView!, cellForItem item: AnyObject!) -> UITableViewCell! {
+    func treeView(treeView: RATreeView, cellForItem item: AnyObject?) -> UITableViewCell {
         let cell = treeView.dequeueReusableCellWithIdentifier("CommentCell") as! CommentCell
-
+        
         cell.indentationWidth = 15
         
         if let link = item as? RKLink {
@@ -208,7 +215,7 @@ class CommentsTreeViewController: RootViewController, RATreeViewDelegate, RATree
             cell.link = link
             
         } else if let comment = item as? RKComment {
-            cell.indentationLevel = treeView.levelForCellForItem(item) + 1
+            cell.indentationLevel = treeView.levelForCellForItem(comment) + 1
             cell.configueForComment(comment: comment, isLinkAuthor: self.link.author == comment.author)
             
             cell.separatorInset = UIEdgeInsets(top: 0,
@@ -223,23 +230,18 @@ class CommentsTreeViewController: RootViewController, RATreeViewDelegate, RATree
         return cell
     }
     
-    func treeView(treeView: RATreeView!, heightForRowForItem item: AnyObject!) -> CGFloat {
-        if !treeView.isCellForItemExpanded(item) {
-            if let _ = item as? RKLink {
-                return UITableViewAutomaticDimension
-            }
-            return 40
-        } else {
+    func treeView(treeView: RATreeView, estimatedHeightForRowForItem item: AnyObject) -> CGFloat {
+        if let _ = item as? RKLink {
             return UITableViewAutomaticDimension
+        } else if !treeView.isCellForItemExpanded(item) {
+            return 40
         }
+        
+        return UITableViewAutomaticDimension
     }
     
-    func treeView(treeView: RATreeView!, editingStyleForRowForItem item: AnyObject!) -> UITableViewCellEditingStyle {
+    func treeView(treeView: RATreeView, editingStyleForRowForItem item: AnyObject) -> UITableViewCellEditingStyle {
         return .None
-    }
-    
-    func treeView(treeView: RATreeView!, didExpandRowForItem item: AnyObject!) {
-        self.treeView.scrollToRowForItem(item, atScrollPosition: RATreeViewScrollPosition.init(0), animated: true)
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {

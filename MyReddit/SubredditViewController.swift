@@ -82,6 +82,11 @@ PostCellDelegate {
     var refreshControl: UIRefreshControl!
     var heightsCache = [String : AnyObject]()
     
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationController?.setToolbarHidden(true, animated: false)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         

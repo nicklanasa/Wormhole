@@ -1,0 +1,6 @@
+framework module BDGInAppPurchase {
+  umbrella header "BDGInAppPurchase-umbrella.h"
+
+  export *
+  module * { export * }
+}
