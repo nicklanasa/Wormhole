@@ -28,6 +28,15 @@ UISplitViewControllerDelegate,
 PostImageCellDelegate,
 PostCellDelegate {
     
+    @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var toolBar: UIToolbar!
+    @IBOutlet weak var subscribeButton: UIBarButtonItem!
+    @IBOutlet weak var filterButton: UIBarButtonItem!
+    @IBOutlet weak var listButton: UIBarButtonItem!
+    @IBOutlet weak var postButton: UIBarButtonItem!
+    @IBOutlet weak var searchButton: UIBarButtonItem!
+    @IBOutlet weak var messages: UIBarButtonItem!
+    
     var hud: MBProgressHUD! {
         didSet {
             hud.labelFont = MyRedditSelfTextFont
@@ -36,78 +45,74 @@ PostCellDelegate {
         }
     }
     
-    var links = Array<AnyObject>()
+    var links = Array<AnyObject>() {
+        didSet {
+            if !SettingsManager.defaultManager.valueForSetting(.NSFW) {
+                self.links = self.links.filter({ (obj) -> Bool in
+                    if let link = obj as? RKLink {
+                        if link.NSFW {
+                            return false
+                        }
+                    }
+                    
+                    return true
+                })
+            }
+            
+            if self.links.count == 25 || self.links.count == 0 {
+                self.tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: .Fade)
+            } else {
+                self.tableView.reloadData()
+            }
+        }
+    }
     
-    var subreddit: RKSubreddit!
-    var multiReddit: RKMultireddit!
     
     var fetchingMore = false
     var front = true
     var all = false
+    
+    var subreddit: RKSubreddit!
+    var multiReddit: RKMultireddit!
     var pagination: RKPagination?
     var selectedLink: RKLink!
     var currentCategory: RKSubredditCategory?
+    
     var optionsController: LinkShareOptionsViewController!
     var refreshControl: UIRefreshControl!
     var heightsCache = [String : AnyObject]()
     
-    @IBOutlet weak var noPostsLabel: UILabel!
-    @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var noPostsView: UIView!
-    @IBOutlet weak var toolBar: UIToolbar!
-    
-    @IBOutlet var headerImage: UIImageView! {
-        didSet {
-            self.headerImage.autoresizingMask = .FlexibleWidth
-        }
-    }
-    
-    @IBOutlet weak var subscribeButton: UIBarButtonItem!
-    @IBOutlet weak var filterButton: UIBarButtonItem!
-    @IBOutlet weak var listButton: UIBarButtonItem!
-    @IBOutlet weak var postButton: UIBarButtonItem!
-    @IBOutlet weak var searchButton: UIBarButtonItem!
-    @IBOutlet weak var messages: UIBarButtonItem!
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-    }
-    
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
-        self.tableView.reloadData()
-        self.updateUI()
-        self.fetchUnread()
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        LocalyticsSession.shared().tagScreen("Subreddit")
+        
+        self.tableView.tableFooterView = UIView()
         
         self.refreshControl = UIRefreshControl()
         self.refreshControl.addTarget(self,
             action: "refresh:",
             forControlEvents: .ValueChanged)
         self.tableView.addSubview(self.refreshControl)
-
+        
         if let username = NSUserDefaults.standardUserDefaults().objectForKey("username") as? String {
             if let password = NSUserDefaults.standardUserDefaults().objectForKey("password") as? String {
                 UserSession.sharedSession.loginWithUsername(username, password: password, completion: { (error) -> () in
-                    self.updateAndFetch()
+                    self.fetchLinks()
                 })
             } else {
-                self.updateAndFetch()
+                self.fetchLinks()
             }
         } else {
-            self.updateAndFetch()
+            self.fetchLinks()
         }
         
-        self.navigationItem.title = "front"
-        
-        self.tableView.tableFooterView = UIView()
-     
         switch UIDevice.currentDevice().userInterfaceIdiom {
         case .Pad:
-            configureForPad()
+            self.preferredContentSize = CGSizeMake(500, 350)
+            self.listButton.action = self.splitViewController!.displayModeButtonItem().action
+            self.splitViewController?.presentsWithGesture = false
+            self.splitViewController?.delegate = self
         case .Phone: break
         default: break
         }
@@ -131,29 +136,85 @@ PostCellDelegate {
         self.fetchLinks()
     }
     
-    // Private
-    
-    private func configureForPad() {
-        let width: CGFloat = 500
-        let height: CGFloat = 350
+    private func fetchLinks() {
         
-        preferredContentSize = CGSizeMake(width, height)
-        self.splitViewController?.presentsWithGesture = false
-        self.listButton.action = self.splitViewController!.displayModeButtonItem().action
-        
-        self.splitViewController?.delegate = self
-    }
+        LocalyticsSession.shared().tagEvent("Fetched links")
     
-    private func checkIfNoContent() {
-        if self.links.count == 0 {
-            self.tableView.hidden = true
-            self.noPostsView.hidden = false
+        self.hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
+        
+        let c: PaginationCompletion = {
+            pagination,
+            results,
+            error in
+            self.pagination = pagination
+            if let moreLinks = results {
+                self.links.appendContentsOf(moreLinks)
+            }
+            
+            self.fetchingMore = false
+            
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                self.hud.hide(true)
+                self.refreshControl.endRefreshing()
+                self.updateUI()
+            })
+        }
+        
+        if self.front {
+            RedditSession.sharedSession.fetchFrontPagePosts(self.pagination,
+                category: self.currentCategory, completion: c)
+        } else if all {
+            RedditSession.sharedSession.fetchAllPosts(self.pagination,
+                category: self.currentCategory, completion: c)
         } else {
-            self.tableView.hidden = false
-            self.noPostsView.hidden = true
+            if let _ = self.subreddit {
+                RedditSession.sharedSession.fetchPostsForSubreddit(self.subreddit,
+                    category: self.currentCategory,
+                    pagination: self.pagination,
+                    completion: c)
+            } else {
+                RedditSession.sharedSession.fetchPostsForMultiReddit(self.multiReddit,
+                    category: self.currentCategory,
+                    pagination: self.pagination,
+                    completion: c)
+            }
         }
     }
+    
+    // MARK: Private
 
+    private func updateUI() {
+        
+        var title: String!
+        
+        if let multiReddit = self.multiReddit {
+            title = multiReddit.name
+        } else {
+            if all {
+                title = "all"
+            } else {
+                title = front ? "front" : "\(subreddit.name.lowercaseString)"
+            }
+        }
+        
+        self.navigationItem.title = title
+        
+        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            self.updateSubscribeButton()
+            self.filterButton.tintColor = MyRedditLabelColor
+            self.listButton.tintColor = MyRedditLabelColor
+            self.postButton.tintColor = MyRedditLabelColor
+            self.searchButton.tintColor = MyRedditLabelColor
+            self.messages.tintColor = MyRedditLabelColor
+        })
+        
+        self.navigationController?.setToolbarHidden(true, animated: true)
+        
+        self.tableView.reloadData()
+        
+        self.fetchUnread()
+    }
+    
     private func fetchUnread() {
         RedditSession.sharedSession.fetchMessages(nil, category: .Unread, read: false) { (pagination, results, error) -> () in
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
@@ -194,165 +255,6 @@ PostCellDelegate {
         }
     }
     
-    // MARK: Private Fetching
-    
-    private func fetchFrontPagePosts(completion: () -> ()) {
-        RedditSession.sharedSession.fetchFrontPagePosts(self.pagination,
-            category: self.currentCategory, completion: { (pagination, results, error) -> () in
-                self.pagination = pagination
-                if let moreLinks = results {
-                    self.links.appendContentsOf(moreLinks)
-                }
-                
-                completion()
-        })
-    }
-    
-    private func fetchAllPosts(completion: () -> ()) {
-        RedditSession.sharedSession.fetchAllPosts(self.pagination,
-            category: self.currentCategory, completion: { (pagination, results, error) -> () in
-                self.pagination = pagination
-                if let moreLinks = results {
-                    self.links.appendContentsOf(moreLinks)
-                }
-                
-                completion()
-        })
-    }
-    
-    private func fetchPostsForSubreddit(completion: () -> ()) {
-        RedditSession.sharedSession.fetchPostsForSubreddit(self.subreddit,
-            category: self.currentCategory,
-            pagination: self.pagination,
-            completion: { (pagination, results, error) -> () in
-                self.pagination = pagination
-                if let moreLinks = results {
-                    self.links.appendContentsOf(moreLinks)
-                }
-                
-                completion()
-        })
-    }
-    
-    private func fetchPostsForMultiReddit(completion: () -> ()) {
-        RedditSession.sharedSession.fetchPostsForMultiReddit(self.multiReddit,
-            category: self.currentCategory,
-            pagination: self.pagination,
-            completion: { (pagination, results, error) -> () in
-                self.pagination = pagination
-                if let moreLinks = results {
-                    self.links.appendContentsOf(moreLinks)
-                }
-                
-                completion()
-        })
-    }
-    
-    private func fetchLinks() {
-        
-        LocalyticsSession.shared().tagEvent("Fetched links")
-    
-        self.hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
-        
-        if self.front {
-            self.fetchFrontPagePosts({ () -> () in
-                self.endRefreshing()
-            })
-        } else if all {
-            self.fetchAllPosts({ () -> () in
-                self.endRefreshing()
-            })
-        } else {
-            if let _ = self.subreddit {
-                self.fetchPostsForSubreddit({ () -> () in
-                    self.endRefreshing()
-                })
-            } else {
-                self.fetchPostsForMultiReddit({ () -> () in
-                    self.endRefreshing()
-                })
-            }
-        }
-    }
-    
-    // MARK: Private Updating
-    
-    private func reload() {
-        if !SettingsManager.defaultManager.valueForSetting(.NSFW) {
-            self.links = self.links.filter({ (obj) -> Bool in
-                if let link = obj as? RKLink {
-                    if link.NSFW {
-                        return false
-                    }
-                }
-                
-                return true
-            })
-        }
-        
-        if self.links.count == 25 || self.links.count == 0 {
-            self.tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: .Fade)
-        } else {
-            self.tableView.reloadData()
-        }
-    }
-    
-    private func reset() {
-        self.links = Array<AnyObject>()
-        self.pagination = nil
-        self.front = true
-        self.currentCategory = nil
-    }
-    
-    private func updateAndFetch() {
-        LocalyticsSession.shared().tagScreen("Subreddit")
-        self.updateUI()
-        self.fetchUnread()
-        self.refresh(nil)
-        self.updateSubscribeButton()
-    }
-    
-    private func updateUI() {
-        
-        var title: String!
-        
-        if let multiReddit = self.multiReddit {
-            title = multiReddit.name
-        } else {
-            if all {
-                title = "all"
-            } else {
-                title = front ? "front" : "\(subreddit.name.lowercaseString)"
-            }
-        }
-        
-        self.navigationItem.title = title
-        
-        dispatch_async(dispatch_get_main_queue(), { () -> Void in
-            self.updateSubscribeButton()
-            self.filterButton.tintColor = MyRedditLabelColor
-            self.listButton.tintColor = MyRedditLabelColor
-            self.postButton.tintColor = MyRedditLabelColor
-            self.searchButton.tintColor = MyRedditLabelColor
-            self.messages.tintColor = MyRedditLabelColor
-            self.noPostsView.backgroundColor = MyRedditBackgroundColor
-            self.noPostsLabel.textColor = MyRedditLabelColor
-        })
-        
-        self.navigationController?.setToolbarHidden(true, animated: true)
-    }
-    
-    private func endRefreshing() {
-        dispatch_async(dispatch_get_main_queue()) { () -> Void in
-            self.reload()
-            self.fetchingMore = false
-            self.checkIfNoContent()
-            
-            self.hud.hide(true)
-            self.refreshControl.endRefreshing()
-        }
-    }
-    
     private func reloadSubreddit() {
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
             RedditSession.sharedSession.searchForSubredditByName(self.subreddit.name,
@@ -387,7 +289,6 @@ PostCellDelegate {
                     }
             }
         })
-
     }
     
     // MARK: IBActions
@@ -503,10 +404,6 @@ PostCellDelegate {
                 self.performSegueWithIdentifier("AccountsSegue", sender: self)
             }
         }
-    }
-    
-    @IBAction func tryAgainButtonPressed(sender: AnyObject) {
-        self.updateAndFetch()
     }
     
     // MARK: UITableViewDataSource
@@ -759,9 +656,7 @@ PostCellDelegate {
         }
     }
     
-    func swipeCell(cell: JZSwipeCell!, swipeTypeChangedFrom from: JZSwipeType, to: JZSwipeType) {
-        
-    }
+    func swipeCell(cell: JZSwipeCell!, swipeTypeChangedFrom from: JZSwipeType, to: JZSwipeType) { }
     
     // MARK: PostImageCellDelegate
     

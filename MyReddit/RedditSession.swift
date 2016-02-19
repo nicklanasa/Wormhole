@@ -10,9 +10,10 @@ import Foundation
 
 let _sharedSession = RedditSession()
 
+typealias PaginationCompletion = (pagination: RKPagination?, results: [AnyObject]?, error: NSError?) -> ()
+
 class RedditSession {
     
-    typealias PaginationCompletion = (pagination: RKPagination?, results: [AnyObject]?, error: NSError?) -> ()
     typealias ReadableCompletion = (content: ReadableContent?, error: NSError?) -> ()
     typealias ErrorCompletion = (error: NSError?) -> ()
     typealias BooleanCompletion = (result: Bool, error: NSError?) -> ()

@@ -6,9 +6,9 @@
 @import Appirater;
 @import DateTools;
 
-#import <Localytics-AMP/LocalyticsSession.h>
 #import <RATreeView/RATreeView.h>
 
+#import "LocalyticsSession.h"
 #import "RedditKit.h"
 #import "RKCompletionBlocks.h"
 
