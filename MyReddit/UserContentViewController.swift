@@ -515,21 +515,15 @@ PostImageCellDelegate {
                                                 preferredStyle: .ActionSheet)
         
         if link.saved() {
-            let action = UIAlertAction(
-                    title: "unsave",
-                    style: .Default,
-                                   handler: { (action) -> Void in
-                                       link.unsave({ (error) -> Void in self.hud.hide(true) })
-                                   })
+            let action = UIAlertAction(title: "unsave", style: .Default, handler: { (action) -> Void in
+                link.unsave({ (error) -> Void in self.hud.hide(true) })
+            })
             
             alertController.addAction(action)
         } else {
-            let action = UIAlertAction(
-                    title: "save",
-                    style: .Default,
-                                   handler: { (action) -> Void in
-                                       link.save({ (error) -> Void in self.hud.hide(true) })
-                                   })
+            let action = UIAlertAction(title: "save", style: .Default, handler: { (action) -> Void in
+                link.save({ (error) -> Void in self.hud.hide(true) })
+            })
             
             alertController.addAction(action)
         }
