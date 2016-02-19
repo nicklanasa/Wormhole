@@ -185,123 +185,6 @@
                                     <outlet property="delegate" destination="yqo-vd-J8K" id="gdx-cx-GRE"/>
                                 </connections>
                             </tableView>
-                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5aZ-B0-Wo9">
-                                <rect key="frame" x="0.0" y="64" width="600" height="492"/>
-                                <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="TopLeft" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Unable to get posts. Tap submit a post or try again to reload." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.69999998807907104" translatesAutoresizingMaskIntoConstraints="NO" id="P0I-ja-X36">
-                                        <rect key="frame" x="64" y="118" width="472" height="120"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="120" id="Iip-HE-T4y"/>
-                                            <constraint firstAttribute="width" constant="472" id="LrC-GB-gSv"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="30"/>
-                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                        <nil key="highlightedColor"/>
-                                        <variation key="widthClass=regular" misplaced="YES">
-                                            <rect key="frame" x="16" y="72" width="768" height="315"/>
-                                        </variation>
-                                    </label>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ok4-02-13t">
-                                        <rect key="frame" x="8" y="403" width="584" height="46"/>
-                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="46" id="J98-VK-nBJ"/>
-                                            <constraint firstAttribute="height" constant="46" id="Kcd-fo-c09"/>
-                                            <constraint firstAttribute="width" constant="276" id="XZz-yA-08F"/>
-                                            <constraint firstAttribute="width" constant="584" id="tRU-g8-JGt"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="16"/>
-                                        <state key="normal" title="try again">
-                                            <color key="titleColor" red="0.33333333329999998" green="0.5450980392" blue="0.1843137255" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="string" keyPath="layer.borderWidth" value="1"/>
-                                            <userDefinedRuntimeAttribute type="color" keyPath="layer.borderColor">
-                                                <color key="value" red="0.80000000000000004" green="0.80000000000000004" blue="0.80000000000000004" alpha="1" colorSpace="calibratedRGB"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="string" keyPath="layer.cornerRadius" value="22"/>
-                                        </userDefinedRuntimeAttributes>
-                                        <variation key="default">
-                                            <mask key="constraints">
-                                                <exclude reference="J98-VK-nBJ"/>
-                                                <exclude reference="XZz-yA-08F"/>
-                                            </mask>
-                                        </variation>
-                                        <variation key="widthClass=regular" misplaced="YES">
-                                            <rect key="frame" x="16" y="459" width="276" height="46"/>
-                                        </variation>
-                                        <variation key="heightClass=compact-widthClass=regular">
-                                            <mask key="constraints">
-                                                <include reference="J98-VK-nBJ"/>
-                                                <include reference="XZz-yA-08F"/>
-                                            </mask>
-                                        </variation>
-                                        <connections>
-                                            <action selector="purchaseButtonTapped:" destination="Zov-bH-lU9" eventType="touchUpInside" id="E6O-7U-kCq"/>
-                                            <action selector="tryAgainButtonPressed:" destination="yqo-vd-J8K" eventType="touchUpInside" id="H2k-tl-frH"/>
-                                        </connections>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Rzq-kV-eKt">
-                                        <rect key="frame" x="8" y="344" width="584" height="46"/>
-                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="584" id="97i-uD-Rtm"/>
-                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="584" id="HDf-wo-dEa"/>
-                                            <constraint firstAttribute="width" constant="276" id="aAl-fB-ytz"/>
-                                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="46" id="c99-8b-Dqj"/>
-                                            <constraint firstAttribute="height" constant="46" id="sAf-Md-lkH"/>
-                                            <constraint firstAttribute="height" constant="46" id="yvt-2o-JsT"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="16"/>
-                                        <state key="normal" title="submit a post">
-                                            <color key="titleColor" red="0.92156862750000001" green="0.31764705879999999" blue="0.1137254902" alpha="1" colorSpace="calibratedRGB"/>
-                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="string" keyPath="layer.borderWidth" value="1"/>
-                                            <userDefinedRuntimeAttribute type="color" keyPath="layer.borderColor">
-                                                <color key="value" red="0.80000000000000004" green="0.80000000000000004" blue="0.80000000000000004" alpha="1" colorSpace="calibratedRGB"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="string" keyPath="layer.cornerRadius" value="22"/>
-                                        </userDefinedRuntimeAttributes>
-                                        <variation key="default">
-                                            <mask key="constraints">
-                                                <exclude reference="aAl-fB-ytz"/>
-                                                <exclude reference="yvt-2o-JsT"/>
-                                            </mask>
-                                        </variation>
-                                        <variation key="widthClass=regular" misplaced="YES">
-                                            <rect key="frame" x="16" y="459" width="276" height="46"/>
-                                        </variation>
-                                        <variation key="heightClass=compact-widthClass=regular">
-                                            <mask key="constraints">
-                                                <include reference="aAl-fB-ytz"/>
-                                                <include reference="yvt-2o-JsT"/>
-                                            </mask>
-                                        </variation>
-                                        <connections>
-                                            <action selector="purchaseButtonTapped:" destination="Zov-bH-lU9" eventType="touchUpInside" id="Gl4-Jh-Xj5"/>
-                                            <action selector="submitAPostButtonPressed:" destination="yqo-vd-J8K" eventType="touchUpInside" id="HTa-Kx-Gd6"/>
-                                        </connections>
-                                    </button>
-                                </subviews>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstItem="P0I-ja-X36" firstAttribute="top" secondItem="5aZ-B0-Wo9" secondAttribute="top" constant="118" id="64z-Ev-1y7"/>
-                                    <constraint firstItem="Rzq-kV-eKt" firstAttribute="top" secondItem="P0I-ja-X36" secondAttribute="bottom" constant="106" id="7ax-FZ-eVh"/>
-                                    <constraint firstItem="Rzq-kV-eKt" firstAttribute="leading" secondItem="5aZ-B0-Wo9" secondAttribute="leading" constant="8" id="ARj-TD-APQ"/>
-                                    <constraint firstAttribute="bottomMargin" secondItem="ok4-02-13t" secondAttribute="bottom" constant="35" id="Mem-3M-3Bv"/>
-                                    <constraint firstItem="ok4-02-13t" firstAttribute="top" secondItem="Rzq-kV-eKt" secondAttribute="bottom" constant="13" id="XLY-gc-GQ0"/>
-                                    <constraint firstAttribute="width" constant="600" id="Ywi-2P-lAj"/>
-                                    <constraint firstItem="P0I-ja-X36" firstAttribute="leading" secondItem="5aZ-B0-Wo9" secondAttribute="leading" constant="64" id="eOa-41-C4j"/>
-                                    <constraint firstAttribute="trailing" secondItem="Rzq-kV-eKt" secondAttribute="trailing" constant="8" id="hTh-ml-GZ9"/>
-                                    <constraint firstItem="ok4-02-13t" firstAttribute="leading" secondItem="5aZ-B0-Wo9" secondAttribute="leadingMargin" id="pfA-sd-f6g"/>
-                                    <constraint firstAttribute="height" constant="492" id="qYa-zW-dic"/>
-                                    <constraint firstItem="ok4-02-13t" firstAttribute="trailing" secondItem="5aZ-B0-Wo9" secondAttribute="trailingMargin" id="xvm-j3-BJu"/>
-                                    <constraint firstAttribute="trailing" secondItem="P0I-ja-X36" secondAttribute="trailing" constant="64" id="yRg-7l-Sq5"/>
-                                </constraints>
-                            </view>
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gqf-DS-7uP">
                                 <rect key="frame" x="0.0" y="556" width="600" height="44"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -350,11 +233,7 @@
                             <constraint firstAttribute="trailing" secondItem="C52-gL-QAq" secondAttribute="trailing" id="H8k-DR-6zY"/>
                             <constraint firstItem="C52-gL-QAq" firstAttribute="leading" secondItem="UFU-TA-iso" secondAttribute="leading" id="QGL-Sd-pLN"/>
                             <constraint firstItem="gqf-DS-7uP" firstAttribute="top" secondItem="C52-gL-QAq" secondAttribute="bottom" id="WnO-zX-2eD"/>
-                            <constraint firstItem="gqf-DS-7uP" firstAttribute="top" secondItem="5aZ-B0-Wo9" secondAttribute="bottom" id="eLs-m1-TJN"/>
                             <constraint firstAttribute="bottom" secondItem="C52-gL-QAq" secondAttribute="bottom" constant="44" id="fhJ-6c-dox"/>
-                            <constraint firstItem="5aZ-B0-Wo9" firstAttribute="leading" secondItem="UFU-TA-iso" secondAttribute="leadingMargin" constant="-20" id="l4I-uK-Fq5"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="5aZ-B0-Wo9" secondAttribute="trailing" constant="-20" id="mCg-I0-Q7S"/>
-                            <constraint firstItem="5aZ-B0-Wo9" firstAttribute="top" secondItem="wg4-vp-5tp" secondAttribute="bottom" id="pky-QG-zrt"/>
                             <constraint firstItem="C52-gL-QAq" firstAttribute="top" secondItem="UFU-TA-iso" secondAttribute="top" id="rp8-56-DcX"/>
                             <constraint firstAttribute="trailingMargin" secondItem="gqf-DS-7uP" secondAttribute="trailing" constant="-20" id="xUC-78-OgZ"/>
                             <constraint firstItem="gqf-DS-7uP" firstAttribute="leading" secondItem="UFU-TA-iso" secondAttribute="leadingMargin" constant="-20" id="zWl-aN-hZJ"/>
@@ -373,8 +252,6 @@
                         <outlet property="filterButton" destination="JJZ-Uf-wuY" id="tQT-Fi-zLj"/>
                         <outlet property="listButton" destination="Q2v-JC-IKA" id="A9X-WL-7WP"/>
                         <outlet property="messages" destination="r8k-Hp-EGO" id="U3o-pS-oM3"/>
-                        <outlet property="noPostsLabel" destination="P0I-ja-X36" id="Q3t-F7-zYD"/>
-                        <outlet property="noPostsView" destination="5aZ-B0-Wo9" id="pFs-QV-aaP"/>
                         <outlet property="postButton" destination="4CL-zW-GHL" id="WXj-ia-LPD"/>
                         <outlet property="searchButton" destination="dOl-GF-7qg" id="9hL-2c-8zW"/>
                         <outlet property="subscribeButton" destination="ZCd-hO-GGS" id="a52-S9-0f8"/>

@@ -71,9 +71,7 @@ PostCellDelegate {
     var refreshControl: UIRefreshControl!
     var heightsCache = [String : AnyObject]()
     
-    @IBOutlet weak var noPostsLabel: UILabel!
     @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var noPostsView: UIView!
     @IBOutlet weak var toolBar: UIToolbar!
     
     @IBOutlet weak var subscribeButton: UIBarButtonItem!
@@ -154,16 +152,6 @@ PostCellDelegate {
         self.splitViewController?.delegate = self
     }
     
-    private func checkIfNoContent() {
-        if self.links.count == 0 {
-            self.tableView.hidden = true
-            self.noPostsView.hidden = false
-        } else {
-            self.tableView.hidden = false
-            self.noPostsView.hidden = true
-        }
-    }
-    
     private func fetchLinks() {
         
         LocalyticsSession.shared().tagEvent("Fetched links")
@@ -180,7 +168,6 @@ PostCellDelegate {
             }
             
             self.fetchingMore = false
-            self.checkIfNoContent()
             
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
                 self.hud.hide(true)
@@ -235,8 +222,6 @@ PostCellDelegate {
             self.postButton.tintColor = MyRedditLabelColor
             self.searchButton.tintColor = MyRedditLabelColor
             self.messages.tintColor = MyRedditLabelColor
-            self.noPostsView.backgroundColor = MyRedditBackgroundColor
-            self.noPostsLabel.textColor = MyRedditLabelColor
         })
         
         self.navigationController?.setToolbarHidden(true, animated: true)
