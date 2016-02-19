@@ -54,11 +54,11 @@ class SwipeCell: JZSwipeCell, JZSwipeCellDelegate {
             if swipeType.rawValue == JZSwipeTypeShortLeft.rawValue {
                 self.swipeDelegate?.swipeCell(self, didTriggerSwipeWithType: .ShortLeft)
             } else if swipeType.rawValue == JZSwipeTypeShortRight.rawValue {
-                self.swipeDelegate?.swipeCell(self, didTriggerSwipeWithType: .ShortLeft)
+                self.swipeDelegate?.swipeCell(self, didTriggerSwipeWithType: .ShortRight)
             } else if swipeType.rawValue == JZSwipeTypeLongLeft.rawValue {
-                self.swipeDelegate?.swipeCell(self, didTriggerSwipeWithType: .ShortLeft)
+                self.swipeDelegate?.swipeCell(self, didTriggerSwipeWithType: .LongLeft)
             } else {
-                self.swipeDelegate?.swipeCell(self, didTriggerSwipeWithType: .ShortLeft)
+                self.swipeDelegate?.swipeCell(self, didTriggerSwipeWithType: .LongRight)
             }
         }
     }
