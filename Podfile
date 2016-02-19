@@ -2,7 +2,7 @@ platform :ios, '8.0'
 
 use_frameworks!
 
-link_with 'MyReddit', 'MyReddit-iPad', 'MyRedditTests'
+link_with 'MyReddit', 'MyReddit-iPad', 'MyRedditTests', 'MyRedditUITests'
 
 pod 'Localytics-AMP', '~> 2.0'
 pod 'RedditKit'
@@ -18,4 +18,4 @@ pod 'Appirater'
 pod 'DateTools'
 pod 'UIImage-ResizeMagick'
 pod 'FZImageUtilCategory'
-pod 'RATreeView', '~> 1.0.3'
+pod 'RATreeView'

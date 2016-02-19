@@ -58,6 +58,7 @@
 		01E39F451AF52E9900C544EA /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01E39F441AF52E9900C544EA /* User.swift */; };
 		01F9654D1AC4F12000DE0CD6 /* MessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01F9654C1AC4F12000DE0CD6 /* MessagesViewController.swift */; };
 		01F965531AC4F4B500DE0CD6 /* MessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01F965521AC4F4B500DE0CD6 /* MessageCell.swift */; };
+		6B530DF5240E91B1D52D66BA /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17E86E6737E2DEE7AE1AE9C5 /* Pods.framework */; };
 		7922CA6F1BD33FCE0042E484 /* SplitViewController+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7922CA6E1BD33FCE0042E484 /* SplitViewController+Helpers.swift */; };
 		7922CA701BD33FCE0042E484 /* SplitViewController+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7922CA6E1BD33FCE0042E484 /* SplitViewController+Helpers.swift */; };
 		793163BA1BD9258900E474EF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE712EE61AC2F1A20042B071 /* Main.storyboard */; };
@@ -303,6 +304,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6B530DF5240E91B1D52D66BA /* Pods.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -585,9 +587,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 01A623051C76C62700A8F857 /* Build configuration list for PBXNativeTarget "MyRedditUITests" */;
 			buildPhases = (
+				E0EE2612BE41AA03B1BF3EF3 /* Check Pods Manifest.lock */,
 				01A622F81C76C62700A8F857 /* Sources */,
 				01A622F91C76C62700A8F857 /* Frameworks */,
 				01A622FA1C76C62700A8F857 /* Resources */,
+				378A67F7B787AF07C6BBCDB1 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -730,6 +734,21 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		378A67F7B787AF07C6BBCDB1 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		7EF8D3B4BEDDC1076ECC5F76 /* Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -803,6 +822,21 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E0EE2612BE41AA03B1BF3EF3 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		E5EC5EFB988F3C5A7554018B /* Embed Pods Frameworks */ = {
@@ -1053,6 +1087,7 @@
 /* Begin XCBuildConfiguration section */
 		01A623031C76C62700A8F857 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = CB38B9FFF29557E07DBAC730 /* Pods.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -1069,6 +1104,7 @@
 		};
 		01A623041C76C62700A8F857 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1550E4C632DA217C2AFF77DB /* Pods.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -1280,6 +1316,7 @@
 				01A623041C76C62700A8F857 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		CE3AA4BB1B0549E9000DEDD2 /* Build configuration list for PBXNativeTarget "MyReddit-iPad" */ = {
 			isa = XCConfigurationList;
