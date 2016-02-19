@@ -15,7 +15,6 @@ UIScrollViewDelegate,
 RATreeViewDelegate,
 RATreeViewDataSource,
 CommentCellDelegate,
-JZSwipeCellDelegate,
 UITextFieldDelegate,
 AddCommentViewControllerDelegate {
 
@@ -224,7 +223,6 @@ AddCommentViewControllerDelegate {
                 right: 0)
         }
         
-        cell.delegate = self
         cell.commentDelegate = self
         
         return cell
@@ -288,51 +286,91 @@ AddCommentViewControllerDelegate {
         }
     }
     
-    func commentCell(cell: CommentCell, didTapLink link: NSURL) {
-        self.performSegueWithIdentifier("CommentLinkSegue", sender: link)
-    }
-   
-    func swipeCell(cell: JZSwipeCell!, triggeredSwipeWithType swipeType: JZSwipeType) {
-        if swipeType.rawValue != JZSwipeTypeNone.rawValue {
-            cell.reset()
-            if !SettingsManager.defaultManager.purchased {
-                self.performSegueWithIdentifier("PurchaseSegue", sender: self)
+    // MARK: CommentCellDelegate
+    
+    func commentCell(cell: CommentCell, didShortRightSwipeForItem item: AnyObject) {
+        let c: ErrorCompletion = {
+            error in
+            self.hud.hide(true)
+            if error != nil {
+                UIAlertView(title: "Error!",
+                    message: error!.localizedDescription,
+                    delegate: self,
+                    cancelButtonTitle: "Ok").show()
             } else {
-                self.hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
-                var votedable: RKVotable?
-                
-                if let link = self.treeView.itemForCell(cell) as? RKLink {
-                    votedable = self.link
-                    
-                    if swipeType.rawValue == JZSwipeTypeLongLeft.rawValue {
-                        self.linkMoreActions(cell)
-                    } else if swipeType.rawValue == JZSwipeTypeLongRight.rawValue {
-                        LocalyticsSession.shared().tagEvent("Swipe share")
-                        // Share
-                        self.hud.hide(true)
-                        self.optionsController = LinkShareOptionsViewController(link: link)
-                        self.optionsController.sourceView = cell
-                        self.optionsController.showInView(self.view)
-                    }
-                } else if let comment = self.treeView.itemForCell(cell) as? RKComment {
-                    votedable = comment
-                    
-                    if swipeType.rawValue == JZSwipeTypeLongLeft.rawValue {
-                        self.commentMoreActions(cell, comment: comment)
-                    } else if swipeType.rawValue == JZSwipeTypeLongRight.rawValue {
-                        self.downVote(comment)
-                    }
-                }
-                
-                if let object = votedable {
-                    if swipeType.rawValue == JZSwipeTypeShortRight.rawValue {
-                        self.downVote(object)
-                    } else if swipeType.rawValue == JZSwipeTypeShortLeft.rawValue {
-                        self.upVote(object)
-                    }
-                }
+                self.treeView.reloadRowsForItems([item], withRowAnimation: RATreeViewRowAnimation.init(0))
             }
         }
+        
+        if let comment = item as? RKComment {
+            RedditSession.sharedSession.downvote(comment, completion: c)
+            LocalyticsSession.shared().tagEvent("Swipe downvote comment")
+        } else if let link = item as? RKLink {
+            RedditSession.sharedSession.downvote(link, completion: c)
+            LocalyticsSession.shared().tagEvent("Swipe downvote")
+        }
+    }
+    
+    func commentCell(cell: CommentCell, didShortLeftSwipeForItem item: AnyObject) {
+        let c: ErrorCompletion = {
+            error in
+            self.hud.hide(true)
+            if error != nil {
+                UIAlertView(title: "Error!",
+                    message: error!.localizedDescription,
+                    delegate: self,
+                    cancelButtonTitle: "Ok").show()
+            } else {
+                self.treeView.reloadRowsForItems([item], withRowAnimation: RATreeViewRowAnimation.init(0))
+            }
+        }
+        
+        if let comment = item as? RKComment {
+            RedditSession.sharedSession.upvote(comment, completion: c)
+            LocalyticsSession.shared().tagEvent("Swipe upvote comment")
+        } else if let link = item as? RKLink {
+            RedditSession.sharedSession.upvote(link, completion: c)
+            LocalyticsSession.shared().tagEvent("Swipe upvote")
+        }
+    }
+    
+    func commentCell(cell: CommentCell, didLongRightSwipeForItem item: AnyObject) {
+        if let comment = item as? RKComment {
+            let c: ErrorCompletion = {
+                error in
+                self.hud.hide(true)
+                if error != nil {
+                    UIAlertView(title: "Error!",
+                        message: error!.localizedDescription,
+                        delegate: self,
+                        cancelButtonTitle: "Ok").show()
+                } else {
+                    self.treeView.reloadRowsForItems([item], withRowAnimation: RATreeViewRowAnimation.init(0))
+                }
+            }
+            
+            RedditSession.sharedSession.downvote(comment, completion: c)
+            LocalyticsSession.shared().tagEvent("Swipe downvote comment")
+        } else if let link = item as? RKLink {
+            // Share
+            self.hud.hide(true)
+            self.optionsController = LinkShareOptionsViewController(link: link)
+            self.optionsController.sourceView = cell
+            self.optionsController.showInView(self.view)
+            LocalyticsSession.shared().tagEvent("Swipe share")
+        }
+    }
+    
+    func commentCell(cell: CommentCell, didLongLeftSwipeForItem item: AnyObject) {
+        if let comment = item as? RKComment {
+            self.commentMoreActions(cell, comment: comment)
+        } else if let _ = item as? RKLink {
+            self.linkMoreActions(cell)
+        }
+    }
+    
+    func commentCell(cell: CommentCell, didTapLink link: NSURL) {
+        self.performSegueWithIdentifier("CommentLinkSegue", sender: link)
     }
     
     private func linkMoreActions(sourceView: AnyObject) {
@@ -473,37 +511,6 @@ AddCommentViewControllerDelegate {
         }
         
         alertController.present(animated: true, completion: nil)
-    }
-    
-    private func upVote(object: RKVotable) {
-        RedditSession.sharedSession.upvote(object, completion: { (error) -> () in
-            self.hud.hide(true)
-            
-            if error != nil {
-                UIAlertView(title: "Error!",
-                    message: error!.localizedDescription,
-                    delegate: self,
-                    cancelButtonTitle: "Ok").show()
-            } else {
-                LocalyticsSession.shared().tagEvent("Swipe upvote comment")
-                self.treeView.reloadRowsForItems([object], withRowAnimation: RATreeViewRowAnimation.init(0))
-            }
-        })
-    }
-    
-    private func downVote(object: RKVotable) {
-        RedditSession.sharedSession.downvote(object, completion: { (error) -> () in
-            self.hud.hide(true)
-            if error != nil {
-                UIAlertView(title: "Error!",
-                    message: error!.localizedDescription,
-                    delegate: self,
-                    cancelButtonTitle: "Ok").show()
-            } else {
-                LocalyticsSession.shared().tagEvent("Swipe downvote comment")
-                self.treeView.reloadRowsForItems([object], withRowAnimation: RATreeViewRowAnimation.init(0))
-            }
-        })
     }
     
     func addCommentViewController(controller: AddCommentViewController, didAddComment success: Bool) {

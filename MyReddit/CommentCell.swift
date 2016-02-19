@@ -9,11 +9,23 @@
 import Foundation
 import UIKit
 
-protocol CommentCellDelegate {
+@objc protocol CommentCellDelegate {
     func commentCell(cell: CommentCell, didTapLink link: NSURL)
+    optional func commentCell(cell: CommentCell, didShortRightSwipeForItem item: AnyObject)
+    optional func commentCell(cell: CommentCell, didLongRightSwipeForItem item: AnyObject)
+    optional func commentCell(cell: CommentCell, didShortLeftSwipeForItem item: AnyObject)
+    optional func commentCell(cell: CommentCell, didLongLeftSwipeForItem item: AnyObject)
 }
 
-class CommentCell: JZSwipeCell, UITextViewDelegate {
+class CommentCell: SwipeCell,
+SwipeCellDelegate,
+UITextViewDelegate {
+    
+    @IBOutlet weak var leadingTextViewConstraint: NSLayoutConstraint!
+    @IBOutlet weak var leadinginfoLabelConstraint: NSLayoutConstraint!
+    @IBOutlet weak var infoLabel: UILabel!
+    @IBOutlet weak var scoreLabel: UILabel!
+    @IBOutlet weak var sepView: UIView!
     
     var commentDelegate: CommentCellDelegate?
     
@@ -32,22 +44,17 @@ class CommentCell: JZSwipeCell, UITextViewDelegate {
     }
     
     override func awakeFromNib() {
-    
+        
+        let upVoteImage = UIImage(named: "Up")!.imageWithRenderingMode(.AlwaysOriginal)
+        let downVoteImage = UIImage(named: "Down")!.imageWithRenderingMode(.AlwaysOriginal)
+        let replyImage = UIImage(named: "moreWhite")!.imageWithRenderingMode(.AlwaysOriginal)
+        
+        self.images = [downVoteImage, downVoteImage, upVoteImage, replyImage]
+        self.colors = [MyRedditDownvoteColor, MyRedditDownvoteColor, MyRedditUpvoteColor, MyRedditReplyColor]
+        
         super.awakeFromNib()
         
-        if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
-            self.shortSwipeLength = 300
-        } else {
-            self.shortSwipeLength = 150
-        }
-        
-        let upVoteImage = UIImage(named: "Up")?.imageWithRenderingMode(.AlwaysOriginal)
-        let downVoteImage = UIImage(named: "Down")?.imageWithRenderingMode(.AlwaysOriginal)
-        let replyImage = UIImage(named: "moreWhite")?.imageWithRenderingMode(.AlwaysOriginal)
-        
-        self.imageSet = SwipeCellImageSetMake(downVoteImage, downVoteImage, upVoteImage, replyImage)
-        self.colorSet = SwipeCellColorSetMake(MyRedditDownvoteColor, MyRedditDownvoteColor, MyRedditUpvoteColor, MyRedditReplyColor)
-        
+        self.swipeDelegate = self
         self.commentTextView.delegate = self
         
         self.contentView.backgroundColor = MyRedditBackgroundColor
@@ -205,12 +212,6 @@ class CommentCell: JZSwipeCell, UITextViewDelegate {
         self.sepView.hidden = true
     }
     
-    @IBOutlet weak var leadingTextViewConstraint: NSLayoutConstraint!
-    @IBOutlet weak var leadinginfoLabelConstraint: NSLayoutConstraint!
-    @IBOutlet weak var infoLabel: UILabel!
-    @IBOutlet weak var scoreLabel: UILabel!
-    @IBOutlet weak var sepView: UIView!
-    
     func textView(textView: UITextView, shouldInteractWithURL URL: NSURL, inRange characterRange: NSRange) -> Bool {
         self.currentTappedURL = URL
         return false
@@ -220,5 +221,14 @@ class CommentCell: JZSwipeCell, UITextViewDelegate {
         super.prepareForReuse()
         self.indentationLevel = 0
         self.indentationWidth = 0
+    }
+    
+    func swipeCell(cell: SwipeCell, didTriggerSwipeWithType swipeType: SwipeType) {
+        switch swipeType {
+        case .LongRight: self.commentDelegate?.commentCell?(self, didLongRightSwipeForItem: self.link == nil ? self.comment : self.link)
+        case .LongLeft: self.commentDelegate?.commentCell?(self, didLongLeftSwipeForItem: self.link == nil ? self.comment : self.link)
+        case .ShortRight: self.commentDelegate?.commentCell?(self, didShortRightSwipeForItem: self.link == nil ? self.comment : self.link)
+        default: self.commentDelegate?.commentCell?(self, didShortLeftSwipeForItem: self.link == nil ? self.comment : self.link)
+        }
     }
 }

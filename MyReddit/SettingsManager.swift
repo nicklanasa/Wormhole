@@ -249,6 +249,7 @@ class SettingsManager {
     
     var purchased: Bool! {
         get {
+            return true
             if NSUserDefaults.standardUserDefaults().objectForKey("purchased") == nil {
                 return false
             } else {

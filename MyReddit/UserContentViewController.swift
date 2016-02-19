@@ -13,9 +13,9 @@ import MBProgressHUD
 class UserContentViewController: RootViewController,
 UITableViewDelegate,
 UITableViewDataSource,
-JZSwipeCellDelegate,
-PostImageCellDelegate,
-CommentCellDelegate {
+PostCellDelegate,
+CommentCellDelegate,
+PostImageCellDelegate {
 
     var category: RKUserContentCategory!
     var categoryTitle: String!
@@ -159,7 +159,6 @@ CommentCellDelegate {
                     let imageCell = tableView.dequeueReusableCellWithIdentifier("PostImageCell") as! PostImageCell
                     imageCell.postImageDelegate = self
                     imageCell.link = link
-                    imageCell.delegate = self
                     return imageCell
                 }
                 
@@ -174,15 +173,14 @@ CommentCellDelegate {
             
             commentCell.indentationLevel = 1
             commentCell.indentationWidth = 15
+            commentCell.commentDelegate = self
             
             commentCell.configueForComment(comment: comment, isLinkAuthor: true)
-            commentCell.delegate = self
-            commentCell.commentDelegate = self
             
             return commentCell
         }
         
-        cell.delegate = self
+        cell.postCellDelegate = self
         
         return cell
     }
@@ -265,54 +263,244 @@ CommentCellDelegate {
         }
     }
     
-    // MARK: JZSwipeCellDelegate
+    // MARK: CommentCellDelegate
     
-    func swipeCell(cell: JZSwipeCell!, triggeredSwipeWithType swipeType: JZSwipeType) {
-        if swipeType.rawValue != JZSwipeTypeNone.rawValue {
-            cell.reset()
-            if let indexPath = self.tableView.indexPathForCell(cell) {
-                if let link = self.content[indexPath.row] as? RKLink  {
-                    if !SettingsManager.defaultManager.purchased {
-                        if swipeType.rawValue == JZSwipeTypeLongLeft.rawValue {
-                            LocalyticsSession.shared().tagEvent("Swipe comments")
-                            self.performSegueWithIdentifier("CommentsSegue", sender: link)
-                        } else {
-                            self.performSegueWithIdentifier("PurchaseSegue", sender: self)
-                        }
-                    } else {
-                        if let indexPath = self.tableView.indexPathForCell(cell) {
-                            if let link = self.content[indexPath.row] as? RKLink  {
-                                let postCell = cell as! PostCell
-                                self.hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
-                                if swipeType.rawValue == JZSwipeTypeShortLeft.rawValue {
-                                    // Upvote
-                                    self.upvote(link)
-                                    postCell.upvote()
-                                } else if swipeType.rawValue == JZSwipeTypeShortRight.rawValue {
-                                    // Downvote
-                                    self.downvote(link)
-                                    postCell.downvote()
-                                } else if swipeType.rawValue == JZSwipeTypeLongLeft.rawValue {
-                                    LocalyticsSession.shared().tagEvent("Swipe comments")
-                                    self.hud.hide(true)
-                                    self.performSegueWithIdentifier("CommentsSegue", sender: link)
-                                } else {
-                                    // More
-                                    self.performMoreSwipeActionForLink(link, withCell: postCell)
-                                }
-                            } else if let comment = self.content[indexPath.row] as? RKComment {
-                                self.performSwipeActionForType(swipeType, forObject: comment)
-                            }
-                        }
-                    }
-
+    func commentCell(cell: CommentCell, didShortRightSwipeForItem item: AnyObject) {
+        let c: ErrorCompletion = {
+            error in
+            if error != nil {
+                UIAlertView(title: "Error!",
+                    message: error!.localizedDescription,
+                    delegate: self,
+                    cancelButtonTitle: "Ok").show()
+            } else {
+                if let indexPath = self.tableView.indexPathForCell(cell) {
+                    self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
                 }
             }
         }
+        
+        if let comment = item as? RKComment {
+            RedditSession.sharedSession.downvote(comment, completion: c)
+            LocalyticsSession.shared().tagEvent("Swipe downvote comment")
+        } else if let link = item as? RKLink {
+            RedditSession.sharedSession.downvote(link, completion: c)
+            LocalyticsSession.shared().tagEvent("Swipe downvote")
+        }
     }
     
-    func swipeCell(cell: JZSwipeCell!, swipeTypeChangedFrom from: JZSwipeType, to: JZSwipeType) {
+    func commentCell(cell: CommentCell, didShortLeftSwipeForItem item: AnyObject) {
+        let c: ErrorCompletion = {
+            error in
+            if error != nil {
+                UIAlertView(title: "Error!",
+                    message: error!.localizedDescription,
+                    delegate: self,
+                    cancelButtonTitle: "Ok").show()
+            } else {
+                if let indexPath = self.tableView.indexPathForCell(cell) {
+                    self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+                }
+            }
+        }
         
+        if let comment = item as? RKComment {
+            RedditSession.sharedSession.upvote(comment, completion: c)
+            LocalyticsSession.shared().tagEvent("Swipe upvote comment")
+        } else if let link = item as? RKLink {
+            RedditSession.sharedSession.upvote(link, completion: c)
+            LocalyticsSession.shared().tagEvent("Swipe downvote")
+        }
+    }
+    
+    func commentCell(cell: CommentCell, didLongRightSwipeForItem item: AnyObject) {
+        if let comment = item as? RKComment {
+            let c: ErrorCompletion = {
+                error in
+                if error != nil {
+                    UIAlertView(title: "Error!",
+                        message: error!.localizedDescription,
+                        delegate: self,
+                        cancelButtonTitle: "Ok").show()
+                } else {
+                    if let indexPath = self.tableView.indexPathForCell(cell) {
+                        self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+                    }
+                }
+            }
+            
+            RedditSession.sharedSession.downvote(comment, completion: c)
+            LocalyticsSession.shared().tagEvent("Swipe downvote comment")
+        } else if let link = item as? RKLink {
+            // Share
+            self.optionsController = LinkShareOptionsViewController(link: link)
+            self.optionsController.sourceView = cell
+            self.optionsController.showInView(self.view)
+            LocalyticsSession.shared().tagEvent("Swipe share")
+        }
+    }
+    
+    func commentCell(cell: CommentCell, didLongLeftSwipeForItem item: AnyObject) {
+        if let comment = item as? RKComment {
+            self.commentMoreActions(cell, comment: comment)
+        } else if let link = item as? RKLink {
+            self.linkMoreActions(link, sourceView: cell)
+        }
+    }
+    
+    private func linkMoreActions(link: RKLink, sourceView: AnyObject) {
+        let alertController = UIAlertController(title: "Select options", message: nil, preferredStyle: .ActionSheet)
+        
+        alertController.addAction(UIAlertAction(title: "add comment", style: .Default, handler: { (action) -> Void in
+            self.performSegueWithIdentifier("AddCommentSegue", sender: nil)
+        }))
+        
+        alertController.addAction(UIAlertAction(title: "report", style: .Default, handler: { (action) -> Void in
+            RedditSession.sharedSession.reportLink(link, completion: { (error) -> () in
+                if error != nil {
+                    UIAlertView.showUnableToReportLinkError()
+                } else {
+                    UIAlertView.showReportLinkSuccess()
+                }
+            })
+        }))
+        
+        if link.saved() {
+            alertController.addAction(UIAlertAction(title: "unsave", style: .Default, handler: { (action) -> Void in
+                RedditSession.sharedSession.unSaveLink(link, completion: { (error) -> () in
+                    link.unSaveLink()
+                })
+            }))
+        } else {
+            alertController.addAction(UIAlertAction(title: "save", style: .Default, handler: { (action) -> Void in
+                RedditSession.sharedSession.saveLink(link, completion: { (error) -> () in
+                    self.hud.hide(true)
+                    link.saveLink()
+                })
+            }))
+        }
+        
+        if link.author == UserSession.sharedSession.currentUser?.username {
+            if link.selfPost == true {
+                alertController.addAction(UIAlertAction(title: "edit", style: .Default, handler: { (action) -> Void in
+                    self.performSegueWithIdentifier("EditCommentSegue", sender: link)
+                }))
+            }
+            
+            alertController.addAction(UIAlertAction(title: "delete", style: .Default, handler: { (action) -> Void in
+                RedditSession.sharedSession.deleteLink(link, completion: { (error) -> () in
+                    if error != nil {
+                        UIAlertView.showUnableToDeleteLinkError()
+                    } else {
+                        let deleteAlert = UIAlertController(title: "Delete post", message: "Are you sure you want to delete this post?", preferredStyle: .Alert)
+                        
+                        deleteAlert.addAction(UIAlertAction(title: "Yes", style: .Default, handler: { (action) -> Void in
+                            self.performSegueWithIdentifier("DeletePostSegue", sender: nil)
+                        }))
+                        
+                        deleteAlert.addAction(UIAlertAction(title: "No", style: .Cancel, handler: nil))
+                        deleteAlert.present(animated: true, completion: nil)
+                    }
+                })
+            }))
+        }
+        
+        alertController.addAction(UIAlertAction(title: "cancel", style: .Cancel, handler: nil))
+        
+        if let popoverController = alertController.popoverPresentationController {
+            if let view = sourceView as? UITableViewCell {
+                popoverController.sourceView = view
+                popoverController.sourceRect = sourceView.bounds
+            } else {
+                popoverController.barButtonItem = sourceView as? UIBarButtonItem
+            }
+        }
+        
+        alertController.present(animated: true, completion: nil)
+        
+        LocalyticsSession.shared().tagEvent("Swipe more")
+    }
+    
+    private func commentMoreActions(sourceView: AnyObject, comment: RKComment) {
+        LocalyticsSession.shared().tagEvent("Swipe more")
+        let alertController = UIAlertController(title: "Select comment options", message: nil, preferredStyle: .ActionSheet)
+        
+        alertController.addAction(UIAlertAction(title: "save", style: .Default, handler: { (action) -> Void in
+            RedditSession.sharedSession.saveComment(comment, completion: { (error) -> () in
+                if error != nil {
+                    UIAlertView.showUnableToSaveCommentError()
+                } else {
+                    UIAlertView.showSaveCommentSuccess()
+                }
+            })
+        }))
+        
+        if comment.author == UserSession.sharedSession.currentUser?.username {
+            
+            alertController.addAction(UIAlertAction(title: "delete", style: .Default, handler: { (action) -> Void in
+                RedditSession.sharedSession.deleteComment(comment, completion: { (error) -> () in
+                    if error != nil {
+                        UIAlertView.showUnableToDeleteCommentError()
+                    } else {
+                        if let cell = sourceView as? UITableViewCell {
+                            if let indexPath = self.tableView.indexPathForCell(cell) {
+                                self.content.removeAtIndex(indexPath.row)
+                                self.tableView.beginUpdates()
+                                self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+                                self.tableView.endUpdates()
+                            }
+                        }
+                    }
+                })
+            }))
+        }
+        
+        alertController.addAction(UIAlertAction(title: "reply", style: .Default, handler: { (action) -> Void in
+            self.performSegueWithIdentifier("AddCommentSegue", sender: comment)
+        }))
+        
+        alertController.addAction(UIAlertAction(title: "report", style: .Default, handler: { (action) -> Void in
+            RedditSession.sharedSession.reportComment(comment, completion: { (error) -> () in
+                if error != nil {
+                    UIAlertView.showUnableToReportCommentError()
+                } else {
+                    UIAlertView.showReportCommentSuccess()
+                }
+            })
+        }))
+        
+        alertController.addAction(UIAlertAction(title: "cancel", style: .Cancel, handler: nil))
+        
+        if let popoverController = alertController.popoverPresentationController {
+            if let view = sourceView as? UITableViewCell {
+                popoverController.sourceView = view
+                popoverController.sourceRect = sourceView.bounds
+            } else {
+                popoverController.barButtonItem = sourceView as? UIBarButtonItem
+            }
+        }
+        
+        alertController.present(animated: true, completion: nil)
+    }
+    
+    // MARK: PostCellDelegate
+    
+    func postCell(cell: PostCell, didShortLeftSwipeForLink link: RKLink) {
+        // Upvote
+        self.upvote(link)
+    }
+    
+    func postCell(cell: PostCell, didShortRightSwipeForLink link: RKLink) {
+        // Downvote
+        self.downvote(link)
+    }
+    
+    func postCell(cell: PostCell, didLongRightSwipeForLink link: RKLink) {
+        self.performMoreSwipeActionForLink(link, withCell: cell)
+    }
+    
+    func postCell(cell: PostCell, didLongLeftSwipeForLink link: RKLink) {
+        self.performSegueWithIdentifier("CommentsSegue", sender: link)
     }
     
     // MARK: Private

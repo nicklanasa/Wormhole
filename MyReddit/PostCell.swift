@@ -9,38 +9,39 @@
 import Foundation
 import UIKit
 
-protocol PostCellDelegate {
-    func postCell(cell: PostCell, didTapSubreddit subreddit: String?)
+@objc protocol PostCellDelegate {
+    optional func postCell(cell: PostCell, didTapSubreddit subreddit: String?)
+    optional func postCell(cell: PostCell, didShortRightSwipeForLink link: RKLink)
+    optional func postCell(cell: PostCell, didLongRightSwipeForLink link: RKLink)
+    optional func postCell(cell: PostCell, didShortLeftSwipeForLink link: RKLink)
+    optional func postCell(cell: PostCell, didLongLeftSwipeForLink link: RKLink)
 }
 
-class PostCell: JZSwipeCell {
+class PostCell: SwipeCell, SwipeCellDelegate {
+    
     var link: RKLink!
     var linkComment: RKComment!
     
     var postCellDelegate: PostCellDelegate?
     
     override func awakeFromNib() {
-        super.awakeFromNib()
-        
-        if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
-            self.shortSwipeLength = 300
-        } else {
-            self.shortSwipeLength = 150
-        }
-        
         let upVoteImage = UIImage(named: "Up")!.imageWithRenderingMode(.AlwaysOriginal)
         let downVoteImage = UIImage(named: "Down")!.imageWithRenderingMode(.AlwaysOriginal)
         
-        self.imageSet = SwipeCellImageSetMake(downVoteImage, UIImage(named: "moreWhite"), upVoteImage, UIImage(named: "Chat"))
-        self.colorSet = SwipeCellColorSetMake(MyRedditDownvoteColor, MyRedditColor, MyRedditUpvoteColor, MyRedditReplyColor)
+        self.images = [downVoteImage, UIImage(named: "moreWhite")!, upVoteImage, UIImage(named: "Chat")!]
+        self.colors = [MyRedditDownvoteColor, MyRedditColor, MyRedditUpvoteColor, MyRedditReplyColor]
+        
+        super.awakeFromNib()
+
+        self.swipeDelegate = self
     }
     
-    func upvote() {
-    }
-    
-    func downvote() {
-    }
-    
-    func unvote() {
+    func swipeCell(cell: SwipeCell, didTriggerSwipeWithType swipeType: SwipeType) {
+        switch swipeType {
+        case .LongRight: self.postCellDelegate?.postCell?(self, didLongRightSwipeForLink: self.link)
+        case .LongLeft: self.postCellDelegate?.postCell?(self, didLongLeftSwipeForLink: self.link)
+        case .ShortRight: self.postCellDelegate?.postCell?(self, didShortRightSwipeForLink: self.link)
+        default: self.postCellDelegate?.postCell?(self, didShortLeftSwipeForLink: self.link)
+        }
     }
 }

@@ -28,26 +28,4 @@ class PostsUITests: XCTestCase {
         super.tearDown()
     }
     
-    func testAllPosts() {
-        
-        let app = XCUIApplication()
-        app.toolbars.buttons["List"].tap()
-        
-        let tablesQuery = app.tables
-        tablesQuery.staticTexts["All"].tap()
-        XCTAssertTrue(tablesQuery.cells.count > 0)
-        
-    }
-    
-    func testFrontPagePosts() {
-        
-        let app = XCUIApplication()
-        app.toolbars.buttons["List"].tap()
-        
-        let tablesQuery = app.tables
-        tablesQuery.staticTexts["Front"].tap()
-        XCTAssertTrue(tablesQuery.cells.count > 0)
-        
-    }
-    
 }
