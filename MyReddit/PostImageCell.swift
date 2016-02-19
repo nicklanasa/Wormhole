@@ -26,7 +26,7 @@ class PostImageCell: PostCell {
     var postImageDelegate: PostImageCellDelegate?
     
     func subredditTap() {
-        self.postCellDelegate?.postCell(self,
+        self.postCellDelegate?.postCell?(self,
             didTapSubreddit: self.subredditButton.titleForState(.Normal))
     }
     
@@ -133,26 +133,6 @@ class PostImageCell: PostCell {
             
             self.resetViews()
         }
-    }
-    
-    override func upvote() {
-        if self.link.upvoted() {
-            self.unvote()
-        } else {
-            self.scoreLabel.textColor = MyRedditUpvoteColor
-        }
-    }
-    
-    override func downvote() {
-        if self.link.upvoted() {
-            self.unvote()
-        } else {
-            self.scoreLabel.textColor = MyRedditDownvoteColor
-        }
-    }
-    
-    override func unvote() {
-        self.scoreLabel.textColor = UIColor.lightGrayColor()
     }
     
     override func prepareForReuse() {

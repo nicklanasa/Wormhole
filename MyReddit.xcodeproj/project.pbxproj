@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		01115D3F1C77A7C1008B7D1E /* PostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE046ED01AC4247500DF59B4 /* PostCell.swift */; };
 		01332D881AC37F4B0054E05C /* TitleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01332D871AC37F4B0054E05C /* TitleCell.swift */; };
 		015E0D5D1AEF2B4000299B29 /* CommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 015E0D5C1AEF2B4000299B29 /* CommentCell.swift */; };
 		018E40221AC38A060055384D /* LinkViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 018E40211AC38A060055384D /* LinkViewController.swift */; };
@@ -868,6 +869,7 @@
 				01A623391C76CB3400A8F857 /* UIAlertController+Helpers.swift in Sources */,
 				01A6233B1C76CB3400A8F857 /* UIAlert+Helpers.swift in Sources */,
 				01A6233D1C76CB3400A8F857 /* AttributedString+Helpers.swift in Sources */,
+				01115D3F1C77A7C1008B7D1E /* PostCell.swift in Sources */,
 				01A6233E1C76CB3400A8F857 /* Int+Helpers.swift in Sources */,
 				01A623361C76CB3400A8F857 /* UITableViewCell+Helpers.swift in Sources */,
 				01A623341C76CB3400A8F857 /* UIImageView+Helpers.swift in Sources */,

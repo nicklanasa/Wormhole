@@ -9,11 +9,16 @@
 import Foundation
 import UIKit
 
-protocol PostCellDelegate {
-    func postCell(cell: PostCell, didTapSubreddit subreddit: String?)
+@objc protocol PostCellDelegate {
+    optional func postCell(cell: PostCell, didTapSubreddit subreddit: String?)
+    optional func postCell(cell: PostCell, didShortRightSwipeForLink link: RKLink)
+    optional func postCell(cell: PostCell, didLongRightSwipeForLink link: RKLink)
+    optional func postCell(cell: PostCell, didShortLeftSwipeForLink link: RKLink)
+    optional func postCell(cell: PostCell, didLongLeftSwipeForLink link: RKLink)
 }
 
-class PostCell: JZSwipeCell {
+class PostCell: JZSwipeCell, JZSwipeCellDelegate {
+    
     var link: RKLink!
     var linkComment: RKComment!
     
@@ -33,14 +38,23 @@ class PostCell: JZSwipeCell {
         
         self.imageSet = SwipeCellImageSetMake(downVoteImage, UIImage(named: "moreWhite"), upVoteImage, UIImage(named: "Chat"))
         self.colorSet = SwipeCellColorSetMake(MyRedditDownvoteColor, MyRedditColor, MyRedditUpvoteColor, MyRedditReplyColor)
+        
+        self.delegate = self
     }
     
-    func upvote() {
-    }
-    
-    func downvote() {
-    }
-    
-    func unvote() {
+    func swipeCell(cell: JZSwipeCell!, triggeredSwipeWithType swipeType: JZSwipeType) {
+        if swipeType.rawValue != JZSwipeTypeNone.rawValue {
+            cell.reset()
+            cell.layoutSubviews()
+            if swipeType.rawValue == JZSwipeTypeShortLeft.rawValue {
+                self.postCellDelegate?.postCell?(self, didShortLeftSwipeForLink: self.link)
+            } else if swipeType.rawValue == JZSwipeTypeShortRight.rawValue {
+                self.postCellDelegate?.postCell?(self, didShortRightSwipeForLink: self.link)
+            } else if swipeType.rawValue == JZSwipeTypeLongLeft.rawValue {
+                self.postCellDelegate?.postCell?(self, didLongLeftSwipeForLink: self.link)
+            } else {
+                self.postCellDelegate?.postCell?(self, didLongRightSwipeForLink: self.link)
+            }
+        }
     }
 }

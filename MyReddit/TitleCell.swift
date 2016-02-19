@@ -16,7 +16,7 @@ class TitleCell: PostCell {
     @IBOutlet weak var subredditButton: UIButton!
     
     func subredditTap() {
-        self.postCellDelegate?.postCell(self,
+        self.postCellDelegate?.postCell?(self,
             didTapSubreddit: self.subredditButton.titleForState(.Normal))
     }
     
@@ -100,25 +100,5 @@ class TitleCell: PostCell {
             self.titleLabel.textColor = MyRedditLabelColor
             self.contentView.backgroundColor = MyRedditBackgroundColor
         }
-    }
-    
-    override func upvote() {
-        if self.link.upvoted() {
-            self.unvote()
-        } else {
-            self.scoreLabel.textColor = MyRedditUpvoteColor
-        }
-    }
-    
-    override func downvote() {
-        if self.link.upvoted() {
-            self.unvote()
-        } else {
-            self.scoreLabel.textColor = MyRedditDownvoteColor
-        }
-    }
-    
-    override func unvote() {
-        self.scoreLabel.textColor = UIColor.lightGrayColor()
     }
 }

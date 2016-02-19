@@ -287,11 +287,11 @@ CommentCellDelegate {
                                 if swipeType.rawValue == JZSwipeTypeShortLeft.rawValue {
                                     // Upvote
                                     self.upvote(link)
-                                    postCell.upvote()
+                                    //postCell.upvote()
                                 } else if swipeType.rawValue == JZSwipeTypeShortRight.rawValue {
                                     // Downvote
                                     self.downvote(link)
-                                    postCell.downvote()
+                                    //postCell.downvote()
                                 } else if swipeType.rawValue == JZSwipeTypeLongLeft.rawValue {
                                     LocalyticsSession.shared().tagEvent("Swipe comments")
                                     self.hud.hide(true)
