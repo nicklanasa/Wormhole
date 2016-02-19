@@ -75,7 +75,6 @@ PostCellDelegate {
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        self.tableView.reloadData()
         self.updateUI()
         self.fetchUnread()
     }
@@ -194,83 +193,41 @@ PostCellDelegate {
         }
     }
     
-    // MARK: Private Fetching
-    
-    private func fetchFrontPagePosts(completion: () -> ()) {
-        RedditSession.sharedSession.fetchFrontPagePosts(self.pagination,
-            category: self.currentCategory, completion: { (pagination, results, error) -> () in
-                self.pagination = pagination
-                if let moreLinks = results {
-                    self.links.appendContentsOf(moreLinks)
-                }
-                
-                completion()
-        })
-    }
-    
-    private func fetchAllPosts(completion: () -> ()) {
-        RedditSession.sharedSession.fetchAllPosts(self.pagination,
-            category: self.currentCategory, completion: { (pagination, results, error) -> () in
-                self.pagination = pagination
-                if let moreLinks = results {
-                    self.links.appendContentsOf(moreLinks)
-                }
-                
-                completion()
-        })
-    }
-    
-    private func fetchPostsForSubreddit(completion: () -> ()) {
-        RedditSession.sharedSession.fetchPostsForSubreddit(self.subreddit,
-            category: self.currentCategory,
-            pagination: self.pagination,
-            completion: { (pagination, results, error) -> () in
-                self.pagination = pagination
-                if let moreLinks = results {
-                    self.links.appendContentsOf(moreLinks)
-                }
-                
-                completion()
-        })
-    }
-    
-    private func fetchPostsForMultiReddit(completion: () -> ()) {
-        RedditSession.sharedSession.fetchPostsForMultiReddit(self.multiReddit,
-            category: self.currentCategory,
-            pagination: self.pagination,
-            completion: { (pagination, results, error) -> () in
-                self.pagination = pagination
-                if let moreLinks = results {
-                    self.links.appendContentsOf(moreLinks)
-                }
-                
-                completion()
-        })
-    }
-    
     private func fetchLinks() {
         
         LocalyticsSession.shared().tagEvent("Fetched links")
     
         self.hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
         
+        let c: PaginationCompletion = {
+            pagination,
+            results,
+            error in
+            self.pagination = pagination
+            if let moreLinks = results {
+                self.links.appendContentsOf(moreLinks)
+            }
+            
+            self.endRefreshing()
+        }
+        
         if self.front {
-            self.fetchFrontPagePosts({ () -> () in
-                self.endRefreshing()
-            })
+            RedditSession.sharedSession.fetchFrontPagePosts(self.pagination,
+                category: self.currentCategory, completion: c)
         } else if all {
-            self.fetchAllPosts({ () -> () in
-                self.endRefreshing()
-            })
+            RedditSession.sharedSession.fetchAllPosts(self.pagination,
+                category: self.currentCategory, completion: c)
         } else {
             if let _ = self.subreddit {
-                self.fetchPostsForSubreddit({ () -> () in
-                    self.endRefreshing()
-                })
+                RedditSession.sharedSession.fetchPostsForSubreddit(self.subreddit,
+                    category: self.currentCategory,
+                    pagination: self.pagination,
+                    completion: c)
             } else {
-                self.fetchPostsForMultiReddit({ () -> () in
-                    self.endRefreshing()
-                })
+                RedditSession.sharedSession.fetchPostsForMultiReddit(self.multiReddit,
+                    category: self.currentCategory,
+                    pagination: self.pagination,
+                    completion: c)
             }
         }
     }
@@ -340,6 +297,8 @@ PostCellDelegate {
         })
         
         self.navigationController?.setToolbarHidden(true, animated: true)
+        
+        self.tableView.reloadData()
     }
     
     private func endRefreshing() {

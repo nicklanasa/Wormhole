@@ -5,7 +5,7 @@ use_frameworks!
 link_with 'MyReddit', 'MyReddit-iPad', 'MyRedditTests'
 
 pod 'Localytics-AMP', '~> 2.0'
-pod 'RedditKit', '~> 1.3'
+pod 'RedditKit'
 pod 'SDWebImage'
 pod 'XNGMarkdownParser'
 pod 'BDGInAppPurchase'
