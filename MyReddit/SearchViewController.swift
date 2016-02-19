@@ -518,7 +518,9 @@ PostCellDelegate {
                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
                     if let indexPath = self.tableView.indexPathForCell(cell) {
                         self.links.removeAtIndex(indexPath.row)
+                        self.tableView.beginUpdates()
                         self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+                        self.tableView.endUpdates()
                     }
                 })
             })
