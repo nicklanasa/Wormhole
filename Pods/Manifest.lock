@@ -24,6 +24,7 @@ PODS:
   - BDGInAppPurchase (0.0.2)
   - DateTools (1.7.0)
   - FZImageUtilCategory (0.0.2)
+  - Google-Mobile-Ads-SDK (7.6.0)
   - ImgurAnonymousAPIClient (0.3.2):
     - AFNetworking (>= 2.3.1)
   - ImgurSession (1.2):
@@ -50,6 +51,7 @@ DEPENDENCIES:
   - BDGInAppPurchase
   - DateTools
   - FZImageUtilCategory
+  - Google-Mobile-Ads-SDK
   - ImgurAnonymousAPIClient
   - ImgurSession
   - JZSwipeCell (~> 1.1)
@@ -68,6 +70,7 @@ SPEC CHECKSUMS:
   BDGInAppPurchase: 9f466e82a4a3e1d8b744268280748c1d91ddda67
   DateTools: 53288ee8b905fdc75897a1e6b5cc0144b14cba60
   FZImageUtilCategory: 6d9407c679a3878e2bd0761588766c35120e2c01
+  Google-Mobile-Ads-SDK: 0290020329c61183c4685304264b73382bc49fb4
   ImgurAnonymousAPIClient: d1887ebe11b64a44ede12928b101d1f1c0099c2b
   ImgurSession: 3ded7eec93121fcf8d1e9f3f1783b8d764c846d3
   JZSwipeCell: 662d75e1ed6805abbd977dee70e7dac807853109

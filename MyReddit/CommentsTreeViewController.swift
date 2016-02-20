@@ -279,11 +279,7 @@ AddCommentViewControllerDelegate {
     }
     
     @IBAction func addCommentButtonTapped(sender: AnyObject) {
-        if !SettingsManager.defaultManager.purchased {
-            self.performSegueWithIdentifier("PurchaseSegue", sender: self)
-        } else {
-            self.performSegueWithIdentifier("AddCommentSegue", sender: self)
-        }
+        self.performSegueWithIdentifier("AddCommentSegue", sender: self)
     }
     
     // MARK: CommentCellDelegate

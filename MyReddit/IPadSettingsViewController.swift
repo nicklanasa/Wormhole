@@ -143,20 +143,16 @@ class IPadSettingsViewController: UITableViewController, BDGIAPDelegate {
     }
 
     @IBAction func nightModeValueChanged(sender: AnyObject) {
-        if !SettingsManager.defaultManager.purchased {
-            self.performSegueWithIdentifier("PurchaseSegue", sender: self)
+        SettingsManager.defaultManager.updateValueForSetting(.NightMode, value: self.nightModeSwitch.on)
+        
+        if SettingsManager.defaultManager.valueForSetting(.NightMode) {
+            UserSession.sharedSession.nightMode()
         } else {
-            SettingsManager.defaultManager.updateValueForSetting(.NightMode, value: self.nightModeSwitch.on)
-            
-            if SettingsManager.defaultManager.valueForSetting(.NightMode) {
-                UserSession.sharedSession.nightMode()
-            } else {
-                UserSession.sharedSession.dayMode()
-            }
-
-            NSNotificationCenter.defaultCenter().postNotificationName(MyRedditAppearanceDidChangeNotification,
-                object: nil)
+            UserSession.sharedSession.dayMode()
         }
+        
+        NSNotificationCenter.defaultCenter().postNotificationName(MyRedditAppearanceDidChangeNotification,
+            object: nil)
         
         self.updateTable()
     }

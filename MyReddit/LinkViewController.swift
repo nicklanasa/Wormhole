@@ -225,50 +225,42 @@ class LinkViewController: RootViewController, UITextViewDelegate {
     }
     
     func saveLink() {
-        if !SettingsManager.defaultManager.purchased {
-            self.performSegueWithIdentifier("PurchaseSegue", sender: self)
-        } else {
-            RedditSession.sharedSession.saveLink(self.link, completion: { (error) -> () in
-                if error != nil {
-                    UIAlertView(title: "Error!",
-                        message: error!.localizedDescription,
-                        delegate: self,
-                        cancelButtonTitle: "Ok").show()
-                    
-                    LocalyticsSession.shared().tagEvent("Save failed")
-                } else {
-                    self.saveButtonItem = UIBarButtonItem(image: UIImage(named: "SavedSelected"),
-                        style: .Plain,
-                        target: self,
-                        action: "unSaveLink")
-                    self.navigationItem.rightBarButtonItems = [self.readerBarButtonItem, self.saveButtonItem]
-                }
-            })
-        }
+        RedditSession.sharedSession.saveLink(self.link, completion: { (error) -> () in
+            if error != nil {
+                UIAlertView(title: "Error!",
+                    message: error!.localizedDescription,
+                    delegate: self,
+                    cancelButtonTitle: "Ok").show()
+                
+                LocalyticsSession.shared().tagEvent("Save failed")
+            } else {
+                self.saveButtonItem = UIBarButtonItem(image: UIImage(named: "SavedSelected"),
+                    style: .Plain,
+                    target: self,
+                    action: "unSaveLink")
+                self.navigationItem.rightBarButtonItems = [self.readerBarButtonItem, self.saveButtonItem]
+            }
+        })
     }
     
     func unSaveLink() {
         // unsave
-        if !SettingsManager.defaultManager.purchased {
-            self.performSegueWithIdentifier("PurchaseSegue", sender: self)
-        } else {
-            RedditSession.sharedSession.unSaveLink(self.link, completion: { (error) -> () in
-                if error != nil {
-                    UIAlertView(title: "Error!",
-                        message: error!.localizedDescription,
-                        delegate: self,
-                        cancelButtonTitle: "Ok").show()
-                    
-                    LocalyticsSession.shared().tagEvent("Unsave failed")
-                } else {
-                    self.saveButtonItem = UIBarButtonItem(image: UIImage(named: "Saved"),
-                        style: .Plain,
-                        target: self,
-                        action: "saveLink")
-                    self.navigationItem.rightBarButtonItems = [self.readerBarButtonItem, self.saveButtonItem]
-                }
-            })
-        }
+        RedditSession.sharedSession.unSaveLink(self.link, completion: { (error) -> () in
+            if error != nil {
+                UIAlertView(title: "Error!",
+                    message: error!.localizedDescription,
+                    delegate: self,
+                    cancelButtonTitle: "Ok").show()
+                
+                LocalyticsSession.shared().tagEvent("Unsave failed")
+            } else {
+                self.saveButtonItem = UIBarButtonItem(image: UIImage(named: "Saved"),
+                    style: .Plain,
+                    target: self,
+                    action: "saveLink")
+                self.navigationItem.rightBarButtonItems = [self.readerBarButtonItem, self.saveButtonItem]
+            }
+        })
     }
     
     func refreshLink() {
@@ -322,23 +314,15 @@ class LinkViewController: RootViewController, UITextViewDelegate {
     }
     
     @IBAction func downvoteButtonTapped(sender: AnyObject) {
-        if !SettingsManager.defaultManager.purchased {
-            self.performSegueWithIdentifier("PurchaseSegue", sender: self)
-        } else {
-            RedditSession.sharedSession.downvote(self.link, completion: { (error) -> () in
-                self.refreshLink()
-            })
-        }
+        RedditSession.sharedSession.downvote(self.link, completion: { (error) -> () in
+            self.refreshLink()
+        })
     }
     
     @IBAction func upvoteButtonTapped(sender: AnyObject) {
-        if !SettingsManager.defaultManager.purchased {
-            self.performSegueWithIdentifier("PurchaseSegue", sender: self)
-        } else {
-            RedditSession.sharedSession.upvote(self.link, completion: { (error) -> () in
-                self.refreshLink()
-            })
-        }
+        RedditSession.sharedSession.upvote(self.link, completion: { (error) -> () in
+            self.refreshLink()
+        })
     }
     
     func textView(textView: UITextView, shouldInteractWithURL URL: NSURL, inRange characterRange: NSRange) -> Bool {

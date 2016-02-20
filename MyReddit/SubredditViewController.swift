@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 import MBProgressHUD
+import GoogleMobileAds
 
 enum FilterSwitchType: Int {
     case Hot
@@ -36,6 +37,8 @@ PostCellDelegate {
     @IBOutlet weak var searchButton: UIBarButtonItem!
     @IBOutlet weak var messages: UIBarButtonItem!
     
+    let ad = GADBannerView(adSize: kGADAdSizeFluid)
+    
     var hud: MBProgressHUD! {
         didSet {
             hud.labelFont = MyRedditSelfTextFont
@@ -57,6 +60,8 @@ PostCellDelegate {
                     return true
                 })
             }
+            
+            self.links.append(SuggestedLink())
             
             if self.links.count == 25 || self.links.count == 0 {
                 self.tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: .Fade)
@@ -336,26 +341,18 @@ PostCellDelegate {
         
         LocalyticsSession.shared().tagEvent("Subreddit message button tapped")
         
-        if !SettingsManager.defaultManager.purchased {
-            self.performSegueWithIdentifier("PurchaseSegue", sender: self)
+        if UserSession.sharedSession.isSignedIn {
+            self.performSegueWithIdentifier("MessagesSegue", sender: self)
         } else {
-            if UserSession.sharedSession.isSignedIn {
-                self.performSegueWithIdentifier("MessagesSegue", sender: self)
-            } else {
-                self.performSegueWithIdentifier("AccountsSegue", sender: self)
-            }
+            self.performSegueWithIdentifier("AccountsSegue", sender: self)
         }
     }
     
     @IBAction func postButtonTapped(sender: AnyObject) {
-        if !SettingsManager.defaultManager.purchased {
-            self.performSegueWithIdentifier("PurchaseSegue", sender: self)
+        if UserSession.sharedSession.isSignedIn {
+            self.performSegueWithIdentifier("PostSegue", sender: self)
         } else {
-            if UserSession.sharedSession.isSignedIn {
-                self.performSegueWithIdentifier("PostSegue", sender: self)
-            } else {
-                self.performSegueWithIdentifier("AccountsSegue", sender: self)
-            }
+            self.performSegueWithIdentifier("AccountsSegue", sender: self)
         }
     }
     
@@ -373,11 +370,7 @@ PostCellDelegate {
                             }
                         })
                     } else {
-                        if !SettingsManager.defaultManager.purchased {
-                            self.performSegueWithIdentifier("PurchaseSegue", sender: self)
-                        } else {
-                            self.performSegueWithIdentifier("LoginSegue", sender: self)
-                        }
+                        self.performSegueWithIdentifier("LoginSegue", sender: self)
                     }
                 } else {
                     if UserSession.sharedSession.isSignedIn {
@@ -389,11 +382,7 @@ PostCellDelegate {
                             }
                         })
                     } else {
-                        if !SettingsManager.defaultManager.purchased {
-                            self.performSegueWithIdentifier("PurchaseSegue", sender: self)
-                        } else {
-                            self.performSegueWithIdentifier("LoginSegue", sender: self)
-                        }
+                        self.performSegueWithIdentifier("LoginSegue", sender: self)
                     }
                 }
             }
@@ -401,14 +390,10 @@ PostCellDelegate {
     }
     
     @IBAction func submitAPostButtonPressed(sender: AnyObject) {
-        if !SettingsManager.defaultManager.purchased {
-            self.performSegueWithIdentifier("PurchaseSegue", sender: self)
+        if UserSession.sharedSession.isSignedIn {
+            self.performSegueWithIdentifier("PostSegue", sender: self)
         } else {
-            if UserSession.sharedSession.isSignedIn {
-                self.performSegueWithIdentifier("PostSegue", sender: self)
-            } else {
-                self.performSegueWithIdentifier("AccountsSegue", sender: self)
-            }
+            self.performSegueWithIdentifier("AccountsSegue", sender: self)
         }
     }
     
@@ -426,25 +411,46 @@ PostCellDelegate {
 
         var cell = tableView.dequeueReusableCellWithIdentifier("PostImageCell") as! PostCell
         
-        if indexPath.row < self.links.count {
-            if let link = self.links[indexPath.row] as? RKLink {
-                if link.hasImage() {
-                    
-                    if SettingsManager.defaultManager.valueForSetting(.FullWidthImages) {
-                        cell = tableView.dequeueReusableCellWithIdentifier("TitleCell") as! TitleCell
-                    } else {
-                        let imageCell = tableView.dequeueReusableCellWithIdentifier("PostImageCell") as! PostImageCell
-                        imageCell.postImageDelegate = self
-                        imageCell.postCellDelegate = self
-                        imageCell.link = link
-                        return imageCell
-                    }
-                } else {
-                    cell = tableView.dequeueReusableCellWithIdentifier("TitleCell") as! TitleCell
-                }
+        if let link = self.links[indexPath.row] as? RKLink {
+            if link.hasImage() {
                 
-                cell.link = link
+                if SettingsManager.defaultManager.valueForSetting(.FullWidthImages) {
+                    cell = tableView.dequeueReusableCellWithIdentifier("TitleCell") as! TitleCell
+                } else {
+                    let imageCell = tableView.dequeueReusableCellWithIdentifier("PostImageCell") as! PostImageCell
+                    imageCell.postImageDelegate = self
+                    imageCell.postCellDelegate = self
+                    imageCell.link = link
+                    return imageCell
+                }
+            } else {
+                cell = tableView.dequeueReusableCellWithIdentifier("TitleCell") as! TitleCell
             }
+            
+            cell.link = link
+        } else if let _ = self.links[indexPath.row] as? SuggestedLink {
+            let cell = tableView.dequeueReusableCellWithIdentifier("AdCell") as! AdCell
+            let bannerView = AdCell.cellBannerView(self, frame:cell.bounds)
+            
+            for view in cell.contentView.subviews {
+                if view.isKindOfClass(GADBannerView.self) {
+                    view.removeFromSuperview() // Make sure that the cell does not have any previously added GADBanner view as it would be reused
+                }
+            }
+            
+            cell.addSubview(bannerView)
+            
+            let priority = DISPATCH_QUEUE_PRIORITY_BACKGROUND
+            
+            dispatch_async(dispatch_get_global_queue(priority, 0)) { // Get the request in the background thread
+                let request = GADRequest()
+                request.testDevices = [kGADSimulatorID]
+                dispatch_async(dispatch_get_main_queue()) { // Update the UI
+                    bannerView.loadRequest(request)
+                }
+            }
+            
+            return cell
         }
         
         cell.postCellDelegate = self
@@ -453,32 +459,32 @@ PostCellDelegate {
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        if indexPath.row < self.links.count {
-            if let link = self.links[indexPath.row] as? RKLink {
-                if link.hasImage() {
-                    // Image
-                    
-                    if SettingsManager.defaultManager.valueForSetting(.FullWidthImages) {
-                        // regular
-                        return self.heightForTitlePost(link)
-                    } else {
-                        
-                        let url = link.urlForLink()
-                        
-                        if url != nil {
-                            if let height = self.heightsCache[url!] as? NSNumber {
-                                return CGFloat(height.floatValue)
-                            }
-                        }
-                        
-                        return 392
-                    }
-                    
-                } else {
+        if let link = self.links[indexPath.row] as? RKLink {
+            if link.hasImage() {
+                // Image
+                
+                if SettingsManager.defaultManager.valueForSetting(.FullWidthImages) {
                     // regular
                     return self.heightForTitlePost(link)
+                } else {
+                    
+                    let url = link.urlForLink()
+                    
+                    if url != nil {
+                        if let height = self.heightsCache[url!] as? NSNumber {
+                            return CGFloat(height.floatValue)
+                        }
+                    }
+                    
+                    return 392
                 }
+                
+            } else {
+                // regular
+                return self.heightForTitlePost(link)
             }
+        } else if let _ = self.links[indexPath.row] as? SuggestedLink {
+            return 50
         }
         
         return 0
@@ -723,11 +729,7 @@ PostCellDelegate {
             if UserSession.sharedSession.isSignedIn {
                 return true
             } else {
-                if !SettingsManager.defaultManager.purchased {
-                    self.performSegueWithIdentifier("PurchaseSegue", sender: self)
-                } else {
-                    self.performSegueWithIdentifier("LoginSegue", sender: self)
-                }
+                self.performSegueWithIdentifier("LoginSegue", sender: self)
             }
             
             return false

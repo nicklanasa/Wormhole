@@ -204,56 +204,48 @@ JZSwipeCellDelegate {
                 cell.reset()
                 
                 if swipeType.rawValue == JZSwipeTypeLongLeft.rawValue || swipeType.rawValue == JZSwipeTypeShortLeft.rawValue {
-                    if !SettingsManager.defaultManager.purchased {
-                        self.performSegueWithIdentifier("PurchaseSegue", sender: self)
-                    } else {
-                        if let message = self.messages[indexPath.row] as? RKMessage {
-                            self.performSegueWithIdentifier("ReplyToMessageSegue", sender: message)
-                        }
-                        
-                        LocalyticsSession.shared().tagEvent("Reply to message")
+                    if let message = self.messages[indexPath.row] as? RKMessage {
+                        self.performSegueWithIdentifier("ReplyToMessageSegue", sender: message)
                     }
+                    
+                    LocalyticsSession.shared().tagEvent("Reply to message")
                 } else {
-                    if !SettingsManager.defaultManager.purchased {
-                        self.performSegueWithIdentifier("PurchaseSegue", sender: self)
+                    LocalyticsSession.shared().tagEvent("Swipe more")
+                    
+                    let alertController = UIAlertController(title: "Select option", message: nil, preferredStyle: .ActionSheet)
+                    
+                    if self.category == .Unread {
+                        alertController.addAction(UIAlertAction(title: "mark read", style: .Default, handler: { (action) -> Void in
+                            
+                            if let message = self.messages[indexPath.row] as? RKMessage {
+                                // Mark unread
+                                RedditSession.sharedSession.markMessagesAsRead([message], completion: { (error) -> () in
+                                    self.messages.removeAtIndex(indexPath.row)
+                                    self.tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: .Fade)
+                                })
+                            }
+                        }))
                     } else {
-                        LocalyticsSession.shared().tagEvent("Swipe more")
-                        
-                        let alertController = UIAlertController(title: "Select option", message: nil, preferredStyle: .ActionSheet)
-                        
-                        if self.category == .Unread {
-                            alertController.addAction(UIAlertAction(title: "mark read", style: .Default, handler: { (action) -> Void in
-                                
-                                if let message = self.messages[indexPath.row] as? RKMessage {
-                                    // Mark unread
-                                    RedditSession.sharedSession.markMessagesAsRead([message], completion: { (error) -> () in
-                                        self.messages.removeAtIndex(indexPath.row)
-                                        self.tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: .Fade)
-                                    })
-                                }
-                            }))
-                        } else {
-                            alertController.addAction(UIAlertAction(title: "mark unread", style: .Default, handler: { (action) -> Void in
-                                
-                                if let message = self.messages[indexPath.row] as? RKMessage {
-                                    // Mark unread
-                                    RedditSession.sharedSession.markMessagesAsUnRead([message], completion: { (error) -> () in
-                                        self.messages.removeAtIndex(indexPath.row)
-                                        self.tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: .Fade)
-                                    })
-                                }
-                            }))
-                        }
-                        
-                        alertController.addAction(UIAlertAction(title: "cancel", style: .Cancel, handler: nil))
-                        
-                        if let popoverController = alertController.popoverPresentationController {
-                            popoverController.sourceView = cell
-                            popoverController.sourceRect = cell.bounds
-                        }
-                        
-                        alertController.present(animated: true, completion: nil)
+                        alertController.addAction(UIAlertAction(title: "mark unread", style: .Default, handler: { (action) -> Void in
+                            
+                            if let message = self.messages[indexPath.row] as? RKMessage {
+                                // Mark unread
+                                RedditSession.sharedSession.markMessagesAsUnRead([message], completion: { (error) -> () in
+                                    self.messages.removeAtIndex(indexPath.row)
+                                    self.tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: .Fade)
+                                })
+                            }
+                        }))
                     }
+                    
+                    alertController.addAction(UIAlertAction(title: "cancel", style: .Cancel, handler: nil))
+                    
+                    if let popoverController = alertController.popoverPresentationController {
+                        popoverController.sourceView = cell
+                        popoverController.sourceRect = cell.bounds
+                    }
+                    
+                    alertController.present(animated: true, completion: nil)
                 }
             }
         }

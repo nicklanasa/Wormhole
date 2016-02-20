@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = '33F9C0110A07C4AA81316FAF'
+               BlueprintIdentifier = '5FB5B500990AFE7AB8E77986'
                BlueprintName = 'FZImageUtilCategory'
                ReferencedContainer = 'container:Pods.xcodeproj'
                BuildableName = 'FZImageUtilCategory.framework'>
