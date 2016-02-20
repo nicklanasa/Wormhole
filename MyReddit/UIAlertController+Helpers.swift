@@ -98,8 +98,8 @@ extension UIAlertController {
     }
     
     class func swipeShareAlertControllerWithLink(link: RKLink, completion: (url: NSURL, action: UIAlertAction) -> ()) -> UIAlertController {
-        let alertController = UIAlertController(title: link.title,
-            message: nil,
+        let alertController = UIAlertController(title: "share",
+            message: link.title,
             preferredStyle: .ActionSheet)
         
         alertController.addAction(UIAlertAction(title: "share link", style: .Default, handler: { (action) -> Void in

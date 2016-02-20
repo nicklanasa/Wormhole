@@ -29,7 +29,7 @@ class PostCell: SwipeCell, SwipeCellDelegate {
         let upVoteImage = UIImage(named: "Up")!.imageWithRenderingMode(.AlwaysOriginal)
         let downVoteImage = UIImage(named: "Down")!.imageWithRenderingMode(.AlwaysOriginal)
         
-        self.images = [downVoteImage, UIImage(named: "moreWhite")!, upVoteImage, UIImage(named: "Chat")!]
+        self.images = [downVoteImage, UIImage(named: "ShareWhite")!, upVoteImage, UIImage(named: "moreWhite")!]
         self.colors = [MyRedditDownvoteColor, MyRedditColor, MyRedditUpvoteColor, MyRedditReplyColor]
         
         super.awakeFromNib()
