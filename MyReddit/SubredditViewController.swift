@@ -458,7 +458,6 @@ PostCellDelegate {
         if let link = self.links[indexPath.row] as? RKLink {
             if link.hasImage() {
                 // Image
-                
                 if SettingsManager.defaultManager.valueForSetting(.FullWidthImages) {
                     // regular
                     return self.heightForTitlePost(link)
@@ -486,6 +485,28 @@ PostCellDelegate {
         return 0
     }
     
+    func tableView(tableView: UITableView, didHighlightRowAtIndexPath indexPath: NSIndexPath) {
+        // Long hold options
+        if let link = self.links[indexPath.row] as? RKLink {
+            if let cell = tableView.cellForRowAtIndexPath(indexPath) as? PostImageCell {
+                if let selectedImage = cell.postImageView.image {
+                    let alertController = UIAlertController.saveImageAlertController(selectedImage)
+                    
+                    if let popoverController = alertController.popoverPresentationController {
+                        popoverController.sourceView = cell
+                        popoverController.sourceRect = cell.bounds
+                    }
+                    
+                    self.presentViewController(alertController,
+                        animated: true,
+                        completion: nil)
+                }
+            } else if let cell = tableView.cellForRowAtIndexPath(indexPath) as? TitleCell {
+                
+            }
+        }
+    }
+    
     func heightForTitlePost(link: RKLink) -> CGFloat {
         let text = link.title
         let frame = CGRectMake(0, 0, (self.tableView.frame.size.width - 18), CGFloat.max)
@@ -501,7 +522,6 @@ PostCellDelegate {
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        self.tableView.deselectRowAtIndexPath(indexPath, animated: true)
         self.hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
         
         if let link = self.links[indexPath.row] as? RKLink {
@@ -547,6 +567,8 @@ PostCellDelegate {
         } else if let imageCell = tableView.cellForRowAtIndexPath(indexPath) as? PostImageCell {
             imageCell.titleLabel.textColor = UIColor.grayColor()
         }
+        
+        self.tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
     
     // MARK: PostImageCellDelegate
@@ -599,63 +621,90 @@ PostCellDelegate {
     }
     
     func postCell(cell: PostCell, didLongRightSwipeForLink link: RKLink) {
-        LocalyticsSession.shared().tagEvent("Swipe more")
+        LocalyticsSession.shared().tagEvent("Swipe share")
         
-        self.hud.hide(true)
-        let alertController = UIAlertController(title: "Select option", message: nil, preferredStyle: .ActionSheet)
-        
-        if link.saved() {
-            alertController.addAction(UIAlertAction(title: "unsave", style: .Default, handler: { (action) -> Void in
-                RedditSession.sharedSession.unSaveLink(link, completion: { (error) -> () in
-                    self.hud.hide(true)
-                    link.unSaveLink()
-                })
-            }))
-        } else {
-            alertController.addAction(UIAlertAction(title: "save", style: .Default, handler: { (action) -> Void in
-                RedditSession.sharedSession.saveLink(link, completion: { (error) -> () in
-                    self.hud.hide(true)
-                    link.saveLink()
-                })
-            }))
-        }
-        
-        alertController.addAction(UIAlertAction(title: "hide", style: .Default, handler: { (action) -> Void in
-            RedditSession.sharedSession.hideLink(link, completion: { (error) -> () in
-                self.hud.hide(true)
-                link.saveLink()
-                
-                dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                    if let indexPath = self.tableView.indexPathForCell(cell) {
-                        self.links.removeAtIndex(indexPath.row)
-                        self.tableView.beginUpdates()
-                        self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-                        self.tableView.endUpdates()
+        let alert = UIAlertController.swipeShareAlertControllerWithLink(link) { (url, action) -> () in
+            var objectsToShare = ["\(link.title) @myreddit", url]
+            
+            if link.hasImage() {
+                if let indexPath = self.tableView.indexPathForCell(cell) {
+                    if let imageCell = self.tableView.cellForRowAtIndexPath(indexPath) as? PostImageCell {
+                        if let image = imageCell.postImageView.image {
+                            objectsToShare = [image]
+                        }
                     }
-                })
-            })
-        }))
-        
-        alertController.addAction(UIAlertAction(title: "open in safari", style: .Default, handler: { (action) -> Void in
-            UIApplication.sharedApplication().openURL(link.URL)
-        }))
-        
-        alertController.addAction(UIAlertAction(title: "more options", style: .Default, handler: { (action) -> Void in
-            // Share
-            self.hud.hide(true)
-            self.optionsController = LinkShareOptionsViewController(link: link)
-            self.optionsController.sourceView = cell
-            self.optionsController.showInView(self.view)
-        }))
-        
-        alertController.addAction(UIAlertAction(title: "cancel", style: .Cancel, handler: nil))
-        
-        if let popoverController = alertController.popoverPresentationController {
-            popoverController.sourceView = cell
-            popoverController.sourceRect = cell.bounds
+                }
+            }
+            
+            let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
+            
+            if let popoverController = activityVC.popoverPresentationController {
+                popoverController.sourceView = cell
+                popoverController.sourceRect = cell.bounds
+            }
+            
+            activityVC.present(animated: true, completion: nil)
+            
+            LocalyticsSession.shared().tagEvent("Share tapped")
         }
         
-        alertController.present(animated: true, completion: nil)
+        self.presentViewController(alert, animated: true, completion: nil)
+        
+//        self.hud.hide(true)
+//        let alertController = UIAlertController(title: "Select option", message: nil, preferredStyle: .ActionSheet)
+//        
+//        if link.saved() {
+//            alertController.addAction(UIAlertAction(title: "unsave", style: .Default, handler: { (action) -> Void in
+//                RedditSession.sharedSession.unSaveLink(link, completion: { (error) -> () in
+//                    self.hud.hide(true)
+//                    link.unSaveLink()
+//                })
+//            }))
+//        } else {
+//            alertController.addAction(UIAlertAction(title: "save", style: .Default, handler: { (action) -> Void in
+//                RedditSession.sharedSession.saveLink(link, completion: { (error) -> () in
+//                    self.hud.hide(true)
+//                    link.saveLink()
+//                })
+//            }))
+//        }
+//        
+//        alertController.addAction(UIAlertAction(title: "hide", style: .Default, handler: { (action) -> Void in
+//            RedditSession.sharedSession.hideLink(link, completion: { (error) -> () in
+//                self.hud.hide(true)
+//                link.saveLink()
+//                
+//                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+//                    if let indexPath = self.tableView.indexPathForCell(cell) {
+//                        self.links.removeAtIndex(indexPath.row)
+//                        self.tableView.beginUpdates()
+//                        self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+//                        self.tableView.endUpdates()
+//                    }
+//                })
+//            })
+//        }))
+//        
+//        alertController.addAction(UIAlertAction(title: "open in safari", style: .Default, handler: { (action) -> Void in
+//            UIApplication.sharedApplication().openURL(link.URL)
+//        }))
+//        
+//        alertController.addAction(UIAlertAction(title: "more options", style: .Default, handler: { (action) -> Void in
+//            // Share
+//            self.hud.hide(true)
+//            self.optionsController = LinkShareOptionsViewController(link: link)
+//            self.optionsController.sourceView = cell
+//            self.optionsController.showInView(self.view)
+//        }))
+//        
+//        alertController.addAction(UIAlertAction(title: "cancel", style: .Cancel, handler: nil))
+//        
+//        if let popoverController = alertController.popoverPresentationController {
+//            popoverController.sourceView = cell
+//            popoverController.sourceRect = cell.bounds
+//        }
+//        
+//        alertController.present(animated: true, completion: nil)
 
     }
     
@@ -700,21 +749,6 @@ PostCellDelegate {
                     })
                 }
             })
-        }
-    }
-    
-    func postImageCell(cell: PostImageCell, didLongHoldOnImage image: UIImage?) {
-        if let selectedImage = image {
-            let alertController = UIAlertController.saveImageAlertController(selectedImage)
-            
-            if let popoverController = alertController.popoverPresentationController {
-                popoverController.sourceView = cell
-                popoverController.sourceRect = cell.bounds
-            }
-            
-            self.presentViewController(alertController,
-                animated: true,
-                completion: nil)
         }
     }
     

@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 
 class TitleCell: PostCell {
+    
     @IBOutlet weak var scoreLabel: UILabel!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var postInfoLabel: UILabel!

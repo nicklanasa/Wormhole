@@ -1121,8 +1121,7 @@
                             </connections>
                         </barButtonItem>
                     </toolbarItems>
-                    <navigationItem key="navigationItem" id="NbR-H1-cdt">
-                        <barButtonItem key="leftBarButtonItem" title="subreddits" id="rMQ-wc-QIF"/>
+                    <navigationItem key="navigationItem" title="subreddits" id="NbR-H1-cdt">
                         <barButtonItem key="rightBarButtonItem" title="edit" id="SCB-PX-YfS">
                             <connections>
                                 <action selector="editButtonTApped:" destination="AYg-o0-LaT" id="fyP-YH-A2U"/>
@@ -4312,19 +4311,19 @@
         <image name="Up" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="yNw-36-nQb"/>
-        <segue reference="DoA-ah-cSI"/>
-        <segue reference="pMg-rh-ZMv"/>
-        <segue reference="ykc-Jy-SLH"/>
-        <segue reference="nb3-Xk-rNn"/>
-        <segue reference="s4Y-Y8-M2P"/>
+        <segue reference="SWo-82-5L3"/>
+        <segue reference="ryX-hT-yj2"/>
         <segue reference="pqF-Zz-63s"/>
-        <segue reference="zMo-OM-Z5J"/>
-        <segue reference="vMB-6P-NDX"/>
+        <segue reference="pMg-rh-ZMv"/>
+        <segue reference="s4Y-Y8-M2P"/>
         <segue reference="Bf8-BX-vnl"/>
-        <segue reference="nEx-7L-vW5"/>
+        <segue reference="vMB-6P-NDX"/>
         <segue reference="bxZ-6W-PbQ"/>
-        <segue reference="TYz-B9-bLR"/>
+        <segue reference="sND-y2-DTj"/>
+        <segue reference="kaq-Nv-BbA"/>
+        <segue reference="nEx-7L-vW5"/>
+        <segue reference="zMo-OM-Z5J"/>
         <segue reference="q6K-ip-lpO"/>
+        <segue reference="TYz-B9-bLR"/>
     </inferredMetricsTieBreakers>
 </document>

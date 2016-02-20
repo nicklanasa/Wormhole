@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 
 @objc protocol PostCellDelegate {
+    optional func postCell(cell: PostCell, didLongHoldWith subreddit: String?)
     optional func postCell(cell: PostCell, didTapSubreddit subreddit: String?)
     optional func postCell(cell: PostCell, didShortRightSwipeForLink link: RKLink)
     optional func postCell(cell: PostCell, didLongRightSwipeForLink link: RKLink)
@@ -34,6 +35,7 @@ class PostCell: SwipeCell, SwipeCellDelegate {
         super.awakeFromNib()
 
         self.swipeDelegate = self
+        self.selectionStyle = .Default
     }
     
     func swipeCell(cell: SwipeCell, didTriggerSwipeWithType swipeType: SwipeType) {
