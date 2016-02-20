@@ -351,15 +351,16 @@ class LinkViewController: RootViewController, UITextViewDelegate {
     }
     
     override func didRotateFromInterfaceOrientation(fromInterfaceOrientation: UIInterfaceOrientation) {
-        if let content = self.content.content {
-            let mutableString = content.html2AttributedString
-            self.textView.attributedText = mutableString
-            self.preferredAppearance()
+        if let content = self.content {
+            if let actualContent = content.content {
+                let mutableString = actualContent.html2AttributedString
+                self.textView.attributedText = mutableString
+                self.preferredAppearance()
+            }
         }
     }
     
     override func preferredAppearance() {
-        
         self.navigationController?.navigationBar.backgroundColor = MyRedditBackgroundColor
         self.navigationController?.navigationBar.barTintColor = MyRedditBackgroundColor
         self.navigationController?.navigationBar.tintColor = MyRedditLabelColor
