@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 
 @objc protocol PostCellDelegate {
+    optional func postCell(cell: PostCell, didLongHoldWith subreddit: String?)
     optional func postCell(cell: PostCell, didTapSubreddit subreddit: String?)
     optional func postCell(cell: PostCell, didShortRightSwipeForLink link: RKLink)
     optional func postCell(cell: PostCell, didLongRightSwipeForLink link: RKLink)
@@ -28,12 +29,13 @@ class PostCell: SwipeCell, SwipeCellDelegate {
         let upVoteImage = UIImage(named: "Up")!.imageWithRenderingMode(.AlwaysOriginal)
         let downVoteImage = UIImage(named: "Down")!.imageWithRenderingMode(.AlwaysOriginal)
         
-        self.images = [downVoteImage, UIImage(named: "moreWhite")!, upVoteImage, UIImage(named: "Chat")!]
+        self.images = [downVoteImage, UIImage(named: "ShareWhite")!, upVoteImage, UIImage(named: "moreWhite")!]
         self.colors = [MyRedditDownvoteColor, MyRedditColor, MyRedditUpvoteColor, MyRedditReplyColor]
         
         super.awakeFromNib()
 
         self.swipeDelegate = self
+        self.selectionStyle = .Default
     }
     
     func swipeCell(cell: SwipeCell, didTriggerSwipeWithType swipeType: SwipeType) {

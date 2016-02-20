@@ -9,10 +9,10 @@
 import Foundation
 import UIKit
 
-protocol PostImageCellDelegate {
-    func postImageCell(cell: PostImageCell,
+@objc protocol PostImageCellDelegate {
+    optional func postImageCell(cell: PostImageCell,
         didDownloadImageWithHeight height: CGFloat, url: NSURL)
-    func postImageCell(cell: PostImageCell, didLongHoldOnImage image: UIImage?)
+    optional func postImageCell(cell: PostImageCell, didLongHoldOnImage image: UIImage?)
 }
 
 class PostImageCell: PostCell {
@@ -32,21 +32,11 @@ class PostImageCell: PostCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        
-        let longHold = UILongPressGestureRecognizer(target: self, action: "longHold")
-        self.postImageView.gestureRecognizers = [longHold]
-        
-        self.postImageView.userInteractionEnabled = true
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
         self.resetViews()
-    }
-    
-    func longHold() {
-        self.postImageDelegate?.postImageCell(self,
-            didLongHoldOnImage: self.postImageView.image)
     }
     
     private func resetViews() {
@@ -72,7 +62,7 @@ class PostImageCell: PostCell {
                         if let resizedImage = image?.imageWithImage(image, toSize: self.postImageView.frame.size) {
                             self.postImageView.contentMode = UIViewContentMode.ScaleAspectFill
                             self.postImageView.image = resizedImage
-                            self.postImageDelegate?.postImageCell(self, didDownloadImageWithHeight: resizedImage.size.height + 123, url: url)
+                            self.postImageDelegate?.postImageCell?(self, didDownloadImageWithHeight: resizedImage.size.height + 123, url: url)
                             self.resetViews()
                         } else {
                             self.postImageView.image = UIImage(named: "Reddit")

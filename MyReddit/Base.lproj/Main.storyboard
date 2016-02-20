@@ -473,6 +473,27 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0fw-fC-KgM">
+                                <rect key="frame" x="0.0" y="556" width="600" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="600" id="cfN-js-2hF"/>
+                                    <constraint firstAttribute="height" constant="44" id="zWq-Wu-jv2"/>
+                                </constraints>
+                                <items>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="x8X-dt-iTG"/>
+                                    <barButtonItem title="sign in" id="IVy-u8-kQ4">
+                                        <connections>
+                                            <action selector="loginButtonPressed:" destination="Cxf-Qd-xoU" id="syb-oo-m5V"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="Bng-5x-a1C"/>
+                                    <barButtonItem image="Cancel" id="X5c-mI-CZs">
+                                        <connections>
+                                            <action selector="cancelButtonPressed:" destination="Cxf-Qd-xoU" id="eau-e2-4wj"/>
+                                        </connections>
+                                    </barButtonItem>
+                                </items>
+                            </toolbar>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" translatesAutoresizingMaskIntoConstraints="NO" id="3sf-T3-YZo">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="556"/>
                                 <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
@@ -568,26 +589,6 @@
                                     <outlet property="delegate" destination="Cxf-Qd-xoU" id="w6v-Nd-GOJ"/>
                                 </connections>
                             </tableView>
-                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0fw-fC-KgM">
-                                <rect key="frame" x="0.0" y="556" width="600" height="44"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="600" id="cfN-js-2hF"/>
-                                    <constraint firstAttribute="height" constant="44" id="zWq-Wu-jv2"/>
-                                </constraints>
-                                <items>
-                                    <barButtonItem title="Login" id="IVy-u8-kQ4">
-                                        <connections>
-                                            <action selector="loginButtonPressed:" destination="Cxf-Qd-xoU" id="syb-oo-m5V"/>
-                                        </connections>
-                                    </barButtonItem>
-                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="Bng-5x-a1C"/>
-                                    <barButtonItem image="Cancel" id="X5c-mI-CZs">
-                                        <connections>
-                                            <action selector="cancelButtonPressed:" destination="Cxf-Qd-xoU" id="eau-e2-4wj"/>
-                                        </connections>
-                                    </barButtonItem>
-                                </items>
-                            </toolbar>
                         </subviews>
                         <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
@@ -602,7 +603,7 @@
                         </constraints>
                     </view>
                     <toolbarItems/>
-                    <navigationItem key="navigationItem" title="login" id="u5g-hX-jSk"/>
+                    <navigationItem key="navigationItem" title="add account" id="u5g-hX-jSk"/>
                     <connections>
                         <outlet property="loginButton" destination="IVy-u8-kQ4" id="5wH-GE-S3z"/>
                         <outlet property="tableView" destination="3sf-T3-YZo" id="P7H-PH-cH6"/>
@@ -1121,8 +1122,7 @@
                             </connections>
                         </barButtonItem>
                     </toolbarItems>
-                    <navigationItem key="navigationItem" id="NbR-H1-cdt">
-                        <barButtonItem key="leftBarButtonItem" title="subreddits" id="rMQ-wc-QIF"/>
+                    <navigationItem key="navigationItem" title="subreddits" id="NbR-H1-cdt">
                         <barButtonItem key="rightBarButtonItem" title="edit" id="SCB-PX-YfS">
                             <connections>
                                 <action selector="editButtonTApped:" destination="AYg-o0-LaT" id="fyP-YH-A2U"/>
@@ -4312,19 +4312,19 @@
         <image name="Up" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="yNw-36-nQb"/>
-        <segue reference="DoA-ah-cSI"/>
-        <segue reference="pMg-rh-ZMv"/>
-        <segue reference="ykc-Jy-SLH"/>
-        <segue reference="nb3-Xk-rNn"/>
-        <segue reference="s4Y-Y8-M2P"/>
+        <segue reference="SWo-82-5L3"/>
+        <segue reference="ryX-hT-yj2"/>
         <segue reference="pqF-Zz-63s"/>
-        <segue reference="zMo-OM-Z5J"/>
-        <segue reference="vMB-6P-NDX"/>
+        <segue reference="pMg-rh-ZMv"/>
+        <segue reference="s4Y-Y8-M2P"/>
         <segue reference="Bf8-BX-vnl"/>
-        <segue reference="nEx-7L-vW5"/>
+        <segue reference="vMB-6P-NDX"/>
         <segue reference="bxZ-6W-PbQ"/>
-        <segue reference="TYz-B9-bLR"/>
+        <segue reference="sND-y2-DTj"/>
+        <segue reference="kaq-Nv-BbA"/>
+        <segue reference="nEx-7L-vW5"/>
+        <segue reference="zMo-OM-Z5J"/>
         <segue reference="q6K-ip-lpO"/>
+        <segue reference="TYz-B9-bLR"/>
     </inferredMetricsTieBreakers>
 </document>

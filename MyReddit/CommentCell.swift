@@ -47,9 +47,9 @@ UITextViewDelegate {
         
         let upVoteImage = UIImage(named: "Up")!.imageWithRenderingMode(.AlwaysOriginal)
         let downVoteImage = UIImage(named: "Down")!.imageWithRenderingMode(.AlwaysOriginal)
-        let replyImage = UIImage(named: "moreWhite")!.imageWithRenderingMode(.AlwaysOriginal)
+        let moreImage = UIImage(named: "moreWhite")!.imageWithRenderingMode(.AlwaysOriginal)
         
-        self.images = [downVoteImage, downVoteImage, upVoteImage, replyImage]
+        self.images = [downVoteImage, downVoteImage, upVoteImage, moreImage]
         self.colors = [MyRedditDownvoteColor, MyRedditDownvoteColor, MyRedditUpvoteColor, MyRedditReplyColor]
         
         super.awakeFromNib()
