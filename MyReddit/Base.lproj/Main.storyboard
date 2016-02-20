@@ -24,8 +24,16 @@
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="556"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="AdCell" rowHeight="68" id="Sas-rs-ugH" customClass="AdCell" customModule="MyReddit" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="86" width="600" height="68"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Sas-rs-ugH" id="RFO-Uq-cAT">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="67"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="PostImageCell" rowHeight="392" id="bCD-Aj-NFZ" customClass="PostImageCell" customModule="MyReddit" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="86" width="600" height="392"/>
+                                        <rect key="frame" x="0.0" y="154" width="600" height="392"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="bCD-Aj-NFZ" id="fQy-ma-bHq">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="391"/>
@@ -108,7 +116,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TitleCell" rowHeight="122" id="oFJ-dT-Uxj" customClass="TitleCell" customModule="MyReddit" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="478" width="600" height="122"/>
+                                        <rect key="frame" x="0.0" y="546" width="600" height="122"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="oFJ-dT-Uxj" id="VqA-vq-ha0">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="121"/>
@@ -1044,20 +1052,12 @@
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="54"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" clipsSubviews="YES" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Front" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UWT-aA-cn6">
-                                                    <rect key="frame" x="64" y="16" width="465" height="22"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" constant="465" id="5LK-y3-Eow"/>
-                                                    </constraints>
-                                                    <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="17"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="BOr-rb-lYe">
                                                     <rect key="frame" x="17" y="10" width="34" height="34"/>
                                                     <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="34" id="V4j-K4-PB1"/>
-                                                        <constraint firstAttribute="height" constant="34" id="knU-tu-we7"/>
+                                                        <constraint firstAttribute="width" constant="34" id="BLV-qy-EFF"/>
+                                                        <constraint firstAttribute="height" constant="34" id="iI1-6u-kIN"/>
                                                     </constraints>
                                                     <userDefinedRuntimeAttributes>
                                                         <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
@@ -1065,33 +1065,24 @@
                                                         </userDefinedRuntimeAttribute>
                                                     </userDefinedRuntimeAttributes>
                                                 </imageView>
-                                                <label hidden="YES" opaque="NO" clipsSubviews="YES" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="NSFW" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OLk-BR-QW8">
-                                                    <rect key="frame" x="543" y="18" width="43" height="18"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" constant="43" id="anU-KL-TiF"/>
-                                                    </constraints>
-                                                    <fontDescription key="fontDescription" name="AvenirNext-Bold" family="Avenir Next" pointSize="12"/>
-                                                    <color key="textColor" red="0.96078431369999995" green="0.52156862749999999" blue="0.3921568627" alpha="1" colorSpace="calibratedRGB"/>
+                                                <label opaque="NO" clipsSubviews="YES" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Front" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UWT-aA-cn6">
+                                                    <rect key="frame" x="68" y="16" width="524" height="22"/>
+                                                    <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="17"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="OLk-BR-QW8" firstAttribute="baseline" secondItem="UWT-aA-cn6" secondAttribute="baseline" id="6iZ-XY-RYB"/>
-                                                <constraint firstItem="UWT-aA-cn6" firstAttribute="centerY" secondItem="DZi-bC-uoU" secondAttribute="centerY" id="8qM-Xm-t3M"/>
-                                                <constraint firstItem="OLk-BR-QW8" firstAttribute="centerY" secondItem="UWT-aA-cn6" secondAttribute="centerY" id="CdH-es-6j6"/>
-                                                <constraint firstItem="UWT-aA-cn6" firstAttribute="leading" secondItem="BOr-rb-lYe" secondAttribute="trailing" constant="13" id="SlM-XI-068"/>
-                                                <constraint firstItem="BOr-rb-lYe" firstAttribute="leading" secondItem="DZi-bC-uoU" secondAttribute="leadingMargin" constant="9" id="bMp-3g-cs7"/>
-                                                <constraint firstItem="UWT-aA-cn6" firstAttribute="top" secondItem="DZi-bC-uoU" secondAttribute="topMargin" constant="8" id="iY8-2U-qME"/>
-                                                <constraint firstAttribute="bottomMargin" secondItem="BOr-rb-lYe" secondAttribute="bottom" constant="2" id="mMC-gV-bVZ"/>
-                                                <constraint firstItem="BOr-rb-lYe" firstAttribute="top" secondItem="DZi-bC-uoU" secondAttribute="topMargin" constant="2" id="r5a-IN-Lzp"/>
-                                                <constraint firstAttribute="trailingMargin" secondItem="OLk-BR-QW8" secondAttribute="trailing" constant="6" id="yPd-eb-Jpb"/>
-                                                <constraint firstItem="OLk-BR-QW8" firstAttribute="leading" secondItem="UWT-aA-cn6" secondAttribute="trailing" constant="14" id="z9q-zL-7xC"/>
+                                                <constraint firstItem="UWT-aA-cn6" firstAttribute="trailing" secondItem="DZi-bC-uoU" secondAttribute="trailingMargin" id="5WE-89-lO1"/>
+                                                <constraint firstItem="BOr-rb-lYe" firstAttribute="leading" secondItem="DZi-bC-uoU" secondAttribute="leadingMargin" constant="9" id="Fuf-Wj-i0Q"/>
+                                                <constraint firstItem="UWT-aA-cn6" firstAttribute="leading" secondItem="BOr-rb-lYe" secondAttribute="trailing" constant="17" id="XuA-tX-bL6"/>
+                                                <constraint firstItem="BOr-rb-lYe" firstAttribute="top" secondItem="DZi-bC-uoU" secondAttribute="topMargin" constant="2" id="fJs-NB-CPW"/>
+                                                <constraint firstItem="UWT-aA-cn6" firstAttribute="centerY" secondItem="BOr-rb-lYe" secondAttribute="centerY" id="oXB-9D-7DV"/>
+                                                <constraint firstItem="UWT-aA-cn6" firstAttribute="top" secondItem="DZi-bC-uoU" secondAttribute="topMargin" constant="8" id="qIX-4Y-6pa"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <connections>
                                             <outlet property="nameLabel" destination="UWT-aA-cn6" id="USa-d8-LMT"/>
-                                            <outlet property="nsfwLabel" destination="OLk-BR-QW8" id="2rt-85-F5x"/>
                                             <outlet property="subredditImageView" destination="BOr-rb-lYe" id="6lU-2Y-Pnz"/>
                                             <segue destination="Wuv-iQ-z1V" kind="custom" identifier="SubredditPosts" customClass="DismissSegue" customModule="MyReddit" customModuleProvider="target" id="cxw-0o-NAI"/>
                                         </connections>
@@ -4377,19 +4368,19 @@
         <image name="Up" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="eWX-LR-CuE"/>
-        <segue reference="ybH-Av-VF3"/>
-        <segue reference="aPe-Za-FV1"/>
-        <segue reference="lWs-ak-HDh"/>
-        <segue reference="Udn-dz-6HG"/>
-        <segue reference="vMB-6P-NDX"/>
-        <segue reference="4Rw-4P-Ibk"/>
+        <segue reference="bxZ-6W-PbQ"/>
+        <segue reference="ryX-hT-yj2"/>
+        <segue reference="s4Y-Y8-M2P"/>
         <segue reference="pMg-rh-ZMv"/>
-        <segue reference="DoA-ah-cSI"/>
-        <segue reference="nb3-Xk-rNn"/>
         <segue reference="Bf8-BX-vnl"/>
-        <segue reference="zMo-OM-Z5J"/>
+        <segue reference="Lh7-pa-Rvm"/>
+        <segue reference="6WJ-xS-zTe"/>
+        <segue reference="xsL-ln-a3I"/>
+        <segue reference="vMB-6P-NDX"/>
         <segue reference="nEx-7L-vW5"/>
+        <segue reference="SWo-82-5L3"/>
+        <segue reference="sND-y2-DTj"/>
         <segue reference="TYz-B9-bLR"/>
+        <segue reference="zMo-OM-Z5J"/>
     </inferredMetricsTieBreakers>
 </document>

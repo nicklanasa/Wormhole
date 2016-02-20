@@ -399,14 +399,10 @@ UISearchBarDelegate {
         self.tableView.deselectRowAtIndexPath(indexPath, animated: true)
         if indexPath.section == 1 {
             if indexPath.row == 0 {
-                if !SettingsManager.defaultManager.purchased {
-                    self.performSegueWithIdentifier("PurchaseSegue", sender: self)
+                if UserSession.sharedSession.isSignedIn {
+                    self.showMultiRedditDialog()
                 } else {
-                    if UserSession.sharedSession.isSignedIn {
-                        self.showMultiRedditDialog()
-                    } else {
-                        self.performSegueWithIdentifier("AccountsSegue", sender: self)
-                    }
+                    self.performSegueWithIdentifier("AccountsSegue", sender: self)
                 }
             }
         } else if indexPath.section == 0 {
@@ -591,23 +587,15 @@ UISearchBarDelegate {
     }
     
     @IBAction func savedButtonTapped(sender: AnyObject) {
-        if !SettingsManager.defaultManager.purchased {
-            self.performSegueWithIdentifier("PurchaseSegue", sender: self)
+        if UserSession.sharedSession.isSignedIn {
+            self.performSegueWithIdentifier("SavedSegue", sender: self)
         } else {
-            if UserSession.sharedSession.isSignedIn {
-                self.performSegueWithIdentifier("SavedSegue", sender: self)
-            } else {
-                self.performSegueWithIdentifier("AccountsSegue", sender: self)
-            }
+            self.performSegueWithIdentifier("AccountsSegue", sender: self)
         }
     }
     
     @IBAction func loginButtonTapped(sender: AnyObject) {
-        if !SettingsManager.defaultManager.purchased {
-            self.performSegueWithIdentifier("PurchaseSegue", sender: self)
-        } else {
-            self.performSegueWithIdentifier("AccountsSegue", sender: self)
-        }
+        self.performSegueWithIdentifier("AccountsSegue", sender: self)
     }
     
     @IBAction func cancelButtonTapped(sender: AnyObject) {

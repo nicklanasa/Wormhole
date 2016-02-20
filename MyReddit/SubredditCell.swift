@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 
 class SubredditCell: UITableViewCell {
+    
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var subscribersLabel: UILabel!
     @IBOutlet weak var nsfwLabel: UILabel!
@@ -23,8 +24,6 @@ class SubredditCell: UITableViewCell {
         didSet {
             self.nameLabel.text = rkSubreddit.name.capitalizedString
             
-            self.nsfwLabel.hidden = true
-            
             if rkSubreddit.over18.boolValue {
                 self.nsfwLabel.hidden = false
             }
@@ -32,8 +31,6 @@ class SubredditCell: UITableViewCell {
             if !SettingsManager.defaultManager.valueForSetting(.SubredditLogos) {
                 if let headerURL = rkSubreddit.headerImageURL {
                     self.subredditImageView.sd_setImageWithURL(headerURL, placeholderImage: nil)
-                } else {
-                    self.subredditImageView.image = nil
                 }
             }
             
@@ -46,9 +43,7 @@ class SubredditCell: UITableViewCell {
     var rkMultiSubreddit: RKMultireddit! {
         didSet {
             self.nameLabel.text = rkMultiSubreddit.name
-            
-            self.nsfwLabel.hidden = true
-
+        
             self.nameLabel.textColor = MyRedditLabelColor
             
             self.subredditImageView.backgroundColor = MyRedditDarkBackgroundColor
@@ -68,8 +63,6 @@ class SubredditCell: UITableViewCell {
             } else {
                 self.nameLabel.text = "Unknown"
             }
-                        
-            self.nsfwLabel.hidden = true
             
             if let over18 = subredditData["over18"] as? NSNumber {
                 if over18.boolValue {
