@@ -415,67 +415,65 @@ PostCellDelegate {
     }
     
     func postCell(cell: PostCell, didLongLeftSwipeForLink link: RKLink) {
-        let alertController = UIAlertController(title: "more options", message: nil, preferredStyle: .ActionSheet)
-
-        if link.saved() {
-            alertController.addAction(UIAlertAction(title: "unsave", style: .Default, handler: { (action) -> Void in
-                RedditSession.sharedSession.unSaveLink(link, completion: { (error) -> () in
-                    link.unSaveLink()
-                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                        let hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
-                        hud.labelFont = MyRedditSelfTextFont
-                        hud.mode = .Text
-                        hud.labelText = "unsaved!"
-                        
-                        hud.hide(true, afterDelay: 0.3)
-                    })
-                })
-            }))
-        } else {
-            alertController.addAction(UIAlertAction(title: "save", style: .Default, handler: { (action) -> Void in
-                RedditSession.sharedSession.saveLink(link, completion: { (error) -> () in
-                    link.saveLink()
-                    
-                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                        let hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
-                        hud.labelFont = MyRedditSelfTextFont
-                        hud.mode = .Text
-                        hud.labelText = "saved!"
-                        
-                        hud.hide(true, afterDelay: 0.3)
-                    })
-                })
-            }))
-        }
-
-        alertController.addAction(UIAlertAction(title: "hide", style: .Default, handler: { (action) -> Void in
-            RedditSession.sharedSession.hideLink(link, completion: { (error) -> () in
-                link.saveLink()
-
-                dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                    if let indexPath = self.tableView.indexPathForCell(cell) {
-                        self.links.removeAtIndex(indexPath.row)
-                        self.tableView.beginUpdates()
-                        self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-                        self.tableView.endUpdates()
-                    }
-                })
-            })
-        }))
-
-        alertController.addAction(UIAlertAction(title: "open in safari", style: .Default, handler: { (action) -> Void in
-            // TODO: Safari vc
-            UIApplication.sharedApplication().openURL(link.URL)
-        }))
-
-        alertController.addAction(UIAlertAction(title: "cancel", style: .Cancel, handler: nil))
         
-        if let popoverController = alertController.popoverPresentationController {
+        LocalyticsSession.shared().tagEvent("Swipe more")
+        
+        let alert = UIAlertController.swipeMoreAlertControllerWithLink(link) { (action) -> () in
+            if let title = action.title {
+                
+                var hudTitle = ""
+                
+                let sh: () -> () = {
+                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                        self.hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
+                        self.hud.labelFont = MyRedditSelfTextFont
+                        self.hud.mode = .Text
+                        self.hud.hide(true, afterDelay: 0.3)
+                    })
+                }
+                
+                switch title {
+                case "hide":
+                    RedditSession.sharedSession.hideLink(link, completion: { (error) -> () in
+                        link.saveLink()
+                        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                            if let indexPath = self.tableView.indexPathForCell(cell) {
+                                self.links.removeAtIndex(indexPath.row)
+                                self.tableView.beginUpdates()
+                                self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+                                self.tableView.endUpdates()
+                                sh()
+                            }
+                        })
+                    })
+                case "unsave":
+                    RedditSession.sharedSession.unSaveLink(link, completion: { (error) -> () in
+                        link.unSaveLink()
+                        hudTitle = "unsaved!"
+                        sh()
+                    })
+                case "save":
+                    RedditSession.sharedSession.saveLink(link, completion: { (error) -> () in
+                        link.saveLink()
+                        hudTitle = "saved!"
+                        sh()
+                    })
+                case "report":
+                    RedditSession.sharedSession.reportLink(link, completion: { (error) -> () in
+                        hudTitle = "reported!"
+                        sh()
+                    })
+                default: break
+                }
+            }
+        }
+        
+        if let popoverController = alert.popoverPresentationController {
             popoverController.sourceView = cell
             popoverController.sourceRect = cell.bounds
         }
         
-        alertController.present(animated: true, completion: nil)
+        self.presentViewController(alert, animated: true, completion: nil)
     }
     
     func postCell(cell: PostCell, didTapSubreddit subreddit: String?) {

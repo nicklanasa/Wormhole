@@ -74,24 +74,29 @@ extension UIAlertController {
     }
     
     class func swipeMoreAlertControllerWithLink(link: RKLink, completion: (UIAlertAction) -> ()) -> UIAlertController {
+        let c: (UIAlertAction) -> () = {
+            action in
+            completion(action)
+        }
+        
         let alertController = UIAlertController(title: "Select action",
             message: nil,
             preferredStyle: .ActionSheet)
         
-        alertController.addAction(UIAlertAction(title: "hide", style: .Default, handler: { (action) -> Void in
-            completion(action)
-        }))
-        
-        if link.saved {
-            alertController.addAction(UIAlertAction(title: "unsave", style: .Default, handler: { (action) -> Void in
-                completion(action)
-            }))
+        if link.hidden {
+            alertController.addAction(UIAlertAction(title: "unhide", style: .Default, handler: c))
         } else {
-            alertController.addAction(UIAlertAction(title: "save", style: .Default, handler: { (action) -> Void in
-                completion(action)
-            }))
+            alertController.addAction(UIAlertAction(title: "hide", style: .Default, handler: c))
+        }
+                
+        if link.saved {
+            alertController.addAction(UIAlertAction(title: "unsave", style: .Default, handler: c))
+        } else {
+            alertController.addAction(UIAlertAction(title: "save", style: .Default, handler: c))
         }
         
+        alertController.addAction(UIAlertAction(title: "report", style: .Default, handler: c))
+        alertController.addAction(UIAlertAction(title: "open in safari", style: .Default, handler: c))
         alertController.addAction(UIAlertAction(title: "cancel", style: .Cancel, handler: nil))
         
         return alertController
