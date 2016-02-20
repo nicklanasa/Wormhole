@@ -2578,9 +2578,9 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="post text size" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Aji-uk-Hlo">
-                                                    <rect key="frame" x="18" y="11" width="361" height="22"/>
+                                                    <rect key="frame" x="18" y="11" width="453" height="22"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="361" id="Lbw-wA-pE0"/>
+                                                        <constraint firstAttribute="width" constant="453" id="Lbw-wA-pE0"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="16"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -2604,8 +2604,8 @@
                                                 <constraint firstItem="Aji-uk-Hlo" firstAttribute="leading" secondItem="7pN-8y-olW" secondAttribute="leadingMargin" constant="10" id="H4g-jG-cQf"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="Kaj-QC-ywh" secondAttribute="trailing" constant="6" id="Vwx-OA-da2"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="Kaj-QC-ywh" secondAttribute="trailing" constant="6" id="fa0-9p-UGY"/>
-                                                <constraint firstItem="Kaj-QC-ywh" firstAttribute="leading" secondItem="Aji-uk-Hlo" secondAttribute="trailing" constant="40" id="h7o-f2-6I9"/>
-                                                <constraint firstItem="Kaj-QC-ywh" firstAttribute="leading" secondItem="Aji-uk-Hlo" secondAttribute="trailing" constant="40" id="kwZ-vD-Inv"/>
+                                                <constraint firstItem="Kaj-QC-ywh" firstAttribute="leading" secondItem="Aji-uk-Hlo" secondAttribute="trailing" constant="-52" id="h7o-f2-6I9"/>
+                                                <constraint firstItem="Kaj-QC-ywh" firstAttribute="leading" secondItem="Aji-uk-Hlo" secondAttribute="trailing" constant="-52" id="kwZ-vD-Inv"/>
                                                 <constraint firstItem="Kaj-QC-ywh" firstAttribute="top" secondItem="7pN-8y-olW" secondAttribute="topMargin" constant="3" id="lYX-dK-sXi"/>
                                                 <constraint firstItem="Kaj-QC-ywh" firstAttribute="centerY" secondItem="7pN-8y-olW" secondAttribute="centerY" id="pIG-tJ-bAG"/>
                                             </constraints>
@@ -2623,9 +2623,9 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="comment text size" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0A6-c9-yzH">
-                                                    <rect key="frame" x="18" y="11" width="361" height="22"/>
+                                                    <rect key="frame" x="18" y="11" width="478" height="22"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="361" id="g12-jO-elw"/>
+                                                        <constraint firstAttribute="width" constant="478" id="g12-jO-elw"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="16"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -2643,14 +2643,14 @@
                                                 </label>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="U5x-jj-S7S" firstAttribute="leading" secondItem="0A6-c9-yzH" secondAttribute="trailing" constant="40" id="5dO-gc-4am"/>
+                                                <constraint firstItem="U5x-jj-S7S" firstAttribute="leading" secondItem="0A6-c9-yzH" secondAttribute="trailing" constant="-77" id="5dO-gc-4am"/>
                                                 <constraint firstItem="U5x-jj-S7S" firstAttribute="centerY" secondItem="N1v-8V-6GZ" secondAttribute="centerY" id="B96-5R-nWV"/>
                                                 <constraint firstItem="0A6-c9-yzH" firstAttribute="top" secondItem="N1v-8V-6GZ" secondAttribute="topMargin" constant="3" id="GGc-H5-itg"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="U5x-jj-S7S" secondAttribute="trailing" constant="6" id="Sn9-cg-9RI"/>
                                                 <constraint firstAttribute="bottomMargin" secondItem="U5x-jj-S7S" secondAttribute="bottom" constant="3" id="Svz-I1-Zpf"/>
                                                 <constraint firstItem="0A6-c9-yzH" firstAttribute="leading" secondItem="N1v-8V-6GZ" secondAttribute="leadingMargin" constant="10" id="adp-Zl-cRq"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="U5x-jj-S7S" secondAttribute="trailing" constant="6" id="buw-gQ-05H"/>
-                                                <constraint firstItem="U5x-jj-S7S" firstAttribute="leading" secondItem="0A6-c9-yzH" secondAttribute="trailing" constant="40" id="kvp-YS-iTl"/>
+                                                <constraint firstItem="U5x-jj-S7S" firstAttribute="leading" secondItem="0A6-c9-yzH" secondAttribute="trailing" constant="-77" id="kvp-YS-iTl"/>
                                                 <constraint firstItem="U5x-jj-S7S" firstAttribute="top" secondItem="N1v-8V-6GZ" secondAttribute="topMargin" constant="3" id="m6p-VL-2cW"/>
                                                 <constraint firstItem="0A6-c9-yzH" firstAttribute="firstBaseline" secondItem="U5x-jj-S7S" secondAttribute="firstBaseline" id="usu-NC-ZqZ"/>
                                             </constraints>
@@ -4347,10 +4347,10 @@
         <segue reference="sND-y2-DTj"/>
         <segue reference="nEx-7L-vW5"/>
         <segue reference="bxZ-6W-PbQ"/>
+        <segue reference="SWo-82-5L3"/>
         <segue reference="zMo-OM-Z5J"/>
         <segue reference="TYz-B9-bLR"/>
         <segue reference="7mV-eF-gvZ"/>
         <segue reference="q6K-ip-lpO"/>
-        <segue reference="fLo-75-wzd"/>
     </inferredMetricsTieBreakers>
 </document>
