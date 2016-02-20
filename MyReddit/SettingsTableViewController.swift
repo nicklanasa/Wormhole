@@ -32,6 +32,7 @@ class SettingsTableViewController: UITableViewController, BDGIAPDelegate {
     @IBOutlet weak var likeUsOnFacebookCell: UserInfoCell!
     @IBOutlet weak var shareAppCell: UserInfoCell!
     @IBOutlet weak var restorePurchaseCell: UserInfoCell!
+    @IBOutlet weak var removeAdsCell: UserInfoCell!
     @IBOutlet weak var nytekProductionsCreatorCell: UserInfoCell!
     @IBOutlet weak var nickolasLanasaCreatorCell: UserInfoCell!
     @IBOutlet weak var samanthaLanasaCreatorCell: UserInfoCell!
@@ -102,6 +103,8 @@ class SettingsTableViewController: UITableViewController, BDGIAPDelegate {
             self.defaultToReaderModeCell.backgroundColor = MyRedditBackgroundColor
             self.hideFullWidthImagesCell.titleLabel.textColor = MyRedditLabelColor
             self.hideFullWidthImagesCell.backgroundColor = MyRedditBackgroundColor
+            self.removeAdsCell.titleLabel.textColor = MyRedditLabelColor
+            self.removeAdsCell.backgroundColor = MyRedditBackgroundColor
             
             self.tableView.separatorColor = MyRedditTableSeparatorColor
             self.tableView.backgroundColor = MyRedditDarkBackgroundColor
@@ -244,6 +247,7 @@ class SettingsTableViewController: UITableViewController, BDGIAPDelegate {
                 BDGInAppPurchase.sharedBDGInAppPurchase().delegate = self
                 BDGInAppPurchase.sharedBDGInAppPurchase().productID = SettingsManager.defaultManager.productID
                 BDGInAppPurchase.sharedBDGInAppPurchase().restoreIAP()
+            case 5: self.performSegueWithIdentifier("PurchaseSegue", sender: nil)
             default: return
             }
         } else if indexPath.section == 3 {
