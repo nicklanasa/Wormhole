@@ -78,6 +78,9 @@
 		0141070D1C782B6000C4CCA0 /* AdCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0141070C1C782B6000C4CCA0 /* AdCell.swift */; };
 		0141070E1C782B6000C4CCA0 /* AdCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0141070C1C782B6000C4CCA0 /* AdCell.swift */; };
 		0141070F1C782B6000C4CCA0 /* AdCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0141070C1C782B6000C4CCA0 /* AdCell.swift */; };
+		014107111C79088200C4CCA0 /* SubredditRootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 014107101C79088200C4CCA0 /* SubredditRootViewController.swift */; };
+		014107121C79088200C4CCA0 /* SubredditRootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 014107101C79088200C4CCA0 /* SubredditRootViewController.swift */; };
+		014107131C79088200C4CCA0 /* SubredditRootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 014107101C79088200C4CCA0 /* SubredditRootViewController.swift */; };
 		015E0D5D1AEF2B4000299B29 /* CommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 015E0D5C1AEF2B4000299B29 /* CommentCell.swift */; };
 		018E40221AC38A060055384D /* LinkViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 018E40211AC38A060055384D /* LinkViewController.swift */; };
 		018E40241AC392700055384D /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 018E40231AC392700055384D /* LoginViewController.swift */; };
@@ -270,6 +273,7 @@
 		01332D871AC37F4B0054E05C /* TitleCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TitleCell.swift; sourceTree = "<group>"; };
 		014107081C782A7A00C4CCA0 /* SuggestedLink.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SuggestedLink.swift; sourceTree = "<group>"; };
 		0141070C1C782B6000C4CCA0 /* AdCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdCell.swift; sourceTree = "<group>"; };
+		014107101C79088200C4CCA0 /* SubredditRootViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubredditRootViewController.swift; sourceTree = "<group>"; };
 		015E0D5C1AEF2B4000299B29 /* CommentCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentCell.swift; sourceTree = "<group>"; };
 		018CC9C21BCDA8B500DBC967 /* Pods_MyReddit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Pods_MyReddit.framework; path = "Pods/../build/Debug-iphoneos/Pods_MyReddit.framework"; sourceTree = "<group>"; };
 		018E40211AC38A060055384D /* LinkViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LinkViewController.swift; sourceTree = "<group>"; };
@@ -506,6 +510,7 @@
 				795FD29E1B6BF904008DF15C /* SubredditCategoriesTableViewController.swift */,
 				795FD2A11B6C01BE008DF15C /* SubredditsByCategoryTableViewController.swift */,
 				795FD2A41B6C14C2008DF15C /* EditMultiRedditTableViewController.swift */,
+				014107101C79088200C4CCA0 /* SubredditRootViewController.swift */,
 			);
 			name = Subreddits;
 			sourceTree = "<group>";
@@ -1022,6 +1027,7 @@
 				013380911C77BE4100E8DA56 /* SettingsTableViewController.swift in Sources */,
 				01A623331C76CB3400A8F857 /* UIimage+Helpers.swift in Sources */,
 				013380961C77BE4100E8DA56 /* LinkShareOptionsViewController.swift in Sources */,
+				014107131C79088200C4CCA0 /* SubredditRootViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1106,6 +1112,7 @@
 				E00B35E01B646F9700AD096D /* ReadableContent.swift in Sources */,
 				CE3AA4B21B0549E9000DEDD2 /* FrontCell.swift in Sources */,
 				01A6232E1C76CB3400A8F857 /* NSString+Helpers.swift in Sources */,
+				014107121C79088200C4CCA0 /* SubredditRootViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1190,6 +1197,7 @@
 				795FD2AB1B6C58ED008DF15C /* RootTableViewController.swift in Sources */,
 				01332D881AC37F4B0054E05C /* TitleCell.swift in Sources */,
 				CE769F2B1AF6A17000031657 /* FrontCell.swift in Sources */,
+				014107111C79088200C4CCA0 /* SubredditRootViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
