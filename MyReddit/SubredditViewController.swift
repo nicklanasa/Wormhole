@@ -432,9 +432,9 @@ PostCellDelegate {
             cell.link = link
         } else if let _ = self.links[indexPath.row] as? SuggestedLink {
             let cell = tableView.dequeueReusableCellWithIdentifier("AdCell") as! AdCell
-            let bannerView = AdCell.cellBannerView(self, frame:cell.bounds)
             
-            cell.addSubview(bannerView)
+            cell.bannerView.rootViewController = self
+            cell.bannerView.adSize = kGADAdSizeSmartBannerPortrait
             
             let priority = DISPATCH_QUEUE_PRIORITY_BACKGROUND
             
@@ -442,7 +442,7 @@ PostCellDelegate {
                 let request = GADRequest()
                 request.testDevices = [kGADSimulatorID]
                 dispatch_async(dispatch_get_main_queue()) { // Update the UI
-                    bannerView.loadRequest(request)
+                    cell.bannerView.loadRequest(request)
                 }
             }
             
@@ -773,6 +773,10 @@ PostCellDelegate {
                 }
             }
         }
+    }
+    
+    override func didRotateFromInterfaceOrientation(fromInterfaceOrientation: UIInterfaceOrientation) {
+        self.tableView.reloadData()
     }
     
     // MARK: UIScrollViewDelegate

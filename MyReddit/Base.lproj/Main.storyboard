@@ -30,7 +30,28 @@
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Sas-rs-ugH" id="RFO-Uq-cAT">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="67"/>
                                             <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Zqv-GQ-QCb" customClass="GADBannerView">
+                                                    <rect key="frame" x="0.0" y="0.0" width="600" height="67"/>
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="67" id="fhH-oy-yx5"/>
+                                                    </constraints>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="adUnitID" value="ca-app-pub-4512025392063519/5619854982"/>
+                                                    </userDefinedRuntimeAttributes>
+                                                </view>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="Zqv-GQ-QCb" firstAttribute="top" secondItem="RFO-Uq-cAT" secondAttribute="topMargin" constant="-8" id="5Yt-I5-JCg"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="Zqv-GQ-QCb" secondAttribute="bottom" constant="-8" id="Vv8-YS-QhX"/>
+                                                <constraint firstItem="Zqv-GQ-QCb" firstAttribute="leading" secondItem="RFO-Uq-cAT" secondAttribute="leadingMargin" constant="-8" id="g6c-MC-BZx"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="Zqv-GQ-QCb" secondAttribute="trailing" constant="-8" id="i5W-D8-977"/>
+                                            </constraints>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="bannerView" destination="Zqv-GQ-QCb" id="zY9-Vr-jVH"/>
+                                        </connections>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="PostImageCell" rowHeight="392" id="bCD-Aj-NFZ" customClass="PostImageCell" customModule="MyReddit" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="154" width="600" height="392"/>
@@ -4291,19 +4312,19 @@
         <image name="Up" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="ryX-hT-yj2"/>
+        <segue reference="yNw-36-nQb"/>
+        <segue reference="DoA-ah-cSI"/>
         <segue reference="pMg-rh-ZMv"/>
+        <segue reference="ykc-Jy-SLH"/>
+        <segue reference="nb3-Xk-rNn"/>
         <segue reference="s4Y-Y8-M2P"/>
-        <segue reference="Lh7-pa-Rvm"/>
+        <segue reference="pqF-Zz-63s"/>
+        <segue reference="zMo-OM-Z5J"/>
         <segue reference="vMB-6P-NDX"/>
         <segue reference="Bf8-BX-vnl"/>
-        <segue reference="sND-y2-DTj"/>
         <segue reference="nEx-7L-vW5"/>
         <segue reference="bxZ-6W-PbQ"/>
-        <segue reference="zMo-OM-Z5J"/>
         <segue reference="TYz-B9-bLR"/>
-        <segue reference="7mV-eF-gvZ"/>
         <segue reference="q6K-ip-lpO"/>
-        <segue reference="fLo-75-wzd"/>
     </inferredMetricsTieBreakers>
 </document>
