@@ -26,18 +26,17 @@ class PasswordCell: UITableViewCell, UITextFieldDelegate {
     
     override func awakeFromNib() {
         self.passwordTextField.delegate = self
-        
         self.passwordTextField.textColor = MyRedditLabelColor
         self.passwordLabel.textColor = MyRedditLabelColor
+        self.passwordTextField.attributedPlaceholder = NSAttributedString(string: "enter password...",
+            attributes: [NSForegroundColorAttributeName : MyRedditSelfTextLabelColor])
     }
     
     @IBOutlet weak var passwordLabel: UILabel!
     @IBOutlet weak var passwordTextField: UITextField!
     
     func textFieldShouldReturn(textField: UITextField) -> Bool {
-        
         self.delegate?.passwordCell(self, didTapReturnButton: textField)
-        
         return true
     }
 }
