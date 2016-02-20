@@ -61,7 +61,9 @@ PostCellDelegate {
                 })
             }
             
-            self.links.append(SuggestedLink())
+            if !SettingsManager.defaultManager.purchased {
+                self.links.append(SuggestedLink())
+            }
             
             if self.links.count == 25 || self.links.count == 0 {
                 self.tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: .Fade)
