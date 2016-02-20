@@ -4,7 +4,6 @@
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
         <capability name="Alignment constraints to the first baseline" minToolsVersion="6.0"/>
-        <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
@@ -421,139 +420,57 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K3k-oK-Zyd">
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nNl-h6-2v0">
                                 <rect key="frame" x="0.0" y="556" width="600" height="44"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="44" id="cxn-ER-iwJ"/>
-                                    <constraint firstAttribute="height" constant="44" id="ex8-Xg-S8S"/>
+                                    <constraint firstAttribute="height" constant="44" id="dlT-mq-ph8"/>
+                                    <constraint firstAttribute="height" constant="44" id="rXw-nY-zjJ"/>
                                 </constraints>
                                 <items>
-                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="Clt-SZ-wIR"/>
-                                    <barButtonItem image="Cancel" id="h3E-IC-BSN">
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="DLB-Xe-wS8"/>
+                                    <barButtonItem image="Cancel" id="vZB-N1-g7J">
                                         <connections>
-                                            <action selector="cancelButtonTapped:" destination="Zov-bH-lU9" id="r8g-eC-sU8"/>
+                                            <action selector="cancelButtonTapped:" destination="Zov-bH-lU9" id="bt4-J9-sD1"/>
                                         </connections>
                                     </barButtonItem>
                                 </items>
                                 <color key="barTintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <variation key="default">
                                     <mask key="constraints">
-                                        <exclude reference="ex8-Xg-S8S"/>
+                                        <exclude reference="rXw-nY-zjJ"/>
                                     </mask>
                                 </variation>
                                 <variation key="heightClass=compact-widthClass=regular">
                                     <mask key="constraints">
-                                        <include reference="ex8-Xg-S8S"/>
+                                        <include reference="rXw-nY-zjJ"/>
                                     </mask>
                                 </variation>
                             </toolbar>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xHw-Aj-2pR">
-                                <rect key="frame" x="16" y="497" width="568" height="46"/>
-                                <color key="backgroundColor" red="0.36862745098039218" green="0.8901960784313725" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="46" id="8DK-gj-EOw"/>
-                                    <constraint firstAttribute="width" constant="276" id="xAE-12-FvL"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="15"/>
-                                <state key="normal" title="SHARE TO UNLOCK FOR 1 MONTH">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="string" keyPath="layer.borderWidth" value="1"/>
-                                    <userDefinedRuntimeAttribute type="color" keyPath="layer.borderColor">
-                                        <color key="value" red="0.20000000000000001" green="0.59999999999999998" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="string" keyPath="layer.cornerRadius" value="22"/>
-                                </userDefinedRuntimeAttributes>
-                                <variation key="default">
-                                    <mask key="constraints">
-                                        <exclude reference="xAE-12-FvL"/>
-                                    </mask>
-                                </variation>
-                                <variation key="widthClass=regular" misplaced="YES">
-                                    <rect key="frame" x="508" y="459" width="276" height="46"/>
-                                </variation>
-                                <variation key="heightClass=compact-widthClass=regular" misplaced="YES">
-                                    <rect key="frame" x="508" y="287" width="276" height="46"/>
-                                    <mask key="constraints">
-                                        <include reference="xAE-12-FvL"/>
-                                    </mask>
-                                </variation>
-                                <connections>
-                                    <action selector="shareToUnlockButtonTapped:" destination="Zov-bH-lU9" eventType="touchUpInside" id="Wyn-F1-tHI"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CwJ-2M-ggV">
-                                <rect key="frame" x="16" y="433" width="568" height="46"/>
-                                <color key="backgroundColor" red="0.20000000000000001" green="0.59999999999999998" blue="0.20000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="46" id="Jdg-VX-2Ou"/>
-                                    <constraint firstAttribute="width" constant="276" id="Yjm-9i-w5L"/>
-                                    <constraint firstAttribute="height" constant="46" id="rXd-oP-Cee"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="16"/>
-                                <state key="normal" title="UNLOCK EVERYTHING FOR $1.99">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="string" keyPath="layer.borderWidth" value="1"/>
-                                    <userDefinedRuntimeAttribute type="color" keyPath="layer.borderColor">
-                                        <color key="value" red="0.20000000000000001" green="0.59999999999999998" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="string" keyPath="layer.cornerRadius" value="22"/>
-                                </userDefinedRuntimeAttributes>
-                                <variation key="default">
-                                    <mask key="constraints">
-                                        <exclude reference="Yjm-9i-w5L"/>
-                                        <exclude reference="rXd-oP-Cee"/>
-                                    </mask>
-                                </variation>
-                                <variation key="widthClass=regular" misplaced="YES">
-                                    <rect key="frame" x="16" y="459" width="276" height="46"/>
-                                </variation>
-                                <variation key="heightClass=compact-widthClass=regular">
-                                    <mask key="constraints">
-                                        <include reference="Yjm-9i-w5L"/>
-                                        <include reference="rXd-oP-Cee"/>
-                                    </mask>
-                                </variation>
-                                <connections>
-                                    <action selector="purchaseButtonTapped:" destination="Zov-bH-lU9" eventType="touchUpInside" id="34g-RX-uEi"/>
-                                </connections>
-                            </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="TopLeft" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.70000000000000018" translatesAutoresizingMaskIntoConstraints="NO" id="7EO-1f-duY">
-                                <rect key="frame" x="16" y="72" width="568" height="252"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="TopLeft" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="V3a-bJ-MQo">
+                                <rect key="frame" x="20" y="307" width="560" height="179"/>
                                 <attributedString key="attributedText">
-                                    <fragment content="MyReddit Premium for iPad">
+                                    <fragment content="Remove ads ">
                                         <attributes>
-                                            <color key="NSColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                            <font key="NSFont" size="28" name="AvenirNext-Medium"/>
-                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="truncatingTail" baseWritingDirection="natural"/>
-                                        </attributes>
-                                    </fragment>
-                                    <fragment content="  ">
-                                        <attributes>
-                                            <color key="NSColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                            <font key="NSFont" size="22" name="AvenirNext-Medium"/>
-                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="truncatingTail" baseWritingDirection="natural"/>
-                                        </attributes>
-                                    </fragment>
-                                    <fragment content="Unlock all of MyReddit's premium features with one purchase">
-                                        <attributes>
-                                            <color key="NSColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                            <font key="NSFont" size="20" name="AvenirNext-Medium"/>
-                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="truncatingTail" baseWritingDirection="natural"/>
+                                            <color key="NSColor" red="0.14901960784313725" green="0.14901960784313725" blue="0.14901960784313725" alpha="1" colorSpace="calibratedRGB"/>
+                                            <font key="NSFont" size="18" name="AvenirNext-Medium"/>
+                                            <real key="NSKern" value="0.0"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="leftToRight" defaultTabInterval="36" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO">
+                                                <tabStops/>
+                                            </paragraphStyle>
+                                            <color key="NSStrokeColor" red="0.14901960784313725" green="0.14901960784313725" blue="0.14901960784313725" alpha="1" colorSpace="calibratedRGB"/>
                                         </attributes>
                                     </fragment>
                                     <fragment>
-                                        <string key="content">  Use your reddit.com account w/ multiple account support Voting, posting, hiding, saving, and sharing Manage multireddits (create, edit, and delete) Subscribed subreddits Messages Night Mode Support the development of MyReddit.</string>
+                                        <string key="content"> Many hours go into updating and creating an app. You can contribute to the future of MyReddit for the price of a cup of coffee or spread the word by sharing with your friends</string>
                                         <attributes>
-                                            <color key="NSColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                            <font key="NSFont" size="20" name="AvenirNext-Regular"/>
-                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="truncatingTail" baseWritingDirection="natural"/>
+                                            <color key="NSColor" red="0.14901960784313725" green="0.14901960784313725" blue="0.14901960784313725" alpha="1" colorSpace="calibratedRGB"/>
+                                            <font key="NSFont" size="18" name="AvenirNext-Regular"/>
+                                            <real key="NSKern" value="0.0"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="leftToRight" defaultTabInterval="36" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO">
+                                                <tabStops/>
+                                            </paragraphStyle>
+                                            <color key="NSStrokeColor" red="0.14901960784313725" green="0.14901960784313725" blue="0.14901960784313725" alpha="1" colorSpace="calibratedRGB"/>
                                         </attributes>
                                     </fragment>
                                 </attributedString>
@@ -562,82 +479,74 @@
                                     <rect key="frame" x="16" y="72" width="768" height="315"/>
                                 </variation>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Zq3-MW-reh">
+                                <rect key="frame" x="20" y="499" width="560" height="46"/>
+                                <color key="backgroundColor" red="0.20000000000000001" green="0.59999999999999998" blue="0.20000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="46" id="6YU-9w-gpf"/>
+                                    <constraint firstAttribute="height" constant="46" id="8jq-I2-DAy"/>
+                                    <constraint firstAttribute="width" constant="276" id="yin-ma-WSR"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="16"/>
+                                <state key="normal" title="remove ads for $1.99">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="layer.borderWidth" value="1"/>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="layer.borderColor">
+                                        <color key="value" red="0.20000000000000001" green="0.59999999999999998" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="layer.cornerRadius" value="22"/>
+                                </userDefinedRuntimeAttributes>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="6YU-9w-gpf"/>
+                                        <exclude reference="yin-ma-WSR"/>
+                                    </mask>
+                                </variation>
+                                <variation key="widthClass=regular" misplaced="YES">
+                                    <rect key="frame" x="16" y="459" width="276" height="46"/>
+                                </variation>
+                                <variation key="heightClass=compact-widthClass=regular">
+                                    <mask key="constraints">
+                                        <include reference="6YU-9w-gpf"/>
+                                        <include reference="yin-ma-WSR"/>
+                                    </mask>
+                                </variation>
+                                <connections>
+                                    <action selector="purchaseButtonTapped:" destination="Zov-bH-lU9" eventType="touchUpInside" id="r9x-2U-gjj"/>
+                                </connections>
+                            </button>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="MyReddit" translatesAutoresizingMaskIntoConstraints="NO" id="WNr-4z-aoj">
+                                <rect key="frame" x="20" y="72" width="560" height="243"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="243" id="DgQ-9d-yNc"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="CwJ-2M-ggV" firstAttribute="leading" secondItem="f7m-JM-yYb" secondAttribute="leadingMargin" id="2x1-wb-VRV"/>
-                            <constraint firstItem="K3k-oK-Zyd" firstAttribute="leading" secondItem="f7m-JM-yYb" secondAttribute="leading" id="5Ek-tS-Yh6"/>
-                            <constraint firstItem="CwJ-2M-ggV" firstAttribute="top" secondItem="7EO-1f-duY" secondAttribute="bottom" constant="13" id="9JG-9J-ILM"/>
-                            <constraint firstItem="7EO-1f-duY" firstAttribute="centerX" secondItem="K3k-oK-Zyd" secondAttribute="centerX" id="9Nk-9Y-Wkg"/>
-                            <constraint firstItem="xHw-Aj-2pR" firstAttribute="baseline" secondItem="CwJ-2M-ggV" secondAttribute="firstBaseline" id="Am3-fd-V6t"/>
-                            <constraint firstItem="CwJ-2M-ggV" firstAttribute="top" secondItem="7EO-1f-duY" secondAttribute="bottom" constant="109" id="ClG-qa-FJI"/>
-                            <constraint firstItem="xHw-Aj-2pR" firstAttribute="trailing" secondItem="7EO-1f-duY" secondAttribute="trailing" id="Dw0-TY-0kG"/>
-                            <constraint firstItem="7EO-1f-duY" firstAttribute="top" secondItem="4U6-0s-9UA" secondAttribute="bottom" constant="8" id="FJc-NH-Rql"/>
-                            <constraint firstItem="7EO-1f-duY" firstAttribute="trailing" secondItem="f7m-JM-yYb" secondAttribute="trailingMargin" constant="4" id="Fm0-FY-8iD"/>
-                            <constraint firstItem="xHw-Aj-2pR" firstAttribute="top" secondItem="CwJ-2M-ggV" secondAttribute="bottom" constant="18" id="G6c-ky-BGg"/>
-                            <constraint firstItem="K3k-oK-Zyd" firstAttribute="leading" secondItem="f7m-JM-yYb" secondAttribute="leading" id="HI1-yX-qDU"/>
-                            <constraint firstItem="CwJ-2M-ggV" firstAttribute="leading" secondItem="xHw-Aj-2pR" secondAttribute="leading" id="Hlh-xI-60z"/>
-                            <constraint firstItem="K3k-oK-Zyd" firstAttribute="bottom" secondItem="gc8-Y3-EIA" secondAttribute="top" id="Iym-h9-Adi"/>
-                            <constraint firstItem="K3k-oK-Zyd" firstAttribute="bottom" secondItem="gc8-Y3-EIA" secondAttribute="top" id="KXB-gK-6mV"/>
-                            <constraint firstItem="7EO-1f-duY" firstAttribute="trailing" secondItem="CwJ-2M-ggV" secondAttribute="trailing" id="P6k-B8-zQr"/>
-                            <constraint firstItem="7EO-1f-duY" firstAttribute="top" secondItem="4U6-0s-9UA" secondAttribute="bottom" constant="8" id="PC5-DZ-PLN"/>
-                            <constraint firstItem="K3k-oK-Zyd" firstAttribute="centerX" secondItem="xHw-Aj-2pR" secondAttribute="centerX" id="S0e-nm-ZZp"/>
-                            <constraint firstItem="CwJ-2M-ggV" firstAttribute="bottom" secondItem="xHw-Aj-2pR" secondAttribute="bottom" id="W6r-2p-EYg"/>
-                            <constraint firstItem="CwJ-2M-ggV" firstAttribute="leading" secondItem="7EO-1f-duY" secondAttribute="leading" id="WLP-So-2d6"/>
-                            <constraint firstItem="7EO-1f-duY" firstAttribute="top" secondItem="4U6-0s-9UA" secondAttribute="bottom" constant="8" symbolic="YES" id="Xx9-Ez-LxE"/>
-                            <constraint firstItem="CwJ-2M-ggV" firstAttribute="leading" secondItem="7EO-1f-duY" secondAttribute="leading" id="hWN-s9-PKr"/>
-                            <constraint firstItem="K3k-oK-Zyd" firstAttribute="top" secondItem="CwJ-2M-ggV" secondAttribute="bottom" constant="23" id="hx4-2Q-j79"/>
-                            <constraint firstItem="CwJ-2M-ggV" firstAttribute="baseline" secondItem="xHw-Aj-2pR" secondAttribute="firstBaseline" id="jqh-63-1Jl"/>
-                            <constraint firstItem="CwJ-2M-ggV" firstAttribute="trailing" secondItem="xHw-Aj-2pR" secondAttribute="trailing" id="kPy-ZP-wyS"/>
-                            <constraint firstItem="CwJ-2M-ggV" firstAttribute="top" secondItem="xHw-Aj-2pR" secondAttribute="top" id="lGI-t5-LT0"/>
-                            <constraint firstItem="7EO-1f-duY" firstAttribute="leading" secondItem="f7m-JM-yYb" secondAttribute="leadingMargin" constant="-4" id="nG8-EP-V65"/>
-                            <constraint firstItem="K3k-oK-Zyd" firstAttribute="top" secondItem="xHw-Aj-2pR" secondAttribute="bottom" constant="13" id="nnk-aH-PND"/>
-                            <constraint firstAttribute="trailing" secondItem="K3k-oK-Zyd" secondAttribute="trailing" id="odr-DS-E8z"/>
-                            <constraint firstItem="gc8-Y3-EIA" firstAttribute="top" secondItem="7EO-1f-duY" secondAttribute="bottom" constant="276" id="rU3-bE-sZT"/>
-                            <constraint firstAttribute="trailing" secondItem="K3k-oK-Zyd" secondAttribute="trailing" id="uZz-Pc-W6W"/>
+                            <constraint firstItem="WNr-4z-aoj" firstAttribute="top" secondItem="4U6-0s-9UA" secondAttribute="bottom" constant="8" symbolic="YES" id="1uA-rV-9qV"/>
+                            <constraint firstItem="nNl-h6-2v0" firstAttribute="bottom" secondItem="gc8-Y3-EIA" secondAttribute="top" id="55h-jb-i9f"/>
+                            <constraint firstAttribute="trailing" secondItem="nNl-h6-2v0" secondAttribute="trailing" id="7BT-i3-lHy"/>
+                            <constraint firstItem="V3a-bJ-MQo" firstAttribute="leading" secondItem="f7m-JM-yYb" secondAttribute="leadingMargin" id="Ca9-7R-pTa"/>
+                            <constraint firstItem="V3a-bJ-MQo" firstAttribute="top" secondItem="4U6-0s-9UA" secondAttribute="bottom" constant="243" id="Jwy-cP-Ak7"/>
+                            <constraint firstItem="WNr-4z-aoj" firstAttribute="trailing" secondItem="V3a-bJ-MQo" secondAttribute="trailing" id="NcN-Gx-HGL"/>
+                            <constraint firstItem="V3a-bJ-MQo" firstAttribute="leading" secondItem="Zq3-MW-reh" secondAttribute="leading" id="Nn9-mE-0XM"/>
+                            <constraint firstItem="V3a-bJ-MQo" firstAttribute="leading" secondItem="WNr-4z-aoj" secondAttribute="leading" id="b24-RX-Ty9"/>
+                            <constraint firstItem="V3a-bJ-MQo" firstAttribute="trailing" secondItem="Zq3-MW-reh" secondAttribute="trailing" id="nEW-6r-ol7"/>
+                            <constraint firstItem="Zq3-MW-reh" firstAttribute="centerX" secondItem="nNl-h6-2v0" secondAttribute="centerX" id="nvp-gf-pNC"/>
+                            <constraint firstItem="nNl-h6-2v0" firstAttribute="top" secondItem="Zq3-MW-reh" secondAttribute="bottom" constant="11" id="oQw-cc-e7N"/>
+                            <constraint firstItem="Zq3-MW-reh" firstAttribute="top" secondItem="V3a-bJ-MQo" secondAttribute="bottom" constant="13" id="oQz-ao-DlK"/>
+                            <constraint firstItem="nNl-h6-2v0" firstAttribute="leading" secondItem="f7m-JM-yYb" secondAttribute="leading" id="yqB-n6-nB4"/>
                         </constraints>
-                        <variation key="default">
-                            <mask key="constraints">
-                                <exclude reference="9Nk-9Y-Wkg"/>
-                                <exclude reference="Xx9-Ez-LxE"/>
-                                <exclude reference="2x1-wb-VRV"/>
-                                <exclude reference="9JG-9J-ILM"/>
-                                <exclude reference="W6r-2p-EYg"/>
-                                <exclude reference="hWN-s9-PKr"/>
-                                <exclude reference="jqh-63-1Jl"/>
-                                <exclude reference="lGI-t5-LT0"/>
-                                <exclude reference="Am3-fd-V6t"/>
-                                <exclude reference="Dw0-TY-0kG"/>
-                                <exclude reference="HI1-yX-qDU"/>
-                                <exclude reference="KXB-gK-6mV"/>
-                                <exclude reference="hx4-2Q-j79"/>
-                                <exclude reference="odr-DS-E8z"/>
-                            </mask>
-                        </variation>
-                        <variation key="heightClass=compact-widthClass=regular">
-                            <mask key="constraints">
-                                <include reference="9Nk-9Y-Wkg"/>
-                                <include reference="Xx9-Ez-LxE"/>
-                                <include reference="2x1-wb-VRV"/>
-                                <include reference="9JG-9J-ILM"/>
-                                <include reference="W6r-2p-EYg"/>
-                                <include reference="hWN-s9-PKr"/>
-                                <include reference="jqh-63-1Jl"/>
-                                <include reference="lGI-t5-LT0"/>
-                                <include reference="Am3-fd-V6t"/>
-                                <include reference="Dw0-TY-0kG"/>
-                                <include reference="HI1-yX-qDU"/>
-                                <include reference="KXB-gK-6mV"/>
-                                <include reference="hx4-2Q-j79"/>
-                                <include reference="odr-DS-E8z"/>
-                            </mask>
-                        </variation>
                     </view>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" title="unlock everything" id="b68-ie-zfd"/>
                     <connections>
-                        <outlet property="purchaseButton" destination="CwJ-2M-ggV" id="RJH-SB-vhj"/>
-                        <outlet property="purchaseLabel" destination="7EO-1f-duY" id="Ore-Oh-7cz"/>
+                        <outlet property="purchaseButton" destination="Zq3-MW-reh" id="skU-vn-JYv"/>
+                        <outlet property="purchaseLabel" destination="V3a-bJ-MQo" id="0U4-Co-9B1"/>
                         <segue destination="QDb-Kc-Q7i" kind="presentation" identifier="LoginSegue" modalTransitionStyle="crossDissolve" id="fLo-75-wzd"/>
                     </connections>
                 </viewController>
@@ -2448,12 +2357,39 @@
                                             <outlet property="titleLabel" destination="oC2-o2-WNi" id="rGc-dP-4j9"/>
                                         </connections>
                                     </tableViewCell>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="c8Q-lo-c0d" customClass="UserInfoCell" customModule="MyReddit" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="711" width="600" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="c8Q-lo-c0d" id="VCy-Yd-NR3">
+                                            <rect key="frame" x="0.0" y="0.0" width="567" height="43"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="remove ads" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TmV-my-p7U">
+                                                    <rect key="frame" x="18" y="11" width="361" height="22"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="361" id="nj3-WT-vOt"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="16"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="TmV-my-p7U" firstAttribute="leading" secondItem="VCy-Yd-NR3" secondAttribute="leadingMargin" constant="10" id="bLm-f3-1S8"/>
+                                                <constraint firstItem="TmV-my-p7U" firstAttribute="top" secondItem="VCy-Yd-NR3" secondAttribute="topMargin" constant="3" id="sMJ-wG-nWq"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <connections>
+                                            <outlet property="titleLabel" destination="TmV-my-p7U" id="nw8-Kx-BhZ"/>
+                                        </connections>
+                                    </tableViewCell>
                                 </cells>
                             </tableViewSection>
                             <tableViewSection headerTitle="Creators" id="COZ-zW-OQs">
                                 <cells>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="Z0X-gH-QdM" customClass="UserInfoCell" customModule="MyReddit" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="754" width="600" height="44"/>
+                                        <rect key="frame" x="0.0" y="798" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Z0X-gH-QdM" id="Vjn-kQ-K6E">
                                             <rect key="frame" x="0.0" y="0.0" width="567" height="43"/>
@@ -2480,7 +2416,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="zMV-Nw-cEI" customClass="UserInfoCell" customModule="MyReddit" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="798" width="600" height="44"/>
+                                        <rect key="frame" x="0.0" y="842" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="zMV-Nw-cEI" id="U5A-UJ-e0a">
                                             <rect key="frame" x="0.0" y="0.0" width="567" height="43"/>
@@ -2507,7 +2443,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="Zfo-MK-a7C" customClass="UserInfoCell" customModule="MyReddit" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="842" width="600" height="44"/>
+                                        <rect key="frame" x="0.0" y="886" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Zfo-MK-a7C" id="d2h-Y2-Qxx">
                                             <rect key="frame" x="0.0" y="0.0" width="567" height="43"/>
@@ -2538,7 +2474,7 @@
                             <tableViewSection headerTitle="Other Apps" id="ce0-Df-ofw">
                                 <cells>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="tJZ-lD-bgb" customClass="UserInfoCell" customModule="MyReddit" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="929" width="600" height="44"/>
+                                        <rect key="frame" x="0.0" y="973" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="tJZ-lD-bgb" id="uw7-ib-9Ux">
                                             <rect key="frame" x="0.0" y="0.0" width="567" height="43"/>
@@ -2590,6 +2526,7 @@
                         <outlet property="nytekProductionsCreatorCell" destination="Z0X-gH-QdM" id="BDi-jY-dUJ"/>
                         <outlet property="otherAppMuzCell" destination="tJZ-lD-bgb" id="qsU-8p-Weo"/>
                         <outlet property="rateThisAppCell" destination="fKF-VS-hJF" id="Tbv-U6-gvc"/>
+                        <outlet property="removeAdsCell" destination="c8Q-lo-c0d" id="U6Q-si-4OD"/>
                         <outlet property="restorePurchaseCell" destination="sDi-eD-WOi" id="sBc-UE-Nnt"/>
                         <outlet property="samanthaLanasaCreatorCell" destination="Zfo-MK-a7C" id="RSY-5W-0jS"/>
                         <outlet property="shareAppCell" destination="nVn-BA-Ug3" id="Gtw-pj-e0R"/>
@@ -3668,7 +3605,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eUM-Dj-5oQ">
+                            <containerView opaque="NO" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eUM-Dj-5oQ">
                                 <rect key="frame" x="0.0" y="20" width="600" height="580"/>
                                 <connections>
                                     <segue destination="SEU-4I-oj9" kind="embed" identifier="embedPageController" id="kJ3-8U-cEP"/>
@@ -3679,7 +3616,7 @@
                                 <color key="pageIndicatorTintColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="currentPageIndicatorTintColor" red="0.0" green="0.25098039220000001" blue="0.72156862749999995" alpha="1" colorSpace="calibratedRGB"/>
                             </pageControl>
-                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="m9S-Un-wBp">
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="m9S-Un-wBp">
                                 <rect key="frame" x="0.0" y="64" width="600" height="457"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="5" minimumInteritemSpacing="1" id="JWj-jl-3xJ">
@@ -4021,11 +3958,11 @@
                                 </items>
                                 <color key="barTintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </toolbar>
-                            <webView hidden="YES" contentMode="scaleToFill" misplaced="YES" scalesPageToFit="YES" translatesAutoresizingMaskIntoConstraints="NO" id="KFK-E4-wUq">
+                            <webView hidden="YES" contentMode="scaleToFill" scalesPageToFit="YES" translatesAutoresizingMaskIntoConstraints="NO" id="KFK-E4-wUq">
                                 <rect key="frame" x="0.0" y="20" width="600" height="501"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                             </webView>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" editable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MQJ-xb-40Z">
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" editable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MQJ-xb-40Z">
                                 <rect key="frame" x="16" y="20" width="568" height="501"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -4134,7 +4071,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QzK-Xo-0Mu" customClass="RATreeView">
+                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="QzK-Xo-0Mu" customClass="RATreeView">
                                 <rect key="frame" x="0.0" y="64" width="600" height="492"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
@@ -4197,6 +4134,7 @@
         <image name="Male" width="25" height="25"/>
         <image name="Messages" width="28" height="18"/>
         <image name="More" width="28" height="6"/>
+        <image name="MyReddit" width="1024" height="1024"/>
         <image name="Refresh" width="18" height="22"/>
         <image name="Right" width="10" height="20"/>
         <image name="Search" width="22" height="22"/>
@@ -4205,19 +4143,19 @@
         <image name="Up" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="nb3-Xk-rNn"/>
-        <segue reference="Wtj-lP-kFa"/>
-        <segue reference="DoA-ah-cSI"/>
-        <segue reference="4cv-GS-zeB"/>
         <segue reference="zGH-Se-Daq"/>
-        <segue reference="ykc-Jy-SLH"/>
+        <segue reference="7YE-ws-eyS"/>
+        <segue reference="vxb-cw-ipa"/>
+        <segue reference="zMx-9J-SCH"/>
+        <segue reference="Diw-V8-n62"/>
+        <segue reference="fLo-75-wzd"/>
         <segue reference="H8q-ci-2Ng"/>
-        <segue reference="vvu-K9-HER"/>
-        <segue reference="3mg-rp-ibf"/>
+        <segue reference="nb3-Xk-rNn"/>
+        <segue reference="4cv-GS-zeB"/>
         <segue reference="sBe-da-JQw"/>
+        <segue reference="vvu-K9-HER"/>
         <segue reference="psA-tl-Zoj"/>
         <segue reference="O8K-LF-8mj"/>
         <segue reference="Wgk-72-ydW"/>
-        <segue reference="vxb-cw-ipa"/>
     </inferredMetricsTieBreakers>
 </document>
