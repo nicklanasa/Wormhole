@@ -434,12 +434,6 @@ PostCellDelegate {
             let cell = tableView.dequeueReusableCellWithIdentifier("AdCell") as! AdCell
             let bannerView = AdCell.cellBannerView(self, frame:cell.bounds)
             
-            for view in cell.contentView.subviews {
-                if view.isKindOfClass(GADBannerView.self) {
-                    view.removeFromSuperview() // Make sure that the cell does not have any previously added GADBanner view as it would be reused
-                }
-            }
-            
             cell.addSubview(bannerView)
             
             let priority = DISPATCH_QUEUE_PRIORITY_BACKGROUND

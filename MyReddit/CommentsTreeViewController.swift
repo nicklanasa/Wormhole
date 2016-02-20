@@ -208,19 +208,17 @@ AddCommentViewControllerDelegate {
         let cell = treeView.dequeueReusableCellWithIdentifier("CommentCell") as! CommentCell
         
         cell.indentationWidth = 15
+        cell.separatorInset = UIEdgeInsets(top: 0,
+            left: self.treeView.frame.size.width,
+            bottom: 0,
+            right: 0)
         
         if let link = item as? RKLink {
             cell.indentationLevel = 1
             cell.link = link
-            
         } else if let comment = item as? RKComment {
             cell.indentationLevel = treeView.levelForCellForItem(comment) + 1
             cell.configueForComment(comment: comment, isLinkAuthor: self.link.author == comment.author)
-            
-            cell.separatorInset = UIEdgeInsets(top: 0,
-                left: self.treeView.frame.size.width,
-                bottom: 0,
-                right: 0)
         }
         
         cell.commentDelegate = self
