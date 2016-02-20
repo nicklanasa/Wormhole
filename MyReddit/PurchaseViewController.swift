@@ -27,13 +27,16 @@ class PurchaseViewController: UIViewController, BDGIAPDelegate {
         
         self.view.backgroundColor = MyRedditBackgroundColor
         self.purchaseLabel.textColor = MyRedditLabelColor
+        let atts = [NSForegroundColorAttributeName : MyRedditUpvoteColor, NSFontAttributeName : MyRedditTitleFont]
+        self.purchaseButton.setTitleTextAttributes(atts,
+            forState: .Normal)
     }
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
     }
 
-    @IBOutlet weak var purchaseButton: UIButton!
+    @IBOutlet weak var purchaseButton: UIBarButtonItem!
     @IBOutlet weak var purchaseLabel: UILabel!
     
     @IBAction func purchaseButtonTapped(sender: AnyObject) {

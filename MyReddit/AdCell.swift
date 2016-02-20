@@ -30,7 +30,7 @@ class AdCell: UITableViewCell {
         bannerView.frame = frame
         bannerView.rootViewController = rootVC
         bannerView.adUnitID = "ca-app-pub-4512025392063519/5619854982"
-        bannerView.adSize = kGADAdSizeBanner
+        bannerView.adSize = kGADAdSizeSmartBannerPortrait
         return bannerView
     }
     

@@ -603,14 +603,59 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="TopLeft" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="7EO-1f-duY">
+                                <rect key="frame" x="20" y="277" width="560" height="267"/>
+                                <attributedString key="attributedText">
+                                    <fragment content="Remove ads ">
+                                        <attributes>
+                                            <color key="NSColor" red="0.14901960784313725" green="0.14901960784313725" blue="0.14901960784313725" alpha="1" colorSpace="calibratedRGB"/>
+                                            <font key="NSFont" size="18" name="AvenirNext-Medium"/>
+                                            <real key="NSKern" value="0.0"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="truncatingTail" baseWritingDirection="leftToRight" defaultTabInterval="36" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO">
+                                                <tabStops/>
+                                            </paragraphStyle>
+                                            <color key="NSStrokeColor" red="0.14901960784313725" green="0.14901960784313725" blue="0.14901960784313725" alpha="1" colorSpace="calibratedRGB"/>
+                                        </attributes>
+                                    </fragment>
+                                    <fragment>
+                                        <string key="content"> Many hours go into updating and creating an app. You can contribute to the future of MyReddit for the price of a cup of coffee. Thank you for your support!</string>
+                                        <attributes>
+                                            <color key="NSColor" red="0.14901960784313725" green="0.14901960784313725" blue="0.14901960784313725" alpha="1" colorSpace="calibratedRGB"/>
+                                            <font key="NSFont" size="18" name="AvenirNext-Regular"/>
+                                            <real key="NSKern" value="0.0"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="truncatingTail" baseWritingDirection="leftToRight" defaultTabInterval="36" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO">
+                                                <tabStops/>
+                                            </paragraphStyle>
+                                            <color key="NSStrokeColor" red="0.14901960784313725" green="0.14901960784313725" blue="0.14901960784313725" alpha="1" colorSpace="calibratedRGB"/>
+                                        </attributes>
+                                    </fragment>
+                                </attributedString>
+                                <nil key="highlightedColor"/>
+                                <variation key="widthClass=regular" misplaced="YES">
+                                    <rect key="frame" x="16" y="72" width="768" height="315"/>
+                                </variation>
+                            </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="MyReddit" translatesAutoresizingMaskIntoConstraints="NO" id="xl5-ng-yCR">
+                                <rect key="frame" x="20" y="72" width="560" height="197"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="197" id="q8U-Pj-wQl"/>
+                                </constraints>
+                            </imageView>
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K3k-oK-Zyd">
                                 <rect key="frame" x="0.0" y="556" width="600" height="44"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="44" id="NWr-ei-ikc"/>
+                                    <constraint firstAttribute="height" constant="44" id="9Nb-cF-5XR"/>
                                     <constraint firstAttribute="height" constant="44" id="ex8-Xg-S8S"/>
                                 </constraints>
                                 <items>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="qZ4-8r-FQD"/>
+                                    <barButtonItem title="remove ads for $1.99" id="95q-UJ-jED">
+                                        <color key="tintColor" red="0.60784313729999995" green="0.74117647060000003" blue="0.2666666667" alpha="1" colorSpace="calibratedRGB"/>
+                                        <connections>
+                                            <action selector="purchaseButtonTapped:" destination="Zov-bH-lU9" id="ptU-EC-35s"/>
+                                        </connections>
+                                    </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="Clt-SZ-wIR"/>
                                     <barButtonItem image="Cancel" id="h3E-IC-BSN">
                                         <connections>
@@ -630,119 +675,31 @@
                                     </mask>
                                 </variation>
                             </toolbar>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CwJ-2M-ggV">
-                                <rect key="frame" x="20" y="499" width="560" height="46"/>
-                                <color key="backgroundColor" red="0.20000000000000001" green="0.59999999999999998" blue="0.20000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="276" id="Yjm-9i-w5L"/>
-                                    <constraint firstAttribute="height" constant="46" id="d0Q-b7-4aC"/>
-                                    <constraint firstAttribute="height" constant="46" id="rXd-oP-Cee"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="16"/>
-                                <state key="normal" title="remove ads for $1.99">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="string" keyPath="layer.borderWidth" value="1"/>
-                                    <userDefinedRuntimeAttribute type="color" keyPath="layer.borderColor">
-                                        <color key="value" red="0.20000000000000001" green="0.59999999999999998" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="string" keyPath="layer.cornerRadius" value="22"/>
-                                </userDefinedRuntimeAttributes>
-                                <variation key="default">
-                                    <mask key="constraints">
-                                        <exclude reference="Yjm-9i-w5L"/>
-                                        <exclude reference="rXd-oP-Cee"/>
-                                    </mask>
-                                </variation>
-                                <variation key="widthClass=regular" misplaced="YES">
-                                    <rect key="frame" x="16" y="459" width="276" height="46"/>
-                                </variation>
-                                <variation key="heightClass=compact-widthClass=regular">
-                                    <mask key="constraints">
-                                        <include reference="Yjm-9i-w5L"/>
-                                        <include reference="rXd-oP-Cee"/>
-                                    </mask>
-                                </variation>
-                                <connections>
-                                    <action selector="purchaseButtonTapped:" destination="Zov-bH-lU9" eventType="touchUpInside" id="34g-RX-uEi"/>
-                                </connections>
-                            </button>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="MyReddit" translatesAutoresizingMaskIntoConstraints="NO" id="xl5-ng-yCR">
-                                <rect key="frame" x="20" y="72" width="560" height="243"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="243" id="bix-Pq-wiC"/>
-                                </constraints>
-                            </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="TopLeft" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7EO-1f-duY">
-                                <rect key="frame" x="20" y="307" width="560" height="179"/>
-                                <attributedString key="attributedText">
-                                    <fragment content="Remove ads ">
-                                        <attributes>
-                                            <color key="NSColor" red="0.14901960784313725" green="0.14901960784313725" blue="0.14901960784313725" alpha="1" colorSpace="calibratedRGB"/>
-                                            <font key="NSFont" size="18" name="AvenirNext-Medium"/>
-                                            <real key="NSKern" value="0.0"/>
-                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="leftToRight" defaultTabInterval="36" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO">
-                                                <tabStops/>
-                                            </paragraphStyle>
-                                            <color key="NSStrokeColor" red="0.14901960784313725" green="0.14901960784313725" blue="0.14901960784313725" alpha="1" colorSpace="calibratedRGB"/>
-                                        </attributes>
-                                    </fragment>
-                                    <fragment>
-                                        <string key="content"> Many hours go into updating and creating an app. You can contribute to the future of MyReddit for the price of a cup of coffee. Thank you for your support!</string>
-                                        <attributes>
-                                            <color key="NSColor" red="0.14901960784313725" green="0.14901960784313725" blue="0.14901960784313725" alpha="1" colorSpace="calibratedRGB"/>
-                                            <font key="NSFont" size="18" name="AvenirNext-Regular"/>
-                                            <real key="NSKern" value="0.0"/>
-                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="leftToRight" defaultTabInterval="36" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO">
-                                                <tabStops/>
-                                            </paragraphStyle>
-                                            <color key="NSStrokeColor" red="0.14901960784313725" green="0.14901960784313725" blue="0.14901960784313725" alpha="1" colorSpace="calibratedRGB"/>
-                                        </attributes>
-                                    </fragment>
-                                </attributedString>
-                                <nil key="highlightedColor"/>
-                                <variation key="widthClass=regular" misplaced="YES">
-                                    <rect key="frame" x="16" y="72" width="768" height="315"/>
-                                </variation>
-                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="K3k-oK-Zyd" firstAttribute="bottom" secondItem="gc8-Y3-EIA" secondAttribute="top" id="2wN-TK-cfd"/>
-                            <constraint firstItem="CwJ-2M-ggV" firstAttribute="leading" secondItem="f7m-JM-yYb" secondAttribute="leadingMargin" id="2x1-wb-VRV"/>
-                            <constraint firstItem="CwJ-2M-ggV" firstAttribute="leading" secondItem="7EO-1f-duY" secondAttribute="leading" id="408-at-1vZ"/>
-                            <constraint firstItem="xl5-ng-yCR" firstAttribute="top" secondItem="4U6-0s-9UA" secondAttribute="bottom" constant="8" symbolic="YES" id="78Y-LF-xhp"/>
-                            <constraint firstItem="CwJ-2M-ggV" firstAttribute="top" secondItem="7EO-1f-duY" secondAttribute="bottom" constant="13" id="9JG-9J-ILM"/>
+                            <constraint firstItem="xl5-ng-yCR" firstAttribute="trailing" secondItem="7EO-1f-duY" secondAttribute="trailing" id="6cS-lZ-sLO"/>
                             <constraint firstItem="7EO-1f-duY" firstAttribute="centerX" secondItem="K3k-oK-Zyd" secondAttribute="centerX" id="9Nk-9Y-Wkg"/>
-                            <constraint firstItem="7EO-1f-duY" firstAttribute="leading" secondItem="f7m-JM-yYb" secondAttribute="leadingMargin" id="Eqr-Sr-aWQ"/>
+                            <constraint firstItem="7EO-1f-duY" firstAttribute="leading" secondItem="xl5-ng-yCR" secondAttribute="leading" id="BeW-Tg-WDu"/>
+                            <constraint firstItem="K3k-oK-Zyd" firstAttribute="bottom" secondItem="gc8-Y3-EIA" secondAttribute="top" id="D2D-ct-Ggg"/>
+                            <constraint firstItem="K3k-oK-Zyd" firstAttribute="top" secondItem="7EO-1f-duY" secondAttribute="bottom" constant="12" id="DAa-Fw-HCE"/>
+                            <constraint firstItem="7EO-1f-duY" firstAttribute="leading" secondItem="f7m-JM-yYb" secondAttribute="leadingMargin" id="DFO-pf-JOG"/>
+                            <constraint firstItem="7EO-1f-duY" firstAttribute="centerX" secondItem="K3k-oK-Zyd" secondAttribute="centerX" id="GmZ-Tl-J22"/>
                             <constraint firstItem="K3k-oK-Zyd" firstAttribute="leading" secondItem="f7m-JM-yYb" secondAttribute="leading" id="HI1-yX-qDU"/>
-                            <constraint firstItem="xl5-ng-yCR" firstAttribute="leading" secondItem="7EO-1f-duY" secondAttribute="leading" id="HsZ-wN-rsY"/>
                             <constraint firstItem="K3k-oK-Zyd" firstAttribute="bottom" secondItem="gc8-Y3-EIA" secondAttribute="top" id="KXB-gK-6mV"/>
-                            <constraint firstItem="K3k-oK-Zyd" firstAttribute="centerX" secondItem="CwJ-2M-ggV" secondAttribute="centerX" id="UmD-oz-073"/>
-                            <constraint firstItem="K3k-oK-Zyd" firstAttribute="top" secondItem="CwJ-2M-ggV" secondAttribute="bottom" constant="11" id="XHC-5P-4Vq"/>
-                            <constraint firstAttribute="trailing" secondItem="K3k-oK-Zyd" secondAttribute="trailing" id="XKg-2F-uBe"/>
+                            <constraint firstItem="K3k-oK-Zyd" firstAttribute="leading" secondItem="f7m-JM-yYb" secondAttribute="leading" id="XVm-CH-Gv8"/>
                             <constraint firstItem="7EO-1f-duY" firstAttribute="top" secondItem="4U6-0s-9UA" secondAttribute="bottom" constant="8" symbolic="YES" id="Xx9-Ez-LxE"/>
-                            <constraint firstItem="xl5-ng-yCR" firstAttribute="trailing" secondItem="7EO-1f-duY" secondAttribute="trailing" id="bzk-eR-vfE"/>
-                            <constraint firstItem="K3k-oK-Zyd" firstAttribute="leading" secondItem="f7m-JM-yYb" secondAttribute="leading" id="d1E-qj-EIC"/>
-                            <constraint firstItem="CwJ-2M-ggV" firstAttribute="top" secondItem="7EO-1f-duY" secondAttribute="bottom" constant="13" id="eud-bg-daC"/>
-                            <constraint firstItem="CwJ-2M-ggV" firstAttribute="leading" secondItem="7EO-1f-duY" secondAttribute="leading" id="hWN-s9-PKr"/>
-                            <constraint firstItem="K3k-oK-Zyd" firstAttribute="top" secondItem="CwJ-2M-ggV" secondAttribute="bottom" constant="23" id="hx4-2Q-j79"/>
-                            <constraint firstItem="7EO-1f-duY" firstAttribute="top" secondItem="4U6-0s-9UA" secondAttribute="bottom" constant="243" id="mRV-gp-kgr"/>
+                            <constraint firstAttribute="trailing" secondItem="K3k-oK-Zyd" secondAttribute="trailing" id="an9-ZS-ehJ"/>
+                            <constraint firstItem="xl5-ng-yCR" firstAttribute="top" secondItem="4U6-0s-9UA" secondAttribute="bottom" constant="8" symbolic="YES" id="d2k-2J-fqt"/>
                             <constraint firstAttribute="trailing" secondItem="K3k-oK-Zyd" secondAttribute="trailing" id="odr-DS-E8z"/>
-                            <constraint firstItem="7EO-1f-duY" firstAttribute="trailing" secondItem="CwJ-2M-ggV" secondAttribute="trailing" id="uvu-iP-bAF"/>
+                            <constraint firstItem="7EO-1f-duY" firstAttribute="top" secondItem="xl5-ng-yCR" secondAttribute="bottom" constant="8" symbolic="YES" id="pYu-fR-rCN"/>
                         </constraints>
                         <variation key="default">
                             <mask key="constraints">
                                 <exclude reference="9Nk-9Y-Wkg"/>
                                 <exclude reference="Xx9-Ez-LxE"/>
-                                <exclude reference="2x1-wb-VRV"/>
-                                <exclude reference="9JG-9J-ILM"/>
-                                <exclude reference="hWN-s9-PKr"/>
                                 <exclude reference="HI1-yX-qDU"/>
                                 <exclude reference="KXB-gK-6mV"/>
-                                <exclude reference="hx4-2Q-j79"/>
                                 <exclude reference="odr-DS-E8z"/>
                             </mask>
                         </variation>
@@ -750,12 +707,8 @@
                             <mask key="constraints">
                                 <include reference="9Nk-9Y-Wkg"/>
                                 <include reference="Xx9-Ez-LxE"/>
-                                <include reference="2x1-wb-VRV"/>
-                                <include reference="9JG-9J-ILM"/>
-                                <include reference="hWN-s9-PKr"/>
                                 <include reference="HI1-yX-qDU"/>
                                 <include reference="KXB-gK-6mV"/>
-                                <include reference="hx4-2Q-j79"/>
                                 <include reference="odr-DS-E8z"/>
                             </mask>
                         </variation>
@@ -763,7 +716,7 @@
                     <toolbarItems/>
                     <navigationItem key="navigationItem" title="unlock everything" id="b68-ie-zfd"/>
                     <connections>
-                        <outlet property="purchaseButton" destination="CwJ-2M-ggV" id="RJH-SB-vhj"/>
+                        <outlet property="purchaseButton" destination="95q-UJ-jED" id="e10-nz-zAR"/>
                         <outlet property="purchaseLabel" destination="7EO-1f-duY" id="Ore-Oh-7cz"/>
                         <segue destination="QDb-Kc-Q7i" kind="presentation" identifier="LoginSegue" modalTransitionStyle="crossDissolve" id="fLo-75-wzd"/>
                     </connections>
@@ -4347,10 +4300,10 @@
         <segue reference="sND-y2-DTj"/>
         <segue reference="nEx-7L-vW5"/>
         <segue reference="bxZ-6W-PbQ"/>
-        <segue reference="SWo-82-5L3"/>
         <segue reference="zMo-OM-Z5J"/>
         <segue reference="TYz-B9-bLR"/>
         <segue reference="7mV-eF-gvZ"/>
         <segue reference="q6K-ip-lpO"/>
+        <segue reference="fLo-75-wzd"/>
     </inferredMetricsTieBreakers>
 </document>
