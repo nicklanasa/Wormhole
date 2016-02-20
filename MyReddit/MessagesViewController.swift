@@ -68,6 +68,7 @@ JZSwipeCellDelegate {
         self.tableView.tableFooterView = UIView()
         
         self.tableView.reloadData()
+        
         self.fetchMessages()
         
         self.preferredAppearance()
@@ -268,7 +269,7 @@ JZSwipeCellDelegate {
     }
     
     override func preferredAppearance() {
-        self.tableView.backgroundColor = MyRedditBackgroundColor
+        self.tableView.backgroundColor = MyRedditDarkBackgroundColor
         
         self.navigationController?.navigationBar.backgroundColor = MyRedditBackgroundColor
         self.navigationController?.navigationBar.barTintColor = MyRedditBackgroundColor

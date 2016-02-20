@@ -10,7 +10,11 @@ import Foundation
 import UIKit
 import MBProgressHUD
 
-class LoginViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, EmailCellDelegate, PasswordCellDelegate {
+class LoginViewController: RootViewController,
+UITableViewDataSource,
+UITableViewDelegate,
+EmailCellDelegate,
+PasswordCellDelegate {
 
     @IBOutlet weak var loginButton: UIBarButtonItem!
     @IBOutlet weak var tableView: UITableView!

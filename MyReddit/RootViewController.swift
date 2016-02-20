@@ -29,7 +29,6 @@ class RootViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         self.updateAppearance()
     }
     
@@ -37,6 +36,7 @@ class RootViewController: UIViewController {
         self.navigationController?.navigationBar.tintColor = MyRedditLabelColor
         self.navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: MyRedditLabelColor,
             NSFontAttributeName : MyRedditTitleFont]
+        self.view.backgroundColor = MyRedditDarkBackgroundColor
         
         if SettingsManager.defaultManager.valueForSetting(.NightMode) {
             UIApplication.sharedApplication().setStatusBarStyle(UIStatusBarStyle.LightContent, animated: true)

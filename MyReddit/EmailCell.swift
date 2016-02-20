@@ -27,6 +27,8 @@ class EmailCell: UITableViewCell, UITextFieldDelegate {
         self.usernameTextField.delegate = self
         self.usernameLabel.textColor = MyRedditLabelColor
         self.usernameTextField.textColor = MyRedditLabelColor
+        self.usernameTextField.attributedPlaceholder = NSAttributedString(string: "enter username...",
+            attributes: [NSForegroundColorAttributeName : MyRedditSelfTextLabelColor])
     }
     
     @IBOutlet weak var usernameLabel: UILabel!

@@ -36,8 +36,9 @@ class RootTableViewController: UITableViewController {
         self.navigationController?.navigationBar.tintColor = MyRedditLabelColor
         self.navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: MyRedditLabelColor,
             NSFontAttributeName : MyRedditTitleFont]
-        self.tableView.backgroundColor = MyRedditBackgroundColor
+        self.tableView.backgroundColor = MyRedditDarkBackgroundColor
         self.tableView.tableFooterView = UIView()
+        self.view.backgroundColor = MyRedditDarkBackgroundColor
     }
     
     func preferredAppearance() {

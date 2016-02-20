@@ -77,6 +77,10 @@ class UserSession {
         green: 16/255,
         blue: 33/255,
         alpha: 1.0)
+    let nightModeTableViewBackgroundColor = UIColor(red: 12/255,
+        green: 16/255,
+        blue: 33/255,
+        alpha: 1.0)
     let nightModeForegroundColor = UIColor(red: 248/255,
         green: 248/255,
         blue: 248/255,
@@ -95,7 +99,7 @@ class UserSession {
         MyRedditSelfTextLabelColor = foregroundColor.colorWithAlphaComponent(0.8)
         MyRedditPostTitleTextLabelColor = UIColor.whiteColor()
         MyRedditBackgroundColor = backgroundColor
-        MyRedditDarkBackgroundColor = backgroundColor
+        MyRedditDarkBackgroundColor = backgroundColor.colorWithAlphaComponent(0.7)
         MyRedditCommentLinesColor = UIColor.darkGrayColor().colorWithAlphaComponent(0.2)
         MyRedditTableSeparatorColor = UIColor.whiteColor().colorWithAlphaComponent(0.2)
         
@@ -139,6 +143,7 @@ class UserSession {
         UIWebView.appearance().backgroundColor = MyRedditBackgroundColor
         
         UITextField.appearance().font = MyRedditSelfTextFont
+        UITextField.appearance().tintColor = MyRedditLabelColor
         UITextField.appearance().keyboardAppearance = .Dark
         
         UIRefreshControl.appearance().tintColor = MyRedditColor
@@ -166,7 +171,7 @@ class UserSession {
         
         UISwitch.appearance().onTintColor = MyRedditColor
         UISegmentedControl.appearance().tintColor = MyRedditLabelColor
-        
+                
         UINavigationBar.appearance().translucent = false
         UINavigationBar.appearance().tintColor = MyRedditLabelColor
         UINavigationBar.appearance().backgroundColor = MyRedditBackgroundColor
@@ -201,6 +206,7 @@ class UserSession {
         UIWebView.appearance().backgroundColor = MyRedditBackgroundColor
         
         UITextField.appearance().font = MyRedditSelfTextFont
+        UITextField.appearance().tintColor = MyRedditLabelColor
         UITextField.appearance().keyboardAppearance = .Light
         
         UIActivityIndicatorView.appearance().tintColor = MyRedditColor

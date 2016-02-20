@@ -83,7 +83,7 @@ PostCellDelegate {
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        self.navigationController?.setToolbarHidden(true, animated: false)
+        self.preferredAppearance()
     }
     
     override func viewDidLoad() {
@@ -788,16 +788,19 @@ PostCellDelegate {
     }
     
     override func preferredAppearance() {
+        self.navigationController?.setToolbarHidden(true, animated: false)
         self.navigationController?.navigationBar.barTintColor = MyRedditBackgroundColor
         self.navigationController?.navigationBar.backgroundColor = MyRedditBackgroundColor
         self.navigationController?.navigationBar.tintColor = MyRedditLabelColor
         self.navigationItem.leftBarButtonItem?.tintColor = MyRedditLabelColor
-        self.toolBar.tintColor = MyRedditLabelColor
-        self.toolBar.backgroundColor = MyRedditBackgroundColor
-        self.toolBar.barTintColor = MyRedditBackgroundColor
-        self.tableView.backgroundColor = MyRedditBackgroundColor
+        
+        self.toolBar?.tintColor = MyRedditLabelColor
+        self.toolBar?.backgroundColor = MyRedditBackgroundColor
+        self.toolBar?.barTintColor = MyRedditBackgroundColor
+        self.tableView?.backgroundColor = MyRedditBackgroundColor
         
         self.updateUI()
+        
         self.tableView.reloadData()
     }
 }
