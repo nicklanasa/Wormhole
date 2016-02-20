@@ -12,11 +12,11 @@ import MBProgressHUD
 import GoogleMobileAds
 
 enum FilterSwitchType: Int {
-    case Hot
-    case New
-    case Rising
-    case Controversial
-    case Top
+    case Hot = 1
+    case New = 2
+    case Rising = 3
+    case Controversial = 4
+    case Top = 5
 }
 
 class SubredditViewController: RootViewController,
@@ -61,8 +61,10 @@ PostCellDelegate {
                 })
             }
             
-            if !SettingsManager.defaultManager.purchased {
-                self.links.append(SuggestedLink())
+            if self.links.count != 0 {
+                if !SettingsManager.defaultManager.purchased {
+                    self.links.append(SuggestedLink())
+                }
             }
             
             if self.links.count == 25 || self.links.count == 0 {
