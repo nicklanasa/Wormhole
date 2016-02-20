@@ -462,7 +462,7 @@
                                         </attributes>
                                     </fragment>
                                     <fragment>
-                                        <string key="content"> Many hours go into updating and creating an app. You can contribute to the future of MyReddit for the price of a cup of coffee or spread the word by sharing with your friends</string>
+                                        <string key="content"> Many hours go into updating and creating an app. You can contribute to the future of MyReddit for the price of a cup of coffee. Thank you for your support.</string>
                                         <attributes>
                                             <color key="NSColor" red="0.14901960784313725" green="0.14901960784313725" blue="0.14901960784313725" alpha="1" colorSpace="calibratedRGB"/>
                                             <font key="NSFont" size="18" name="AvenirNext-Regular"/>
