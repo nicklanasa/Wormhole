@@ -105,8 +105,8 @@ UISearchBarDelegate {
         }
         
         self.tableView.backgroundView = UIView()
-        self.tableView.backgroundColor = MyRedditBackgroundColor
-        self.view.backgroundColor = MyRedditBackgroundColor
+        self.tableView.backgroundColor = MyRedditDarkBackgroundColor
+        self.view.backgroundColor = MyRedditDarkBackgroundColor
         
         self.tableView.reloadData()
     }

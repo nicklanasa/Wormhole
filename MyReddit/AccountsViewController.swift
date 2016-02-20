@@ -10,7 +10,11 @@ import Foundation
 import UIKit
 import CoreData
 
-class AccountsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, NSFetchedResultsControllerDelegate {
+class AccountsViewController: RootViewController,
+UITableViewDelegate,
+UITableViewDataSource,
+NSFetchedResultsControllerDelegate {
+    
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var editButton: UIBarButtonItem!
     @IBOutlet weak var listButton: UIBarButtonItem!
@@ -24,19 +28,18 @@ class AccountsViewController: UIViewController, UITableViewDelegate, UITableView
     }()
     
     override func viewWillAppear(animated: Bool) {
-        
+        super.viewWillAppear(animated)
         do {
             try self.usersController.performFetch()
             self.tableView.reloadData()
         } catch {}
-        
-        self.tableView.backgroundColor = MyRedditDarkBackgroundColor
         
         LocalyticsSession.shared().tagScreen("Accounts")
         
         if let splitViewController = self.splitViewController {
             self.listButton.action = splitViewController.displayModeButtonItem().action
         }
+        self.preferredAppearance()
     }
     
     // MARK: Sectors NSFetchedResultsControllerDelegate
@@ -218,5 +221,23 @@ class AccountsViewController: UIViewController, UITableViewDelegate, UITableView
         })
         
         return [deleteAction]
+    }
+    
+    override func preferredAppearance() {
+        self.tableView.backgroundColor = MyRedditDarkBackgroundColor
+        
+        self.navigationController?.navigationBar.backgroundColor = MyRedditBackgroundColor
+        self.navigationController?.navigationBar.barTintColor = MyRedditBackgroundColor
+        self.navigationController?.navigationBar.tintColor = MyRedditLabelColor
+        
+        self.navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName : MyRedditLabelColor,
+            NSFontAttributeName : MyRedditTitleFont]
+        
+        self.navigationController?.toolbar.barTintColor = MyRedditBackgroundColor
+        self.navigationController?.toolbar.backgroundColor = MyRedditBackgroundColor
+        self.navigationController?.toolbar.tintColor = MyRedditLabelColor
+        self.navigationController?.toolbar.translucent = false
+        
+        self.tableView.reloadData()
     }
 }

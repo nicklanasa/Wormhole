@@ -198,6 +198,9 @@ UITableViewDelegate {
     }
     
     override func preferredAppearance() {
+        
+        self.tableView.backgroundColor = MyRedditDarkBackgroundColor
+        
         self.navigationController?.navigationBar.backgroundColor = MyRedditBackgroundColor
         self.navigationController?.navigationBar.barTintColor = MyRedditBackgroundColor
         self.navigationController?.navigationBar.tintColor = MyRedditLabelColor
@@ -211,9 +214,7 @@ UITableViewDelegate {
         if let logoutButton = self.logoutButton {
             logoutButton.tintColor = MyRedditLabelColor
         }
-        
-        self.tableView.backgroundColor = MyRedditDarkBackgroundColor
-            
+                    
         self.tableView.reloadData()
     }
 }
