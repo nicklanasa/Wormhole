@@ -102,6 +102,10 @@ SOFTWARE.
 
 
 
+## Google-Mobile-Ads-SDK
+
+Copyright 2011 Google Inc. All Rights Reserved.
+
 ## ImgurAnonymousAPIClient
 
 ImgurAnonymousAPIClient is in the public domain.
