@@ -101,7 +101,7 @@ AddCommentViewControllerDelegate {
         self.treeView.dataSource = self
         self.treeView.expandsChildRowsWhenRowExpands = true
         self.treeView.collapsesChildRowsWhenRowCollapses = true
-        self.treeView.separatorStyle = RATreeViewCellSeparatorStyle.init(1)
+        self.treeView.separatorStyle = RATreeViewCellSeparatorStyle.init(0)
         self.treeView.treeFooterView = UIView()
         
         self.treeView.registerNib(UINib(nibName: "CommentCell", bundle: NSBundle.mainBundle()),
@@ -208,19 +208,11 @@ AddCommentViewControllerDelegate {
     func treeView(treeView: RATreeView, cellForItem item: AnyObject?) -> UITableViewCell {
         let cell = treeView.dequeueReusableCellWithIdentifier("CommentCell") as! CommentCell
         
-        cell.indentationWidth = 5
-        cell.separatorInset = UIEdgeInsets(top: 0,
-            left: self.treeView.frame.size.width,
-            bottom: 0,
-            right: 0)
+        cell.indentationWidth = 10
         
         if let link = item as? RKLink {
             cell.indentationLevel = 1
             cell.link = link
-            cell.separatorInset = UIEdgeInsets(top: 0,
-                left: 15,
-                bottom: 0,
-                right: 0)
         } else if let comment = item as? RKComment {
             cell.indentationLevel = treeView.levelForCellForItem(comment) + 1
             cell.configueForComment(comment: comment, isLinkAuthor: self.link.author == comment.author)
@@ -234,7 +226,7 @@ AddCommentViewControllerDelegate {
     func treeView(treeView: RATreeView, estimatedHeightForRowForItem item: AnyObject) -> CGFloat {
         if let _ = item as? RKLink {
             return UITableViewAutomaticDimension
-        } else if !treeView.isCellForItemExpanded(item) {
+        } else if treeView.isCellForItemExpanded(item) {
             return 40
         }
         
@@ -566,9 +558,47 @@ AddCommentViewControllerDelegate {
     }
     
     func shareButtonTapped(sender: AnyObject) {
-        let linkOptions = LinkShareOptionsViewController(link: self.link)
-        linkOptions.barbuttonItem = self.navigationItem.rightBarButtonItem
-        linkOptions.showInView(self.view)
+        LocalyticsSession.shared().tagEvent("Swipe share")
+        
+        let alert = UIAlertController.swipeShareAlertControllerWithLink(self.link) { (url, action) -> () in
+            var objectsToShare = ["\(self.link.title) @myreddit", url]
+            
+            if self.link.hasImage() {
+                if let urlString = self.link.urlForLink() {
+                    if let url = NSURL(string: urlString) {
+                        let downloader = SDWebImageDownloader.sharedDownloader()
+                        downloader.downloadImageWithURL(url, options: .ContinueInBackground, progress: { (r, r1) -> Void in
+                            
+                        }, completed: { (image, data, error, s) -> Void in
+                            if let downloadedImage = image {
+                                objectsToShare = [downloadedImage]
+                            } else {
+                                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                                    let alert = UIAlertController(title: "Error!",
+                                        message: "Unable to download image!",
+                                        preferredStyle: .Alert)
+                                    self.presentViewController(alert, animated: true, completion: nil)
+                                })
+                            }
+                        })
+                    }
+                }
+            }
+            
+            let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
+            
+            if let popoverController = activityVC.popoverPresentationController {
+                if let button = sender as? UIBarButtonItem {
+                    popoverController.barButtonItem = button
+                }
+            }
+            
+            activityVC.present(animated: true, completion: nil)
+            
+            LocalyticsSession.shared().tagEvent("Share tapped")
+        }
+        
+        self.presentViewController(alert, animated: true, completion: nil)
     }
     
     override func preferredAppearance() {
