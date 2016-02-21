@@ -558,9 +558,47 @@ AddCommentViewControllerDelegate {
     }
     
     func shareButtonTapped(sender: AnyObject) {
-        let linkOptions = LinkShareOptionsViewController(link: self.link)
-        linkOptions.barbuttonItem = self.navigationItem.rightBarButtonItem
-        linkOptions.showInView(self.view)
+        LocalyticsSession.shared().tagEvent("Swipe share")
+        
+        let alert = UIAlertController.swipeShareAlertControllerWithLink(self.link) { (url, action) -> () in
+            var objectsToShare = ["\(self.link.title) @myreddit", url]
+            
+            if self.link.hasImage() {
+                if let urlString = self.link.urlForLink() {
+                    if let url = NSURL(string: urlString) {
+                        let downloader = SDWebImageDownloader.sharedDownloader()
+                        downloader.downloadImageWithURL(url, options: .ContinueInBackground, progress: { (r, r1) -> Void in
+                            
+                        }, completed: { (image, data, error, s) -> Void in
+                            if let downloadedImage = image {
+                                objectsToShare = [downloadedImage]
+                            } else {
+                                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                                    let alert = UIAlertController(title: "Error!",
+                                        message: "Unable to download image!",
+                                        preferredStyle: .Alert)
+                                    self.presentViewController(alert, animated: true, completion: nil)
+                                })
+                            }
+                        })
+                    }
+                }
+            }
+            
+            let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
+            
+            if let popoverController = activityVC.popoverPresentationController {
+                if let button = sender as? UIBarButtonItem {
+                    popoverController.barButtonItem = button
+                }
+            }
+            
+            activityVC.present(animated: true, completion: nil)
+            
+            LocalyticsSession.shared().tagEvent("Share tapped")
+        }
+        
+        self.presentViewController(alert, animated: true, completion: nil)
     }
     
     override func preferredAppearance() {
