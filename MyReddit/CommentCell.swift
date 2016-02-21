@@ -36,14 +36,6 @@ UITextViewDelegate {
         }
     }
     
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        
-        self.commentTextView.backgroundColor = MyRedditBackgroundColor
-        self.contentView.backgroundColor = MyRedditBackgroundColor
-        self.backgroundColor = MyRedditBackgroundColor
-    }
-    
     override func awakeFromNib() {
         
         let upVoteImage = UIImage(named: "Up")!.imageWithRenderingMode(.AlwaysOriginal)
@@ -57,7 +49,6 @@ UITextViewDelegate {
         
         self.swipeDelegate = self
         self.commentTextView.delegate = self
-        self.selectionStyle = .Default
         
         self.contentView.backgroundColor = MyRedditBackgroundColor
         self.backgroundColor = MyRedditBackgroundColor
@@ -69,6 +60,9 @@ UITextViewDelegate {
     
     var link: RKLink! {
         didSet {
+            
+            self.separatorInset = UIEdgeInsetsMake(0, 15, 0, 0)
+            
             var selfText = ""
             
             if link.selfPost && link.selfText.characters.count > 0 {
@@ -118,8 +112,10 @@ UITextViewDelegate {
                 self.scoreLabel.textColor = UIColor.lightGrayColor()
             }
             
-            self.commentTextView.backgroundColor = MyRedditBackgroundColor
-            self.contentView.backgroundColor = MyRedditBackgroundColor
+            self.backgroundColor = MyRedditDarkBackgroundColor
+            self.commentTextView.backgroundColor = MyRedditDarkBackgroundColor
+            self.infoLabel.backgroundColor = MyRedditDarkBackgroundColor
+            self.contentView.backgroundColor = MyRedditDarkBackgroundColor
             
             let indentPoints: CGFloat = CGFloat(self.indentationLevel) * self.indentationWidth
             self.leadingTextViewConstraint.constant = indentPoints
@@ -132,6 +128,9 @@ UITextViewDelegate {
     var comment: RKComment!
     
     func configueForComment(comment comment: RKComment, isLinkAuthor: Bool) {
+        
+        self.separatorInset = UIEdgeInsetsMake(0, self.contentView.frame.size.width, 0, 0)
+        
         self.comment = comment
         
         var markdown = Markdown()
@@ -199,10 +198,11 @@ UITextViewDelegate {
         } else {
             self.scoreLabel.textColor = UIColor.lightGrayColor()
         }
-    
+        
+        self.backgroundColor = MyRedditBackgroundColor
         self.commentTextView.backgroundColor = MyRedditBackgroundColor
-        self.contentView.backgroundColor = MyRedditBackgroundColor
         self.infoLabel.backgroundColor = MyRedditBackgroundColor
+        self.contentView.backgroundColor = MyRedditBackgroundColor
         
         let indentPoints: CGFloat = CGFloat(self.indentationLevel) * self.indentationWidth
         self.leadingTextViewConstraint.constant = indentPoints
@@ -220,6 +220,7 @@ UITextViewDelegate {
         super.prepareForReuse()
         self.indentationLevel = 0
         self.indentationWidth = 0
+        self.separatorInset = UIEdgeInsetsMake(0, self.contentView.frame.size.width, 0, 0)
     }
     
     func swipeCell(cell: SwipeCell, didTriggerSwipeWithType swipeType: SwipeType) {
