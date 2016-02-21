@@ -7,6 +7,7 @@
 @import DateTools;
 
 #import <RATreeView/RATreeView.h>
+#import <MMMarkdown/MMMarkdown.h>
 
 #import "LocalyticsSession.h"
 #import "RedditKit.h"

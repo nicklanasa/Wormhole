@@ -91,6 +91,8 @@ AddCommentViewControllerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad();
 
+        self.treeView.hidden = true
+        
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Action,
             target: self,
             action: "shareButtonTapped:")
@@ -99,7 +101,7 @@ AddCommentViewControllerDelegate {
         self.treeView.dataSource = self
         self.treeView.expandsChildRowsWhenRowExpands = true
         self.treeView.collapsesChildRowsWhenRowCollapses = true
-        self.treeView.separatorStyle = RATreeViewCellSeparatorStyle.init(0)
+        self.treeView.separatorStyle = RATreeViewCellSeparatorStyle.init(1)
         self.treeView.treeFooterView = UIView()
         
         self.treeView.registerNib(UINib(nibName: "CommentCell", bundle: NSBundle.mainBundle()),
@@ -114,25 +116,24 @@ AddCommentViewControllerDelegate {
     }
 
     func reloadComments() {
-        self.hud.hide(true)
-        self.treeView.reloadData()
         for item in self.treeView.itemsForRowsInRect(self.treeView.frame) as! [AnyObject] {
             if let comment = item as? RKComment {
                 self.treeView.expandRowForItem(comment,
-                                               expandChildren: true,
-                                               withRowAnimation: RATreeViewRowAnimation.init(0))
+                    expandChildren: true,
+                    withRowAnimation: RATreeViewRowAnimation.init(5))
             }
         }
-
+        self.hud.hide(true)
+        self.treeView.hidden = false
     }
 
     func syncComments() {
         self.hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
         RedditSession.sharedSession.fetchComments(nil, link: self.link) { (pagination, results, error) -> () in
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                               self.comments = results
-                               self.reloadComments()
-                })
+               self.comments = results
+               self.reloadComments()
+            })
         }
     }
 
@@ -207,7 +208,7 @@ AddCommentViewControllerDelegate {
     func treeView(treeView: RATreeView, cellForItem item: AnyObject?) -> UITableViewCell {
         let cell = treeView.dequeueReusableCellWithIdentifier("CommentCell") as! CommentCell
         
-        cell.indentationWidth = 15
+        cell.indentationWidth = 5
         cell.separatorInset = UIEdgeInsets(top: 0,
             left: self.treeView.frame.size.width,
             bottom: 0,
@@ -216,6 +217,10 @@ AddCommentViewControllerDelegate {
         if let link = item as? RKLink {
             cell.indentationLevel = 1
             cell.link = link
+            cell.separatorInset = UIEdgeInsets(top: 0,
+                left: 15,
+                bottom: 0,
+                right: 0)
         } else if let comment = item as? RKComment {
             cell.indentationLevel = treeView.levelForCellForItem(comment) + 1
             cell.configueForComment(comment: comment, isLinkAuthor: self.link.author == comment.author)
@@ -345,13 +350,24 @@ AddCommentViewControllerDelegate {
             
             RedditSession.sharedSession.downvote(comment, completion: c)
             LocalyticsSession.shared().tagEvent("Swipe downvote comment")
-        } else if let link = item as? RKLink {
-            // Share
-            self.hud.hide(true)
-            self.optionsController = LinkShareOptionsViewController(link: link)
-            self.optionsController.sourceView = cell
-            self.optionsController.showInView(self.view)
+        } else if let _ = item as? RKLink {
             LocalyticsSession.shared().tagEvent("Swipe share")
+            
+            let alert = UIAlertController.swipeShareAlertControllerWithLink(link) { (url, action) -> () in
+                let objectsToShare = ["\(self.link.title) @myreddit", url]
+                let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
+                
+                if let popoverController = activityVC.popoverPresentationController {
+                    popoverController.sourceView = cell
+                    popoverController.sourceRect = cell.bounds
+                }
+                
+                activityVC.present(animated: true, completion: nil)
+                
+                LocalyticsSession.shared().tagEvent("Share tapped")
+            }
+            
+            self.presentViewController(alert, animated: true, completion: nil)
         }
     }
     

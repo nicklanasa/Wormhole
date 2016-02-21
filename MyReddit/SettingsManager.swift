@@ -231,7 +231,7 @@ class SettingsManager {
         get {
             switch self.defaultTextSize.rawValue {
             case TextSizeSetting.Small.rawValue: return 14.0
-            case TextSizeSetting.Large.rawValue: return 19.0
+            case TextSizeSetting.Large.rawValue: return 18.0
             default: return 16.0
             }
         }
@@ -240,9 +240,9 @@ class SettingsManager {
     var commentFontSizeForDefaultTextSize: CGFloat! {
         get {
             switch self.defaultCommentTextSize.rawValue {
-            case TextSizeSetting.Small.rawValue: return 12.0
+            case TextSizeSetting.Small.rawValue: return 14.0
             case TextSizeSetting.Large.rawValue: return 18.0
-            default: return 14.0
+            default: return 16.0
             }
         }
     }
