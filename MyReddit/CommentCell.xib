@@ -16,7 +16,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" clipsSubviews="YES" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Nytek1 - Yesterday @ 9PM" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="k44-OF-d5f">
-                        <rect key="frame" x="8" y="8" width="523" height="16"/>
+                        <rect key="frame" x="13" y="8" width="518" height="16"/>
                         <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="11"/>
                         <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
@@ -48,7 +48,7 @@
                     <constraint firstItem="Cxq-SW-9hM" firstAttribute="top" secondItem="HRh-Yo-ec9" secondAttribute="topMargin" constant="24" id="4wm-0r-aC6"/>
                     <constraint firstItem="SuF-JW-4LV" firstAttribute="leading" secondItem="k44-OF-d5f" secondAttribute="trailing" constant="2" id="7Yb-aF-Qyl"/>
                     <constraint firstItem="SuF-JW-4LV" firstAttribute="top" secondItem="HRh-Yo-ec9" secondAttribute="topMargin" constant="-1" id="O7S-YR-AsN"/>
-                    <constraint firstItem="k44-OF-d5f" firstAttribute="leading" secondItem="HRh-Yo-ec9" secondAttribute="leading" constant="8" id="R3n-W7-QqP"/>
+                    <constraint firstItem="k44-OF-d5f" firstAttribute="leading" secondItem="HRh-Yo-ec9" secondAttribute="leading" constant="13" id="R3n-W7-QqP"/>
                     <constraint firstItem="Cxq-SW-9hM" firstAttribute="leading" secondItem="HRh-Yo-ec9" secondAttribute="leadingMargin" id="S0S-VY-rsh"/>
                     <constraint firstItem="SuF-JW-4LV" firstAttribute="trailing" secondItem="HRh-Yo-ec9" secondAttribute="trailingMargin" id="c4Y-GE-kWH"/>
                     <constraint firstItem="k44-OF-d5f" firstAttribute="top" secondItem="HRh-Yo-ec9" secondAttribute="top" constant="8" id="cJV-af-L76"/>

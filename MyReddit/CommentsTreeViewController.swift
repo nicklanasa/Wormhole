@@ -226,7 +226,7 @@ AddCommentViewControllerDelegate {
     func treeView(treeView: RATreeView, estimatedHeightForRowForItem item: AnyObject) -> CGFloat {
         if let _ = item as? RKLink {
             return UITableViewAutomaticDimension
-        } else if !treeView.isCellForItemExpanded(item) {
+        } else if treeView.isCellForItemExpanded(item) {
             return 40
         }
         
