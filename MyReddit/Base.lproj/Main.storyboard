@@ -499,7 +499,7 @@
                                 <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="EmailCell" id="aoH-FF-Hbg" customClass="EmailCell" customModule="MyReddit" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="114" width="600" height="44"/>
+                                        <rect key="frame" x="0.0" y="50" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="aoH-FF-Hbg" id="3X3-wu-QYC">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
@@ -541,7 +541,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="PasswordCell" id="Qsm-lL-wuW" customClass="PasswordCell" customModule="MyReddit" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="158" width="600" height="44"/>
+                                        <rect key="frame" x="0.0" y="94" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Qsm-lL-wuW" id="v0k-de-mL3">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
@@ -1973,7 +1973,7 @@
             </objects>
             <point key="canvasLocation" x="2788" y="-2803"/>
         </scene>
-        <!--Search View Controller-->
+        <!--search-->
         <scene sceneID="VhL-uT-cvd">
             <objects>
                 <viewController id="jpB-u1-7lM" customClass="SearchViewController" customModule="MyReddit" customModuleProvider="target" sceneMemberID="viewController">
@@ -2285,9 +2285,7 @@
                             <constraint firstItem="fss-vF-smf" firstAttribute="leading" secondItem="BjY-Zr-Gwe" secondAttribute="leading" id="tk2-Pv-D2T"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="1sf-0b-hmz">
-                        <barButtonItem key="leftBarButtonItem" title="search" id="9WT-7C-6MB"/>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="search" id="1sf-0b-hmz"/>
                     <nil key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="filterButton" destination="o7m-N6-A4S" id="bEw-17-87t"/>
@@ -4312,19 +4310,19 @@
         <image name="Up" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="SWo-82-5L3"/>
-        <segue reference="ryX-hT-yj2"/>
-        <segue reference="pqF-Zz-63s"/>
-        <segue reference="pMg-rh-ZMv"/>
-        <segue reference="s4Y-Y8-M2P"/>
-        <segue reference="Bf8-BX-vnl"/>
+        <segue reference="eWX-LR-CuE"/>
+        <segue reference="aPe-Za-FV1"/>
+        <segue reference="Udn-dz-6HG"/>
+        <segue reference="ybH-Av-VF3"/>
+        <segue reference="lWs-ak-HDh"/>
         <segue reference="vMB-6P-NDX"/>
-        <segue reference="bxZ-6W-PbQ"/>
-        <segue reference="sND-y2-DTj"/>
-        <segue reference="kaq-Nv-BbA"/>
+        <segue reference="pMg-rh-ZMv"/>
         <segue reference="nEx-7L-vW5"/>
-        <segue reference="zMo-OM-Z5J"/>
-        <segue reference="q6K-ip-lpO"/>
+        <segue reference="SWo-82-5L3"/>
+        <segue reference="sND-y2-DTj"/>
         <segue reference="TYz-B9-bLR"/>
+        <segue reference="q6K-ip-lpO"/>
+        <segue reference="zMo-OM-Z5J"/>
+        <segue reference="Bf8-BX-vnl"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -20,6 +20,9 @@ import UIKit
 
 class PostCell: SwipeCell, SwipeCellDelegate {
     
+    @IBOutlet weak var subredditButton: UIButton!
+    @IBOutlet weak var scoreLabel: UILabel!
+    
     var link: RKLink!
     var linkComment: RKComment!
     
