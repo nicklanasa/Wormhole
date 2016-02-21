@@ -64,7 +64,7 @@ UITextViewDelegate {
         self.defaultBackgroundColor = MyRedditBackgroundColor
         self.commentTextView.textColor = MyRedditLabelColor
         
-        self.commentTextView.textContainerInset = UIEdgeInsets(top: 0, left: 0, bottom: -30, right: 0)
+        self.commentTextView.textContainerInset = UIEdgeInsets(top: 0, left: 0, bottom: -25, right: 0)
     }
     
     var link: RKLink! {
@@ -134,12 +134,31 @@ UITextViewDelegate {
     func configueForComment(comment comment: RKComment, isLinkAuthor: Bool) {
         self.comment = comment
         
+        var markdown = Markdown()
+        let html = markdown.transform(comment.body)
+        
         do {
-            let html = try MMMarkdown.HTMLStringWithMarkdown(comment.body.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet()))
-            let attributedText = try! NSAttributedString(data: html.dataUsingEncoding(NSUTF8StringEncoding,
+            let attributedText = try! NSMutableAttributedString(data: html.dataUsingEncoding(NSUTF8StringEncoding,
                 allowLossyConversion: false)!,
                 options: [NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType],
                 documentAttributes: nil)
+            
+            if attributedText.string.localizedCaseInsensitiveContainsString(">") {
+                do {
+                    let regex = try NSRegularExpression(pattern: ">(.*)", options: .CaseInsensitive)
+                    regex.enumerateMatchesInString(attributedText.string,
+                        options: .WithTransparentBounds,
+                        range: NSMakeRange(0, attributedText.string.characters.count),
+                        usingBlock: { (result, flags, error) -> Void in
+                        if let foundRange = result?.range {
+                            attributedText.addAttribute(NSForegroundColorAttributeName,
+                                value: UIColor.lightGrayColor(),
+                                range: foundRange)
+                        }
+                    })
+                }
+            }
+            
             self.commentTextView.attributedText = attributedText
         } catch { }
         
