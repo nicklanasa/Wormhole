@@ -19,9 +19,7 @@ class PostImageCell: PostCell {
     
     @IBOutlet weak var postImageView: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var scoreLabel: UILabel!
     @IBOutlet weak var postInfoLabel: UILabel!
-    @IBOutlet weak var subredditButton: UIButton!
     
     var postImageDelegate: PostImageCellDelegate?
     

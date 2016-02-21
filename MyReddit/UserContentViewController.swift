@@ -416,6 +416,10 @@ PostImageCellDelegate {
                         hudTitle = "reported!"
                         sh()
                     })
+                case "go to /r/\(link.subreddit)":
+                    if let subredditName = link.subreddit {
+                        self.goToSubreddit(subredditName)
+                    }
                 default: break
                 }
             }
@@ -427,6 +431,44 @@ PostImageCellDelegate {
         }
         
         self.presentViewController(alert, animated: true, completion: nil)
+    }
+    
+    func goToSubreddit(subredditName: String) {
+        RedditSession.sharedSession.searchForSubredditByName(subredditName, pagination: nil, completion: { (pagination, results, error) -> () in
+            
+            var foundSubreddit: RKSubreddit?
+            
+            if let subreddits = results as? [RKSubreddit] {
+                for subreddit in subreddits {
+                    if subreddit.name.lowercaseString == subredditName.lowercaseString {
+                        foundSubreddit = subreddit
+                        break
+                    }
+                }
+                
+                if foundSubreddit == nil {
+                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                        UIAlertView(title: "Error!",
+                            message: "Unable to find subreddit by that name.",
+                            delegate: self,
+                            cancelButtonTitle: "OK").show()
+                    })
+                } else {
+                    let subredditViewController = self.storyboard?.instantiateViewControllerWithIdentifier("SubredditViewController") as! SubredditViewController
+                    subredditViewController.subreddit = foundSubreddit
+                    subredditViewController.front = false
+                    subredditViewController.all = false
+                    self.navigationController?.pushViewController(subredditViewController, animated: true)
+                }
+            } else {
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    UIAlertView(title: "Error!",
+                        message: "Unable to find subreddit by that name.",
+                        delegate: self,
+                        cancelButtonTitle: "OK").show()
+                })
+            }
+        })
     }
     
     private func commentMoreActions(sourceView: AnyObject, comment: RKComment) {

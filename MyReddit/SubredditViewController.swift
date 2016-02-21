@@ -428,6 +428,7 @@ PostCellDelegate {
                         self.hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
                         self.hud.labelFont = MyRedditSelfTextFont
                         self.hud.mode = .Text
+                        self.hud.labelText = hudTitle
                         self.hud.hide(true, afterDelay: 0.3)
                     })
                 }
@@ -463,6 +464,10 @@ PostCellDelegate {
                         hudTitle = "reported!"
                         sh()
                     })
+                case "go to /r/\(link.subreddit)":
+                    if let subredditName = link.subreddit {
+                        self.goToSubreddit(subredditName)
+                    }
                 default: break
                 }
             }
@@ -478,42 +483,46 @@ PostCellDelegate {
     
     func postCell(cell: PostCell, didTapSubreddit subreddit: String?) {
         if let subredditName = subreddit {
-            RedditSession.sharedSession.searchForSubredditByName(subredditName, pagination: nil, completion: { (pagination, results, error) -> () in
-                
-                var foundSubreddit: RKSubreddit?
-                
-                if let subreddits = results as? [RKSubreddit] {
-                    for subreddit in subreddits {
-                        if subreddit.name.lowercaseString == subredditName.lowercaseString {
-                            foundSubreddit = subreddit
-                            break
-                        }
+            self.goToSubreddit(subredditName)
+        }
+    }
+    
+    func goToSubreddit(subredditName: String) {
+        RedditSession.sharedSession.searchForSubredditByName(subredditName, pagination: nil, completion: { (pagination, results, error) -> () in
+            
+            var foundSubreddit: RKSubreddit?
+            
+            if let subreddits = results as? [RKSubreddit] {
+                for subreddit in subreddits {
+                    if subreddit.name.lowercaseString == subredditName.lowercaseString {
+                        foundSubreddit = subreddit
+                        break
                     }
-                    
-                    if foundSubreddit == nil {
-                        dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                            UIAlertView(title: "Error!",
-                                message: "Unable to find subreddit by that name.",
-                                delegate: self,
-                                cancelButtonTitle: "OK").show()
-                        })
-                    } else {
-                        let subredditViewController = self.storyboard?.instantiateViewControllerWithIdentifier("SubredditViewController") as! SubredditViewController
-                        subredditViewController.subreddit = foundSubreddit
-                        subredditViewController.front = false
-                        subredditViewController.all = false
-                        self.navigationController?.pushViewController(subredditViewController, animated: true)
-                    }
-                } else {
+                }
+                
+                if foundSubreddit == nil {
                     dispatch_async(dispatch_get_main_queue(), { () -> Void in
                         UIAlertView(title: "Error!",
                             message: "Unable to find subreddit by that name.",
                             delegate: self,
                             cancelButtonTitle: "OK").show()
                     })
+                } else {
+                    let subredditViewController = self.storyboard?.instantiateViewControllerWithIdentifier("SubredditViewController") as! SubredditViewController
+                    subredditViewController.subreddit = foundSubreddit
+                    subredditViewController.front = false
+                    subredditViewController.all = false
+                    self.navigationController?.pushViewController(subredditViewController, animated: true)
                 }
-            })
-        }
+            } else {
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    UIAlertView(title: "Error!",
+                        message: "Unable to find subreddit by that name.",
+                        delegate: self,
+                        cancelButtonTitle: "OK").show()
+                })
+            }
+        })
     }
     
     // MARK: Segues

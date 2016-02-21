@@ -97,6 +97,7 @@ extension UIAlertController {
         
         alertController.addAction(UIAlertAction(title: "report", style: .Default, handler: c))
         alertController.addAction(UIAlertAction(title: "open in safari", style: .Default, handler: c))
+        alertController.addAction(UIAlertAction(title: "go to /r/\(link.subreddit)", style: .Default, handler: c))
         alertController.addAction(UIAlertAction(title: "cancel", style: .Cancel, handler: nil))
         
         return alertController
