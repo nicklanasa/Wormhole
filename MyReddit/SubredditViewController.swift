@@ -317,6 +317,8 @@ PostCellDelegate {
                     } else {
                         self.performSegueWithIdentifier("SubredditLink", sender: link)
                     }
+                } else {
+                    self.performSegueWithIdentifier("SubredditLink", sender: link)
                 }
             }
         }

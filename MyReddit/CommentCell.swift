@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import MMMarkdown
 
 @objc protocol CommentCellDelegate {
     func commentCell(cell: CommentCell, didTapLink link: NSURL)
@@ -21,11 +22,11 @@ class CommentCell: SwipeCell,
 SwipeCellDelegate,
 UITextViewDelegate {
     
+    @IBOutlet weak var bottomTextViewConstraint: NSLayoutConstraint!
     @IBOutlet weak var leadingTextViewConstraint: NSLayoutConstraint!
     @IBOutlet weak var leadinginfoLabelConstraint: NSLayoutConstraint!
     @IBOutlet weak var infoLabel: UILabel!
     @IBOutlet weak var scoreLabel: UILabel!
-    @IBOutlet weak var sepView: UIView!
     
     var commentDelegate: CommentCellDelegate?
     
@@ -56,16 +57,18 @@ UITextViewDelegate {
         
         self.swipeDelegate = self
         self.commentTextView.delegate = self
+        self.selectionStyle = .Default
         
         self.contentView.backgroundColor = MyRedditBackgroundColor
         self.backgroundColor = MyRedditBackgroundColor
         self.defaultBackgroundColor = MyRedditBackgroundColor
         self.commentTextView.textColor = MyRedditLabelColor
+        
+        self.commentTextView.textContainerInset = UIEdgeInsets(top: 0, left: 0, bottom: -30, right: 0)
     }
     
     var link: RKLink! {
         didSet {
-            
             var selfText = ""
             
             if link.selfPost && link.selfText.characters.count > 0 {
@@ -75,23 +78,26 @@ UITextViewDelegate {
                     range: nil)
             }
             
-            let parser = XNGMarkdownParser()
-            parser.paragraphFont = MyRedditSelfTextFont
-            parser.boldFontName = MyRedditCommentTextBoldFont.familyName
-            parser.boldItalicFontName = MyRedditCommentTextItalicFont.familyName
-            parser.italicFontName = MyRedditCommentTextItalicFont.familyName
-            parser.linkFontName = MyRedditCommentTextBoldFont.familyName
+            let title = link.title.stringByReplacingOccurrencesOfString("&gt;", withString: ">",
+                options: .CaseInsensitiveSearch,
+                range: nil)
             
-            let title = link.title.stringByReplacingOccurrencesOfString("&gt;", withString: ">", options: .CaseInsensitiveSearch, range: nil)
-            
-            let parsedString = NSMutableAttributedString(attributedString: parser.attributedStringFromMarkdownString("\(title)\(selfText)"))
-            let titleAttr = [NSForegroundColorAttributeName : MyRedditLabelColor]
-            let selfTextAttr = [NSForegroundColorAttributeName : MyRedditSelfTextLabelColor]
-            let fontAttr = [NSFontAttributeName : MyRedditSelfTextFont]
-            parsedString.addAttributes(selfTextAttr, range: NSMakeRange(0, parsedString.string.characters.count))
-            parsedString.addAttributes(titleAttr, range: NSMakeRange(0, link.title.characters.count))
-            parsedString.addAttributes(fontAttr, range: NSMakeRange(0, parsedString.string.characters.count))
-            self.commentTextView.attributedText = parsedString
+            do {
+                let html = try MMMarkdown.HTMLStringWithMarkdown("\(title)\(selfText)".stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet()))
+                let attributedText = try! NSMutableAttributedString(data: html.dataUsingEncoding(NSUTF8StringEncoding,
+                    allowLossyConversion: false)!,
+                    options: [NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType],
+                    documentAttributes: nil)
+                
+                let titleAttr = [NSForegroundColorAttributeName : MyRedditLabelColor]
+                let selfTextAttr = [NSForegroundColorAttributeName : MyRedditSelfTextLabelColor]
+                let fontAttr = [NSFontAttributeName : MyRedditSelfTextFont]
+                attributedText.addAttributes(selfTextAttr, range: NSMakeRange(0, attributedText.string.characters.count))
+                attributedText.addAttributes(titleAttr, range: NSMakeRange(0, self.link.title.characters.count))
+                attributedText.addAttributes(fontAttr, range: NSMakeRange(0, attributedText.string.characters.count))
+                
+                self.commentTextView.attributedText = attributedText
+            } catch { }
             
             let timeAgo = link.created.timeAgoSinceNow()
             
@@ -117,10 +123,7 @@ UITextViewDelegate {
             
             let indentPoints: CGFloat = CGFloat(self.indentationLevel) * self.indentationWidth
             self.leadingTextViewConstraint.constant = indentPoints
-            self.leadinginfoLabelConstraint.constant = indentPoints
-            
-            self.sepView.hidden = false
-            self.sepView.backgroundColor = MyRedditTableSeparatorColor
+            self.leadinginfoLabelConstraint.constant = indentPoints + 10
         }
     }
     
@@ -129,45 +132,16 @@ UITextViewDelegate {
     var comment: RKComment!
     
     func configueForComment(comment comment: RKComment, isLinkAuthor: Bool) {
-        
         self.comment = comment
         
-        let body = comment.body.stringByReplacingOccurrencesOfString("&gt;", withString: ">",
-            options: .CaseInsensitiveSearch,
-            range: nil).stringByReplacingOccurrencesOfString("&amp;", withString: "&", options: .CaseInsensitiveSearch, range: nil)
-        
-        let parser = XNGMarkdownParser()
-        parser.paragraphFont = UIFont(name: "AvenirNext-Medium",
-            size: SettingsManager.defaultManager.commentFontSizeForDefaultTextSize)
-        parser.boldFontName = MyRedditCommentTextBoldFont.familyName
-        parser.boldItalicFontName = MyRedditCommentTextItalicFont.familyName
-        parser.italicFontName = MyRedditCommentTextItalicFont.familyName
-        parser.linkFontName = MyRedditCommentTextBoldFont.familyName
-        
-        let parsedString = NSMutableAttributedString(attributedString: parser.attributedStringFromMarkdownString("\(body)"))
-        parsedString.addAttribute(NSForegroundColorAttributeName,
-            value: MyRedditLabelColor,
-            range: NSMakeRange(0, parsedString.string.characters.count))
-        
-        /*
-        if parsedString.string.localizedCaseInsensitiveContainsString(">") {
-            do {
-                let regex = try NSRegularExpression(pattern: ">(.*)\\b\\n", options: .CaseInsensitive)
-                regex.enumerateMatchesInString(body,
-                    options: .Anchored,
-                    range: NSMakeRange(0, body.characters.count),
-                    usingBlock: { (result, flags, error) -> Void in
-                        if let foundRange = result?.range {
-                            parsedString.addAttribute(NSForegroundColorAttributeName,
-                                value: UIColor.lightGrayColor(),
-                                range: foundRange)
-                        }
-                })
-            } catch {}
-        }
-        */
-        
-        self.commentTextView.attributedText = parsedString
+        do {
+            let html = try MMMarkdown.HTMLStringWithMarkdown(comment.body.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet()))
+            let attributedText = try! NSAttributedString(data: html.dataUsingEncoding(NSUTF8StringEncoding,
+                allowLossyConversion: false)!,
+                options: [NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType],
+                documentAttributes: nil)
+            self.commentTextView.attributedText = attributedText
+        } catch { }
         
         let timeAgo = self.comment.created.timeAgoSinceNow()
         
@@ -204,12 +178,9 @@ UITextViewDelegate {
         self.contentView.backgroundColor = MyRedditBackgroundColor
         self.infoLabel.backgroundColor = MyRedditBackgroundColor
         
-        
         let indentPoints: CGFloat = CGFloat(self.indentationLevel) * self.indentationWidth
         self.leadingTextViewConstraint.constant = indentPoints
-        self.leadinginfoLabelConstraint.constant = indentPoints
-
-        self.sepView.hidden = true
+        self.leadinginfoLabelConstraint.constant = indentPoints + 10
     }
     
     func textView(textView: UITextView, shouldInteractWithURL URL: NSURL, inRange characterRange: NSRange) -> Bool {
