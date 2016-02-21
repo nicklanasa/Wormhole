@@ -143,6 +143,14 @@ UITextViewDelegate {
                 options: [NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType],
                 documentAttributes: nil)
             
+            attributedText.addAttribute(NSForegroundColorAttributeName,
+                value: MyRedditLabelColor,
+                range: NSMakeRange(0, attributedText.string.characters.count))
+            attributedText.addAttribute(NSFontAttributeName,
+                value: UIFont(name: "AvenirNext-Medium",
+                    size: SettingsManager.defaultManager.commentFontSizeForDefaultTextSize)!,
+                range: NSMakeRange(0, attributedText.string.characters.count))
+            
             if attributedText.string.localizedCaseInsensitiveContainsString(">") {
                 do {
                     let regex = try NSRegularExpression(pattern: ">(.*)", options: .CaseInsensitive)
@@ -174,7 +182,8 @@ UITextViewDelegate {
        
         if isLinkAuthor {
             let infoString = NSMutableAttributedString(string: info)
-            let attrs = [NSForegroundColorAttributeName : isLinkAuthor ? MyRedditColor : MyRedditLabelColor, NSFontAttributeName : MyRedditCommentInfoMediumFont]
+            let attrs = [NSForegroundColorAttributeName : isLinkAuthor ? MyRedditColor : MyRedditLabelColor,
+                NSFontAttributeName : MyRedditCommentInfoMediumFont]
             infoString.addAttributes(attrs, range: NSMakeRange(0, comment.author.characters.count))
             self.infoLabel.attributedText = infoString
         } else {
@@ -191,8 +200,6 @@ UITextViewDelegate {
             self.scoreLabel.textColor = UIColor.lightGrayColor()
         }
     
-        self.commentTextView.font = UIFont(name: "AvenirNext-Medium",
-            size: SettingsManager.defaultManager.commentFontSizeForDefaultTextSize)
         self.commentTextView.backgroundColor = MyRedditBackgroundColor
         self.contentView.backgroundColor = MyRedditBackgroundColor
         self.infoLabel.backgroundColor = MyRedditBackgroundColor
@@ -202,7 +209,9 @@ UITextViewDelegate {
         self.leadinginfoLabelConstraint.constant = indentPoints + 10
     }
     
-    func textView(textView: UITextView, shouldInteractWithURL URL: NSURL, inRange characterRange: NSRange) -> Bool {
+    func textView(textView: UITextView,
+        shouldInteractWithURL URL: NSURL,
+        inRange characterRange: NSRange) -> Bool {
         self.currentTappedURL = URL
         return false
     }
