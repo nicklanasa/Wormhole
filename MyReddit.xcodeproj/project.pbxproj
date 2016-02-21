@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		010F22271C7A31BA00B8E81D /* Markdown.swift in Sources */ = {isa = PBXBuildFile; fileRef = 010F22261C7A31BA00B8E81D /* Markdown.swift */; };
+		010F22281C7A31BA00B8E81D /* Markdown.swift in Sources */ = {isa = PBXBuildFile; fileRef = 010F22261C7A31BA00B8E81D /* Markdown.swift */; };
+		010F22291C7A31BA00B8E81D /* Markdown.swift in Sources */ = {isa = PBXBuildFile; fileRef = 010F22261C7A31BA00B8E81D /* Markdown.swift */; };
 		01115D411C77AF0E008B7D1E /* SwipeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01115D401C77AF0E008B7D1E /* SwipeCell.swift */; };
 		01115D421C77AF0E008B7D1E /* SwipeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01115D401C77AF0E008B7D1E /* SwipeCell.swift */; };
 		01115D451C77B27A008B7D1E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE712EE01AC2F1A20042B071 /* AppDelegate.swift */; };
@@ -269,6 +272,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		010F22261C7A31BA00B8E81D /* Markdown.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Markdown.swift; sourceTree = "<group>"; };
 		01115D401C77AF0E008B7D1E /* SwipeCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwipeCell.swift; sourceTree = "<group>"; };
 		01332D871AC37F4B0054E05C /* TitleCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TitleCell.swift; sourceTree = "<group>"; };
 		014107081C782A7A00C4CCA0 /* SuggestedLink.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SuggestedLink.swift; sourceTree = "<group>"; };
@@ -617,6 +621,7 @@
 		CE712F171AC302EE0042B071 /* Data */ = {
 			isa = PBXGroup;
 			children = (
+				010F22261C7A31BA00B8E81D /* Markdown.swift */,
 				CE712F061AC2F7200042B071 /* MyReddit.xcdatamodeld */,
 				E00B35DE1B646F9700AD096D /* ReadableContent.swift */,
 				CE35881D1AC305E700294684 /* RedditSession.swift */,
@@ -952,6 +957,7 @@
 			files = (
 				013380CE1C77BE5700E8DA56 /* LoginViewController.swift in Sources */,
 				013380C31C77BE4D00E8DA56 /* LinkViewController.swift in Sources */,
+				010F22291C7A31BA00B8E81D /* Markdown.swift in Sources */,
 				0133808D1C77BE4100E8DA56 /* NavBarController.swift in Sources */,
 				01A6233A1C76CB3400A8F857 /* NSString+Helpers.swift in Sources */,
 				013380D31C77BE5700E8DA56 /* ComposeTableViewController.swift in Sources */,
@@ -1037,6 +1043,7 @@
 			files = (
 				CE3AA46C1B0549E9000DEDD2 /* NavBarController.swift in Sources */,
 				CE3AA46F1B0549E9000DEDD2 /* JZSwipeCell+Reset.swift in Sources */,
+				010F22281C7A31BA00B8E81D /* Markdown.swift in Sources */,
 				CE3AA4701B0549E9000DEDD2 /* LoginViewController.swift in Sources */,
 				CE3AA4721B0549E9000DEDD2 /* AppDelegate.swift in Sources */,
 				79B875B71BC9B84400473E7B /* DataManager.swift in Sources */,
@@ -1122,6 +1129,7 @@
 			files = (
 				CE4B9E971AE1858C00018742 /* NavBarController.swift in Sources */,
 				01A623241C76CACA00A8F857 /* UINavigationBar+Helpers.swift in Sources */,
+				010F22271C7A31BA00B8E81D /* Markdown.swift in Sources */,
 				7968BAC01BF7B2B30059BE45 /* CommentsTreeViewController.swift in Sources */,
 				795FD29F1B6BF904008DF15C /* SubredditCategoriesTableViewController.swift in Sources */,
 				CEF4E2601AF2B508001CFB69 /* JZSwipeCell+Reset.swift in Sources */,
