@@ -4070,7 +4070,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="640"/>
                                 <subviews>
                                     <imageView contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="U3k-rs-51T">
-                                        <rect key="frame" x="0.0" y="21" width="600" height="579"/>
+                                        <rect key="frame" x="22" y="21" width="556" height="579"/>
                                         <rect key="contentStretch" x="0.0" y="0.0" width="0.0" height="0.0"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="579" id="cbo-VW-jtU"/>
@@ -4087,9 +4087,9 @@
                                     <constraint firstAttribute="bottom" secondItem="U3k-rs-51T" secondAttribute="bottom" constant="40" id="I49-hz-LQy"/>
                                     <constraint firstAttribute="centerY" secondItem="U3k-rs-51T" secondAttribute="centerY" constant="9.5" id="KwJ-xL-cSg"/>
                                     <constraint firstAttribute="width" constant="600" id="Pu7-rA-vWj"/>
-                                    <constraint firstItem="U3k-rs-51T" firstAttribute="leading" secondItem="25k-Kp-oFF" secondAttribute="leading" id="VUd-uZ-tT7"/>
+                                    <constraint firstItem="U3k-rs-51T" firstAttribute="leading" secondItem="25k-Kp-oFF" secondAttribute="leading" constant="22" id="VUd-uZ-tT7"/>
                                     <constraint firstItem="U3k-rs-51T" firstAttribute="centerX" secondItem="25k-Kp-oFF" secondAttribute="centerX" id="cP5-kM-sqm"/>
-                                    <constraint firstAttribute="trailing" secondItem="U3k-rs-51T" secondAttribute="trailing" id="e9F-vf-EXC"/>
+                                    <constraint firstAttribute="trailing" secondItem="U3k-rs-51T" secondAttribute="trailing" constant="22" id="e9F-vf-EXC"/>
                                     <constraint firstAttribute="height" constant="640" id="l5e-CY-g9E"/>
                                     <constraint firstItem="Q3f-cV-8t6" firstAttribute="centerY" secondItem="25k-Kp-oFF" secondAttribute="centerY" id="ue3-33-PjP"/>
                                 </constraints>
@@ -4310,19 +4310,19 @@
         <image name="Up" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="sND-y2-DTj"/>
         <segue reference="eWX-LR-CuE"/>
         <segue reference="aPe-Za-FV1"/>
         <segue reference="Udn-dz-6HG"/>
-        <segue reference="ybH-Av-VF3"/>
-        <segue reference="lWs-ak-HDh"/>
-        <segue reference="vMB-6P-NDX"/>
         <segue reference="pMg-rh-ZMv"/>
+        <segue reference="4Ru-UI-2gn"/>
+        <segue reference="IKJ-Uc-imU"/>
+        <segue reference="vMB-6P-NDX"/>
+        <segue reference="Bf8-BX-vnl"/>
         <segue reference="nEx-7L-vW5"/>
         <segue reference="SWo-82-5L3"/>
-        <segue reference="sND-y2-DTj"/>
         <segue reference="TYz-B9-bLR"/>
         <segue reference="q6K-ip-lpO"/>
         <segue reference="zMo-OM-Z5J"/>
-        <segue reference="Bf8-BX-vnl"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -9,7 +9,8 @@
 import Foundation
 import UIKit
 
-class GalleryImageCollectionViewCell: UICollectionViewCell {    
+class GalleryImageCollectionViewCell: UICollectionViewCell {
+    
     @IBOutlet weak var imageView: UIImageView!
     
     var imageURL: NSURL! {
