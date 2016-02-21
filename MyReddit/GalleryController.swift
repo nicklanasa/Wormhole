@@ -269,6 +269,8 @@ UICollectionViewDelegate {
             controller.imageURL = imgImage.url
         } else if let imageURL = self.images?[index] as? NSURL {
             controller.imageURL = imageURL
+        } else if let image = self.images?[index] as? UIImage {
+            controller.image = image
         }
         
         controller.delegate = self
@@ -412,6 +414,8 @@ UICollectionViewDelegate {
             cell.imageURL = thumbnailImageURL
         } else if let imageURL = self.images?[indexPath.row] as? NSURL {
             cell.imageURL = imageURL
+        } else if let image = self.images?[indexPath.row] as? UIImage {
+            cell.imageView.image = image
         }
         
         return cell

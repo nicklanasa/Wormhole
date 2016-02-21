@@ -23,11 +23,12 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
     
     var imageURL: NSURL!
     var pageIndex: Int!
+    var image: UIImage!
 
     override func viewDidDisappear(animated: Bool) {
         self.imageView.backgroundColor = MyRedditBackgroundColor
-        self.imageView.image = nil
         self.imageView.gestureRecognizers = []
+        self.imageView.image = nil
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -49,35 +50,27 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
         self.indicator.startAnimating()
         self.imageView.contentMode = .ScaleAspectFit
         
-        if self.imageURL.absoluteString.containsString("gif") {
-            if self.imageURL.absoluteString.containsString("gifv") {
-                self.imageURL = NSURL(string: self.imageURL.absoluteString.stringByReplacingOccurrencesOfString("gifv", withString: "gif"))
-            }
-        }
-        
-        self.imageView.sd_setImageWithURL(self.imageURL) { (image, error, cacheType, url) -> Void in
-            if error != nil {
-                UIAlertView(title: "Error!",
-                    message: "Unable to load image.",
-                    delegate: self,
-                    cancelButtonTitle: "Ok").show()
-            } else {
-                self.imageView.image = image
-            }
-            self.indicator.stopAnimating()
-        }
-        
-        self.scrollView.contentSize = self.imageView.frame.size
-
-        self.scrollView.minimumZoomScale = 1.0
-        
         let tap = UITapGestureRecognizer(target: self, action: "imageViewTapped:")
         tap.numberOfTapsRequired = 1
         
         let longHold = UILongPressGestureRecognizer(target: self, action: "longHold")
-        
         self.imageView.gestureRecognizers = [tap, longHold]
         self.view.gestureRecognizers = [tap]
+        
+        if self.imageURL != nil {
+            self.imageView.sd_setImageWithURL(self.imageURL, completed: { (i, e, c, u) -> Void in
+                if let resizedImage = i?.imageWithImage(i, toSize: self.imageView.frame.size) {
+                    self.imageView.image = resizedImage
+                } else {
+                    self.imageView.image = UIImage(named: "Reddit")
+                }
+            })
+        } else if image != nil {
+            self.imageView.image = image
+        }
+        
+        self.scrollView.minimumZoomScale = 1.0
+        self.indicator.stopAnimating()
     }
 
     func imageViewTapped(gesture: UIGestureRecognizer) {

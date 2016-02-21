@@ -27,11 +27,6 @@ PostCellDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.refreshControl.addTarget(self,
-            action: "refresh:",
-            forControlEvents: .ValueChanged)
-        self.tableView.addSubview(self.refreshControl)
-        
         if let username = NSUserDefaults.standardUserDefaults().objectForKey("username") as? String {
             if let password = NSUserDefaults.standardUserDefaults().objectForKey("password") as? String {
                 UserSession.sharedSession.loginWithUsername(username, password: password, completion: { (error) -> () in
@@ -195,9 +190,8 @@ PostCellDelegate {
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        
         var cell = tableView.dequeueReusableCellWithIdentifier("PostImageCell") as! PostCell
-        
+
         if let link = self.links[indexPath.row] as? RKLink {
             if link.hasImage() {
                 
@@ -223,10 +217,10 @@ PostCellDelegate {
             
             let priority = DISPATCH_QUEUE_PRIORITY_BACKGROUND
             
-            dispatch_async(dispatch_get_global_queue(priority, 0)) { // Get the request in the background thread
+            dispatch_async(dispatch_get_global_queue(priority, 0)) {
                 let request = GADRequest()
                 request.testDevices = [kGADSimulatorID]
-                dispatch_async(dispatch_get_main_queue()) { // Update the UI
+                dispatch_async(dispatch_get_main_queue()) {
                     cell.bannerView.loadRequest(request)
                 }
             }
@@ -292,35 +286,37 @@ PostCellDelegate {
             if link.selfPost {
                 self.performSegueWithIdentifier("CommentsSegue", sender: link)
             } else {
-                if (link.domain == "imgur.com" || link.isImageOrGifLink()) {
-                    if link.domain == "imgur.com" && !link.URL.absoluteString.hasExtension() {
-                        var urlComponents = link.URL.absoluteString.componentsSeparatedByString("/")
-                        if urlComponents.count > 4 {
-                            let albumID = urlComponents[4]
-                            IMGAlbumRequest.albumWithID(albumID, success: { (album) -> Void in
-                                self.performSegueWithIdentifier("GallerySegue", sender: album.images)
-                                }) { (error) -> Void in
-                                    LocalyticsSession.shared().tagEvent("Imgur album request failed")
-                                    self.performSegueWithIdentifier("SubredditLink", sender: link)
-                            }
-                        } else {
-                            if urlComponents.count > 3 {
-                                let imageID = urlComponents[3]
-                                IMGImageRequest.imageWithID(imageID, success: { (image) -> Void in
-                                    self.performSegueWithIdentifier("GallerySegue", sender: [image])
+                if let cell = tableView.cellForRowAtIndexPath(indexPath) as? PostImageCell {
+                    if (link.domain == "imgur.com" || link.isImageOrGifLink()) {
+                        if link.domain == "imgur.com" && !link.URL.absoluteString.hasExtension() {
+                            var urlComponents = link.URL.absoluteString.componentsSeparatedByString("/")
+                            if urlComponents.count > 4 {
+                                let albumID = urlComponents[4]
+                                IMGAlbumRequest.albumWithID(albumID, success: { (album) -> Void in
+                                    self.performSegueWithIdentifier("GallerySegue", sender: album.images)
+                                    }) { (error) -> Void in
+                                        LocalyticsSession.shared().tagEvent("Imgur album request failed")
+                                        self.performSegueWithIdentifier("SubredditLink", sender: link)
+                                }
+                            } else {
+                                if urlComponents.count > 3 {
+                                    let imageID = urlComponents[3]
+                                    IMGImageRequest.imageWithID(imageID, success: { (image) -> Void in
+                                        self.performSegueWithIdentifier("GallerySegue", sender: [image])
                                     }, failure: { (error) -> Void in
                                         LocalyticsSession.shared().tagEvent("Imgur image request failed")
                                         self.performSegueWithIdentifier("SubredditLink", sender: link)
-                                })
-                            } else {
-                                self.performSegueWithIdentifier("GallerySegue", sender: [link.URL])
+                                    })
+                                } else {
+                                    self.performSegueWithIdentifier("GallerySegue", sender: [cell.postImageView?.image ?? link.URL])
+                                }
                             }
+                        } else {
+                            self.performSegueWithIdentifier("GallerySegue", sender: [cell.postImageView?.image ?? link.URL])
                         }
                     } else {
-                        self.performSegueWithIdentifier("GallerySegue", sender: [link.URL!])
+                        self.performSegueWithIdentifier("SubredditLink", sender: link)
                     }
-                } else {
-                    self.performSegueWithIdentifier("SubredditLink", sender: link)
                 }
             }
         }

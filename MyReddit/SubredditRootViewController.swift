@@ -44,7 +44,9 @@ UISplitViewControllerDelegate {
             }
             
             if !SettingsManager.defaultManager.purchased {
-                self.links.append(SuggestedLink())
+                if self.links.count != 0 {
+                    self.links.append(SuggestedLink())
+                }
             }
             
             if self.links.count == 25 || self.links.count == 0 {
@@ -85,6 +87,10 @@ UISplitViewControllerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.refreshControl = UIRefreshControl()
+        self.refreshControl.addTarget(self,
+            action: "refresh:",
+            forControlEvents: .ValueChanged)
+        self.tableView.addSubview(self.refreshControl)
         
         self.tableView.tableFooterView = UIView()
 
