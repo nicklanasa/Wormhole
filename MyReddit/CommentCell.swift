@@ -106,7 +106,7 @@ UITextViewDelegate {
             
             let indentPoints: CGFloat = CGFloat(self.indentationLevel) * self.indentationWidth
             self.leadingTextViewConstraint.constant = indentPoints
-            self.leadinginfoLabelConstraint.constant = indentPoints
+            self.leadinginfoLabelConstraint.constant = indentPoints + 10
             
             self.contentView.backgroundColor = MyRedditDarkBackgroundColor
             self.commentTextView.backgroundColor = MyRedditDarkBackgroundColor
