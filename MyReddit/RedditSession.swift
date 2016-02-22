@@ -284,9 +284,9 @@ class RedditSession {
         UIApplication.sharedApplication().networkActivityIndicatorVisible = true
         LocalyticsSession.shared().tagEvent("Fetched comments")
         
-        RKClient.sharedClient().commentsForLink(link, completion: { (comments, pagination, error) -> Void in
+        RKClient.sharedClient().commentsForLink(link, completion: { (results, pagination, error) -> Void in
             UIApplication.sharedApplication().networkActivityIndicatorVisible = false
-            completion(pagination: pagination, results: comments, error: error)
+            completion(pagination: pagination, results: results, error: error)
         })
     }
     
