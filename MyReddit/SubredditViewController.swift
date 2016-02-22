@@ -351,9 +351,7 @@ PostCellDelegate {
     func postCell(cell: PostCell, didShortLeftSwipeForLink link: RKLink) {
         // Upvote
         LocalyticsSession.shared().tagEvent("Swipe upvote")
-        RedditSession.sharedSession.upvote(link, completion: { (error) -> () in
-            self.hud.hide(true)
-            
+        RedditSession.sharedSession.upvote(link, completion: { (error) -> () in            
             if error != nil {
                 UIAlertView(title: "Error!",
                     message: error!.localizedDescription,
@@ -371,7 +369,6 @@ PostCellDelegate {
         LocalyticsSession.shared().tagEvent("Swipe downvote")
         // Downvote
         RedditSession.sharedSession.downvote(link, completion: { (error) -> () in
-            self.hud.hide(true)
             if error != nil {
                 UIAlertView(title: "Error!",
                     message: error!.localizedDescription,
@@ -545,7 +542,6 @@ PostCellDelegate {
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "SubredditImageLink" || segue.identifier == "SubredditLink" {
-            self.hud.hide(true)
             if let link = sender as? RKLink {
                 if let controller = segue.destinationViewController as? LinkViewController {
                     controller.link = link
@@ -558,7 +554,6 @@ PostCellDelegate {
                 }
             }
         } else if segue.identifier == "GallerySegue" {
-            self.hud.hide(true)
             if let controller = segue.destinationViewController as? GalleryController {
                 if let images = sender as? [AnyObject] {
                     controller.images = images
@@ -576,7 +571,6 @@ PostCellDelegate {
             }
         } else if segue.identifier == "CommentsSegue" {
             if let link = sender as? RKLink {
-                self.hud.hide(true)
                 if let controller = segue.destinationViewController as? CommentsTreeViewController {
                     controller.link = link
                 }
