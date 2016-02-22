@@ -67,10 +67,8 @@ AddCommentViewControllerDelegate {
         
         RedditSession.sharedSession.linkWithFullName(self.link, completion: { (pagination, results, error) -> () in
             if error != nil {
-                UIAlertView(title: "Error!",
-                    message: "Unable to get refresh link!",
-                    delegate: self,
-                    cancelButtonTitle: "OK").show()
+                let alert = UIAlertController.errorAlertControllerWithMessage("Unable to get refresh link!")
+                self.presentViewController(alert, animated: true, completion: nil)
             } else {
                 if let link = results?.first as? RKLink {
                     self.link = link
@@ -294,10 +292,8 @@ AddCommentViewControllerDelegate {
             error in
             self.hud.hide(true)
             if error != nil {
-                UIAlertView(title: "Error!",
-                    message: error!.localizedDescription,
-                    delegate: self,
-                    cancelButtonTitle: "Ok").show()
+                let alert = UIAlertController.errorAlertControllerWithMessage(error!.localizedDescription)
+                self.presentViewController(alert, animated: true, completion: nil)
             } else {
                 self.treeView.reloadRowsForItems([item], withRowAnimation: RATreeViewRowAnimation.init(0))
             }
@@ -317,10 +313,8 @@ AddCommentViewControllerDelegate {
             error in
             self.hud.hide(true)
             if error != nil {
-                UIAlertView(title: "Error!",
-                    message: error!.localizedDescription,
-                    delegate: self,
-                    cancelButtonTitle: "Ok").show()
+                let alert = UIAlertController.errorAlertControllerWithMessage(error!.localizedDescription)
+                self.presentViewController(alert, animated: true, completion: nil)
             } else {
                 self.treeView.reloadRowsForItems([item], withRowAnimation: RATreeViewRowAnimation.init(0))
             }
@@ -341,10 +335,8 @@ AddCommentViewControllerDelegate {
                 error in
                 self.hud.hide(true)
                 if error != nil {
-                    UIAlertView(title: "Error!",
-                        message: error!.localizedDescription,
-                        delegate: self,
-                        cancelButtonTitle: "Ok").show()
+                    let alert = UIAlertController.errorAlertControllerWithMessage(error!.localizedDescription)
+                    self.presentViewController(alert, animated: true, completion: nil)
                 } else {
                     self.treeView.reloadRowsForItems([item], withRowAnimation: RATreeViewRowAnimation.init(0))
                 }
@@ -402,9 +394,8 @@ AddCommentViewControllerDelegate {
         alertController.addAction(UIAlertAction(title: "report", style: .Default, handler: { (action) -> Void in
             RedditSession.sharedSession.reportLink(self.link, completion: { (error) -> () in
                 if error != nil {
-                    UIAlertView.showUnableToReportLinkError()
-                } else {
-                    UIAlertView.showReportLinkSuccess()
+                    let alert = UIAlertController.errorAlertControllerWithMessage(error!.localizedDescription)
+                    self.presentViewController(alert, animated: true, completion: nil)
                 }
             })
         }))
@@ -435,7 +426,8 @@ AddCommentViewControllerDelegate {
             alertController.addAction(UIAlertAction(title: "delete", style: .Default, handler: { (action) -> Void in
                 RedditSession.sharedSession.deleteLink(self.link, completion: { (error) -> () in
                     if error != nil {
-                        UIAlertView.showUnableToDeleteLinkError()
+                        let alert = UIAlertController.errorAlertControllerWithMessage(error!.localizedDescription)
+                        self.presentViewController(alert, animated: true, completion: nil)
                     } else {
                         let deleteAlert = UIAlertController(title: "Delete post", message: "Are you sure you want to delete this post?", preferredStyle: .Alert)
                         
@@ -473,9 +465,8 @@ AddCommentViewControllerDelegate {
             RedditSession.sharedSession.saveComment(comment, completion: { (error) -> () in
                 // alert or do something else...
                 if error != nil {
-                    UIAlertView.showUnableToSaveCommentError()
-                } else {
-                    UIAlertView.showSaveCommentSuccess()
+                    let alert = UIAlertController.errorAlertControllerWithMessage(error!.localizedDescription)
+                    self.presentViewController(alert, animated: true, completion: nil)
                 }
             })
         }))
@@ -488,9 +479,9 @@ AddCommentViewControllerDelegate {
             alertController.addAction(UIAlertAction(title: "delete", style: .Default, handler: { (action) -> Void in
                 RedditSession.sharedSession.deleteComment(comment, completion: { (error) -> () in
                     if error != nil {
-                        UIAlertView.showUnableToDeleteCommentError()
+                        let alert = UIAlertController.errorAlertControllerWithMessage(error!.localizedDescription)
+                        self.presentViewController(alert, animated: true, completion: nil)
                     } else {
-                        UIAlertView.showDeleteCommentSuccess()
                         self.syncComments()
                     }
                 })
@@ -504,9 +495,8 @@ AddCommentViewControllerDelegate {
         alertController.addAction(UIAlertAction(title: "report", style: .Default, handler: { (action) -> Void in
             RedditSession.sharedSession.reportComment(comment, completion: { (error) -> () in
                 if error != nil {
-                    UIAlertView.showUnableToReportCommentError()
-                } else {
-                    UIAlertView.showReportCommentSuccess()
+                    let alert = UIAlertController.errorAlertControllerWithMessage(error!.localizedDescription)
+                    self.presentViewController(alert, animated: true, completion: nil)
                 }
             })
         }))
@@ -549,14 +539,11 @@ AddCommentViewControllerDelegate {
             self.syncComments()
         } else {
             if controller.edit {
-                UIAlertView.showUnableToEditCommentError()
                 LocalyticsSession.shared().tagEvent("Edited comment failed")
             } else {
                 if let _ = controller.comment {
-                    UIAlertView.showUnableToReplyCommentError()
                     LocalyticsSession.shared().tagEvent("Reply comment failed")
                 } else {
-                    UIAlertView.showUnableToAddCommentError()
                     LocalyticsSession.shared().tagEvent("Added comment failed")
                 }
             }

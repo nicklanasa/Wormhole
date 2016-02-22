@@ -126,4 +126,13 @@ extension UIAlertController {
         
         return alertController
     }
+    
+    class func errorAlertControllerWithMessage(message: String) -> UIAlertController {
+        let alertController = UIAlertController(title: "share",
+            message: message,
+            preferredStyle: .Alert)
+        alertController.addAction(UIAlertAction(title: "ok", style: .Cancel, handler: nil))
+        
+        return alertController
+    }
 }
