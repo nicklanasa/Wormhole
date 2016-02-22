@@ -650,12 +650,6 @@
                                     <rect key="frame" x="16" y="72" width="768" height="315"/>
                                 </variation>
                             </label>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="MyReddit" translatesAutoresizingMaskIntoConstraints="NO" id="xl5-ng-yCR">
-                                <rect key="frame" x="20" y="72" width="560" height="197"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="197" id="q8U-Pj-wQl"/>
-                                </constraints>
-                            </imageView>
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K3k-oK-Zyd">
                                 <rect key="frame" x="0.0" y="556" width="600" height="44"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -690,6 +684,12 @@
                                     </mask>
                                 </variation>
                             </toolbar>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="MyReddit" translatesAutoresizingMaskIntoConstraints="NO" id="xl5-ng-yCR">
+                                <rect key="frame" x="20" y="99" width="560" height="197"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="197" id="q8U-Pj-wQl"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -705,9 +705,9 @@
                             <constraint firstItem="K3k-oK-Zyd" firstAttribute="leading" secondItem="f7m-JM-yYb" secondAttribute="leading" id="XVm-CH-Gv8"/>
                             <constraint firstItem="7EO-1f-duY" firstAttribute="top" secondItem="4U6-0s-9UA" secondAttribute="bottom" constant="8" symbolic="YES" id="Xx9-Ez-LxE"/>
                             <constraint firstAttribute="trailing" secondItem="K3k-oK-Zyd" secondAttribute="trailing" id="an9-ZS-ehJ"/>
-                            <constraint firstItem="xl5-ng-yCR" firstAttribute="top" secondItem="4U6-0s-9UA" secondAttribute="bottom" constant="8" symbolic="YES" id="d2k-2J-fqt"/>
+                            <constraint firstItem="xl5-ng-yCR" firstAttribute="top" secondItem="4U6-0s-9UA" secondAttribute="bottom" constant="35" id="d2k-2J-fqt"/>
                             <constraint firstAttribute="trailing" secondItem="K3k-oK-Zyd" secondAttribute="trailing" id="odr-DS-E8z"/>
-                            <constraint firstItem="7EO-1f-duY" firstAttribute="top" secondItem="xl5-ng-yCR" secondAttribute="bottom" constant="8" symbolic="YES" id="pYu-fR-rCN"/>
+                            <constraint firstItem="7EO-1f-duY" firstAttribute="top" secondItem="xl5-ng-yCR" secondAttribute="bottom" constant="-19" id="pYu-fR-rCN"/>
                         </constraints>
                         <variation key="default">
                             <mask key="constraints">
@@ -4176,7 +4176,6 @@
         <segue reference="aPe-Za-FV1"/>
         <segue reference="Udn-dz-6HG"/>
         <segue reference="vMB-6P-NDX"/>
-        <segue reference="DoA-ah-cSI"/>
         <segue reference="nb3-Xk-rNn"/>
         <segue reference="zMo-OM-Z5J"/>
         <segue reference="nEx-7L-vW5"/>
@@ -4184,5 +4183,6 @@
         <segue reference="xgG-eu-NoT"/>
         <segue reference="7mV-eF-gvZ"/>
         <segue reference="q6K-ip-lpO"/>
+        <segue reference="fLo-75-wzd"/>
     </inferredMetricsTieBreakers>
 </document>

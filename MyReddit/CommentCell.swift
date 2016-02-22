@@ -108,10 +108,10 @@ UITextViewDelegate {
             self.leadingTextViewConstraint.constant = indentPoints
             self.leadinginfoLabelConstraint.constant = indentPoints + 10
             
-            self.contentView.backgroundColor = MyRedditDarkBackgroundColor
-            self.commentTextView.backgroundColor = MyRedditDarkBackgroundColor
-            self.infoLabel.backgroundColor = MyRedditDarkBackgroundColor
-            self.contentView.backgroundColor = MyRedditDarkBackgroundColor
+            self.contentView.backgroundColor = MyRedditBackgroundColor
+            self.commentTextView.backgroundColor = MyRedditBackgroundColor
+            self.infoLabel.backgroundColor = MyRedditBackgroundColor
+            self.contentView.backgroundColor = MyRedditBackgroundColor
         }
     }
     
@@ -196,10 +196,10 @@ UITextViewDelegate {
         self.leadingTextViewConstraint.constant = indentPoints
         self.leadinginfoLabelConstraint.constant = indentPoints + 10
         
-        self.contentView.backgroundColor = MyRedditBackgroundColor
-        self.commentTextView.backgroundColor = MyRedditBackgroundColor
-        self.infoLabel.backgroundColor = MyRedditBackgroundColor
-        self.contentView.backgroundColor = MyRedditBackgroundColor
+        self.contentView.backgroundColor = MyRedditDarkBackgroundColor
+        self.commentTextView.backgroundColor = MyRedditDarkBackgroundColor
+        self.infoLabel.backgroundColor = MyRedditDarkBackgroundColor
+        self.contentView.backgroundColor = MyRedditDarkBackgroundColor
     }
     
     func textView(textView: UITextView,
