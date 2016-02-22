@@ -123,10 +123,6 @@ UISplitViewControllerDelegate {
         
         LocalyticsSession.shared().tagEvent("Fetched links")
         
-        dispatch_async(dispatch_get_main_queue(), { () -> Void in
-            self.hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
-        })
-        
         let c: PaginationCompletion = {
             pagination,
             results,
@@ -139,7 +135,6 @@ UISplitViewControllerDelegate {
             self.fetchingMore = false
             
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                self.hud.hide(true)
                 self.refreshControl.endRefreshing()
                 self.updateUI()
             })

@@ -29,19 +29,12 @@ UITextViewDelegate {
     @IBOutlet weak var scoreLabel: UILabel!
     
     var commentDelegate: CommentCellDelegate?
-    
+        
     var currentTappedURL: NSURL! {
         didSet {
-            self.commentDelegate?.commentCell(self, didTapLink: self.currentTappedURL)
+            self.commentDelegate?.commentCell(self,
+                didTapLink: self.currentTappedURL)
         }
-    }
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        
-        self.commentTextView.backgroundColor = MyRedditBackgroundColor
-        self.contentView.backgroundColor = MyRedditBackgroundColor
-        self.backgroundColor = MyRedditBackgroundColor
     }
     
     override func awakeFromNib() {
@@ -57,18 +50,22 @@ UITextViewDelegate {
         
         self.swipeDelegate = self
         self.commentTextView.delegate = self
-        self.selectionStyle = .Default
         
-        self.contentView.backgroundColor = MyRedditBackgroundColor
-        self.backgroundColor = MyRedditBackgroundColor
-        self.defaultBackgroundColor = MyRedditBackgroundColor
-        self.commentTextView.textColor = MyRedditLabelColor
+        self.commentTextView.textContainerInset = UIEdgeInsets(top: 0, left: 0, bottom: -20, right: 0)
         
-        self.commentTextView.textContainerInset = UIEdgeInsets(top: 0, left: 0, bottom: -25, right: 0)
+        self.contentView.backgroundColor = MyRedditDarkBackgroundColor
+        self.commentTextView.backgroundColor = MyRedditDarkBackgroundColor
+        self.infoLabel.backgroundColor = MyRedditDarkBackgroundColor
+        self.contentView.backgroundColor = MyRedditDarkBackgroundColor
     }
     
     var link: RKLink! {
         didSet {
+            
+            self.separatorInset = UIEdgeInsetsMake(0, 15, 0, 0)
+            
+            var commentTitle = ""
+            
             var selfText = ""
             
             if link.selfPost && link.selfText.characters.count > 0 {
@@ -82,8 +79,11 @@ UITextViewDelegate {
                 options: .CaseInsensitiveSearch,
                 range: nil)
             
+            
+            commentTitle = "\(title)\(selfText)"
+            
             do {
-                let html = try MMMarkdown.HTMLStringWithMarkdown("\(title)\(selfText)".stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet()))
+                let html = try MMMarkdown.HTMLStringWithMarkdown(commentTitle.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet()))
                 let attributedText = try! NSMutableAttributedString(data: html.dataUsingEncoding(NSUTF8StringEncoding,
                     allowLossyConversion: false)!,
                     options: [NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType],
@@ -118,12 +118,14 @@ UITextViewDelegate {
                 self.scoreLabel.textColor = UIColor.lightGrayColor()
             }
             
-            self.commentTextView.backgroundColor = MyRedditBackgroundColor
-            self.contentView.backgroundColor = MyRedditBackgroundColor
-            
             let indentPoints: CGFloat = CGFloat(self.indentationLevel) * self.indentationWidth
             self.leadingTextViewConstraint.constant = indentPoints
             self.leadinginfoLabelConstraint.constant = indentPoints + 10
+            
+            self.contentView.backgroundColor = MyRedditBackgroundColor
+            self.commentTextView.backgroundColor = MyRedditBackgroundColor
+            self.infoLabel.backgroundColor = MyRedditBackgroundColor
+            self.contentView.backgroundColor = MyRedditBackgroundColor
         }
     }
     
@@ -131,11 +133,13 @@ UITextViewDelegate {
     
     var comment: RKComment!
     
+    var markdown = Markdown()
+    
     func configueForComment(comment comment: RKComment, isLinkAuthor: Bool) {
+        
         self.comment = comment
         
-        var markdown = Markdown()
-        let html = markdown.transform(comment.body)
+        let html = self.markdown.transform(comment.body)
         
         do {
             let attributedText = try! NSMutableAttributedString(data: html.dataUsingEncoding(NSUTF8StringEncoding,
@@ -147,7 +151,7 @@ UITextViewDelegate {
                 value: MyRedditLabelColor,
                 range: NSMakeRange(0, attributedText.string.characters.count))
             attributedText.addAttribute(NSFontAttributeName,
-                value: UIFont(name: "AvenirNext-Medium",
+                value: UIFont(name: MyRedditCommentTextFont.fontName,
                     size: SettingsManager.defaultManager.commentFontSizeForDefaultTextSize)!,
                 range: NSMakeRange(0, attributedText.string.characters.count))
             
@@ -158,17 +162,18 @@ UITextViewDelegate {
                         options: .WithTransparentBounds,
                         range: NSMakeRange(0, attributedText.string.characters.count),
                         usingBlock: { (result, flags, error) -> Void in
-                        if let foundRange = result?.range {
-                            attributedText.addAttribute(NSForegroundColorAttributeName,
-                                value: UIColor.lightGrayColor(),
-                                range: foundRange)
-                        }
+                            if let foundRange = result?.range {
+                                attributedText.addAttribute(NSForegroundColorAttributeName,
+                                    value: UIColor.lightGrayColor(),
+                                    range: foundRange)
+                            }
                     })
                 }
             }
             
             self.commentTextView.attributedText = attributedText
         } catch { }
+
         
         let timeAgo = self.comment.created.timeAgoSinceNow()
         
@@ -199,10 +204,6 @@ UITextViewDelegate {
         } else {
             self.scoreLabel.textColor = UIColor.lightGrayColor()
         }
-    
-        self.commentTextView.backgroundColor = MyRedditBackgroundColor
-        self.contentView.backgroundColor = MyRedditBackgroundColor
-        self.infoLabel.backgroundColor = MyRedditBackgroundColor
         
         let indentPoints: CGFloat = CGFloat(self.indentationLevel) * self.indentationWidth
         self.leadingTextViewConstraint.constant = indentPoints
@@ -220,6 +221,11 @@ UITextViewDelegate {
         super.prepareForReuse()
         self.indentationLevel = 0
         self.indentationWidth = 0
+        
+        self.contentView.backgroundColor = MyRedditDarkBackgroundColor
+        self.commentTextView.backgroundColor = MyRedditDarkBackgroundColor
+        self.infoLabel.backgroundColor = MyRedditDarkBackgroundColor
+        self.contentView.backgroundColor = MyRedditDarkBackgroundColor
     }
     
     func swipeCell(cell: SwipeCell, didTriggerSwipeWithType swipeType: SwipeType) {

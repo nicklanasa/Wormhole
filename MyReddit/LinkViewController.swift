@@ -366,7 +366,5 @@ class LinkViewController: RootViewController, UITextViewDelegate {
         if self.link.saved {
             self.navigationItem.rightBarButtonItem?.tintColor = MyRedditColor
         }
-        
-        self.configureNav()
     }
 }

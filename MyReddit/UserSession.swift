@@ -77,9 +77,9 @@ class UserSession {
         green: 16/255,
         blue: 33/255,
         alpha: 1.0)
-    let nightModeTableViewBackgroundColor = UIColor(red: 12/255,
-        green: 16/255,
-        blue: 33/255,
+    let nightModeTableViewBackgroundColor = UIColor(red: 15/255,
+        green: 20/255,
+        blue: 42/255,
         alpha: 1.0)
     let nightModeForegroundColor = UIColor(red: 248/255,
         green: 248/255,
@@ -99,7 +99,7 @@ class UserSession {
         MyRedditSelfTextLabelColor = foregroundColor.colorWithAlphaComponent(0.8)
         MyRedditPostTitleTextLabelColor = UIColor.whiteColor()
         MyRedditBackgroundColor = backgroundColor
-        MyRedditDarkBackgroundColor = backgroundColor.colorWithAlphaComponent(0.7)
+        MyRedditDarkBackgroundColor = self.nightModeTableViewBackgroundColor
         MyRedditCommentLinesColor = UIColor.darkGrayColor().colorWithAlphaComponent(0.2)
         MyRedditTableSeparatorColor = UIColor.whiteColor().colorWithAlphaComponent(0.2)
         

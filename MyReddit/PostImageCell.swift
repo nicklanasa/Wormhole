@@ -42,7 +42,7 @@ class PostImageCell: PostCell {
             self.titleLabel.frame = CGRectMake(14, 30, self.contentView.frame.size.width - 20, 50)
             self.subredditButton.frame = CGRectMake(14, 1, self.contentView.frame.size.width - 20, 30)
             self.scoreLabel.frame = CGRectMake(self.contentView.frame.size.width - 78, 6, 70, 18)
-            self.postInfoLabel.frame = CGRectMake(15, self.contentView.frame.size.height - 25, self.contentView.frame.size.width - 20, 14)
+            self.postInfoLabel.frame = CGRectMake(17, self.contentView.frame.size.height - 25, self.contentView.frame.size.width - 20, 14)
         })
     }
     

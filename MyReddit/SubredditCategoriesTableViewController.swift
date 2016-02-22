@@ -10,6 +10,10 @@ import UIKit
 
 class SubredditCategoriesTableViewController: RootTableViewController {
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+    }
+    
     let categories = ["Animals",
         "Apple Related",
         "Ask Redditors",
