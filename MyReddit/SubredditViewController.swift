@@ -541,7 +541,7 @@ PostCellDelegate {
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        self.hud.hide(true)
+        self.hud?.hide(true)
         if segue.identifier == "SubredditImageLink" || segue.identifier == "SubredditLink" {
             if let link = sender as? RKLink {
                 if let controller = segue.destinationViewController as? LinkViewController {
