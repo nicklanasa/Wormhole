@@ -35,7 +35,8 @@ AddCommentViewControllerDelegate {
     var link: RKLink! {
         didSet {
             if let treeView = self.treeView {
-                treeView.reloadRowsForItems([self.link], withRowAnimation: RATreeViewRowAnimation.init(0))
+                treeView.reloadRowsForItems([self.link],
+                    withRowAnimation: RATreeViewRowAnimation.init(0))
             }
         }
     }
@@ -86,7 +87,7 @@ AddCommentViewControllerDelegate {
     }
     
     override func viewDidAppear(animated: Bool) {
-        self.navigationItem.title =  "\(self.link.totalComments) comments"
+        self.navigationItem.title = "\(self.link.totalComments) comments"
         self.navigationController?.setToolbarHidden(false, animated: false)
     }
 
@@ -146,33 +147,49 @@ AddCommentViewControllerDelegate {
     }
 
     @IBAction func filterButtonTapped(sender: AnyObject) {
-        let actionSheet = UIAlertController(title: "Select sort", message: nil, preferredStyle: .ActionSheet)
-        actionSheet.addAction(UIAlertAction(title: "Top", style: .Default, handler: { (action) -> Void in
-                                                                             self.filter = RKCommentSort.Top
-                                                                         }))
+        let actionSheet = UIAlertController(title: "Select sort",
+            message: nil,
+            preferredStyle: .ActionSheet)
         
-        actionSheet.addAction(UIAlertAction(title: "Hot", style: .Default, handler: { (action) -> Void in
-                                                                             self.filter = RKCommentSort.Hot
-                                                                         }))
+        actionSheet.addAction(UIAlertAction(title: "Top",
+            style: .Default,
+            handler: { (action) -> Void in
+                self.filter = RKCommentSort.Top
+        }))
         
-        actionSheet.addAction(UIAlertAction(title: "New", style: .Default, handler: { (action) -> Void in
-                                                                             self.filter = RKCommentSort.New
-                                                                         }))
+        actionSheet.addAction(UIAlertAction(title: "Hot",
+            style: .Default,
+            handler: { (action) -> Void in
+                self.filter = RKCommentSort.Hot
+        }))
         
-        actionSheet.addAction(UIAlertAction(title: "Controversial", style: .Default, handler: { (action) -> Void in
-                                                                                       self.filter = RKCommentSort.Controversial
-                                                                                   }))
+        actionSheet.addAction(UIAlertAction(title: "New",
+            style: .Default,
+            handler: { (action) -> Void in
+                self.filter = RKCommentSort.New
+        }))
         
-        actionSheet.addAction(UIAlertAction(title: "Old", style: .Default, handler: { (action) -> Void in
-                                                                             self.filter = RKCommentSort.Old
-                                                                         }))
+        actionSheet.addAction(UIAlertAction(title: "Controversial",
+            style: .Default,
+            handler: { (action) -> Void in
+                self.filter = RKCommentSort.Controversial
+        }))
         
-        actionSheet.addAction(UIAlertAction(title: "Best", style: .Default, handler: { (action) -> Void in
-                                                                              self.filter = RKCommentSort.Best
-                                                                          }))
+        actionSheet.addAction(UIAlertAction(title: "Old",
+            style: .Default,
+            handler: { (action) -> Void in
+                self.filter = RKCommentSort.Old
+        }))
         
-        actionSheet.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: { (action) -> Void in
-                                           }))
+        actionSheet.addAction(UIAlertAction(title: "Best",
+            style: .Default,
+            handler: { (action) -> Void in
+                self.filter = RKCommentSort.Best
+        }))
+        
+        actionSheet.addAction(UIAlertAction(title: "Cancel",
+            style: .Cancel,
+            handler: nil))
         
         if let popoverController = actionSheet.popoverPresentationController {
             popoverController.barButtonItem = self.filterButton
