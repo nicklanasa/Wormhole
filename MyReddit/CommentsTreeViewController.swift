@@ -82,7 +82,7 @@ AddCommentViewControllerDelegate {
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        self.treeView.hidden = true
+        self.treeView.hidden = false
         LocalyticsSession.shared().tagScreen("Comments")
     }
     
