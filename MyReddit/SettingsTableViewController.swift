@@ -27,15 +27,12 @@ class SettingsTableViewController: UITableViewController, BDGIAPDelegate {
     @IBOutlet weak var nightModeCell: UserInfoCell!
     @IBOutlet weak var textSizeCell: UserInfoCell!
     @IBOutlet weak var commentTextSizeCell: UserInfoCell!
-    @IBOutlet weak var goToMyRedditCell: UserInfoCell!
     @IBOutlet weak var rateThisAppCell: UserInfoCell!
     @IBOutlet weak var likeUsOnFacebookCell: UserInfoCell!
     @IBOutlet weak var shareAppCell: UserInfoCell!
     @IBOutlet weak var restorePurchaseCell: UserInfoCell!
     @IBOutlet weak var removeAdsCell: UserInfoCell!
     @IBOutlet weak var nytekProductionsCreatorCell: UserInfoCell!
-    @IBOutlet weak var nickolasLanasaCreatorCell: UserInfoCell!
-    @IBOutlet weak var samanthaLanasaCreatorCell: UserInfoCell!
     @IBOutlet weak var otherAppMuzCell: UserInfoCell!
     @IBOutlet weak var hideFullWidthImagesCell: UserInfoCell!
     @IBOutlet weak var defaultToReaderModeCell: UserInfoCell!
@@ -81,8 +78,6 @@ class SettingsTableViewController: UITableViewController, BDGIAPDelegate {
             self.textSizeCell.backgroundColor = MyRedditBackgroundColor
             self.commentTextSizeCell.titleLabel.textColor = MyRedditLabelColor
             self.commentTextSizeCell.backgroundColor = MyRedditBackgroundColor
-            self.goToMyRedditCell.titleLabel.textColor = MyRedditLabelColor
-            self.goToMyRedditCell.backgroundColor = MyRedditBackgroundColor
             self.rateThisAppCell.titleLabel.textColor = MyRedditLabelColor
             self.rateThisAppCell.backgroundColor = MyRedditBackgroundColor
             self.likeUsOnFacebookCell.titleLabel.textColor = MyRedditLabelColor
@@ -93,10 +88,7 @@ class SettingsTableViewController: UITableViewController, BDGIAPDelegate {
             self.restorePurchaseCell.backgroundColor = MyRedditBackgroundColor
             self.nytekProductionsCreatorCell.titleLabel.textColor = MyRedditLabelColor
             self.nytekProductionsCreatorCell.backgroundColor = MyRedditBackgroundColor
-            self.nickolasLanasaCreatorCell.titleLabel.textColor = MyRedditLabelColor
-            self.nickolasLanasaCreatorCell.backgroundColor = MyRedditBackgroundColor
-            self.samanthaLanasaCreatorCell.titleLabel.textColor = MyRedditLabelColor
-            self.samanthaLanasaCreatorCell.backgroundColor = MyRedditBackgroundColor
+        
             self.otherAppMuzCell.titleLabel.textColor = MyRedditLabelColor
             self.otherAppMuzCell.backgroundColor = MyRedditBackgroundColor
             self.defaultToReaderModeCell.titleLabel.textColor = MyRedditLabelColor
@@ -190,46 +182,13 @@ class SettingsTableViewController: UITableViewController, BDGIAPDelegate {
         } else if indexPath.section == 2 {
             switch indexPath.row {
             case 0:
-                RedditSession.sharedSession.searchForSubredditByName("myreddit_app", pagination: nil) { (pagination, results, error) -> () in
-                    
-                    var foundSubreddit: RKSubreddit?
-                    
-                    if let subreddits = results as? [RKSubreddit] {
-                        for subreddit in subreddits {
-                            if subreddit.name.lowercaseString == "myreddit_app".lowercaseString {
-                                foundSubreddit = subreddit
-                                break
-                            }
-                        }
-                        
-                        if foundSubreddit == nil {
-                            dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                                UIAlertView(title: "Error!",
-                                    message: "Unable to find subreddit by that name.",
-                                    delegate: self,
-                                    cancelButtonTitle: "OK").show()
-                            })
-                        } else {
-                            self.performSegueWithIdentifier("MyRedditSubredditSegue", sender: foundSubreddit)
-                            LocalyticsSession.shared().tagEvent("Loaded Myreddit subreddit")
-                        }
-                    } else {
-                        dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                            UIAlertView(title: "Error!",
-                                message: "Unable to find subreddit by that name.",
-                                delegate: self,
-                                cancelButtonTitle: "OK").show()
-                        })
-                    }
-                }
-            case 1:
                 LocalyticsSession.shared().tagEvent("Rate app button tapped")
                 UIApplication.sharedApplication().openURL(NSURL(string: "itms://itunes.apple.com/us/app/apple-store/id544533053?mt=8")!)
-            case 2:
+            case 1:
                 LocalyticsSession.shared().tagEvent("MyReddit Facebook button tapped")
                 let url = NSURL(string: "https://www.facebook.com/pages/MyReddit/442141645823510?ref=hl")
                 self.performSegueWithIdentifier("WebViewSegue", sender: url)
-            case 3:
+            case 2:
                 LocalyticsSession.shared().tagEvent("Settings share button tapped")
                 let url = NSURL(string: "http://myredditapp.com")
                 let shareText = "Check out MyReddit - an iOS app for reddit available on iPhone and iPad #getmyreddit - http://myredditapp.com"
@@ -240,14 +199,14 @@ class SettingsTableViewController: UITableViewController, BDGIAPDelegate {
                     popoverController.sourceView = shareAppCell
                 }
                 self.presentViewController(activityVC, animated: true, completion: nil)
-            case 4:
+            case 3:
                 LocalyticsSession.shared().tagEvent("Settings restore button tapped")
                 // Restore purchase
                 self.hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
                 BDGInAppPurchase.sharedBDGInAppPurchase().delegate = self
                 BDGInAppPurchase.sharedBDGInAppPurchase().productID = SettingsManager.defaultManager.productID
                 BDGInAppPurchase.sharedBDGInAppPurchase().restoreIAP()
-            case 5: self.performSegueWithIdentifier("PurchaseSegue", sender: nil)
+            case 4: self.performSegueWithIdentifier("PurchaseSegue", sender: nil)
             default: return
             }
         } else if indexPath.section == 3 {
@@ -255,14 +214,6 @@ class SettingsTableViewController: UITableViewController, BDGIAPDelegate {
             case 0:
                 LocalyticsSession.shared().tagEvent("Nytek Productions twitter")
                 let url = NSURL(string: "twitter://user?screen_name=Nytekproduction")
-                UIApplication.sharedApplication().openURL(url!)
-            case 1:
-                LocalyticsSession.shared().tagEvent("Nick Lanasa twitter")
-                let url = NSURL(string: "twitter://user?screen_name=nicklanasa")
-                UIApplication.sharedApplication().openURL(url!)
-            case 2:
-                LocalyticsSession.shared().tagEvent("Samantha Lanasa twitter")
-                let url = NSURL(string: "twitter://user?screen_name=3lovethemapples")
                 UIApplication.sharedApplication().openURL(url!)
             default: return
             }

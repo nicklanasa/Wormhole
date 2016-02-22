@@ -31,6 +31,7 @@ PostCellDelegate {
     var subreddit: RKSubreddit!
     var selectedSubreddit: RKSubreddit!
     var fetchingMore = false
+    var selectedLink: RKLink!
     
     @IBOutlet weak var filterControl: UISegmentedControl!
     @IBOutlet weak var tableView: UITableView!
@@ -342,10 +343,48 @@ PostCellDelegate {
         
         if self.filterControl.selectedSegmentIndex == 0 {
             if let link = self.links[indexPath.row] as? RKLink {
+                self.selectedLink = link
                 if link.selfPost {
                     self.performSegueWithIdentifier("CommentsSegue", sender: link)
                 } else {
-                    self.performSegueWithIdentifier("SubredditLink", sender: link)
+                    if let cell = tableView.cellForRowAtIndexPath(indexPath) as? PostImageCell {
+                        if (link.domain == "imgur.com") {
+                            if link.isGifLink() {
+                                self.performSegueWithIdentifier("GallerySegue", sender: [link.URL])
+                            } else {
+                                if link.domain == "imgur.com" && !link.URL.absoluteString.hasExtension() {
+                                    var urlComponents = link.URL.absoluteString.componentsSeparatedByString("/")
+                                    if urlComponents.count > 4 {
+                                        let albumID = urlComponents[4]
+                                        IMGAlbumRequest.albumWithID(albumID, success: { (album) -> Void in
+                                            self.performSegueWithIdentifier("GallerySegue", sender: album.images)
+                                        }) { (error) -> Void in
+                                            LocalyticsSession.shared().tagEvent("Imgur album request failed")
+                                            self.performSegueWithIdentifier("SubredditLink", sender: link)
+                                        }
+                                    } else {
+                                        if urlComponents.count > 3 {
+                                            let imageID = urlComponents[3]
+                                            IMGImageRequest.imageWithID(imageID, success: { (image) -> Void in
+                                                self.performSegueWithIdentifier("GallerySegue", sender: [image])
+                                                }, failure: { (error) -> Void in
+                                                    LocalyticsSession.shared().tagEvent("Imgur image request failed")
+                                                    self.performSegueWithIdentifier("SubredditLink", sender: link)
+                                            })
+                                        } else {
+                                            self.performSegueWithIdentifier("GallerySegue", sender: [cell.postImageView?.image ?? link.URL])
+                                        }
+                                    }
+                                } else {
+                                    self.performSegueWithIdentifier("GallerySegue", sender: [cell.postImageView?.image ?? link.URL])
+                                }
+                            }
+                        } else {
+                            self.performSegueWithIdentifier("GallerySegue", sender: [cell.postImageView?.image ?? link.URL])
+                        }
+                    } else {
+                        self.performSegueWithIdentifier("SubredditLink", sender: link)
+                    }
                 }
             }
         } else {
@@ -369,6 +408,13 @@ PostCellDelegate {
                         controller.subreddit = subreddit
                         controller.front = false
                     }
+                }
+            }
+        } else if segue.identifier == "GallerySegue" {
+            if let controller = segue.destinationViewController as? GalleryController {
+                if let images = sender as? [AnyObject] {
+                    controller.images = images
+                    controller.link = self.selectedLink
                 }
             }
         } else if segue.identifier == "PostSubredditSegue" {
