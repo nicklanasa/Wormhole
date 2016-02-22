@@ -15,7 +15,6 @@ class SubredditViewController: SubredditRootViewController,
 UITableViewDataSource,
 UITableViewDelegate,
 UIGestureRecognizerDelegate,
-PostImageCellDelegate,
 PostCellDelegate {
     
     let ad = GADBannerView(adSize: kGADAdSizeFluid)
@@ -26,6 +25,9 @@ PostCellDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.tableView.estimatedRowHeight = 80.0
+        self.tableView.rowHeight = UITableViewAutomaticDimension
         
         if let username = NSUserDefaults.standardUserDefaults().objectForKey("username") as? String {
             if let password = NSUserDefaults.standardUserDefaults().objectForKey("password") as? String {
@@ -199,7 +201,6 @@ PostCellDelegate {
                     cell = tableView.dequeueReusableCellWithIdentifier("TitleCell") as! TitleCell
                 } else {
                     let imageCell = tableView.dequeueReusableCellWithIdentifier("PostImageCell") as! PostImageCell
-                    imageCell.postImageDelegate = self
                     imageCell.postCellDelegate = self
                     imageCell.link = link
                     return imageCell
@@ -232,52 +233,7 @@ PostCellDelegate {
         
         return cell
     }
-    
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        if let link = self.links[indexPath.row] as? RKLink {
-            if link.hasImage() {
-                // Image
-                if SettingsManager.defaultManager.valueForSetting(.FullWidthImages) {
-                    // regular
-                    return self.heightForTitlePost(link)
-                } else {
-                    
-                    let url = link.urlForLink()
-                    
-                    if url != nil {
-                        if let height = self.heightsCache[url!] as? NSNumber {
-                            return CGFloat(height.floatValue)
-                        }
-                    }
-                    
-                    return 392
-                }
-                
-            } else {
-                // regular
-                return self.heightForTitlePost(link)
-            }
-        } else if let _ = self.links[indexPath.row] as? SuggestedLink {
-            return 50
-        }
-        
-        return 0
-    }
-    
-    func heightForTitlePost(link: RKLink) -> CGFloat {
-        let text = link.title
-        let frame = CGRectMake(0, 0, (self.tableView.frame.size.width - 18), CGFloat.max)
-        let label: UILabel = UILabel(frame: frame)
-        label.numberOfLines = 0
-        label.lineBreakMode = NSLineBreakMode.ByWordWrapping
-        label.font = UIFont(name: "AvenirNext-Medium",
-            size: SettingsManager.defaultManager.titleFontSizeForDefaultTextSize)
-        label.text = text
-        label.sizeToFit()
-        
-        return label.frame.height + 80
-    }
-    
+
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         self.hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
         
@@ -297,18 +253,18 @@ PostCellDelegate {
                                     let albumID = urlComponents[4]
                                     IMGAlbumRequest.albumWithID(albumID, success: { (album) -> Void in
                                         self.performSegueWithIdentifier("GallerySegue", sender: album.images)
-                                        }) { (error) -> Void in
-                                            LocalyticsSession.shared().tagEvent("Imgur album request failed")
-                                            self.performSegueWithIdentifier("SubredditLink", sender: link)
+                                    }) { (error) -> Void in
+                                        LocalyticsSession.shared().tagEvent("Imgur album request failed")
+                                        self.performSegueWithIdentifier("SubredditLink", sender: link)
                                     }
                                 } else {
                                     if urlComponents.count > 3 {
                                         let imageID = urlComponents[3]
                                         IMGImageRequest.imageWithID(imageID, success: { (image) -> Void in
                                             self.performSegueWithIdentifier("GallerySegue", sender: [image])
-                                            }, failure: { (error) -> Void in
-                                                LocalyticsSession.shared().tagEvent("Imgur image request failed")
-                                                self.performSegueWithIdentifier("SubredditLink", sender: link)
+                                        }, failure: { (error) -> Void in
+                                            LocalyticsSession.shared().tagEvent("Imgur image request failed")
+                                            self.performSegueWithIdentifier("SubredditLink", sender: link)
                                         })
                                     } else {
                                         self.performSegueWithIdentifier("GallerySegue", sender: [cell.postImageView?.image ?? link.URL])
@@ -319,7 +275,7 @@ PostCellDelegate {
                             }
                         }
                     } else {
-                        self.performSegueWithIdentifier("SubredditLink", sender: link)
+                        self.performSegueWithIdentifier("GallerySegue", sender: [cell.postImageView?.image ?? link.URL])
                     }
                 } else {
                     self.performSegueWithIdentifier("SubredditLink", sender: link)
@@ -330,20 +286,10 @@ PostCellDelegate {
         if let titleCell = tableView.cellForRowAtIndexPath(indexPath) as? TitleCell {
             titleCell.titleLabel.textColor = UIColor.grayColor()
         } else if let imageCell = tableView.cellForRowAtIndexPath(indexPath) as? PostImageCell {
-            imageCell.titleLabel.textColor = UIColor.grayColor()
+            imageCell.titleTextView.textColor = UIColor.grayColor()
         }
         
         self.tableView.deselectRowAtIndexPath(indexPath, animated: true)
-    }
-    
-    // MARK: PostImageCellDelegate
-    
-    func postImageCell(cell: PostImageCell, didDownloadImageWithHeight height: CGFloat, url: NSURL) {
-        if let _ = self.tableView.indexPathForCell(cell) {
-            self.heightsCache[url.description] = NSNumber(float: Float(height))
-            self.tableView.beginUpdates()
-            self.tableView.endUpdates()
-        }
     }
     
     // MARK: PostCellDelegate

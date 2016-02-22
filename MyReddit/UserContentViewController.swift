@@ -46,9 +46,9 @@ PostImageCellDelegate {
         self.tableView.registerNib(UINib(nibName: "CommentCell", bundle: NSBundle.mainBundle()),
             forCellReuseIdentifier: "CommentCell")
         
-        tableView.estimatedRowHeight = 68.0
-        tableView.rowHeight = UITableViewAutomaticDimension
-                
+        self.tableView.estimatedRowHeight = 80.0
+        self.tableView.rowHeight = UITableViewAutomaticDimension
+        
         self.syncContent()
         
         self.navigationItem.title = self.categoryTitle.lowercaseString
@@ -95,51 +95,7 @@ PostImageCellDelegate {
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return content.count
     }
-    
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        if let link = self.content[indexPath.row] as? RKLink {
-            if link.hasImage() {
-                // Image
-                
-                if indexPath.row == 0 || SettingsManager.defaultManager.valueForSetting(.FullWidthImages) {
-                    // regular
-                    return self.heightForLink(link)
-                } else {
-                    
-                    let url = link.urlForLink()
-                    
-                    if url != nil {
-                        if let height = self.heightsCache[url!] as? NSNumber {
-                            return CGFloat(height.floatValue)
-                        }
-                    }
-                    
-                    return 392
-                }
-                
-            } else {
-                // regular
-                return self.heightForLink(link)
-            }
-        } else {
-            return UITableViewAutomaticDimension
-        }
-    }
-    
-    private func heightForLink(link: RKLink) -> CGFloat {
-        let text = link.title
-        let frame = CGRectMake(0, 0, (self.tableView.frame.size.width - 18), CGFloat.max)
-        let label: UILabel = UILabel(frame: frame)
-        label.numberOfLines = 0
-        label.lineBreakMode = NSLineBreakMode.ByWordWrapping
-        label.font = UIFont(name: "AvenirNext-Medium",
-            size: SettingsManager.defaultManager.titleFontSizeForDefaultTextSize)
-        label.text = text
-        label.sizeToFit()
-        
-        return label.frame.height + 80
-    }
-    
+
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         var cell = tableView.dequeueReusableCellWithIdentifier("PostImageCell") as! PostCell
@@ -222,7 +178,7 @@ PostImageCellDelegate {
         if let titleCell = tableView.cellForRowAtIndexPath(indexPath) as? TitleCell {
             titleCell.titleLabel.textColor = UIColor.grayColor()
         } else if let imageCell = tableView.cellForRowAtIndexPath(indexPath) as? PostImageCell {
-            imageCell.titleLabel.textColor = UIColor.grayColor()
+            imageCell.titleTextView.textColor = UIColor.grayColor()
         }
         
         self.tableView.deselectRowAtIndexPath(indexPath, animated: true)
@@ -640,16 +596,6 @@ PostImageCellDelegate {
             self.hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
             self.fetchingMore = true
             self.syncContent()
-        }
-    }
-    
-    // MARK: PostImageCellDelegate
-    
-    func postImageCell(cell: PostImageCell, didDownloadImageWithHeight height: CGFloat, url: NSURL) {
-        if let _ = self.tableView.indexPathForCell(cell) {
-            self.heightsCache[url.description] = NSNumber(float: Float(height))
-            self.tableView.beginUpdates()
-            self.tableView.endUpdates()
         }
     }
     

@@ -16,7 +16,6 @@ UITableViewDataSource,
 UISearchDisplayDelegate,
 UISearchBarDelegate,
 UISearchControllerDelegate,
-PostImageCellDelegate,
 PostCellDelegate {
     
     var pagination: RKPagination? {
@@ -264,6 +263,7 @@ PostCellDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.tableView.estimatedRowHeight = 80.0
         self.tableView.rowHeight = UITableViewAutomaticDimension
        
         self.preferredAppearance()
@@ -318,7 +318,6 @@ PostCellDelegate {
                     cell = tableView.dequeueReusableCellWithIdentifier("TitleCell") as! TitleCell
                 } else {
                     let imageCell = tableView.dequeueReusableCellWithIdentifier("PostImageCell") as! PostImageCell
-                    imageCell.postImageDelegate = self
                     imageCell.link = link
                     imageCell.postCellDelegate = self
                     return imageCell
@@ -388,59 +387,6 @@ PostCellDelegate {
                 }
             }
         }
-    }
-    
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        
-        if self.filterControl.selectedSegmentIndex == 1 {
-            return 55
-        }
-        
-        if indexPath.row == self.links.count {
-            return 60
-        }
-        
-        if let link = self.links[indexPath.row] as? RKLink {
-            if link.hasImage() {
-                // Image
-                
-                if SettingsManager.defaultManager.valueForSetting(.FullWidthImages) {
-                    // regular
-                    return self.heightForLink(link)
-                } else {
-                    
-                    let url = link.urlForLink()
-                    
-                    if url != nil {
-                        if let height = self.heightsCache[url!] as? NSNumber {
-                            return CGFloat(height.floatValue)
-                        }
-                    }
-                    
-                    return 392
-                }
-                
-            } else {
-                // regular
-                return self.heightForLink(link)
-            }
-        }
-        
-        return 0
-    }
-    
-    private func heightForLink(link: RKLink) -> CGFloat {
-        let text = link.title
-        let frame = CGRectMake(0, 0, (self.tableView.frame.size.width - 18), CGFloat.max)
-        let label: UILabel = UILabel(frame: frame)
-        label.numberOfLines = 0
-        label.lineBreakMode = NSLineBreakMode.ByWordWrapping
-        label.font = UIFont(name: "AvenirNext-Medium",
-            size: SettingsManager.defaultManager.titleFontSizeForDefaultTextSize)
-        label.text = text
-        label.sizeToFit()
-        
-        return label.frame.height + 80
     }
     
     // MARK: UIScrollViewDelegate
@@ -588,14 +534,6 @@ PostCellDelegate {
         }
         
         alert.present(animated: true, completion: nil)
-    }
-    
-    func postImageCell(cell: PostImageCell, didDownloadImageWithHeight height: CGFloat, url: NSURL) {
-        if let _ = self.tableView.indexPathForCell(cell) {
-            self.heightsCache[url.description] = NSNumber(float: Float(height))
-            self.tableView.beginUpdates()
-            self.tableView.endUpdates()
-        }
     }
     
     func postCell(cell: PostCell, didTapSubreddit subreddit: String?) {

@@ -463,7 +463,5 @@ UICollectionViewDelegate {
         if self.link.saved {
             self.navigationItem.rightBarButtonItem?.tintColor = MyRedditColor
         }
-        
-        self.configureNav()
     }
 }

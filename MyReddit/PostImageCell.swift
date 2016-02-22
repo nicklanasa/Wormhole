@@ -18,7 +18,7 @@ import UIKit
 class PostImageCell: PostCell {
     
     @IBOutlet weak var postImageView: UIImageView!
-    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var titleTextView: UITextView!
     @IBOutlet weak var postInfoLabel: UILabel!
     
     var postImageDelegate: PostImageCellDelegate?
@@ -34,45 +34,28 @@ class PostImageCell: PostCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        self.resetViews()
-    }
-    
-    private func resetViews() {
-        dispatch_async(dispatch_get_main_queue(), { () -> Void in
-            self.titleLabel.frame = CGRectMake(14, 30, self.contentView.frame.size.width - 20, 50)
-            self.subredditButton.frame = CGRectMake(14, 1, self.contentView.frame.size.width - 20, 30)
-            self.scoreLabel.frame = CGRectMake(self.contentView.frame.size.width - 78, 6, 70, 18)
-            self.postInfoLabel.frame = CGRectMake(17, self.contentView.frame.size.height - 25, self.contentView.frame.size.width - 20, 14)
-        })
     }
     
     override var link: RKLink! {
         didSet {
             self.postImageView.alpha = 0.0
             if let url = link.urlForLink() {
-                self.postImageView.sd_setImageWithURL(NSURL(string: url), completed: { (image, error, cacheType, url) -> Void in
+                self.postImageView.sd_setImageWithURL(NSURL(string: url),
+                    completed: { (image, error, cacheType, url) -> Void in
                     self.postImageView.alpha = 1.0
                     if error != nil {
                         self.postImageView.image = UIImage(named: "Reddit")
-                        self.postImageView.contentMode = UIViewContentMode.ScaleAspectFit
-                        self.resetViews()
                     } else {
                         if let resizedImage = image?.imageWithImage(image, toSize: self.postImageView.frame.size) {
-                            self.postImageView.contentMode = UIViewContentMode.ScaleAspectFill
                             self.postImageView.image = resizedImage
-                            self.postImageDelegate?.postImageCell?(self, didDownloadImageWithHeight: resizedImage.size.height + 123, url: url)
-                            self.resetViews()
+
                         } else {
                             self.postImageView.image = UIImage(named: "Reddit")
-                            self.postImageView.contentMode = UIViewContentMode.ScaleToFill
-                            self.resetViews()
                         }
                     }
                 })
             } else {
                 self.postImageView.image = UIImage(named: "Reddit")
-                self.postImageView.contentMode = UIViewContentMode.ScaleAspectFit
-                self.resetViews()
             }
 
             if self.link.upvoted() {
@@ -83,7 +66,7 @@ class PostImageCell: PostCell {
                 self.scoreLabel.textColor = UIColor.lightGrayColor()
             }
             
-            self.titleLabel.text = link.title
+            self.titleTextView.text = link.title
             self.scoreLabel.text = link.score.description
             self.subredditButton.setTitle("\(link.subreddit)", forState: .Normal)
             
@@ -107,24 +90,21 @@ class PostImageCell: PostCell {
                 range: NSMakeRange(infoString.string.characters.count - "\(link.totalComments.description) comments".characters.count, "\(link.totalComments.description) comments".characters.count))
             
             self.postInfoLabel.attributedText = infoString
-            self.titleLabel.font = UIFont(name: self.titleLabel.font.fontName,
+            self.titleTextView.font = UIFont(name: MyRedditTitleFont.fontName,
                 size: SettingsManager.defaultManager.titleFontSizeForDefaultTextSize)
             
-            self.titleLabel.textColor = MyRedditLabelColor
+            self.titleTextView.textColor = MyRedditLabelColor
             self.contentView.backgroundColor = MyRedditBackgroundColor
             
             if link.viewed() {
-                self.titleLabel.textColor = UIColor.lightGrayColor()
+                self.titleTextView.textColor = UIColor.lightGrayColor()
             } else {
-                self.titleLabel.textColor = MyRedditLabelColor
+                self.titleTextView.textColor = MyRedditLabelColor
             }
-            
-            self.resetViews()
         }
     }
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        self.resetViews()
     }
 }
