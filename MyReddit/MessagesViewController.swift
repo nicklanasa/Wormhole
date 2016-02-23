@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 import CoreData
 import MBProgressHUD
+import SafariServices
 
 class MessagesViewController: RootViewController,
 UITableViewDataSource,
@@ -155,7 +156,12 @@ JZSwipeCellDelegate {
     }
     
     func messageCell(cell: MessageCell, didTapLink link: NSURL) {
-        self.performSegueWithIdentifier("MessageLinkSegue", sender: link)
+        if #available(iOS 9.0, *) {
+            let svc = SFSafariViewController(URL: link, entersReaderIfAvailable: true)
+            self.presentViewController(svc, animated: true, completion: nil)
+        } else {
+            self.performSegueWithIdentifier("MessageLinkSegue", sender: link)
+        }
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {

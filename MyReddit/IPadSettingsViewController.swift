@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 import MBProgressHUD
+import SafariServices
 
 class IPadSettingsViewController: UITableViewController, BDGIAPDelegate {
     
@@ -255,7 +256,8 @@ class IPadSettingsViewController: UITableViewController, BDGIAPDelegate {
             case 2:
                 LocalyticsSession.shared().tagEvent("MyReddit Facebook button tapped")
                 let url = NSURL(string: "https://www.facebook.com/pages/MyReddit/442141645823510?ref=hl")
-                self.performSegueWithIdentifier("WebViewSegue", sender: url)
+                let svc = SFSafariViewController(URL: url!, entersReaderIfAvailable: true)
+                self.presentViewController(svc, animated: true, completion: nil)
             case 3:
                 LocalyticsSession.shared().tagEvent("Settings share button tapped")
                 let url = NSURL(string: "http://myredditapp.com")

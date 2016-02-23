@@ -9,6 +9,7 @@
 import UIKit
 import MBProgressHUD
 import RATreeView
+import SafariServices
 
 class CommentsTreeViewController: RootViewController,
 UIScrollViewDelegate,
@@ -405,7 +406,12 @@ AddCommentViewControllerDelegate {
     }
     
     func commentCell(cell: CommentCell, didTapLink link: NSURL) {
-        self.performSegueWithIdentifier("CommentLinkSegue", sender: link)
+        if #available(iOS 9.0, *) {
+            let svc = SFSafariViewController(URL: link, entersReaderIfAvailable: true)
+            self.presentViewController(svc, animated: true, completion: nil)
+        } else {
+            self.performSegueWithIdentifier("CommentLinkSegue", sender: link)
+        }
     }
     
     private func linkMoreActions(sourceView: AnyObject) {

@@ -30,6 +30,7 @@ class PostImageCell: PostCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        self.titleTextView.userInteractionEnabled = false
     }
     
     override func layoutSubviews() {
