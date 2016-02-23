@@ -277,7 +277,7 @@ PostCellDelegate {
                             }
                         }
                     } else {
-                        self.performSegueWithIdentifier("GallerySegue", sender: [link.URL])
+                        self.performSegueWithIdentifier("SubredditLink", sender: link)
                     }
                 } else {
                     self.performSegueWithIdentifier("SubredditLink", sender: link)
@@ -470,6 +470,15 @@ PostCellDelegate {
                 })
             }
         })
+    }
+    
+    func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
+        let endScrolling = scrollView.contentOffset.y + scrollView.frame.size.height
+        if endScrolling >= scrollView.contentSize.height && !self.fetchingMore {
+            self.fetchingMore = true
+            self.hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
+            self.fetchLinks()
+        }
     }
     
     // MARK: Segues

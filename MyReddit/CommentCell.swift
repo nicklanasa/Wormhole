@@ -8,7 +8,6 @@
 
 import Foundation
 import UIKit
-import MMMarkdown
 
 @objc protocol CommentCellDelegate {
     func commentCell(cell: CommentCell, didTapLink link: NSURL)

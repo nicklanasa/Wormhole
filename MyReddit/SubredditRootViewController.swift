@@ -261,17 +261,6 @@ UISplitViewControllerDelegate {
         self.navigationController?.setToolbarHidden(true, animated: true)
     }
     
-    // MARK: UIScrollViewDelegate
-    
-    func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
-        let endScrolling = scrollView.contentOffset.y + scrollView.frame.size.height
-        if endScrolling >= scrollView.contentSize.height && !self.fetchingMore {
-            self.fetchingMore = true
-            self.hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
-            self.fetchLinks()
-        }
-    }
-    
     override func didRotateFromInterfaceOrientation(fromInterfaceOrientation: UIInterfaceOrientation) {
         self.tableView.reloadData()
     }

@@ -278,6 +278,7 @@
                         <outlet property="searchButton" destination="dOl-GF-7qg" id="9hL-2c-8zW"/>
                         <outlet property="subscribeButton" destination="ZCd-hO-GGS" id="a52-S9-0f8"/>
                         <outlet property="tableView" destination="C52-gL-QAq" id="0ar-Ad-qf5"/>
+                        <outlet property="toolBar" destination="gqf-DS-7uP" id="SDa-LT-0xG"/>
                         <segue destination="oWg-TP-L9t" kind="show" identifier="SubredditLink" id="s4Y-Y8-M2P"/>
                         <segue destination="Hdo-ax-c9X" kind="presentation" identifier="PurchaseSegue" modalTransitionStyle="crossDissolve" id="FH5-lg-p4i"/>
                         <segue destination="Hdo-ax-c9X" kind="presentation" id="ykc-Jy-SLH"/>
@@ -4179,19 +4180,19 @@
         <image name="Up" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="Bf8-BX-vnl"/>
-        <segue reference="eWX-LR-CuE"/>
-        <segue reference="ybH-Av-VF3"/>
-        <segue reference="aPe-Za-FV1"/>
-        <segue reference="Udn-dz-6HG"/>
-        <segue reference="vMB-6P-NDX"/>
+        <segue reference="yNw-36-nQb"/>
         <segue reference="nb3-Xk-rNn"/>
+        <segue reference="pqF-Zz-63s"/>
+        <segue reference="pMg-rh-ZMv"/>
+        <segue reference="s4Y-Y8-M2P"/>
+        <segue reference="ykc-Jy-SLH"/>
+        <segue reference="DoA-ah-cSI"/>
         <segue reference="zMo-OM-Z5J"/>
+        <segue reference="vMB-6P-NDX"/>
+        <segue reference="Bf8-BX-vnl"/>
+        <segue reference="Udn-dz-6HG"/>
         <segue reference="nEx-7L-vW5"/>
-        <segue reference="TYz-B9-bLR"/>
-        <segue reference="xgG-eu-NoT"/>
-        <segue reference="7mV-eF-gvZ"/>
         <segue reference="q6K-ip-lpO"/>
-        <segue reference="fLo-75-wzd"/>
+        <segue reference="TYz-B9-bLR"/>
     </inferredMetricsTieBreakers>
 </document>
