@@ -245,7 +245,7 @@ PostCellDelegate {
                 if let cell = tableView.cellForRowAtIndexPath(indexPath) as? PostImageCell {
                     if (link.domain == "imgur.com") {
                         if link.isGifLink() {
-                            self.performSegueWithIdentifier("GallerySegue", sender: [link.URL])
+                            self.performSegueWithIdentifier("SubredditLink", sender: link)
                         } else {
                             if link.domain == "imgur.com" && !link.URL.absoluteString.hasExtension() {
                                 var urlComponents = link.URL.absoluteString.componentsSeparatedByString("/")
@@ -275,7 +275,7 @@ PostCellDelegate {
                             }
                         }
                     } else {
-                        self.performSegueWithIdentifier("GallerySegue", sender: [cell.postImageView?.image ?? link.URL])
+                        self.performSegueWithIdentifier("GallerySegue", sender: [link.URL])
                     }
                 } else {
                     self.performSegueWithIdentifier("SubredditLink", sender: link)

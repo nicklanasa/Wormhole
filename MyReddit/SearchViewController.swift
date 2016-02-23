@@ -350,7 +350,7 @@ PostCellDelegate {
                     if let cell = tableView.cellForRowAtIndexPath(indexPath) as? PostImageCell {
                         if (link.domain == "imgur.com") {
                             if link.isGifLink() {
-                                self.performSegueWithIdentifier("GallerySegue", sender: [link.URL])
+                                self.performSegueWithIdentifier("SubredditLink", sender: link.URL)
                             } else {
                                 if link.domain == "imgur.com" && !link.URL.absoluteString.hasExtension() {
                                     var urlComponents = link.URL.absoluteString.componentsSeparatedByString("/")

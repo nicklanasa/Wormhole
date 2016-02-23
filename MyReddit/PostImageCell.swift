@@ -46,12 +46,7 @@ class PostImageCell: PostCell {
                     if error != nil {
                         self.postImageView.image = UIImage(named: "Reddit")
                     } else {
-                        if let resizedImage = image?.imageWithImage(image, toSize: self.postImageView.frame.size) {
-                            self.postImageView.image = resizedImage
-
-                        } else {
-                            self.postImageView.image = UIImage(named: "Reddit")
-                        }
+                        self.postImageView.image = image
                     }
                 })
             } else {
