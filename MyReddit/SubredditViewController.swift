@@ -26,6 +26,8 @@ PostCellDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
+        
         self.tableView.estimatedRowHeight = 80.0
         self.tableView.rowHeight = UITableViewAutomaticDimension
         

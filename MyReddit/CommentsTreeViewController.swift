@@ -252,14 +252,11 @@ AddCommentViewControllerDelegate {
         if let _ = item as? RKLink {
             return UITableViewAutomaticDimension
         } else {
-            if treeView.isCellForItemExpanded(item) {
-                return UITableViewAutomaticDimension
-            } else {
-                if treeView.parentForItem(item) == nil {
-                    return UITableViewAutomaticDimension
-            }
+            if !treeView.isCellForItemExpanded(item) {
                 return 40
             }
+            
+            return UITableViewAutomaticDimension
         }
     }
     

@@ -86,14 +86,14 @@ UISplitViewControllerDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         self.refreshControl = UIRefreshControl()
         self.refreshControl.addTarget(self,
             action: "refresh:",
             forControlEvents: .ValueChanged)
         self.tableView.addSubview(self.refreshControl)
-        
         self.tableView.tableFooterView = UIView()
-
+        
         switch UIDevice.currentDevice().userInterfaceIdiom {
         case .Pad:
             self.preferredContentSize = CGSizeMake(500, 350)
@@ -120,9 +120,7 @@ UISplitViewControllerDelegate {
     }
     
     func fetchLinks() {
-        
-        LocalyticsSession.shared().tagEvent("Fetched links")
-        
+    
         let c: PaginationCompletion = {
             pagination,
             results,
@@ -136,6 +134,7 @@ UISplitViewControllerDelegate {
             
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
                 self.refreshControl.endRefreshing()
+                self.hud?.hide(true)
                 self.updateUI()
             })
         }
@@ -268,6 +267,7 @@ UISplitViewControllerDelegate {
         let endScrolling = scrollView.contentOffset.y + scrollView.frame.size.height
         if endScrolling >= scrollView.contentSize.height && !self.fetchingMore {
             self.fetchingMore = true
+            self.hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
             self.fetchLinks()
         }
     }
@@ -289,7 +289,5 @@ UISplitViewControllerDelegate {
         self.tableView?.backgroundColor = MyRedditBackgroundColor
         
         self.updateUI()
-        
-        self.tableView.reloadData()
     }
 }
