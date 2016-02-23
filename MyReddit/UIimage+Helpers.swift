@@ -31,10 +31,6 @@ extension UIImage {
         return scaledImage
     }
     
-    func imageWithImage(image: UIImage, convertToSize size: CGSize) -> UIImage {
-        return image.imageByScaleToWidth(size.width)
-    }
-    
     func imageWithImage(image: UIImage, toSize size: CGSize) -> UIImage {
         var newHeight = self.size.height / self.size.width * size.width
         newHeight = (newHeight * self.scale) / self.scale

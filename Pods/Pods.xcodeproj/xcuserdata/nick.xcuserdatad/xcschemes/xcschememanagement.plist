@@ -29,11 +29,6 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>FZImageUtilCategory.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
 		<key>ImgurAnonymousAPIClient.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -50,11 +45,6 @@
 			<false/>
 		</dict>
 		<key>MBProgressHUD.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
-		<key>MMMarkdown.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -89,11 +79,6 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>UIImage-ResizeMagick.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
 		<key>XNGMarkdownParser.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -102,7 +87,12 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>047AFF717F17E29E672F998CBB0B3C8E</key>
+		<key>0727BD29AB79919793309A6F5C76D0B5</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>1C8D837468B3E03599AE10F8BE4CF5B1</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -117,17 +107,12 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>3EBB97988EA73CAED65A10806B0BB121</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>3F072784A72572DEF28A78E6A732F6E3</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
 		<key>4878C70B21CA37D7CB8A476BF986741B</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>5D138B9F04EE9E990FE90FC9829E750A</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -137,7 +122,12 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>64ACA47E30BA8D22CD45B470F243629C</key>
+		<key>60FECA4CD4974D02E32E04BD22251E0C</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>79872791F03346D6A827071552195B20</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -157,11 +147,6 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>9B28506A7D2EC3C45B8ECA310E18DE61</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
 		<key>AFEDA8059B169E4068B6DCC4D2F0B0E9</key>
 		<dict>
 			<key>primary</key>
@@ -177,22 +162,7 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>C61BC27D3AD11E9088F4F32658ACBD30</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
 		<key>E61CE3B6DFA1FE6B3E296965C76C0E10</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>F15E318AB0A95EB80B808256545CDBD5</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>F1CB044F6A6C84E424691576AC949A5A</key>
 		<dict>
 			<key>primary</key>
 			<true/>

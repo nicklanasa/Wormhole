@@ -2,18 +2,18 @@
   "images" : [
     {
       "idiom" : "universal",
-      "scale" : "1x",
-      "filename" : "704-compose-toolbar.png"
+      "filename" : "704-compose-toolbar.png",
+      "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "scale" : "2x",
-      "filename" : "704-compose-toolbar@2x.png"
+      "filename" : "704-compose-toolbar@2x.png",
+      "scale" : "2x"
     },
     {
       "idiom" : "universal",
-      "scale" : "3x",
-      "filename" : "704-compose-toolbar@3x.png"
+      "filename" : "704-compose-toolbar@3x.png",
+      "scale" : "3x"
     }
   ],
   "info" : {

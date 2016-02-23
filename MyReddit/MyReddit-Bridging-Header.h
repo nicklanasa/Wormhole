@@ -7,12 +7,10 @@
 @import DateTools;
 
 #import <RATreeView/RATreeView.h>
-#import <MMMarkdown/MMMarkdown.h>
 
 #import "LocalyticsSession.h"
 #import "RedditKit.h"
 #import "RKCompletionBlocks.h"
-
 #import "NSDate+Calendar.h"
 #import "XNGMarkdownParser.h"
 #import "BDGInAppPurchase.h"
@@ -20,5 +18,3 @@
 #import "JZSwipeCell.h"
 #import "ImgurAnonymousAPIClient.h"
 #import "ImgurSession.h"
-#import "UIImage+ResizeMagick.h"
-#import "UIImage+FZUtil.h"

@@ -107,8 +107,8 @@ AddCommentViewControllerDelegate {
         self.treeView.collapsesChildRowsWhenRowCollapses = true
         self.treeView.separatorStyle = RATreeViewCellSeparatorStyle.init(0)
         self.treeView.treeFooterView = UIView()
-        self.treeView.rowsExpandingAnimation = RATreeViewRowAnimation.init(0)
-        self.treeView.rowsCollapsingAnimation = RATreeViewRowAnimation.init(0)
+        self.treeView.rowsExpandingAnimation = RATreeViewRowAnimation.init(5)
+        self.treeView.rowsCollapsingAnimation = RATreeViewRowAnimation.init(5)
         
         self.treeView.registerNib(UINib(nibName: "CommentCell", bundle: NSBundle.mainBundle()),
             forCellReuseIdentifier: "CommentCell")
@@ -233,7 +233,7 @@ AddCommentViewControllerDelegate {
     func treeView(treeView: RATreeView, cellForItem item: AnyObject?) -> UITableViewCell {
         let cell = treeView.dequeueReusableCellWithIdentifier("CommentCell") as! CommentCell
         
-        cell.indentationWidth = 10
+        cell.indentationWidth = 15
         
         if let link = item as? RKLink {
             cell.indentationLevel = 1
@@ -248,12 +248,35 @@ AddCommentViewControllerDelegate {
         return cell
     }
     
-    func treeView(treeView: RATreeView, estimatedHeightForRowForItem item: AnyObject) -> CGFloat {
-        return UITableViewAutomaticDimension
+    func treeView(treeView: RATreeView, heightForRowForItem item: AnyObject) -> CGFloat {
+        if let _ = item as? RKLink {
+            return UITableViewAutomaticDimension
+        } else {
+            if treeView.isCellForItemExpanded(item) {
+                return UITableViewAutomaticDimension
+            } else {
+                if treeView.parentForItem(item) == nil {
+                    return UITableViewAutomaticDimension
+            }
+                return 40
+            }
+        }
     }
     
     func treeView(treeView: RATreeView, editingStyleForRowForItem item: AnyObject) -> UITableViewCellEditingStyle {
         return .None
+    }
+
+    func treeView(treeView: RATreeView, didCollapseRowForItem item: AnyObject) {
+        treeView.beginUpdates()
+        treeView.reloadRowsForItems([item], withRowAnimation: RATreeViewRowAnimation.init(5))
+        treeView.endUpdates()
+    }
+    
+    func treeView(treeView: RATreeView, didExpandRowForItem item: AnyObject) {
+        treeView.beginUpdates()
+        treeView.reloadRowsForItems([item], withRowAnimation: RATreeViewRowAnimation.init(5))
+        treeView.endUpdates()
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {

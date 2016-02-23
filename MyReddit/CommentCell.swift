@@ -112,6 +112,8 @@ UITextViewDelegate {
             self.commentTextView.backgroundColor = MyRedditBackgroundColor
             self.infoLabel.backgroundColor = MyRedditBackgroundColor
             self.contentView.backgroundColor = MyRedditBackgroundColor
+            
+            self.contentView.addBorder(edges: .Bottom, colour: MyRedditDarkBackgroundColor, thickness: 1)
         }
     }
     
@@ -213,6 +215,13 @@ UITextViewDelegate {
         super.prepareForReuse()
         self.indentationLevel = 0
         self.indentationWidth = 0
+        
+        for v in self.contentView.subviews {
+            if v.tag == 123 {
+                v.removeFromSuperview()
+                break
+            }
+        }
     }
     
     func swipeCell(cell: SwipeCell, didTriggerSwipeWithType swipeType: SwipeType) {
