@@ -66,7 +66,6 @@ AddCommentViewControllerDelegate {
     let refreshControl = UIRefreshControl()
     
     func refresh(sender: AnyObject) {
-        
         RedditSession.sharedSession.linkWithFullName(self.link, completion: { (pagination, results, error) -> () in
             if error != nil {
                 let alert = UIAlertController.errorAlertControllerWithMessage("Unable to get refresh link!")
@@ -99,7 +98,7 @@ AddCommentViewControllerDelegate {
             target: self,
             action: "shareButtonTapped:")
         
-        self.refreshControl.addTarget(self, action: "syncComments", forControlEvents: .ValueChanged)
+        self.refreshControl.addTarget(self, action: "refresh:", forControlEvents: .ValueChanged)
         self.treeView.scrollView.addSubview(self.refreshControl)
         
         self.treeView.delegate = self
@@ -132,12 +131,10 @@ AddCommentViewControllerDelegate {
             }
         }
         self.hud.hide(true)
-        self.treeView.hidden = false
         self.refreshControl.endRefreshing()
     }
 
     func syncComments() {
-        self.treeView.hidden = true
         self.hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
         RedditSession.sharedSession.fetchComments(nil, link: self.link) { (pagination, results, error) -> () in
             dispatch_async(dispatch_get_main_queue(), { () -> Void in

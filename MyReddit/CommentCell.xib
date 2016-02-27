@@ -12,7 +12,7 @@
             <rect key="frame" x="0.0" y="0.0" width="600" height="84"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="F1p-Mz-S4W" id="HRh-Yo-ec9">
-                <rect key="frame" x="0.0" y="0.0" width="600" height="83.5"/>
+                <rect key="frame" x="0.0" y="0.0" width="600" height="83"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" clipsSubviews="YES" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Nytek1 - Yesterday @ 9PM" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="k44-OF-d5f">
@@ -22,13 +22,13 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" clipsSubviews="YES" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="4.5k" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SuF-JW-4LV">
-                        <rect key="frame" x="533" y="8" width="59" height="15.5"/>
+                        <rect key="frame" x="533" y="8" width="59" height="16"/>
                         <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="11"/>
                         <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GKf-ek-9gl" userLabel="Comment Label" customClass="TTTAttributedLabel">
-                        <rect key="frame" x="13" y="30" width="579" height="45.5"/>
+                        <rect key="frame" x="13" y="30" width="579" height="46"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
@@ -37,15 +37,14 @@
                 <constraints>
                     <constraint firstItem="GKf-ek-9gl" firstAttribute="top" secondItem="HRh-Yo-ec9" secondAttribute="topMargin" constant="22" id="7dK-XW-Rxz"/>
                     <constraint firstItem="GKf-ek-9gl" firstAttribute="leading" secondItem="HRh-Yo-ec9" secondAttribute="leadingMargin" constant="5" id="Co5-rD-bBk"/>
-                    <constraint firstAttribute="topMargin" secondItem="SuF-JW-4LV" secondAttribute="top" id="F3a-SD-uI0"/>
-                    <constraint firstAttribute="trailingMargin" secondItem="SuF-JW-4LV" secondAttribute="trailing" id="GNm-e5-95R"/>
+                    <constraint firstItem="SuF-JW-4LV" firstAttribute="baseline" secondItem="k44-OF-d5f" secondAttribute="baseline" id="IdI-b0-oeL"/>
                     <constraint firstAttribute="trailingMargin" secondItem="k44-OF-d5f" secondAttribute="trailing" constant="67" id="LhP-AR-kzU"/>
-                    <constraint firstItem="SuF-JW-4LV" firstAttribute="leading" secondItem="HRh-Yo-ec9" secondAttribute="leadingMargin" constant="525" id="SPv-Ku-VqV"/>
                     <constraint firstItem="k44-OF-d5f" firstAttribute="leading" secondItem="HRh-Yo-ec9" secondAttribute="leadingMargin" constant="5" id="Vh5-dq-v5N"/>
+                    <constraint firstItem="SuF-JW-4LV" firstAttribute="trailing" secondItem="GKf-ek-9gl" secondAttribute="trailing" id="cxC-MO-f7A"/>
                     <constraint firstAttribute="trailingMargin" secondItem="GKf-ek-9gl" secondAttribute="trailing" id="eP3-tl-cCI"/>
+                    <constraint firstItem="SuF-JW-4LV" firstAttribute="leading" secondItem="k44-OF-d5f" secondAttribute="trailing" constant="8" symbolic="YES" id="jWY-2D-rRe"/>
                     <constraint firstAttribute="topMargin" secondItem="k44-OF-d5f" secondAttribute="top" id="nBI-Km-uhA"/>
-                    <constraint firstAttribute="bottomMargin" secondItem="GKf-ek-9gl" secondAttribute="bottom" id="vpp-rf-rRr"/>
-                    <constraint firstAttribute="bottomMargin" secondItem="SuF-JW-4LV" secondAttribute="bottom" constant="52" id="wCs-gW-w9d"/>
+                    <constraint firstAttribute="bottomMargin" secondItem="GKf-ek-9gl" secondAttribute="bottom" constant="-1" id="vpp-rf-rRr"/>
                 </constraints>
             </tableViewCellContentView>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
