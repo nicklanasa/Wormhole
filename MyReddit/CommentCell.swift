@@ -94,9 +94,12 @@ TTTAttributedLabelDelegate {
         self.colors = [MyRedditDownvoteColor, MyRedditDownvoteColor, MyRedditUpvoteColor, MyRedditReplyColor]
         
         super.awakeFromNib()
-                
-        self.selectionStyle = .Default        
+
         self.swipeDelegate = self
+        self.bodyLabel.delegate = self
+        self.bodyLabel.enabledTextCheckingTypes = NSTextCheckingType.Link.rawValue
+       
+        self.selectionStyle = .Default
     }
     
     var link: RKLink! {
@@ -123,6 +126,8 @@ TTTAttributedLabelDelegate {
             parsedString.addAttributes(fontAttr, range: NSMakeRange(0, parsedString.string.characters.count))
             
             self.bodyLabel.attributedText = parsedString
+
+            self.addLinks()
 
             // Info            
             let timeAgo = link.created.timeAgoSinceNow()
@@ -155,12 +160,8 @@ TTTAttributedLabelDelegate {
             self.contentView.addBorder(edges: .Bottom, colour: MyRedditDarkBackgroundColor, thickness: 1)
         }
     }
-        
+    
     func configueForComment(comment comment: RKComment, isLinkAuthor: Bool) {
-
-        self.bodyLabel.delegate = self
-        self.bodyLabel.enabledTextCheckingTypes = NSTextCheckingType.Link.rawValue
-        
         self.comment = comment
         
         let body = comment.body.stringByReplacingOccurrencesOfString("&gt;",

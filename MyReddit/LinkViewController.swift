@@ -306,11 +306,21 @@ class LinkViewController: RootViewController, UITextViewDelegate {
     }
     
     @IBAction func shareButtonTapped(sender: AnyObject) {
-        self.optionsController = LinkShareOptionsViewController(link: self.link)
-        self.optionsController.barbuttonItem = self.shareButton
-        self.optionsController.showInView(self.view)
+        let alert = UIAlertController.swipeShareAlertControllerWithLink(self.link) { (url, action) -> () in
+            var objectsToShare = ["\(self.link.title) @myreddit", url]
+                        
+            let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
+            
+            if let popoverController = activityVC.popoverPresentationController {
+                popoverController.barButtonItem = self.shareButton
+            }
+            
+            activityVC.present(animated: true, completion: nil)
+            
+            LocalyticsSession.shared().tagEvent("Share tapped")
+        }
         
-        LocalyticsSession.shared().tagEvent("Link share button tapped")
+        self.presentViewController(alert, animated: true, completion: nil)
     }
     
     @IBAction func downvoteButtonTapped(sender: AnyObject) {
