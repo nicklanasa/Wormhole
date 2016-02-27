@@ -35,6 +35,7 @@ TTTAttributedLabelDelegate {
 
     var linkParser: XNGMarkdownParser! {
         get {
+            let parser = XNGMarkdownParser()
             parser.paragraphFont = MyRedditSelfTextFont
             parser.boldFontName = MyRedditCommentTextBoldFont.familyName
             parser.boldItalicFontName = MyRedditCommentTextItalicFont.familyName
@@ -46,6 +47,7 @@ TTTAttributedLabelDelegate {
     
     var commentParser: XNGMarkdownParser! {
         get {
+            let parser = XNGMarkdownParser()
             parser.paragraphFont = UIFont(name: "AvenirNext-Medium",
                                           size: SettingsManager.defaultManager.commentFontSizeForDefaultTextSize)
             parser.boldFontName = MyRedditCommentTextBoldFont.familyName
@@ -54,6 +56,28 @@ TTTAttributedLabelDelegate {
             parser.linkFontName = MyRedditCommentTextBoldFont.familyName
             return parser            
         }
+    }
+
+    func addLinks() {
+        do {
+            let pattern = "/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/"
+            let regex = try! NSRegularExpression(pattern: pattern, options: .CaseInsensitive)
+            let all = NSRange(location: 0, length: self.bodyLabel.text!.characters.count ?? 0)
+            regex.enumerateMatchesInString(self.bodyLabel.text!,
+                options: NSMatchingOptions.WithTransparentBounds, range: all,
+                usingBlock: { (result, flags, _) -> Void in
+                if let r = result {
+                    let str = NSString(string: self.bodyLabel.text!)
+                    if let url = NSURL(string: str as String) {
+                        self.bodyLabel.addLinkToURL(url, withRange: r.range)
+                    }
+                }
+            })
+        }
+    }
+
+    func attributedLabel(label: TTTAttributedLabel, didSelectLinkWithURL url:  NSURL) {
+        self.currentTappedURL = url
     }
     
     var currentTappedURL: NSURL! {
@@ -72,7 +96,10 @@ TTTAttributedLabelDelegate {
         self.colors = [MyRedditDownvoteColor, MyRedditDownvoteColor, MyRedditUpvoteColor, MyRedditReplyColor]
         
         super.awakeFromNib()
-
+        
+        self.bodyLabel.delegate = self
+        self.bodyLabel.enabledTextCheckingTypes = NSTextCheckingType.Link.rawValue
+        
         self.selectionStyle = .Default        
         self.swipeDelegate = self
     }
@@ -120,7 +147,11 @@ TTTAttributedLabelDelegate {
             } else {
                 self.scoreLabel.textColor = UIColor.lightGrayColor()
             }
-            
+
+            let indentPoints: CGFloat = CGFloat(self.indentationLevel) * self.indentationWidth
+            self.leadingCommentLabelConstraint.constant = indentPoints
+            self.leadinginfoLabelConstraint.constant = indentPoints
+
             self.contentView.backgroundColor = MyRedditBackgroundColor
             self.bodyLabel.backgroundColor = MyRedditBackgroundColor
             self.infoLabel.backgroundColor = MyRedditBackgroundColor
@@ -202,18 +233,13 @@ TTTAttributedLabelDelegate {
         self.bodyLabel.backgroundColor = MyRedditBackgroundColor
         self.infoLabel.backgroundColor = MyRedditBackgroundColor
         self.contentView.backgroundColor = MyRedditBackgroundColor
+
+        self.addLinks()
     }
-    
-    // func textView(textView: UICommentLabel,
-    //     shouldInteractWithURL URL: NSURL,
-    //     inRange characterRange: NSRange) -> Bool {
-    //     self.currentTappedURL = URL
-    //     return false
-    // }
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        
+
         for v in self.contentView.subviews {
             if v.tag == 123 {
                 v.removeFromSuperview()

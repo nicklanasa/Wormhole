@@ -30,7 +30,7 @@
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GKf-ek-9gl" userLabel="Comment Label" customClass="TTTAttributedLabel">
                         <rect key="frame" x="13" y="30" width="579" height="45.5"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
@@ -45,6 +45,7 @@
                     <constraint firstAttribute="trailingMargin" secondItem="GKf-ek-9gl" secondAttribute="trailing" id="eP3-tl-cCI"/>
                     <constraint firstAttribute="topMargin" secondItem="k44-OF-d5f" secondAttribute="top" id="nBI-Km-uhA"/>
                     <constraint firstAttribute="bottomMargin" secondItem="GKf-ek-9gl" secondAttribute="bottom" id="vpp-rf-rRr"/>
+                    <constraint firstAttribute="bottomMargin" secondItem="SuF-JW-4LV" secondAttribute="bottom" constant="52" id="wCs-gW-w9d"/>
                 </constraints>
             </tableViewCellContentView>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>

@@ -235,9 +235,10 @@ AddCommentViewControllerDelegate {
         let cell = treeView.dequeueReusableCellWithIdentifier("CommentCell") as! CommentCell
         
         if let link = item as? RKLink {
+            cell.indentationLevel = 1
             cell.link = link
         } else if let comment = item as? RKComment {
-            cell.indentationLevel = treeView.levelForCellForItem(comment)
+            cell.indentationLevel = treeView.levelForCellForItem(comment) + 1
             cell.configueForComment(comment: comment, isLinkAuthor: self.link.author == comment.author)
         }
         
@@ -247,12 +248,13 @@ AddCommentViewControllerDelegate {
     }
 
     func treeView(treeView: RATreeView, didSelectRowForItem item: AnyObject) {
+        treeView.deselectRowForItem(item, animated: true)
+
         if let comment = item as? RKComment {
             NSLog("%@", comment)
         }
-
-        treeView.deselectRowForItem(item, animated: true)
     }
+
     
     func treeView(treeView: RATreeView, heightForRowForItem item: AnyObject) -> CGFloat {
         return UITableViewAutomaticDimension
