@@ -60,19 +60,17 @@ TTTAttributedLabelDelegate {
 
     func addLinks() {
         do {
-            let pattern = "/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/"
-            let regex = try! NSRegularExpression(pattern: pattern, options: .CaseInsensitive)
-            let all = NSRange(location: 0, length: self.bodyLabel.text!.characters.count ?? 0)
-            regex.enumerateMatchesInString(self.bodyLabel.text!,
-                options: NSMatchingOptions.WithTransparentBounds, range: all,
-                usingBlock: { (result, flags, _) -> Void in
-                if let r = result {
-                    let str = NSString(string: self.bodyLabel.text!)
-                    if let url = NSURL(string: str as String) {
-                        self.bodyLabel.addLinkToURL(url, withRange: r.range)
-                    }
+            let range = NSMakeRange(0, self.bodyLabel.text!.characters.count)
+            let detector = try! NSDataDetector(types: NSTextCheckingType.Link.rawValue)
+            let matches = detector.matchesInString(self.bodyLabel.text!,
+                                                   options: [],
+                                                   range: range)
+            for match in matches {
+	            let str = (self.bodyLabel.text! as NSString).substringWithRange(match.range)
+                if let url = NSURL(string: str) {
+                    self.bodyLabel.addLinkToURL(url, withRange: match.range)
                 }
-            })
+            }
         }
     }
 
@@ -96,10 +94,7 @@ TTTAttributedLabelDelegate {
         self.colors = [MyRedditDownvoteColor, MyRedditDownvoteColor, MyRedditUpvoteColor, MyRedditReplyColor]
         
         super.awakeFromNib()
-        
-        self.bodyLabel.delegate = self
-        self.bodyLabel.enabledTextCheckingTypes = NSTextCheckingType.Link.rawValue
-        
+                
         self.selectionStyle = .Default        
         self.swipeDelegate = self
     }
@@ -161,7 +156,11 @@ TTTAttributedLabelDelegate {
         }
     }
         
-    func configueForComment(comment comment: RKComment, isLinkAuthor: Bool) {        
+    func configueForComment(comment comment: RKComment, isLinkAuthor: Bool) {
+
+        self.bodyLabel.delegate = self
+        self.bodyLabel.enabledTextCheckingTypes = NSTextCheckingType.Link.rawValue
+        
         self.comment = comment
         
         let body = comment.body.stringByReplacingOccurrencesOfString("&gt;",
@@ -194,6 +193,8 @@ TTTAttributedLabelDelegate {
         }
         
         self.bodyLabel.attributedText = parsedString
+
+        self.addLinks()
 
         let timeAgo = self.comment.created.timeAgoSinceNow()
         
@@ -233,12 +234,12 @@ TTTAttributedLabelDelegate {
         self.bodyLabel.backgroundColor = MyRedditBackgroundColor
         self.infoLabel.backgroundColor = MyRedditBackgroundColor
         self.contentView.backgroundColor = MyRedditBackgroundColor
-
-        self.addLinks()
     }
     
     override func prepareForReuse() {
         super.prepareForReuse()
+
+        self.bodyLabel.text = nil
 
         for v in self.contentView.subviews {
             if v.tag == 123 {
