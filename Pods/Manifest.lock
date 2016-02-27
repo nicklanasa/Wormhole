@@ -42,6 +42,7 @@ PODS:
   - SDWebImage (3.7.5):
     - SDWebImage/Core (= 3.7.5)
   - SDWebImage/Core (3.7.5)
+  - TTTAttributedLabel (1.13.4)
   - XNGMarkdownParser (0.3.2)
 
 DEPENDENCIES:
@@ -58,6 +59,7 @@ DEPENDENCIES:
   - RATreeView
   - RedditKit
   - SDWebImage
+  - TTTAttributedLabel
   - XNGMarkdownParser
 
 SPEC CHECKSUMS:
@@ -76,6 +78,7 @@ SPEC CHECKSUMS:
   RATreeView: fc82ec26b8be18cfa0f5f99a5abbe6be68edb21f
   RedditKit: b6bccd8f65cc9b4a79befa177e21432d03d946a8
   SDWebImage: 69c6303e3348fba97e03f65d65d4fbc26740f461
+  TTTAttributedLabel: 0a2ac7b2dd726d32a070dafb01446026b11e624f
   XNGMarkdownParser: aed98c14f0c0eb20064184ddf9bac26c482722b2
 
 COCOAPODS: 0.39.0

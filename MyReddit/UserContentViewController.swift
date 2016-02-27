@@ -129,7 +129,7 @@ AddCommentViewControllerDelegate {
             
             commentCell.configueForComment(comment: comment, isLinkAuthor: true)
             
-            commentCell.commentTextView.font = UIFont(name: MyRedditTitleFont.fontName,
+            commentCell.bodyLabel.font = UIFont(name: MyRedditTitleFont.fontName,
                 size: SettingsManager.defaultManager.titleFontSizeForDefaultTextSize)
             
             return commentCell

@@ -1,7 +1,6 @@
 [
   "-workspace", "/Users/nick/Developer/myreddit2015/MyReddit.xcworkspace/",
-	"-destination", "id=F34DCC1C-CF45-4B96-AED0-AC68468A548F,platform=iOS Simulator",
-  "-scheme", "MyReddit",
+	"-scheme", "MyReddit",
   "-configuration", "Debug",
-  "-sdk", "iphonesimulator"
+  "-sdk", "iphonesimulator9.2"
 ]

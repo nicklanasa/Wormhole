@@ -97,6 +97,7 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "Pods/RATreeView.framework"
   install_framework "Pods/RedditKit.framework"
   install_framework "Pods/SDWebImage.framework"
+  install_framework "Pods/TTTAttributedLabel.framework"
   install_framework "Pods/XNGMarkdownParser.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
@@ -113,5 +114,6 @@ if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "Pods/RATreeView.framework"
   install_framework "Pods/RedditKit.framework"
   install_framework "Pods/SDWebImage.framework"
+  install_framework "Pods/TTTAttributedLabel.framework"
   install_framework "Pods/XNGMarkdownParser.framework"
 fi

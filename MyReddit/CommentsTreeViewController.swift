@@ -234,13 +234,10 @@ AddCommentViewControllerDelegate {
     func treeView(treeView: RATreeView, cellForItem item: AnyObject?) -> UITableViewCell {
         let cell = treeView.dequeueReusableCellWithIdentifier("CommentCell") as! CommentCell
         
-        cell.indentationWidth = 15
-        
         if let link = item as? RKLink {
-            cell.indentationLevel = 1
             cell.link = link
         } else if let comment = item as? RKComment {
-            cell.indentationLevel = treeView.levelForCellForItem(comment) + 1
+            cell.indentationLevel = treeView.levelForCellForItem(comment)
             cell.configueForComment(comment: comment, isLinkAuthor: self.link.author == comment.author)
         }
         
@@ -248,34 +245,34 @@ AddCommentViewControllerDelegate {
         
         return cell
     }
+
+    func treeView(treeView: RATreeView, didSelectRowForItem item: AnyObject) {
+        if let comment = item as? RKComment {
+            NSLog("%@", comment)
+        }
+
+        treeView.deselectRowForItem(item, animated: true)
+    }
     
     func treeView(treeView: RATreeView, heightForRowForItem item: AnyObject) -> CGFloat {
-        if let _ = item as? RKLink {
-            return UITableViewAutomaticDimension
-        } else {
-            if !treeView.isCellForItemExpanded(item) {
-                return 40
-            }
-            
-            return UITableViewAutomaticDimension
-        }
+        return UITableViewAutomaticDimension
     }
     
     func treeView(treeView: RATreeView, editingStyleForRowForItem item: AnyObject) -> UITableViewCellEditingStyle {
         return .None
     }
 
-    func treeView(treeView: RATreeView, didCollapseRowForItem item: AnyObject) {
-        treeView.beginUpdates()
-        treeView.reloadRowsForItems([item], withRowAnimation: RATreeViewRowAnimation.init(5))
-        treeView.endUpdates()
-    }
+    // func treeView(treeView: RATreeView, didCollapseRowForItem item: AnyObject) {
+    //     treeView.beginUpdates()
+    //     treeView.reloadRowsForItems([item], withRowAnimation: RATreeViewRowAnimation.init(5))
+    //     treeView.endUpdates()
+    // }
     
-    func treeView(treeView: RATreeView, didExpandRowForItem item: AnyObject) {
-        treeView.beginUpdates()
-        treeView.reloadRowsForItems([item], withRowAnimation: RATreeViewRowAnimation.init(5))
-        treeView.endUpdates()
-    }
+    // func treeView(treeView: RATreeView, didExpandRowForItem item: AnyObject) {
+    //     treeView.beginUpdates()
+    //     treeView.reloadRowsForItems([item], withRowAnimation: RATreeViewRowAnimation.init(5))
+    //     treeView.endUpdates()
+    // }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "AddCommentSegue" {
