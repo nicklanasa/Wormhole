@@ -13,7 +13,6 @@ import MBProgressHUD
 class LinkViewController: RootViewController, UITextViewDelegate {
     
     var link: RKLink!
-    var optionsController: LinkShareOptionsViewController!
     
     var readerBarButtonItem: UIBarButtonItem!
     var saveButtonItem: UIBarButtonItem!

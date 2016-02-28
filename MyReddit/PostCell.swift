@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 
 @objc protocol PostCellDelegate {
+    optional func postCell(cell: PostCell, didTapComments link: RKLink)
     optional func postCell(cell: PostCell, didLongHoldWith subreddit: String?)
     optional func postCell(cell: PostCell, didTapSubreddit subreddit: String?)
     optional func postCell(cell: PostCell, didShortRightSwipeForLink link: RKLink)
@@ -22,7 +23,8 @@ class PostCell: SwipeCell, SwipeCellDelegate {
     
     @IBOutlet weak var subredditButton: UIButton!
     @IBOutlet weak var scoreLabel: UILabel!
-    
+    @IBOutlet weak var postInfoLabel: UILabel!
+
     var link: RKLink!
     var linkComment: RKComment!
     
@@ -37,8 +39,16 @@ class PostCell: SwipeCell, SwipeCellDelegate {
         
         super.awakeFromNib()
 
+        let infoTapGesture = UITapGestureRecognizer(target: self, action: "infoTapped:")
+        infoTapGesture.numberOfTapsRequired = 1
+        self.postInfoLabel.gestureRecognizers = [infoTapGesture]
+
         self.swipeDelegate = self
         self.selectionStyle = .Default
+    }
+
+    func infoTapped(sender: AnyObject) {
+        self.postCellDelegate?.postCell?(self, didTapComments: self.link)
     }
     
     func swipeCell(cell: SwipeCell, didTriggerSwipeWithType swipeType: SwipeType) {

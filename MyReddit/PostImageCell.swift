@@ -19,7 +19,6 @@ class PostImageCell: PostCell {
     
     @IBOutlet weak var postImageView: UIImageView!
     @IBOutlet weak var titleTextView: UITextView!
-    @IBOutlet weak var postInfoLabel: UILabel!
     
     var postImageDelegate: PostImageCellDelegate?
     
@@ -43,12 +42,14 @@ class PostImageCell: PostCell {
             if let url = link.urlForLink() {
                 self.postImageView.sd_setImageWithURL(NSURL(string: url),
                     completed: { (image, error, cacheType, url) -> Void in
-                    self.postImageView.alpha = 1.0
-                    if error != nil {
-                        self.postImageView.image = UIImage(named: "Reddit")
-                    } else {
-                        self.postImageView.image = image
-                    }
+                    UIView.animateWithDuration(0.3, animations: { () -> Void in
+                        self.postImageView.alpha = 1.0
+                        if error != nil {
+                            self.postImageView.image = UIImage(named: "Reddit")
+                        } else {
+                            self.postImageView.image = image
+                        }
+                    }, completion: nil)
                 })
             } else {
                 self.postImageView.image = UIImage(named: "Reddit")

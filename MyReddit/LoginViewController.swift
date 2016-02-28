@@ -83,11 +83,7 @@ PasswordCellDelegate {
     }
     
     @IBAction func cancelButtonPressed(sender: AnyObject) {
-        if let _ = self.splitViewController {
-            self.navigationController?.popViewControllerAnimated(true)
-        } else {
-            self.dismissViewControllerAnimated(true, completion: nil)
-        }
+        self.navigationController?.popViewControllerAnimated(true)
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

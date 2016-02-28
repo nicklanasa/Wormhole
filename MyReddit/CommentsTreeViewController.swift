@@ -23,8 +23,6 @@ AddCommentViewControllerDelegate {
     @IBOutlet weak var filterButton: UIBarButtonItem!
     @IBOutlet weak var addButton: UIBarButtonItem!
 
-    var optionsController: LinkShareOptionsViewController!
-
     var selectedItems = [String : AnyObject]()
     
     var hud: MBProgressHUD! {
@@ -267,29 +265,12 @@ AddCommentViewControllerDelegate {
     }
 
     func treeView(treeView: RATreeView, heightForRowForItem item: AnyObject) -> CGFloat {
-//        if let comment = item as? RKComment {
-//            if self.selectedItems[comment.identifier] != nil {
-//                return 40
-//            }
-//        }
         return UITableViewAutomaticDimension
     }
     
     func treeView(treeView: RATreeView, editingStyleForRowForItem item: AnyObject) -> UITableViewCellEditingStyle {
         return .None
     }
-
-    // func treeView(treeView: RATreeView, didCollapseRowForItem item: AnyObject) {
-    //     treeView.beginUpdates()
-    //     treeView.reloadRowsForItems([item], withRowAnimation: RATreeViewRowAnimation.init(5))
-    //     treeView.endUpdates()
-    // }
-    
-    // func treeView(treeView: RATreeView, didExpandRowForItem item: AnyObject) {
-    //     treeView.beginUpdates()
-    //     treeView.reloadRowsForItems([item], withRowAnimation: RATreeViewRowAnimation.init(5))
-    //     treeView.endUpdates()
-    // }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "AddCommentSegue" {

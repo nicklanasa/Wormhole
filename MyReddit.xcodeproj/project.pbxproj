@@ -24,7 +24,6 @@
 		013380931C77BE4100E8DA56 /* ImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA3E2FC1AFAE634008323A6 /* ImageViewController.swift */; };
 		013380941C77BE4100E8DA56 /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB866111AF01FC200BE850F /* WebViewController.swift */; };
 		013380951C77BE4100E8DA56 /* IPadSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3AA4CD1B061B89000DEDD2 /* IPadSettingsViewController.swift */; };
-		013380961C77BE4100E8DA56 /* LinkShareOptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF88E0E1AFD036D00AF8B87 /* LinkShareOptionsViewController.swift */; };
 		013380971C77BE4100E8DA56 /* PurchaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC59EAD1AF25AFF00D0D62B /* PurchaseViewController.swift */; };
 		013380AA1C77BE4800E8DA56 /* SwipeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01115D401C77AF0E008B7D1E /* SwipeCell.swift */; };
 		013380AB1C77BE4800E8DA56 /* PostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE046ED01AC4247500DF59B4 /* PostCell.swift */; };
@@ -201,7 +200,6 @@
 		CE3AA48A1B0549E9000DEDD2 /* GalleryController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA3E2FF1AFAE65B008323A6 /* GalleryController.swift */; };
 		CE3AA48B1B0549E9000DEDD2 /* SettingsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE769F281AF5A8BA00031657 /* SettingsManager.swift */; };
 		CE3AA48E1B0549E9000DEDD2 /* SubredditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE35881F1AC30DEE00294684 /* SubredditViewController.swift */; };
-		CE3AA48F1B0549E9000DEDD2 /* LinkShareOptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF88E0E1AFD036D00AF8B87 /* LinkShareOptionsViewController.swift */; };
 		CE3AA4901B0549E9000DEDD2 /* MessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01F965521AC4F4B500DE0CD6 /* MessageCell.swift */; };
 		CE3AA4911B0549E9000DEDD2 /* RKLink+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE25FBCF1AF93E0600A40C3B /* RKLink+Helpers.swift */; };
 		CE3AA4921B0549E9000DEDD2 /* RKClient+Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE538FAD1AF3F19B008050B6 /* RKClient+Search.swift */; };
@@ -258,7 +256,6 @@
 		CEC59EB01AF2628800D0D62B /* EmailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC59EAF1AF2628800D0D62B /* EmailCell.swift */; };
 		CEC59EB21AF2629100D0D62B /* PasswordCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC59EB11AF2629100D0D62B /* PasswordCell.swift */; };
 		CEF4E2601AF2B508001CFB69 /* JZSwipeCell+Reset.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF4E25F1AF2B508001CFB69 /* JZSwipeCell+Reset.swift */; };
-		CEF88E0F1AFD036D00AF8B87 /* LinkShareOptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF88E0E1AFD036D00AF8B87 /* LinkShareOptionsViewController.swift */; };
 		E00B35DF1B646F9700AD096D /* ReadableContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = E00B35DE1B646F9700AD096D /* ReadableContent.swift */; };
 		E00B35E01B646F9700AD096D /* ReadableContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = E00B35DE1B646F9700AD096D /* ReadableContent.swift */; };
 		E00B35E21B648D6D00AD096D /* GalleryImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E00B35E11B648D6D00AD096D /* GalleryImageCollectionViewCell.swift */; };
@@ -382,7 +379,6 @@
 		CEC59EAF1AF2628800D0D62B /* EmailCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailCell.swift; sourceTree = "<group>"; };
 		CEC59EB11AF2629100D0D62B /* PasswordCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PasswordCell.swift; sourceTree = "<group>"; };
 		CEF4E25F1AF2B508001CFB69 /* JZSwipeCell+Reset.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "JZSwipeCell+Reset.swift"; sourceTree = "<group>"; };
-		CEF88E0E1AFD036D00AF8B87 /* LinkShareOptionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LinkShareOptionsViewController.swift; sourceTree = "<group>"; };
 		E00B35DE1B646F9700AD096D /* ReadableContent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReadableContent.swift; sourceTree = "<group>"; };
 		E00B35E11B648D6D00AD096D /* GalleryImageCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GalleryImageCollectionViewCell.swift; sourceTree = "<group>"; };
 		E0183FDF1B6863C2008221CB /* DismissSegue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DismissSegue.swift; sourceTree = "<group>"; };
@@ -657,7 +653,6 @@
 				CEA3E2FC1AFAE634008323A6 /* ImageViewController.swift */,
 				CEB866111AF01FC200BE850F /* WebViewController.swift */,
 				CE3AA4CD1B061B89000DEDD2 /* IPadSettingsViewController.swift */,
-				CEF88E0E1AFD036D00AF8B87 /* LinkShareOptionsViewController.swift */,
 				CEC59EAD1AF25AFF00D0D62B /* PurchaseViewController.swift */,
 				CE10072E1AF2FDDE000ED144 /* Cells */,
 				CE10072F1AF2FDE8000ED144 /* Subreddits */,
@@ -1044,7 +1039,6 @@
 				015301721C7BEE4B001FAF5C /* UIView+Helpers.swift in Sources */,
 				013380911C77BE4100E8DA56 /* SettingsTableViewController.swift in Sources */,
 				01A623331C76CB3400A8F857 /* UIimage+Helpers.swift in Sources */,
-				013380961C77BE4100E8DA56 /* LinkShareOptionsViewController.swift in Sources */,
 				014107131C79088200C4CCA0 /* SubredditRootViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1087,7 +1081,6 @@
 				CE3AA48E1B0549E9000DEDD2 /* SubredditViewController.swift in Sources */,
 				795FD2861B6BD9F7008DF15C /* ExploreCell.swift in Sources */,
 				01A6232A1C76CB3400A8F857 /* UITableViewCell+Helpers.swift in Sources */,
-				CE3AA48F1B0549E9000DEDD2 /* LinkShareOptionsViewController.swift in Sources */,
 				CE3AA4901B0549E9000DEDD2 /* MessageCell.swift in Sources */,
 				01A6232D1C76CB3400A8F857 /* UIAlertController+Helpers.swift in Sources */,
 				CE3AA4911B0549E9000DEDD2 /* RKLink+Helpers.swift in Sources */,
@@ -1177,7 +1170,6 @@
 				E0183FE01B6863C2008221CB /* DismissSegue.swift in Sources */,
 				01A623181C76CACA00A8F857 /* AttributedString+Helpers.swift in Sources */,
 				CE3588201AC30DEE00294684 /* SubredditViewController.swift in Sources */,
-				CEF88E0F1AFD036D00AF8B87 /* LinkShareOptionsViewController.swift in Sources */,
 				01F965531AC4F4B500DE0CD6 /* MessageCell.swift in Sources */,
 				01A6231F1C76CACA00A8F857 /* UIAlertController+Helpers.swift in Sources */,
 				CE25FBD01AF93E0600A40C3B /* RKLink+Helpers.swift in Sources */,

@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 import MBProgressHUD
+import SafariServices
 
 class SearchViewController: RootViewController,
 UITableViewDelegate,
@@ -27,7 +28,6 @@ PostCellDelegate {
         }
     }
     
-    var optionsController: LinkShareOptionsViewController!
     var subreddit: RKSubreddit!
     var selectedSubreddit: RKSubreddit!
     var fetchingMore = false
@@ -451,6 +451,10 @@ PostCellDelegate {
     }
 
     // MARK: PostCellDelegate
+
+    func postCell(cell: PostCell, didTapComments link: RKLink) {
+        self.performSegueWithIdentifier("CommentsSegue", sender: link)
+    }
     
     func postCell(cell: PostCell, didShortLeftSwipeForLink link: RKLink) {
         // Upvote
@@ -535,6 +539,13 @@ PostCellDelegate {
                 }
                 
                 switch title {
+                case "open in safari":
+                    if #available(iOS 9.0, *) {
+                        let svc = SFSafariViewController(URL: link.URL, entersReaderIfAvailable: true)
+                        self.presentViewController(svc, animated: true, completion: nil)
+                    } else {
+                        UIApplication.sharedApplication().openURL(link.URL)
+                    }
                 case "hide":
                     RedditSession.sharedSession.hideLink(link, completion: { (error) -> () in
                         link.saveLink()

@@ -12,7 +12,6 @@ import UIKit
 class TitleCell: PostCell {
     
     @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var postInfoLabel: UILabel!
     
     func subredditTap() {
         self.postCellDelegate?.postCell?(self,

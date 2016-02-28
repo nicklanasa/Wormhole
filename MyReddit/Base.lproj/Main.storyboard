@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9532" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="Wuv-iQ-z1V">
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
         <capability name="Alignment constraints to the first baseline" minToolsVersion="6.0"/>
         <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
@@ -285,11 +284,11 @@
                         <segue destination="QDb-Kc-Q7i" kind="presentation" identifier="LoginSegue" modalTransitionStyle="crossDissolve" id="DoA-ah-cSI"/>
                         <segue destination="SEn-8E-jyR" kind="show" identifier="GallerySegue" id="pMg-rh-ZMv"/>
                         <segue destination="PTZ-wg-Lzy" kind="presentation" identifier="MessagesSegue" modalTransitionStyle="crossDissolve" id="Frn-gh-Q2i"/>
-                        <segue destination="AVn-oL-g0d" kind="presentation" identifier="AccountsSegue" modalTransitionStyle="crossDissolve" id="nb3-Xk-rNn"/>
                         <segue destination="oc0-6V-RMu" kind="presentation" identifier="PostSegue" modalTransitionStyle="crossDissolve" id="ufm-OF-Ing"/>
                         <segue destination="Wuv-iQ-z1V" kind="show" identifier="PostSubredditSegue" customClass="DismissSegue" customModule="MyReddit" id="yNw-36-nQb"/>
                         <segue destination="jZ6-4i-JFg" kind="show" identifier="CommentsSegue" id="pqF-Zz-63s"/>
                         <segue destination="jZ6-4i-JFg" kind="show" id="mak-u7-jsS"/>
+                        <segue destination="a2h-mb-3Wm" kind="show" identifier="AccountsSegue" id="oqy-7E-8ml"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="J3o-0W-bFH" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -458,7 +457,7 @@
         <!--Login ViewController-->
         <scene sceneID="LVs-9w-lsR">
             <objects>
-                <viewController title="Login ViewController" id="Cxf-Qd-xoU" customClass="LoginViewController" customModule="MyReddit" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Login ViewController" hidesBottomBarWhenPushed="YES" id="Cxf-Qd-xoU" customClass="LoginViewController" customModule="MyReddit" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="iJD-QX-aQN"/>
                         <viewControllerLayoutGuide type="bottom" id="Lp7-1e-V41"/>
@@ -467,33 +466,12 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0fw-fC-KgM">
-                                <rect key="frame" x="0.0" y="556" width="600" height="44"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="600" id="cfN-js-2hF"/>
-                                    <constraint firstAttribute="height" constant="44" id="zWq-Wu-jv2"/>
-                                </constraints>
-                                <items>
-                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="x8X-dt-iTG"/>
-                                    <barButtonItem title="sign in" id="IVy-u8-kQ4">
-                                        <connections>
-                                            <action selector="loginButtonPressed:" destination="Cxf-Qd-xoU" id="syb-oo-m5V"/>
-                                        </connections>
-                                    </barButtonItem>
-                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="Bng-5x-a1C"/>
-                                    <barButtonItem image="Cancel" id="X5c-mI-CZs">
-                                        <connections>
-                                            <action selector="cancelButtonPressed:" destination="Cxf-Qd-xoU" id="eau-e2-4wj"/>
-                                        </connections>
-                                    </barButtonItem>
-                                </items>
-                            </toolbar>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" translatesAutoresizingMaskIntoConstraints="NO" id="3sf-T3-YZo">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="556"/>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" translatesAutoresizingMaskIntoConstraints="NO" id="3sf-T3-YZo">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="EmailCell" id="aoH-FF-Hbg" customClass="EmailCell" customModule="MyReddit" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="50" width="600" height="44"/>
+                                        <rect key="frame" x="0.0" y="114" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="aoH-FF-Hbg" id="3X3-wu-QYC">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
@@ -535,7 +513,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="PasswordCell" id="Qsm-lL-wuW" customClass="PasswordCell" customModule="MyReddit" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="94" width="600" height="44"/>
+                                        <rect key="frame" x="0.0" y="158" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Qsm-lL-wuW" id="v0k-de-mL3">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
@@ -586,18 +564,21 @@
                         </subviews>
                         <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstItem="3sf-T3-YZo" firstAttribute="bottom" secondItem="Lp7-1e-V41" secondAttribute="top" constant="-44" id="9bT-XQ-vRu"/>
-                            <constraint firstItem="0fw-fC-KgM" firstAttribute="leading" secondItem="Jl3-qj-EvI" secondAttribute="leadingMargin" constant="-20" id="9me-8y-kMM"/>
+                            <constraint firstItem="3sf-T3-YZo" firstAttribute="bottom" secondItem="Lp7-1e-V41" secondAttribute="top" constant="44" id="9bT-XQ-vRu"/>
                             <constraint firstItem="3sf-T3-YZo" firstAttribute="top" secondItem="Jl3-qj-EvI" secondAttribute="top" id="ICy-pA-ue0"/>
-                            <constraint firstItem="Lp7-1e-V41" firstAttribute="top" secondItem="0fw-fC-KgM" secondAttribute="bottom" id="RJG-9h-Eli"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="0fw-fC-KgM" secondAttribute="trailing" constant="-20" id="YZB-Li-YCv"/>
                             <constraint firstItem="3sf-T3-YZo" firstAttribute="leading" secondItem="Jl3-qj-EvI" secondAttribute="leading" id="YbT-Gi-iAT"/>
                             <constraint firstAttribute="trailing" secondItem="3sf-T3-YZo" secondAttribute="trailing" id="h09-RR-k5G"/>
-                            <constraint firstItem="0fw-fC-KgM" firstAttribute="top" secondItem="3sf-T3-YZo" secondAttribute="bottom" id="zhl-Wd-WP9"/>
                         </constraints>
                     </view>
                     <toolbarItems/>
-                    <navigationItem key="navigationItem" title="add account" id="u5g-hX-jSk"/>
+                    <navigationItem key="navigationItem" title="add account" id="u5g-hX-jSk">
+                        <barButtonItem key="rightBarButtonItem" title="sign in" id="IVy-u8-kQ4">
+                            <connections>
+                                <action selector="loginButtonPressed:" destination="Cxf-Qd-xoU" id="syb-oo-m5V"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <nil key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="loginButton" destination="IVy-u8-kQ4" id="5wH-GE-S3z"/>
                         <outlet property="tableView" destination="3sf-T3-YZo" id="P7H-PH-cH6"/>
@@ -605,7 +586,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QOH-Pl-XsT" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1106" y="1157"/>
+            <point key="canvasLocation" x="332" y="1091"/>
         </scene>
         <!--unlock everything-->
         <scene sceneID="s62-b3-B7d">
@@ -1108,6 +1089,7 @@
                             <color key="tintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                             <connections>
                                 <action selector="loginButtonTapped:" destination="AYg-o0-LaT" id="tfa-TJ-rpb"/>
+                                <segue destination="a2h-mb-3Wm" kind="show" identifier="AccountsSegue" id="aJr-yO-hbO"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="j4b-az-j2i"/>
@@ -1139,7 +1121,6 @@
                         <segue destination="QDb-Kc-Q7i" kind="presentation" identifier="LoginSegue" modalTransitionStyle="crossDissolve" id="SWo-82-5L3"/>
                         <segue destination="Hdo-ax-c9X" kind="presentation" identifier="PurchaseSegue" modalTransitionStyle="crossDissolve" id="kaq-Nv-BbA"/>
                         <segue destination="7sL-pi-tiS" kind="presentation" identifier="ProfileSegue" modalTransitionStyle="crossDissolve" id="bxZ-6W-PbQ"/>
-                        <segue destination="AVn-oL-g0d" kind="presentation" identifier="AccountsSegue" modalTransitionStyle="crossDissolve" id="sND-y2-DTj"/>
                         <segue destination="SpP-xf-ygO" kind="presentation" identifier="SavedSegue" modalTransitionStyle="crossDissolve" id="gh5-lw-0Sc"/>
                         <segue destination="Wuv-iQ-z1V" kind="presentation" id="ryX-hT-yj2"/>
                         <segue destination="Kaz-dN-C7r" kind="show" identifier="UserSegue" id="nEx-7L-vW5"/>
@@ -3298,34 +3279,24 @@
                                     <outlet property="delegate" destination="a2h-mb-3Wm" id="DWd-17-7JB"/>
                                 </connections>
                             </tableView>
-                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VSC-eV-ovC">
-                                <rect key="frame" x="0.0" y="556" width="600" height="44"/>
-                                <items>
-                                    <barButtonItem systemItem="add" id="m8L-gK-LPU">
-                                        <connections>
-                                            <segue destination="Cxf-Qd-xoU" kind="show" identifier="LoginSegue" id="zMo-OM-Z5J"/>
-                                        </connections>
-                                    </barButtonItem>
-                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="bzo-7z-HZg"/>
-                                    <barButtonItem image="Cancel" id="2Gv-pz-6j1">
-                                        <connections>
-                                            <action selector="cancelButtonTapped:" destination="a2h-mb-3Wm" id="uCJ-6i-Bhi"/>
-                                        </connections>
-                                    </barButtonItem>
-                                </items>
-                            </toolbar>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="VSC-eV-ovC" firstAttribute="bottom" secondItem="tk8-uN-cVp" secondAttribute="top" id="39d-pQ-6k0"/>
-                            <constraint firstItem="VSC-eV-ovC" firstAttribute="trailing" secondItem="mjp-MP-giA" secondAttribute="trailing" id="B6Q-wI-gMe"/>
-                            <constraint firstItem="VSC-eV-ovC" firstAttribute="leading" secondItem="mjp-MP-giA" secondAttribute="leading" id="FFx-22-KIG"/>
-                            <constraint firstAttribute="trailing" secondItem="mjp-MP-giA" secondAttribute="trailing" id="WQs-x0-pGW"/>
-                            <constraint firstItem="mjp-MP-giA" firstAttribute="top" secondItem="dTD-27-b20" secondAttribute="top" id="Zlb-lG-AAn"/>
-                            <constraint firstItem="mjp-MP-giA" firstAttribute="leading" secondItem="dTD-27-b20" secondAttribute="leading" id="sLT-Xe-r8h"/>
-                            <constraint firstItem="VSC-eV-ovC" firstAttribute="top" secondItem="mjp-MP-giA" secondAttribute="bottom" id="tc8-fN-9Ro"/>
+                            <constraint firstAttribute="bottom" secondItem="mjp-MP-giA" secondAttribute="bottom" constant="44" id="GAM-7j-K1O"/>
+                            <constraint firstAttribute="trailing" secondItem="mjp-MP-giA" secondAttribute="trailing" id="prU-yo-ISo"/>
+                            <constraint firstItem="mjp-MP-giA" firstAttribute="leading" secondItem="dTD-27-b20" secondAttribute="leading" id="v4Y-RJ-H2J"/>
+                            <constraint firstItem="mjp-MP-giA" firstAttribute="top" secondItem="dTD-27-b20" secondAttribute="top" id="yWS-8B-qWU"/>
                         </constraints>
                     </view>
+                    <toolbarItems>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="eSt-AG-jyf"/>
+                        <barButtonItem title="add account" id="m8L-gK-LPU">
+                            <connections>
+                                <segue destination="Cxf-Qd-xoU" kind="show" identifier="LoginSegue" id="zMo-OM-Z5J"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="jWQ-aq-QK5"/>
+                    </toolbarItems>
                     <navigationItem key="navigationItem" title="accounts" id="Dx2-oh-pnr">
                         <barButtonItem key="rightBarButtonItem" title="edit" id="ii2-hS-uhN">
                             <connections>
@@ -3343,7 +3314,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6Sf-kz-bYX" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="340" y="1157"/>
+            <point key="canvasLocation" x="332" y="377"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="0h0-vd-Elb">
@@ -3380,24 +3351,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6lI-mA-jLd" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-480" y="-1203"/>
-        </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="OPo-Iq-Atq">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="AVn-oL-g0d" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="uTF-Er-N7Y">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="a2h-mb-3Wm" kind="relationship" relationship="rootViewController" id="mxe-c4-eYV"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="kQ3-bw-Xyo" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="332" y="387"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="EbH-8g-U66">
@@ -4180,19 +4133,19 @@
         <image name="Up" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="yNw-36-nQb"/>
-        <segue reference="nb3-Xk-rNn"/>
-        <segue reference="pqF-Zz-63s"/>
-        <segue reference="pMg-rh-ZMv"/>
-        <segue reference="s4Y-Y8-M2P"/>
-        <segue reference="ykc-Jy-SLH"/>
-        <segue reference="DoA-ah-cSI"/>
-        <segue reference="zMo-OM-Z5J"/>
-        <segue reference="vMB-6P-NDX"/>
-        <segue reference="Bf8-BX-vnl"/>
-        <segue reference="Udn-dz-6HG"/>
-        <segue reference="nEx-7L-vW5"/>
+        <segue reference="ryX-hT-yj2"/>
+        <segue reference="SWo-82-5L3"/>
+        <segue reference="kaq-Nv-BbA"/>
+        <segue reference="aJr-yO-hbO"/>
         <segue reference="q6K-ip-lpO"/>
+        <segue reference="zMo-OM-Z5J"/>
+        <segue reference="O8K-LF-8mj"/>
         <segue reference="TYz-B9-bLR"/>
+        <segue reference="s4Y-Y8-M2P"/>
+        <segue reference="pMg-rh-ZMv"/>
+        <segue reference="pqF-Zz-63s"/>
+        <segue reference="Bf8-BX-vnl"/>
+        <segue reference="vMB-6P-NDX"/>
+        <segue reference="Udn-dz-6HG"/>
     </inferredMetricsTieBreakers>
 </document>

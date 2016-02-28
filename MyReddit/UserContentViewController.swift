@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 import MBProgressHUD
+import SafariServices
 
 class UserContentViewController: RootViewController,
 UITableViewDelegate,
@@ -31,7 +32,6 @@ AddCommentViewControllerDelegate {
     }
     
     var content = Array<AnyObject>()
-    var optionsController: LinkShareOptionsViewController!
     var selectedLink: RKLink!
     var user: RKUser!
     var heightsCache = [String : AnyObject]()
@@ -380,6 +380,10 @@ AddCommentViewControllerDelegate {
     }
     
     // MARK: PostCellDelegate
+
+    func postCell(cell: PostCell, didTapComments link: RKLink) {
+        self.performSegueWithIdentifier("CommentsSegue", sender: link)
+    }
     
     func postCell(cell: PostCell, didShortLeftSwipeForLink link: RKLink) {
         // Upvote
@@ -445,6 +449,13 @@ AddCommentViewControllerDelegate {
                 }
                 
                 switch title {
+                case "open in safari":
+                    if #available(iOS 9.0, *) {
+                        let svc = SFSafariViewController(URL: link.URL, entersReaderIfAvailable: true)
+                        self.presentViewController(svc, animated: true, completion: nil)
+                    } else {
+                        UIApplication.sharedApplication().openURL(link.URL)
+                    }
                 case "unhide":
                     RedditSession.sharedSession.unHideLink(link, completion: { (error) -> () in
                         link.unHideLink()

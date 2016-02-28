@@ -28,7 +28,6 @@ UICollectionViewDelegate {
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var containerView: UIView!
     
-    var optionsController: LinkShareOptionsViewController!
     var photosBarButtonItem: UIBarButtonItem!
     var saveButtonItem: UIBarButtonItem!
    
