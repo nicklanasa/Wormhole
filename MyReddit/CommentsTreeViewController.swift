@@ -24,6 +24,8 @@ AddCommentViewControllerDelegate {
     @IBOutlet weak var addButton: UIBarButtonItem!
 
     var optionsController: LinkShareOptionsViewController!
+
+    var selectedItems = [String : AnyObject]()
     
     var hud: MBProgressHUD! {
         didSet {
@@ -237,6 +239,9 @@ AddCommentViewControllerDelegate {
         } else if let comment = item as? RKComment {
             cell.indentationLevel = treeView.levelForCellForItem(comment) + 1
             cell.configueForComment(comment: comment, isLinkAuthor: self.link.author == comment.author)
+            if let _ = self.selectedItems[comment.identifier] {
+                cell.bodyLabel.text = ""
+            }
         }
         
         cell.commentDelegate = self
@@ -245,15 +250,28 @@ AddCommentViewControllerDelegate {
     }
 
     func treeView(treeView: RATreeView, didSelectRowForItem item: AnyObject) {
-        treeView.deselectRowForItem(item, animated: true)
-
         if let comment = item as? RKComment {
-            NSLog("%@", comment)
+            if let _ = self.selectedItems[comment.identifier] {
+                self.selectedItems[comment.identifier] = nil
+                treeView.collapseRowForItem(comment, collapseChildren: true, withRowAnimation: RATreeViewRowAnimation.init(0))
+            } else {
+                self.selectedItems[comment.identifier] = comment
+                treeView.expandRowForItem(comment, expandChildren: true, withRowAnimation: RATreeViewRowAnimation.init(0))
+            }
         }
+        
+        treeView.beginUpdates()
+        treeView.reloadRowsForItems([item],
+            withRowAnimation: RATreeViewRowAnimation.init(0))
+        treeView.endUpdates()
     }
 
-    
     func treeView(treeView: RATreeView, heightForRowForItem item: AnyObject) -> CGFloat {
+//        if let comment = item as? RKComment {
+//            if self.selectedItems[comment.identifier] != nil {
+//                return 40
+//            }
+//        }
         return UITableViewAutomaticDimension
     }
     
