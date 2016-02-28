@@ -54,17 +54,17 @@ AddCommentViewControllerDelegate {
         self.tableView.backgroundColor = MyRedditDarkBackgroundColor
         
         self.tableView.tableFooterView = UIView()
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        LocalyticsSession.shared().tagScreen("UserContent")
         
         if let splitViewController = self.splitViewController {
             self.listButton.action = splitViewController.displayModeButtonItem().action
         } else {
             self.navigationController?.setToolbarHidden(true, animated: false)
         }
-    }
-    
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
-        LocalyticsSession.shared().tagScreen("UserContent")
     }
 
     private func syncContent() {
@@ -585,7 +585,7 @@ AddCommentViewControllerDelegate {
     private func downvote(link: RKVotable) {
         LocalyticsSession.shared().tagEvent("Swipe Downvote")
         RedditSession.sharedSession.downvote(link, completion: { (error) -> () in
-            self.hud.hide(true)
+            self.hud?.hide(true)
             
             if error != nil {
                 UIAlertView(title: "Error!",
@@ -601,7 +601,7 @@ AddCommentViewControllerDelegate {
     private func upvote(link: RKVotable) {
         LocalyticsSession.shared().tagEvent("Swipe Upvote")
         RedditSession.sharedSession.upvote(link, completion: { (error) -> () in
-            self.hud.hide(true)
+            self.hud?.hide(true)
             
             if error != nil {
                 UIAlertView(title: "Error!",
