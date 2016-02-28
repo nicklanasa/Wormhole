@@ -107,7 +107,7 @@ UISearchBarDelegate {
         self.tableView.backgroundView = UIView()
         self.tableView.backgroundColor = MyRedditDarkBackgroundColor
         self.view.backgroundColor = MyRedditDarkBackgroundColor
-        self.navigationController?.toolbar.barTintColor = MyRedditDarkBackgroundColor
+        self.navigationController?.toolbar.barTintColor = MyRedditBackgroundColor
         
         self.tableView.reloadData()
 
@@ -651,14 +651,12 @@ UISearchBarDelegate {
                 }
             }
         } else if segue.identifier == "SavedSegue" {
-            if let nav = segue.destinationViewController as? UINavigationController {
-                if let controller = nav.viewControllers[0] as? UserContentViewController {
-                    controller.category = .Saved
-                    controller.categoryTitle = "Saved"
-                    controller.user = RKClient.sharedClient().currentUser
-                    
-                    self.splitViewController?.toggleMaster()
-                }
+            if let controller = segue.destinationViewController as? UserContentViewController {
+                controller.category = .Saved
+                controller.categoryTitle = "Saved"
+                controller.user = RKClient.sharedClient().currentUser
+                
+                self.splitViewController?.toggleMaster()
             }
         } else if segue.identifier == "AccountsSegue" {
             self.splitViewController?.toggleMaster()

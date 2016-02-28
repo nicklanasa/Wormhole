@@ -31,11 +31,10 @@ AddCommentViewControllerDelegate {
         }
     }
     
-    var content = Array<AnyObject>()
+    var content: [AnyObject]?
     var selectedLink: RKLink!
     var user: RKUser!
-    var heightsCache = [String : AnyObject]()
-    var fetchingMore = false
+    var fetchingMore = true
     
     var hud: MBProgressHUD!
     
@@ -43,7 +42,6 @@ AddCommentViewControllerDelegate {
     @IBOutlet weak var listButton: UIBarButtonItem!
     
     override func viewDidLoad() {
-        
         self.tableView.registerNib(UINib(nibName: "CommentCell", bundle: NSBundle.mainBundle()),
             forCellReuseIdentifier: "CommentCell")
         
@@ -68,18 +66,22 @@ AddCommentViewControllerDelegate {
     }
 
     private func syncContent() {
+        self.fetchingMore = true
         UserSession.sharedSession.userContent(self.user,
             category: self.category,
             pagination: self.pagination,
             completion: { (pagination, results, error) -> () in
                 
             self.pagination = pagination
-                
+            
             if let moreContent = results {
-                self.content.appendContentsOf(moreContent)
+                if self.content == nil {
+                    self.content = []
+                }
+                self.content?.appendContentsOf(moreContent)
             }
             
-            if self.content.count == 25 || self.content.count == 0 {
+            if self.content?.count == 25 || self.content?.count == 0 {
                 self.tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: .Fade)
             } else {
                 self.tableView.reloadData()
@@ -94,14 +96,21 @@ AddCommentViewControllerDelegate {
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return content.count
+        if self.content == nil && !self.fetchingMore {
+            return 1
+        }
+        return self.content?.count ?? 0
     }
 
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+
+        if self.content == nil {
+            return tableView.dequeueReusableCellWithIdentifier("NoDataCell") as! NoDataCell
+        }
         
         var cell = tableView.dequeueReusableCellWithIdentifier("PostImageCell") as! PostCell
 
-        if let link = self.content[indexPath.row] as? RKLink {
+        if let link = self.content?[indexPath.row] as? RKLink {
             if link.hasImage() {
                 
                 if indexPath.row == 0 || SettingsManager.defaultManager.valueForSetting(.FullWidthImages) {
@@ -119,7 +128,7 @@ AddCommentViewControllerDelegate {
             }
             
             cell.link = link
-        } else if let comment = self.content[indexPath.row] as? RKComment {
+        } else if let comment = self.content?[indexPath.row] as? RKComment {
             
             let commentCell = tableView.dequeueReusableCellWithIdentifier("CommentCell") as! CommentCell
             
@@ -141,7 +150,7 @@ AddCommentViewControllerDelegate {
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        if let link = self.content[indexPath.row] as? RKLink {
+        if let link = self.content?[indexPath.row] as? RKLink {
             self.selectedLink = link
             if link.selfPost {
                 self.performSegueWithIdentifier("CommentsSegue", sender: link)
@@ -185,7 +194,7 @@ AddCommentViewControllerDelegate {
                     self.performSegueWithIdentifier("SubredditLink", sender: link)
                 }
             }
-        } else if let comment = self.content[indexPath.row] as? RKComment {
+        } else if let comment = self.content?[indexPath.row] as? RKComment {
             self.fetchLinkForComment(comment)
         }
 
@@ -340,7 +349,7 @@ AddCommentViewControllerDelegate {
                     } else {
                         if let cell = sourceView as? UITableViewCell {
                             if let indexPath = self.tableView.indexPathForCell(cell) {
-                                self.content.removeAtIndex(indexPath.row)
+                                self.content?.removeAtIndex(indexPath.row)
                                 self.tableView.beginUpdates()
                                 self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
                                 self.tableView.endUpdates()
@@ -462,7 +471,7 @@ AddCommentViewControllerDelegate {
                         dispatch_async(dispatch_get_main_queue(), { () -> Void in
                             if let cell = sourceView as? UITableViewCell {
                                 if let indexPath = self.tableView.indexPathForCell(cell) {
-                                    self.content.removeAtIndex(indexPath.row)
+                                    self.content?.removeAtIndex(indexPath.row)
                                     self.tableView.beginUpdates()
                                     self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
                                     self.tableView.endUpdates()
@@ -478,7 +487,7 @@ AddCommentViewControllerDelegate {
                         dispatch_async(dispatch_get_main_queue(), { () -> Void in
                             if let cell = sourceView as? UITableViewCell {
                                 if let indexPath = self.tableView.indexPathForCell(cell) {
-                                    self.content.removeAtIndex(indexPath.row)
+                                    self.content?.removeAtIndex(indexPath.row)
                                     self.tableView.beginUpdates()
                                     self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
                                     self.tableView.endUpdates()
@@ -494,7 +503,7 @@ AddCommentViewControllerDelegate {
                         if self.category == .Saved {
                             if let cell = sourceView as? UITableViewCell {
                                 if let indexPath = self.tableView.indexPathForCell(cell) {
-                                    self.content.removeAtIndex(indexPath.row)
+                                    self.content?.removeAtIndex(indexPath.row)
                                     self.tableView.beginUpdates()
                                     self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
                                     self.tableView.endUpdates()

@@ -187,7 +187,7 @@ PostCellDelegate {
     // MARK: UITableViewDataSource
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if self.links == nil {
+        if self.links == nil && !self.fetchingMore {
             return 1
         }
         return self.links?.count ?? 0

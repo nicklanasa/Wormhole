@@ -1159,11 +1159,11 @@
                         <segue destination="QDb-Kc-Q7i" kind="presentation" identifier="LoginSegue" modalTransitionStyle="crossDissolve" id="SWo-82-5L3"/>
                         <segue destination="Hdo-ax-c9X" kind="presentation" identifier="PurchaseSegue" modalTransitionStyle="crossDissolve" id="kaq-Nv-BbA"/>
                         <segue destination="7sL-pi-tiS" kind="presentation" identifier="ProfileSegue" modalTransitionStyle="crossDissolve" id="bxZ-6W-PbQ"/>
-                        <segue destination="SpP-xf-ygO" kind="presentation" identifier="SavedSegue" modalTransitionStyle="crossDissolve" id="gh5-lw-0Sc"/>
                         <segue destination="Wuv-iQ-z1V" kind="presentation" id="ryX-hT-yj2"/>
                         <segue destination="Kaz-dN-C7r" kind="show" identifier="UserSegue" id="nEx-7L-vW5"/>
                         <segue destination="gyN-2w-rHo" kind="show" identifier="SubredditsCategoriesSegue" id="LeZ-LV-2RG"/>
                         <segue destination="RWX-Go-8QZ" kind="show" identifier="EditMultiRedditSegue" id="tv9-6d-xdk"/>
+                        <segue destination="mxz-U6-d5C" kind="show" identifier="SavedSegue" id="Nhl-Ro-yfO"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BRW-wG-3Pw" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1622,12 +1622,49 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="jbe-cM-QBI">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="jbe-cM-QBI">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="NoDataCell" rowHeight="76" id="TSc-eI-AFD" customClass="NoDataCell" customModule="MyReddit" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="86" width="600" height="76"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="TSc-eI-AFD" id="p4N-xr-sxX">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="75"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Opps, we couldn't find anything here. Please check your internet connection or pull down to refresh." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="esY-BT-OXp">
+                                                    <rect key="frame" x="87" y="8" width="505" height="54"/>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="MyReddit" translatesAutoresizingMaskIntoConstraints="NO" id="vq0-a1-cuE">
+                                                    <rect key="frame" x="15" y="8" width="55" height="59"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="55" id="0Fj-bv-Nbb"/>
+                                                        <constraint firstAttribute="height" constant="59" id="Nk9-or-Spg"/>
+                                                    </constraints>
+                                                </imageView>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="topMargin" secondItem="esY-BT-OXp" secondAttribute="top" id="3EL-iP-bIy"/>
+                                                <constraint firstAttribute="topMargin" secondItem="vq0-a1-cuE" secondAttribute="top" id="8eR-3S-RtU"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="esY-BT-OXp" secondAttribute="bottom" constant="5" id="BLG-i6-uIq"/>
+                                                <constraint firstItem="esY-BT-OXp" firstAttribute="leading" secondItem="vq0-a1-cuE" secondAttribute="trailing" constant="17" id="MVc-Oa-Xxw"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="esY-BT-OXp" secondAttribute="trailing" id="eRX-xl-9LD"/>
+                                                <constraint firstItem="esY-BT-OXp" firstAttribute="leading" secondItem="p4N-xr-sxX" secondAttribute="leadingMargin" constant="79" id="lDd-Yc-Dry"/>
+                                                <constraint firstItem="vq0-a1-cuE" firstAttribute="leading" secondItem="p4N-xr-sxX" secondAttribute="leadingMargin" constant="7" id="ucT-oa-Txv"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="iconImageView" destination="vq0-a1-cuE" id="cVp-hL-yxG"/>
+                                            <outlet property="titleLabel" destination="esY-BT-OXp" id="Gme-B2-iB2"/>
+                                        </connections>
+                                    </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="PostImageCell" rowHeight="392" id="GmJ-Zu-rjT" customClass="PostImageCell" customModule="MyReddit" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="86" width="600" height="392"/>
+                                        <rect key="frame" x="0.0" y="162" width="600" height="392"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="GmJ-Zu-rjT" id="Luq-MM-4rI">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="391"/>
@@ -1703,7 +1740,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TitleCell" rowHeight="122" id="JfH-XB-24S" customClass="TitleCell" customModule="MyReddit" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="478" width="600" height="122"/>
+                                        <rect key="frame" x="0.0" y="554" width="600" height="122"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="JfH-XB-24S" id="axI-6M-Gyr">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="121"/>
@@ -1808,7 +1845,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="TYI-rD-L9p" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1902" y="1925"/>
+            <point key="canvasLocation" x="1077" y="1925"/>
         </scene>
         <!--Comments Tree View Controller-->
         <scene sceneID="ais-Wo-ESn">
@@ -2004,8 +2041,45 @@
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="556"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="NoDataCell" rowHeight="76" id="gkV-0k-FMz" customClass="NoDataCell" customModule="MyReddit" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="86" width="600" height="76"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="gkV-0k-FMz" id="zFb-1I-kqq">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="75"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Opps, we couldn't find anything here. Please check your internet connection or pull down to refresh." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PtA-iO-JY6">
+                                                    <rect key="frame" x="87" y="8" width="505" height="54"/>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="MyReddit" translatesAutoresizingMaskIntoConstraints="NO" id="fcZ-8j-A3e">
+                                                    <rect key="frame" x="15" y="8" width="55" height="59"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="55" id="2U5-hL-HIn"/>
+                                                        <constraint firstAttribute="height" constant="59" id="87Y-Mb-RAB"/>
+                                                    </constraints>
+                                                </imageView>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="bottomMargin" secondItem="PtA-iO-JY6" secondAttribute="bottom" constant="5" id="9Ta-kG-Dsm"/>
+                                                <constraint firstItem="fcZ-8j-A3e" firstAttribute="leading" secondItem="zFb-1I-kqq" secondAttribute="leadingMargin" constant="7" id="Az5-xS-XEt"/>
+                                                <constraint firstItem="PtA-iO-JY6" firstAttribute="leading" secondItem="fcZ-8j-A3e" secondAttribute="trailing" constant="17" id="FOc-3e-0gX"/>
+                                                <constraint firstAttribute="topMargin" secondItem="PtA-iO-JY6" secondAttribute="top" id="PiN-4x-ESw"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="PtA-iO-JY6" secondAttribute="trailing" id="VwB-dF-0f3"/>
+                                                <constraint firstItem="PtA-iO-JY6" firstAttribute="leading" secondItem="zFb-1I-kqq" secondAttribute="leadingMargin" constant="79" id="cWK-47-f05"/>
+                                                <constraint firstAttribute="topMargin" secondItem="fcZ-8j-A3e" secondAttribute="top" id="lBL-yU-tX6"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="iconImageView" destination="fcZ-8j-A3e" id="YnM-ju-lsW"/>
+                                            <outlet property="titleLabel" destination="PtA-iO-JY6" id="mtl-AT-148"/>
+                                        </connections>
+                                    </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="PostImageCell" rowHeight="392" id="Xna-5C-fPz" customClass="PostImageCell" customModule="MyReddit" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="86" width="600" height="392"/>
+                                        <rect key="frame" x="0.0" y="162" width="600" height="392"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Xna-5C-fPz" id="mnM-ZM-7ch">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="391"/>
@@ -2081,7 +2155,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TitleCell" rowHeight="122" id="O8E-7y-9pG" customClass="TitleCell" customModule="MyReddit" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="478" width="600" height="122"/>
+                                        <rect key="frame" x="0.0" y="554" width="600" height="122"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="O8E-7y-9pG" id="kYj-ww-wfS">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="121"/>
@@ -2153,7 +2227,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="SubredditCell" rowHeight="55" id="kVR-kU-b0V" customClass="SubredditCell" customModule="MyReddit" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="600" width="600" height="55"/>
+                                        <rect key="frame" x="0.0" y="676" width="600" height="55"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="kVR-kU-b0V" id="Uft-Ge-Qof">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="54"/>
@@ -3705,28 +3779,6 @@
             </objects>
             <point key="canvasLocation" x="-2752" y="-1203"/>
         </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="RzY-0K-6Wz">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" toolbarHidden="NO" id="SpP-xf-ygO" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="fUv-kX-zK8">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="dfR-Pr-yI5">
-                        <rect key="frame" x="0.0" y="556" width="600" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </toolbar>
-                    <connections>
-                        <segue destination="mxz-U6-d5C" kind="relationship" relationship="rootViewController" id="n66-ru-6hu"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="WHL-UB-PD7" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1106" y="1925"/>
-        </scene>
         <!--Gallery Controller-->
         <scene sceneID="h7h-UE-1Pm">
             <objects>
@@ -4180,19 +4232,19 @@
         <image name="Up" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="ykc-Jy-SLH"/>
-        <segue reference="yNw-36-nQb"/>
-        <segue reference="oqy-7E-8ml"/>
-        <segue reference="pMg-rh-ZMv"/>
-        <segue reference="pqF-Zz-63s"/>
-        <segue reference="s4Y-Y8-M2P"/>
-        <segue reference="DoA-ah-cSI"/>
-        <segue reference="O8K-LF-8mj"/>
-        <segue reference="zMo-OM-Z5J"/>
-        <segue reference="TYz-B9-bLR"/>
+        <segue reference="ryX-hT-yj2"/>
+        <segue reference="bxZ-6W-PbQ"/>
+        <segue reference="Nhl-Ro-yfO"/>
+        <segue reference="nEx-7L-vW5"/>
+        <segue reference="SWo-82-5L3"/>
+        <segue reference="aJr-yO-hbO"/>
+        <segue reference="Z8S-DA-q4b"/>
+        <segue reference="aev-Tk-Wb5"/>
+        <segue reference="FIC-cf-s2T"/>
+        <segue reference="xgG-eu-NoT"/>
         <segue reference="vMB-6P-NDX"/>
-        <segue reference="Udn-dz-6HG"/>
         <segue reference="q6K-ip-lpO"/>
+        <segue reference="zMo-OM-Z5J"/>
         <segue reference="Bf8-BX-vnl"/>
     </inferredMetricsTieBreakers>
 </document>

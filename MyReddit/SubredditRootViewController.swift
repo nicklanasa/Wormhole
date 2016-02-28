@@ -59,7 +59,7 @@ UISplitViewControllerDelegate {
         }
     }
     
-    var fetchingMore = false
+    var fetchingMore = true
     var front = true
     var all = false
     
@@ -115,7 +115,7 @@ UISplitViewControllerDelegate {
     }
     
     func fetchLinks() {
-    
+        self.fetchingMore = true
         let c: PaginationCompletion = {
             pagination,
             results,
