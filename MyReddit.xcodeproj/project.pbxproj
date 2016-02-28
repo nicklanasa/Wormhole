@@ -134,6 +134,8 @@
 		01A6233C1C76CB3400A8F857 /* String+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A6230E1C76CACA00A8F857 /* String+Helpers.swift */; };
 		01A6233D1C76CB3400A8F857 /* AttributedString+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A623091C76CACA00A8F857 /* AttributedString+Helpers.swift */; };
 		01A6233E1C76CB3400A8F857 /* Int+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A6230A1C76CACA00A8F857 /* Int+Helpers.swift */; };
+		01B459F31C82B1DF000B97B7 /* NoDataCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01CA39CD1C82980800CDF100 /* NoDataCell.swift */; };
+		01B459F41C82B1DF000B97B7 /* NoDataCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01CA39CD1C82980800CDF100 /* NoDataCell.swift */; };
 		01CA39CE1C82980800CDF100 /* NoDataCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01CA39CD1C82980800CDF100 /* NoDataCell.swift */; };
 		01D6646E1AC33C6600BE56EA /* SubredditsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01D6646D1AC33C6600BE56EA /* SubredditsViewController.swift */; };
 		01E39F431AF5271200C544EA /* AccountsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01E39F421AF5271200C544EA /* AccountsViewController.swift */; };
@@ -1036,6 +1038,7 @@
 				0133808F1C77BE4100E8DA56 /* RootViewController.swift in Sources */,
 				013380B21C77BE4800E8DA56 /* PasswordCell.swift in Sources */,
 				01115D451C77B27A008B7D1E /* AppDelegate.swift in Sources */,
+				01B459F41C82B1DF000B97B7 /* NoDataCell.swift in Sources */,
 				0133808C1C77BE4100E8DA56 /* DismissSegue.swift in Sources */,
 				013380B51C77BE4800E8DA56 /* UserInfoCell.swift in Sources */,
 				013380D61C77BE5C00E8DA56 /* UserSession.swift in Sources */,
@@ -1123,6 +1126,7 @@
 				795FD2A61B6C14C2008DF15C /* EditMultiRedditTableViewController.swift in Sources */,
 				CE3AA4B01B0549E9000DEDD2 /* UserContentViewController.swift in Sources */,
 				CE3AA4B11B0549E9000DEDD2 /* TitleCell.swift in Sources */,
+				01B459F31C82B1DF000B97B7 /* NoDataCell.swift in Sources */,
 				01A623311C76CB3400A8F857 /* AttributedString+Helpers.swift in Sources */,
 				01A623301C76CB3400A8F857 /* String+Helpers.swift in Sources */,
 				015301711C7BEE4B001FAF5C /* UIView+Helpers.swift in Sources */,

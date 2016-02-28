@@ -22,16 +22,37 @@ PostCellDelegate {
     var pagination: RKPagination? {
         didSet {
             self.fetchingMore = false
-            dispatch_async(dispatch_get_main_queue()) { () -> Void in
-                self.hud?.hide(true)
-            }
         }
     }
     
     var subreddit: RKSubreddit!
     var selectedSubreddit: RKSubreddit!
-    var fetchingMore = false
+    var fetchingMore = true {
+        didSet {
+            dispatch_async(dispatch_get_main_queue()) { () -> Void in
+                self.hud?.hide(true)
+            }
+        }
+    }
     var selectedLink: RKLink!
+    var links: [AnyObject]? {
+        didSet {
+            if self.links?.count == 25 || self.links?.count == 0 {
+                self.tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: .Fade)
+            } else {
+                self.tableView.reloadData()
+            }
+        }
+    }
+    var subreddits: [AnyObject]? {
+        didSet {   
+            if self.subreddits?.count == 25 || self.subreddits?.count == 0 {
+                self.tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: .Fade)
+            } else {
+                self.tableView.reloadData()
+            }
+        }
+    }
     
     @IBOutlet weak var filterControl: UISegmentedControl!
     @IBOutlet weak var tableView: UITableView!
@@ -40,25 +61,7 @@ PostCellDelegate {
     @IBOutlet weak var listButton: UIBarButtonItem!
     @IBOutlet weak var filterButton: UIBarButtonItem!
     @IBOutlet weak var bottomNavigationBar: UINavigationBar!
-    
-    var heightsCache = [String : AnyObject]()
-    
-    var links = Array<AnyObject>() {
-        didSet {
-            dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                self.tableView.reloadData()
-            })
-        }
-    }
-    
-    var subreddits = Array<AnyObject>() {
-        didSet {
-            dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                self.tableView.reloadData()
-            })
-        }
-    }
-    
+        
     var hud: MBProgressHUD? {
         didSet {
             hud?.labelFont = MyRedditSelfTextFont
@@ -95,7 +98,7 @@ PostCellDelegate {
         let actionSheet = UIAlertController(title: "Select sort", message: nil, preferredStyle: .ActionSheet)
         
         actionSheet.addAction(UIAlertAction(title: "newest", style: .Default, handler: { (action) -> Void in
-            self.links.sortInPlace({ (l0, l1) -> Bool in
+            self.links?.sortInPlace({ (l0, l1) -> Bool in
                 if let link0 = l0 as? RKLink, link1 = l1 as? RKLink {
                     return link0.created.timeIntervalSinceNow > link1.created.timeIntervalSinceNow
                 }
@@ -105,7 +108,7 @@ PostCellDelegate {
         }))
         
         actionSheet.addAction(UIAlertAction(title: "oldest", style: .Default, handler: { (action) -> Void in
-            self.links.sortInPlace({ (l0, l1) -> Bool in
+            self.links?.sortInPlace({ (l0, l1) -> Bool in
                 if let link0 = l0 as? RKLink, link1 = l1 as? RKLink {
                     return link0.created.timeIntervalSinceNow < link1.created.timeIntervalSinceNow
                 }
@@ -138,12 +141,11 @@ PostCellDelegate {
     
     func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
         self.searchText = searchBar.text!.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
-        self.links = Array<AnyObject>()
+        self.links = nil
         self.search()
     }
     
     func search() {
-        
         if self.searchText.characters.count > 0 {
             if self.filterControl.selectedSegmentIndex == 1 {
                 self.searchSubs(searchText)
@@ -151,27 +153,29 @@ PostCellDelegate {
                 self.searchLinks(searchText)
             }
         } else {
-            self.links = Array<AnyObject>()
-            self.subreddits = Array<AnyObject>()
-            self.tableView.reloadData()
+            self.links = nil
+            self.subreddits = nil
         }
     }
     
     private func searchSubs(searchText: String) {
+        self.fetchingMore = true
         RedditSession.sharedSession.searchForSubredditByName(searchText, pagination: nil) { (pagination, results, error) -> () in
-            if let subreddits = results {
-                self.subreddits = subreddits
-            }
-            
             self.fetchingMore = false
-            
-            self.hud?.hide(true)
+            if let subreddits = results {
+                if self.subreddits == nil {
+                    self.subreddits = []
+                }
+                self.subreddits = subreddits
+            } else {
+                self.subreddits = nil
+            }
         }
     }
     
     private func sortLinks() {
         if !SettingsManager.defaultManager.valueForSetting(.NSFW) {
-            self.links = self.links.filter({ (obj) -> Bool in
+            self.links = self.links?.filter({ (obj) -> Bool in
                 if let link = obj as? RKLink {
                     if link.NSFW {
                         return false
@@ -184,52 +188,41 @@ PostCellDelegate {
     }
     
     private func searchLinks(searchText: String) {
+        self.fetchingMore = true
+        let c: PaginationCompletion = {
+		    pagination,
+            results,
+            error in
+            self.fetchingMore = false
+            if let links = results {
+                if self.links == nil {
+                    self.links = []
+                }
+                self.links?.appendContentsOf(links)
+                self.sortLinks()
+                self.pagination = pagination
+            }
+        }
+
         if searchText.characters.count > 0 {
             if self.restrictSubreddit.on {
                 if let _ = self.subreddit {
                     RedditSession.sharedSession.searchForLinksInSubreddit(self.subreddit,
                         searchText: searchController.searchBar.text!,
                         pagination: self.pagination,
-                        completion: { (pagination, results, error) -> () in
-                            if error == nil {
-                                if let links = results {
-                                    self.links.appendContentsOf(links)
-                                    self.sortLinks()
-                                    self.pagination = pagination
-                                }
-                            }
-                            
-                    })
+                        completion: c)
                 } else {
                     RedditSession.sharedSession.searchForLinks(searchText,
                         pagination: self.pagination,
-                        completion: { (pagination, results, error) -> () in
-                            if error == nil {
-                                if let links = results {
-                                    self.links.appendContentsOf(links)
-                                    self.sortLinks()
-                                    self.pagination = pagination
-                                }
-                            }
-                            
-                    })
+                        completion: c)
                 }
             } else {
                 RedditSession.sharedSession.searchForLinks(searchText,
                     pagination: self.pagination,
-                    completion: { (pagination, results, error) -> () in
-                        if error == nil {
-                            if let links = results {
-                                self.links.appendContentsOf(links)
-                                self.sortLinks()
-                                self.pagination = pagination
-                            }
-                        }
-                })
+                    completion: c)
             }
         } else {
-            self.links = Array<AnyObject>()
-            self.tableView.reloadData()
+            self.links = nil
         }
     }
     
@@ -285,18 +278,17 @@ PostCellDelegate {
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
         if self.filterControl.selectedSegmentIndex == 1 {
-            if self.subreddits.count > 0 {
-                return self.subreddits.count
+            if self.subreddits == nil && !self.fetchingMore {
+                return 1
             }
+            return self.subreddits?.count ?? 0
         } else {
-            if self.links.count > 0 {
-                return self.links.count
+            if self.links == nil && !self.fetchingMore {
+                return 1
             }
+            return self.links?.count ?? 0
         }
-        
-        return 0
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -305,14 +297,23 @@ PostCellDelegate {
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if self.filterControl.selectedSegmentIndex == 1 {
+            if self.subreddits == nil {
+                return tableView.dequeueReusableCellWithIdentifier("NoDataCell") as! NoDataCell
+            }
+
             let cell = tableView.dequeueReusableCellWithIdentifier("SubredditCell") as! SubredditCell
-            cell.rkSubreddit = self.subreddits[indexPath.row] as! RKSubreddit
+            cell.rkSubreddit = self.subreddits?[indexPath.row] as! RKSubreddit
+        
             return cell
+        }
+
+        if self.links == nil {
+            return tableView.dequeueReusableCellWithIdentifier("NoDataCell") as! NoDataCell
         }
         
         var cell = tableView.dequeueReusableCellWithIdentifier("PostImageCell") as! PostCell
         
-        if let link = self.links[indexPath.row] as? RKLink {
+        if let link = self.links?[indexPath.row] as? RKLink {
             if link.hasImage() {
                 
                 if SettingsManager.defaultManager.valueForSetting(.FullWidthImages) {
@@ -342,7 +343,7 @@ PostCellDelegate {
         self.searchController.active = false
         
         if self.filterControl.selectedSegmentIndex == 0 {
-            if let link = self.links[indexPath.row] as? RKLink {
+            if let link = self.links?[indexPath.row] as? RKLink {
                 self.selectedLink = link
                 if link.selfPost {
                     self.performSegueWithIdentifier("CommentsSegue", sender: link)
@@ -388,7 +389,7 @@ PostCellDelegate {
                 }
             }
         } else {
-            if let subreddit = self.subreddits[indexPath.row] as? RKSubreddit {
+            if let subreddit = self.subreddits?[indexPath.row] as? RKSubreddit {
                 self.performSegueWithIdentifier("SubredditSegue", sender: subreddit)
             }
         }
@@ -463,7 +464,7 @@ PostCellDelegate {
             self.hud?.hide(true)
             if error != nil {
                 UIAlertView(title: "Error!",
-                    message: "Unable to upvote! Please try again!",
+                    message: error!.localizedDescription,
                     delegate: self,
                     cancelButtonTitle: "Ok").show()
             } else {
@@ -479,7 +480,7 @@ PostCellDelegate {
             self.hud?.hide(true)
             if error != nil {
                 UIAlertView(title: "Error!",
-                    message: "Unable to downvote! Please try again!",
+                    message: error!.localizedDescription,
                     delegate: self,
                     cancelButtonTitle: "Ok").show()
             } else {
@@ -551,9 +552,9 @@ PostCellDelegate {
                         link.saveLink()
                         dispatch_async(dispatch_get_main_queue(), { () -> Void in
                             if let indexPath = self.tableView.indexPathForCell(cell) {
-                                self.links.removeAtIndex(indexPath.row)
+                                self.links?.removeAtIndex(indexPath.row)
                                 self.tableView.beginUpdates()
-                                self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+                                self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
                                 self.tableView.endUpdates()
                                 sh()
                             }
@@ -679,13 +680,12 @@ PostCellDelegate {
         
         self.navigationItem.titleView?.backgroundColor = MyRedditBackgroundColor
         
-        self.tableView.backgroundColor = MyRedditBackgroundColor
+        self.tableView.backgroundColor = MyRedditDarkBackgroundColor
         
         let textFieldInsideSearchBar = self.searchController.searchBar.valueForKey("searchField") as? UITextField
         
         textFieldInsideSearchBar?.textColor = MyRedditLabelColor
         
-        self.view.backgroundColor = MyRedditBackgroundColor
         self.restrictToSubredditSwitch.tintColor = MyRedditLabelColor
         self.navigationItem.leftBarButtonItem?.tintColor = MyRedditLabelColor
         self.filterControl.tintColor = MyRedditLabelColor

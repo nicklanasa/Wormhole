@@ -36,16 +36,17 @@ NSFetchedResultsControllerDelegate {
         
         LocalyticsSession.shared().tagScreen("Accounts")
         
-        if let splitViewController = self.splitViewController {
-            self.listButton.action = splitViewController.displayModeButtonItem().action
-        }
         self.preferredAppearance()
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.navigationController?.setToolbarHidden(true, animated: false)
+        if let splitViewController = self.splitViewController {
+            self.listButton.action = splitViewController.displayModeButtonItem().action
+        } else {
+            self.navigationController?.setToolbarHidden(true, animated: false)
+        }
     }
     
     // MARK: Sectors NSFetchedResultsControllerDelegate

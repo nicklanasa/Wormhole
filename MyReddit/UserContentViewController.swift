@@ -51,12 +51,14 @@ AddCommentViewControllerDelegate {
         self.syncContent()
         
         self.navigationItem.title = self.categoryTitle.lowercaseString
-        self.tableView.backgroundColor = MyRedditBackgroundColor
+        self.tableView.backgroundColor = MyRedditDarkBackgroundColor
         
         self.tableView.tableFooterView = UIView()
         
         if let splitViewController = self.splitViewController {
             self.listButton.action = splitViewController.displayModeButtonItem().action
+        } else {
+            self.navigationController?.setToolbarHidden(true, animated: false)
         }
     }
     
@@ -188,7 +190,7 @@ AddCommentViewControllerDelegate {
                             }
                         }
                     } else {
-                        self.performSegueWithIdentifier("GallerySegue", sender: [cell.postImageView?.image ?? link.URL])
+                        self.performSegueWithIdentifier("SubredditLink", sender: link)
                     }
                 } else {
                     self.performSegueWithIdentifier("SubredditLink", sender: link)

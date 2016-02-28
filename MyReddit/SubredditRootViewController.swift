@@ -278,7 +278,7 @@ UISplitViewControllerDelegate {
         self.toolBar?.tintColor = MyRedditLabelColor
         self.toolBar?.backgroundColor = MyRedditBackgroundColor
         self.toolBar?.barTintColor = MyRedditBackgroundColor
-        self.tableView?.backgroundColor = MyRedditBackgroundColor
+        self.tableView?.backgroundColor = MyRedditDarkBackgroundColor
         
         self.updateUI()
     }
