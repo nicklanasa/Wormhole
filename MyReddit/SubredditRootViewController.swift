@@ -21,7 +21,6 @@ class SubredditRootViewController: RootViewController,
 UISplitViewControllerDelegate {
     
     @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var toolBar: UIToolbar!
     @IBOutlet weak var subscribeButton: UIBarButtonItem!
     @IBOutlet weak var filterButton: UIBarButtonItem!
     @IBOutlet weak var listButton: UIBarButtonItem!
@@ -98,6 +97,8 @@ UISplitViewControllerDelegate {
         case .Phone: break
         default: break
         }
+        
+        self.navigationController?.setToolbarHidden(false, animated: true)
     }
     
     // MARK: Fetching
@@ -264,6 +265,18 @@ UISplitViewControllerDelegate {
         
         self.navigationItem.title = title
     }
+
+    var lastOffsetY: CGFloat = 0
+    
+    func scrollViewWillBeginDragging(scrollView: UIScrollView){
+        lastOffsetY = scrollView.contentOffset.y
+    }
+
+    func scrollViewWillBeginDecelerating(scrollView: UIScrollView){
+        let hide = scrollView.contentOffset.y > self.lastOffsetY
+        self.navigationController?.setNavigationBarHidden(hide, animated: true)
+        self.navigationController?.setToolbarHidden(hide, animated: true)
+    }
     
     override func didRotateFromInterfaceOrientation(fromInterfaceOrientation: UIInterfaceOrientation) {
         self.tableView.reloadData()
@@ -275,9 +288,9 @@ UISplitViewControllerDelegate {
         self.navigationController?.navigationBar.tintColor = MyRedditLabelColor
         self.navigationItem.leftBarButtonItem?.tintColor = MyRedditLabelColor
         
-        self.toolBar?.tintColor = MyRedditLabelColor
-        self.toolBar?.backgroundColor = MyRedditBackgroundColor
-        self.toolBar?.barTintColor = MyRedditBackgroundColor
+        self.navigationController?.toolbar?.tintColor = MyRedditLabelColor
+        self.navigationController?.toolbar?.backgroundColor = MyRedditBackgroundColor
+        self.navigationController?.toolbar?.barTintColor = MyRedditBackgroundColor
         self.tableView?.backgroundColor = MyRedditDarkBackgroundColor
         
         self.updateUI()

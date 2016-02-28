@@ -21,7 +21,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="C52-gL-QAq">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="556"/>
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="NoDataCell" rowHeight="76" id="KGe-Uf-bdx" customClass="NoDataCell" customModule="MyReddit" customModuleProvider="target">
@@ -244,78 +244,63 @@
                                     <outlet property="delegate" destination="yqo-vd-J8K" id="gdx-cx-GRE"/>
                                 </connections>
                             </tableView>
-                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gqf-DS-7uP">
-                                <rect key="frame" x="0.0" y="556" width="600" height="44"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="600" id="L2U-Cw-34l"/>
-                                    <constraint firstAttribute="height" constant="44" id="PaC-tC-FJl"/>
-                                </constraints>
-                                <items>
-                                    <barButtonItem image="Compose" id="4CL-zW-GHL">
-                                        <connections>
-                                            <action selector="postButtonTapped:" destination="yqo-vd-J8K" id="Uyd-Nn-iIJ"/>
-                                        </connections>
-                                    </barButtonItem>
-                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="yr6-VD-hul"/>
-                                    <barButtonItem image="Filter" id="JJZ-Uf-wuY">
-                                        <connections>
-                                            <action selector="filterButtonPressed:" destination="yqo-vd-J8K" id="eHO-qF-o3x"/>
-                                        </connections>
-                                    </barButtonItem>
-                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="0Eo-xh-fQy"/>
-                                    <barButtonItem image="Messages" id="r8k-Hp-EGO">
-                                        <connections>
-                                            <action selector="messagesButtonTapped:" destination="yqo-vd-J8K" id="aNF-Wt-V64"/>
-                                        </connections>
-                                    </barButtonItem>
-                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="tbD-iB-qae"/>
-                                    <barButtonItem image="Search" id="dOl-GF-7qg">
-                                        <connections>
-                                            <segue destination="EKU-QU-ihl" kind="presentation" identifier="SearchSegue" modalTransitionStyle="crossDissolve" id="c0A-qT-nAA"/>
-                                        </connections>
-                                    </barButtonItem>
-                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="Ss5-sQ-dMp"/>
-                                    <barButtonItem image="List" id="Q2v-JC-IKA">
-                                        <connections>
-                                            <segue destination="tv5-Ge-XzH" kind="presentation" modalTransitionStyle="crossDissolve" id="dGH-aG-FzP"/>
-                                        </connections>
-                                    </barButtonItem>
-                                </items>
-                                <color key="barTintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            </toolbar>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="gqf-DS-7uP" firstAttribute="bottom" secondItem="Uzs-Ft-64O" secondAttribute="top" id="8uB-Yh-3LP"/>
-                            <constraint firstItem="Uzs-Ft-64O" firstAttribute="top" secondItem="gqf-DS-7uP" secondAttribute="bottom" id="FAN-ZG-aPu"/>
                             <constraint firstAttribute="trailing" secondItem="C52-gL-QAq" secondAttribute="trailing" id="H8k-DR-6zY"/>
                             <constraint firstItem="C52-gL-QAq" firstAttribute="leading" secondItem="UFU-TA-iso" secondAttribute="leading" id="QGL-Sd-pLN"/>
-                            <constraint firstItem="gqf-DS-7uP" firstAttribute="top" secondItem="C52-gL-QAq" secondAttribute="bottom" id="WnO-zX-2eD"/>
-                            <constraint firstAttribute="bottom" secondItem="C52-gL-QAq" secondAttribute="bottom" constant="44" id="fhJ-6c-dox"/>
+                            <constraint firstAttribute="bottom" secondItem="C52-gL-QAq" secondAttribute="bottom" id="fhJ-6c-dox"/>
                             <constraint firstItem="C52-gL-QAq" firstAttribute="top" secondItem="UFU-TA-iso" secondAttribute="top" id="rp8-56-DcX"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="gqf-DS-7uP" secondAttribute="trailing" constant="-20" id="xUC-78-OgZ"/>
-                            <constraint firstItem="gqf-DS-7uP" firstAttribute="leading" secondItem="UFU-TA-iso" secondAttribute="leadingMargin" constant="-20" id="zWl-aN-hZJ"/>
                         </constraints>
                     </view>
+                    <toolbarItems>
+                        <barButtonItem image="Compose" id="4CL-zW-GHL">
+                            <connections>
+                                <action selector="postButtonTapped:" destination="yqo-vd-J8K" id="Uyd-Nn-iIJ"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="v72-tl-VCW"/>
+                        <barButtonItem image="Filter" id="JJZ-Uf-wuY">
+                            <connections>
+                                <action selector="filterButtonPressed:" destination="yqo-vd-J8K" id="eHO-qF-o3x"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="fsQ-on-dW8"/>
+                        <barButtonItem image="Messages" id="r8k-Hp-EGO">
+                            <connections>
+                                <action selector="messagesButtonTapped:" destination="yqo-vd-J8K" id="aNF-Wt-V64"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="Kh4-aD-h9u"/>
+                        <barButtonItem image="Search" id="dOl-GF-7qg">
+                            <connections>
+                                <segue destination="EKU-QU-ihl" kind="presentation" identifier="SearchSegue" modalTransitionStyle="crossDissolve" id="c0A-qT-nAA"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="USA-P1-0Qa"/>
+                        <barButtonItem image="List" id="Q2v-JC-IKA">
+                            <connections>
+                                <segue destination="tv5-Ge-XzH" kind="presentation" modalTransitionStyle="crossDissolve" id="dGH-aG-FzP"/>
+                            </connections>
+                        </barButtonItem>
+                    </toolbarItems>
                     <navigationItem key="navigationItem" id="ioF-Tv-v04">
                         <nil key="title"/>
-                        <barButtonItem key="rightBarButtonItem" id="ZCd-hO-GGS">
-                            <color key="tintColor" red="0.59999999999999998" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
+                        <barButtonItem key="rightBarButtonItem" id="HSq-bX-o9L">
                             <connections>
-                                <action selector="subscribeButtonTapped:" destination="yqo-vd-J8K" id="dHb-As-WnC"/>
+                                <action selector="subscribeButtonTapped:" destination="yqo-vd-J8K" id="yjl-yR-RUG"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="filterButton" destination="JJZ-Uf-wuY" id="tQT-Fi-zLj"/>
                         <outlet property="listButton" destination="Q2v-JC-IKA" id="A9X-WL-7WP"/>
                         <outlet property="messages" destination="r8k-Hp-EGO" id="U3o-pS-oM3"/>
                         <outlet property="postButton" destination="4CL-zW-GHL" id="WXj-ia-LPD"/>
                         <outlet property="searchButton" destination="dOl-GF-7qg" id="9hL-2c-8zW"/>
-                        <outlet property="subscribeButton" destination="ZCd-hO-GGS" id="a52-S9-0f8"/>
+                        <outlet property="subscribeButton" destination="HSq-bX-o9L" id="M9f-oy-e8p"/>
                         <outlet property="tableView" destination="C52-gL-QAq" id="0ar-Ad-qf5"/>
-                        <outlet property="toolBar" destination="gqf-DS-7uP" id="SDa-LT-0xG"/>
                         <segue destination="oWg-TP-L9t" kind="show" identifier="SubredditLink" id="s4Y-Y8-M2P"/>
                         <segue destination="Hdo-ax-c9X" kind="presentation" identifier="PurchaseSegue" modalTransitionStyle="crossDissolve" id="FH5-lg-p4i"/>
                         <segue destination="Hdo-ax-c9X" kind="presentation" id="ykc-Jy-SLH"/>
@@ -4227,18 +4212,18 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="vMB-6P-NDX"/>
-        <segue reference="FIC-cf-s2T"/>
-        <segue reference="Nhl-Ro-yfO"/>
-        <segue reference="eWX-LR-CuE"/>
-        <segue reference="Udn-dz-6HG"/>
+        <segue reference="pqF-Zz-63s"/>
+        <segue reference="yNw-36-nQb"/>
         <segue reference="oqy-7E-8ml"/>
+        <segue reference="pMg-rh-ZMv"/>
         <segue reference="DoA-ah-cSI"/>
+        <segue reference="s4Y-Y8-M2P"/>
+        <segue reference="ykc-Jy-SLH"/>
         <segue reference="zMo-OM-Z5J"/>
-        <segue reference="Bf8-BX-vnl"/>
+        <segue reference="Udn-dz-6HG"/>
+        <segue reference="2S1-bb-L8b"/>
+        <segue reference="Nhl-Ro-yfO"/>
         <segue reference="nEx-7L-vW5"/>
         <segue reference="q6K-ip-lpO"/>
-        <segue reference="Z8S-DA-q4b"/>
-        <segue reference="xgG-eu-NoT"/>
-        <segue reference="aev-Tk-Wb5"/>
     </inferredMetricsTieBreakers>
 </document>

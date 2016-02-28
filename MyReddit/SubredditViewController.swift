@@ -86,8 +86,6 @@ PostCellDelegate {
             self.messages.tintColor = MyRedditLabelColor
         })
         
-        self.tableView.reloadData()
-        
         self.fetchUnread()
     }
     
