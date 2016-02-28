@@ -74,7 +74,9 @@ UISplitViewControllerDelegate {
     override func viewWillAppear(animated: Bool) {
         LocalyticsSession.shared().tagScreen("Subreddit")
         super.viewWillAppear(animated)
-        self.preferredAppearance()
+        dispatch_async(dispatch_get_main_queue()) { () -> Void in
+            self.tableView.reloadData()
+        }
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -104,8 +106,13 @@ UISplitViewControllerDelegate {
         }
         
         self.navigationController?.setToolbarHidden(false, animated: true)
+        
+        NSNotificationCenter.defaultCenter().addObserver(self,
+            selector: "preferredAppearance",
+            name: MyRedditAppearanceDidChangeNotification,
+            object: nil)
     }
-    
+
     // MARK: Fetching
     
     func fetchUnread() {
@@ -143,7 +150,7 @@ UISplitViewControllerDelegate {
                 self.updateUI()
 
                 if self.links?.count == 25 || self.links?.count == 0 {
-                    self.tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: .Fade)                
+                    self.tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: .Fade)
                 } else {
                     self.tableView.reloadData()
                 }
@@ -288,6 +295,7 @@ UISplitViewControllerDelegate {
     }
     
     override func preferredAppearance() {
+
         self.navigationController?.navigationBar.barTintColor = MyRedditBackgroundColor
         self.navigationController?.navigationBar.backgroundColor = MyRedditBackgroundColor
         self.navigationController?.navigationBar.tintColor = MyRedditLabelColor
@@ -296,6 +304,7 @@ UISplitViewControllerDelegate {
         self.navigationController?.toolbar?.tintColor = MyRedditLabelColor
         self.navigationController?.toolbar?.backgroundColor = MyRedditBackgroundColor
         self.navigationController?.toolbar?.barTintColor = MyRedditBackgroundColor
+        
         self.tableView?.backgroundColor = MyRedditDarkBackgroundColor
         
         self.updateUI()

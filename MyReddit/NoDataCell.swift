@@ -21,5 +21,6 @@ class NoDataCell: UITableViewCell {
         
         self.titleLabel.textColor = MyRedditLabelColor
         self.contentView.backgroundColor = MyRedditBackgroundColor
+        self.selectionStyle = .None
     }
 }

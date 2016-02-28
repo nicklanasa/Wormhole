@@ -243,7 +243,13 @@ PostCellDelegate {
         return cell
     }
 
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {        
+        self.tableView.deselectRowAtIndexPath(indexPath, animated: true)
+
+        if self.links == nil {
+            return
+        }
+
         self.hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
         
         if let link = self.links?[indexPath.row] as? RKLink {
@@ -297,8 +303,6 @@ PostCellDelegate {
         } else if let imageCell = tableView.cellForRowAtIndexPath(indexPath) as? PostImageCell {
             imageCell.titleTextView.textColor = UIColor.grayColor()
         }
-        
-        self.tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
     
     // MARK: PostCellDelegate
@@ -491,11 +495,15 @@ PostCellDelegate {
     }
     
     func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
-        let endScrolling = scrollView.contentOffset.y + scrollView.frame.size.height
-        if endScrolling >= scrollView.contentSize.height && !self.fetchingMore {
-            self.fetchingMore = true
-            self.hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
-            self.fetchLinks()
+        if self.links == nil {
+            return
+        } else {
+            let endScrolling = scrollView.contentOffset.y + scrollView.frame.size.height
+            if endScrolling >= scrollView.contentSize.height && !self.fetchingMore {
+                self.fetchingMore = true
+                self.hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
+                self.fetchLinks()
+            }
         }
     }
     

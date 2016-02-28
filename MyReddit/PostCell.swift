@@ -59,4 +59,9 @@ class PostCell: SwipeCell, SwipeCellDelegate {
         default: self.postCellDelegate?.postCell?(self, didShortLeftSwipeForLink: self.link)
         }
     }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        self.backgroundColor = MyRedditBackgroundColor
+    }
 }

@@ -343,6 +343,8 @@ PostCellDelegate {
         self.searchController.active = false
         
         if self.filterControl.selectedSegmentIndex == 0 {
+            if self.links == nil { return }
+
             if let link = self.links?[indexPath.row] as? RKLink {
                 self.selectedLink = link
                 if link.selfPost {
@@ -389,6 +391,7 @@ PostCellDelegate {
                 }
             }
         } else {
+            if self.subreddits == nil { return }
             if let subreddit = self.subreddits?[indexPath.row] as? RKSubreddit {
                 self.performSegueWithIdentifier("SubredditSegue", sender: subreddit)
             }
@@ -686,6 +689,7 @@ PostCellDelegate {
         
         textFieldInsideSearchBar?.textColor = MyRedditLabelColor
         
+        self.view.backgroundColor = MyRedditDarkBackgroundColor
         self.restrictToSubredditSwitch.tintColor = MyRedditLabelColor
         self.navigationItem.leftBarButtonItem?.tintColor = MyRedditLabelColor
         self.filterControl.tintColor = MyRedditLabelColor

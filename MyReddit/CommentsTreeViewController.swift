@@ -82,7 +82,6 @@ AddCommentViewControllerDelegate {
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        self.treeView.hidden = false
         LocalyticsSession.shared().tagScreen("Comments")
     }
     
@@ -122,7 +121,7 @@ AddCommentViewControllerDelegate {
     }
 
     func reloadComments() {
-        self.treeView.reloadRows()
+        self.treeView.reloadData()
         for item in self.treeView.itemsForRowsInRect(self.treeView.frame) as! [AnyObject] {
             if let comment = item as? RKComment {
                 self.treeView.expandRowForItem(comment,

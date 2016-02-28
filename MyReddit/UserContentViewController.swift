@@ -152,6 +152,11 @@ AddCommentViewControllerDelegate {
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        self.tableView.deselectRowAtIndexPath(indexPath, animated: true)
+
+        if self.content == nil {
+            return
+        }
         if let link = self.content?[indexPath.row] as? RKLink {
             self.selectedLink = link
             if link.selfPost {
@@ -205,8 +210,6 @@ AddCommentViewControllerDelegate {
         } else if let imageCell = tableView.cellForRowAtIndexPath(indexPath) as? PostImageCell {
             imageCell.titleTextView.textColor = UIColor.grayColor()
         }
-        
-        self.tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
     
     // MARK: IBActions
