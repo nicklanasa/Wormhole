@@ -107,8 +107,11 @@ UISearchBarDelegate {
         self.tableView.backgroundView = UIView()
         self.tableView.backgroundColor = MyRedditDarkBackgroundColor
         self.view.backgroundColor = MyRedditDarkBackgroundColor
+        self.navigationController?.toolbar.barTintColor = MyRedditDarkBackgroundColor
         
         self.tableView.reloadData()
+
+        self.navigationController?.setToolbarHidden(false, animated: false)
     }
     
     func searchBarSearchButtonClicked(searchBar: UISearchBar) {

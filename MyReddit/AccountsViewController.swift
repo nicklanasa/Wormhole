@@ -41,6 +41,12 @@ NSFetchedResultsControllerDelegate {
         }
         self.preferredAppearance()
     }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        self.navigationController?.setToolbarHidden(true, animated: false)
+    }
     
     // MARK: Sectors NSFetchedResultsControllerDelegate
     

@@ -29,10 +29,10 @@ UISplitViewControllerDelegate {
     @IBOutlet weak var searchButton: UIBarButtonItem!
     @IBOutlet weak var messages: UIBarButtonItem!
     
-    var links = Array<AnyObject>() {
+    var links: [AnyObject]? {
         didSet {
             if !SettingsManager.defaultManager.valueForSetting(.NSFW) {
-                self.links = self.links.filter({ (obj) -> Bool in
+                self.links = self.links?.filter({ (obj) -> Bool in
                     if let link = obj as? RKLink {
                         if link.NSFW {
                             return false
@@ -44,15 +44,9 @@ UISplitViewControllerDelegate {
             }
             
             if !SettingsManager.defaultManager.purchased {
-                if self.links.count != 0 {
-                    self.links.append(SuggestedLink())
+                if self.links?.count != 0 {
+                    self.links?.append(SuggestedLink())
                 }
-            }
-            
-            if self.links.count == 25 || self.links.count == 0 {
-                self.tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: .Fade)
-            } else {
-                self.tableView.reloadData()
             }
         }
     }
@@ -92,6 +86,7 @@ UISplitViewControllerDelegate {
             action: "refresh:",
             forControlEvents: .ValueChanged)
         self.tableView.addSubview(self.refreshControl)
+        
         self.tableView.tableFooterView = UIView()
         
         switch UIDevice.currentDevice().userInterfaceIdiom {
@@ -126,16 +121,26 @@ UISplitViewControllerDelegate {
             results,
             error in
             self.pagination = pagination
+
             if let moreLinks = results {
-                self.links.appendContentsOf(moreLinks)
+                if self.links == nil {
+                    self.links = []
+                }
+                self.links?.appendContentsOf(moreLinks)
             }
-            
+
             self.fetchingMore = false
             
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
                 self.refreshControl.endRefreshing()
                 self.hud?.hide(true)
                 self.updateUI()
+
+                if self.links?.count == 25 || self.links?.count == 0 {
+                    self.tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: .Fade)                
+                } else {
+                    self.tableView.reloadData()
+                }
             })
         }
         
@@ -199,7 +204,7 @@ UISplitViewControllerDelegate {
     // MARK: Refresh
     
     func refresh(sender: AnyObject?) {
-        self.links = Array<AnyObject>()
+        self.links = nil
         self.pagination = nil
         self.fetchLinks()
     }
@@ -209,7 +214,7 @@ UISplitViewControllerDelegate {
     func filterLinks(filterSwtichType: FilterSwitchType) {
         LocalyticsSession.shared().tagEvent("Filtered subreddit")
         self.pagination = nil
-        self.links = Array<AnyObject>()
+        self.links = nil
         self.currentCategory = RKSubredditCategory(rawValue: UInt(filterSwtichType.rawValue))
         self.fetchLinks()
     }
@@ -258,7 +263,6 @@ UISplitViewControllerDelegate {
         }
         
         self.navigationItem.title = title
-        self.navigationController?.setToolbarHidden(true, animated: true)
     }
     
     override func didRotateFromInterfaceOrientation(fromInterfaceOrientation: UIInterfaceOrientation) {
@@ -266,7 +270,6 @@ UISplitViewControllerDelegate {
     }
     
     override func preferredAppearance() {
-        self.navigationController?.setToolbarHidden(true, animated: false)
         self.navigationController?.navigationBar.barTintColor = MyRedditBackgroundColor
         self.navigationController?.navigationBar.backgroundColor = MyRedditBackgroundColor
         self.navigationController?.navigationBar.tintColor = MyRedditLabelColor

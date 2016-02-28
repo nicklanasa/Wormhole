@@ -134,6 +134,7 @@
 		01A6233C1C76CB3400A8F857 /* String+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A6230E1C76CACA00A8F857 /* String+Helpers.swift */; };
 		01A6233D1C76CB3400A8F857 /* AttributedString+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A623091C76CACA00A8F857 /* AttributedString+Helpers.swift */; };
 		01A6233E1C76CB3400A8F857 /* Int+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A6230A1C76CACA00A8F857 /* Int+Helpers.swift */; };
+		01CA39CE1C82980800CDF100 /* NoDataCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01CA39CD1C82980800CDF100 /* NoDataCell.swift */; };
 		01D6646E1AC33C6600BE56EA /* SubredditsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01D6646D1AC33C6600BE56EA /* SubredditsViewController.swift */; };
 		01E39F431AF5271200C544EA /* AccountsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01E39F421AF5271200C544EA /* AccountsViewController.swift */; };
 		01E39F451AF52E9900C544EA /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01E39F441AF52E9900C544EA /* User.swift */; };
@@ -307,6 +308,7 @@
 		01A623151C76CACA00A8F857 /* UILabel+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UILabel+Helpers.swift"; sourceTree = "<group>"; };
 		01A623161C76CACA00A8F857 /* UINavigationBar+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UINavigationBar+Helpers.swift"; sourceTree = "<group>"; };
 		01A623171C76CACA00A8F857 /* UITableViewCell+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITableViewCell+Helpers.swift"; sourceTree = "<group>"; };
+		01CA39CD1C82980800CDF100 /* NoDataCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoDataCell.swift; sourceTree = "<group>"; };
 		01D6646D1AC33C6600BE56EA /* SubredditsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubredditsViewController.swift; sourceTree = "<group>"; };
 		01E39F421AF5271200C544EA /* AccountsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountsViewController.swift; sourceTree = "<group>"; };
 		01E39F441AF52E9900C544EA /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
@@ -482,6 +484,7 @@
 		CE10072E1AF2FDDE000ED144 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
+				01CA39CD1C82980800CDF100 /* NoDataCell.swift */,
 				01115D401C77AF0E008B7D1E /* SwipeCell.swift */,
 				CE046ED01AC4247500DF59B4 /* PostCell.swift */,
 				CEAC71BC1AF14856006DC831 /* LoadMoreHeader.swift */,
@@ -1207,6 +1210,7 @@
 				0195D6BE1AF31CE1004FA3EC /* ProfileViewController.swift in Sources */,
 				CE25FBD41AF9483D00A40C3B /* LinkCell.swift in Sources */,
 				01A623211C76CACA00A8F857 /* UIimage+Helpers.swift in Sources */,
+				01CA39CE1C82980800CDF100 /* NoDataCell.swift in Sources */,
 				CE538FAA1AF3B02E008050B6 /* UserContentViewController.swift in Sources */,
 				79B875B51BC9952E00473E7B /* Datastore.swift in Sources */,
 				015301701C7BEE4B001FAF5C /* UIView+Helpers.swift in Sources */,

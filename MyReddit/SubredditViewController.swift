@@ -53,7 +53,7 @@ PostCellDelegate {
             let touchPoint = longPressGestureRecognizer.locationInView(self.view)
             if let indexPath = self.tableView.indexPathForRowAtPoint(touchPoint) {
                 // Long hold options
-                if let link = self.links[indexPath.row] as? RKLink {
+                if let link = self.links?[indexPath.row] as? RKLink {
                     let alert = UIAlertController.longHoldAlertControllerWithLink(link, completion: { (action) -> () in
                         dispatch_async(dispatch_get_main_queue(), { () -> Void in
                             let hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
@@ -187,7 +187,10 @@ PostCellDelegate {
     // MARK: UITableViewDataSource
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.links.count
+        if self.links == nil {
+            return 1
+        }
+        return self.links?.count ?? 0
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -195,9 +198,14 @@ PostCellDelegate {
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+
+        if self.links == nil {
+            return tableView.dequeueReusableCellWithIdentifier("NoDataCell") as! NoDataCell
+        }
+        
         var cell = tableView.dequeueReusableCellWithIdentifier("PostImageCell") as! PostCell
 
-        if let link = self.links[indexPath.row] as? RKLink {
+        if let link = self.links?[indexPath.row] as? RKLink {
             if link.hasImage() {
                 
                 if SettingsManager.defaultManager.valueForSetting(.FullWidthImages) {
@@ -213,7 +221,7 @@ PostCellDelegate {
             }
             
             cell.link = link
-        } else if let _ = self.links[indexPath.row] as? SuggestedLink {
+        } else if let _ = self.links?[indexPath.row] as? SuggestedLink {
             let cell = tableView.dequeueReusableCellWithIdentifier("AdCell") as! AdCell
             
             cell.bannerView.rootViewController = self
@@ -240,7 +248,7 @@ PostCellDelegate {
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         self.hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
         
-        if let link = self.links[indexPath.row] as? RKLink {
+        if let link = self.links?[indexPath.row] as? RKLink {
             self.selectedLink = link
             if link.selfPost {
                 self.performSegueWithIdentifier("CommentsSegue", sender: link)
@@ -398,7 +406,7 @@ PostCellDelegate {
                         link.saveLink()
                         dispatch_async(dispatch_get_main_queue(), { () -> Void in
                             if let indexPath = self.tableView.indexPathForCell(cell) {
-                                self.links.removeAtIndex(indexPath.row)
+                                self.links?.removeAtIndex(indexPath.row)
                                 self.tableView.beginUpdates()
                                 self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
                                 self.tableView.endUpdates()
