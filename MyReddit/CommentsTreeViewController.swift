@@ -44,7 +44,6 @@ AddCommentViewControllerDelegate {
 
     var filter: RKCommentSort! {
         didSet {
-            self.treeView.hidden = true
             self.hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
             RedditSession.sharedSession.fetchCommentsWithFilter(filter,
                                                                 pagination: nil,
