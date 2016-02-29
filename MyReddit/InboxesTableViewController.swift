@@ -40,6 +40,8 @@ class InboxesTableViewController: RootTableViewController {
         
         if let splitViewController = self.splitViewController {
             self.listButton.action = splitViewController.displayModeButtonItem().action
+        } else {
+            self.navigationController?.setToolbarHidden(true, animated: true)
         }
     }
     

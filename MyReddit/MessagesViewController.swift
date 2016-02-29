@@ -68,16 +68,14 @@ JZSwipeCellDelegate {
         
         self.tableView.tableFooterView = UIView()
         
-        self.tableView.reloadData()
-        
         self.fetchMessages()
-        
-        self.preferredAppearance()
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         LocalyticsSession.shared().tagScreen("Messages")
+                
+        self.preferredAppearance()
     }
     
     @IBOutlet weak var tableView: UITableView!
@@ -158,7 +156,7 @@ JZSwipeCellDelegate {
     func messageCell(cell: MessageCell, didTapLink link: NSURL) {
         if #available(iOS 9.0, *) {
             let svc = SFSafariViewController(URL: link, entersReaderIfAvailable: true)
-            self.presentViewController(svc, animated: true, completion: nil)
+            self.navigationController?.presentViewController(svc, animated: true, completion: nil)
         } else {
             self.performSegueWithIdentifier("MessageLinkSegue", sender: link)
         }
@@ -204,7 +202,6 @@ JZSwipeCellDelegate {
     }
     
     func swipeCell(cell: JZSwipeCell!, triggeredSwipeWithType swipeType: JZSwipeType) {
-        
         if let indexPath = self.tableView.indexPathForCell(cell) {
             if swipeType.rawValue != JZSwipeTypeNone.rawValue {
                 cell.reset()

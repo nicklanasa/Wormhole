@@ -268,6 +268,7 @@
                         <barButtonItem image="Messages" id="r8k-Hp-EGO">
                             <connections>
                                 <action selector="messagesButtonTapped:" destination="yqo-vd-J8K" id="aNF-Wt-V64"/>
+                                <segue destination="61g-Ot-H3B" kind="show" identifier="MessagesSegue" id="MLl-Ms-bXG"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="Kh4-aD-h9u"/>
@@ -305,7 +306,6 @@
                         <segue destination="Hdo-ax-c9X" kind="presentation" id="ykc-Jy-SLH"/>
                         <segue destination="QDb-Kc-Q7i" kind="presentation" identifier="LoginSegue" modalTransitionStyle="crossDissolve" id="DoA-ah-cSI"/>
                         <segue destination="SEn-8E-jyR" kind="show" identifier="GallerySegue" id="pMg-rh-ZMv"/>
-                        <segue destination="PTZ-wg-Lzy" kind="presentation" identifier="MessagesSegue" modalTransitionStyle="crossDissolve" id="Frn-gh-Q2i"/>
                         <segue destination="oc0-6V-RMu" kind="presentation" identifier="PostSegue" modalTransitionStyle="crossDissolve" id="ufm-OF-Ing"/>
                         <segue destination="Wuv-iQ-z1V" kind="show" identifier="PostSubredditSegue" customClass="DismissSegue" customModule="MyReddit" id="yNw-36-nQb"/>
                         <segue destination="jZ6-4i-JFg" kind="show" identifier="CommentsSegue" id="pqF-Zz-63s"/>
@@ -1216,44 +1216,8 @@
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="556"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="LoadMoreHeader" rowHeight="60" id="x1D-qs-6mY" customClass="LoadMoreHeader" customModule="MyReddit" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="86" width="600" height="60"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="x1D-qs-6mY" id="BKv-iT-k1O">
-                                            <rect key="frame" x="0.0" y="0.0" width="600" height="59"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MzB-Z8-jER">
-                                                    <rect key="frame" x="8" y="15" width="584" height="30"/>
-                                                    <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="15"/>
-                                                    <state key="normal" title="Load More">
-                                                        <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                                    </state>
-                                                    <connections>
-                                                        <action selector="loadMoreButttonTapped:" destination="x1D-qs-6mY" eventType="touchUpInside" id="1F0-Vb-Mx1"/>
-                                                    </connections>
-                                                </button>
-                                                <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="2Xm-oD-bXn">
-                                                    <rect key="frame" x="290" y="20" width="20" height="20"/>
-                                                </activityIndicatorView>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="MzB-Z8-jER" firstAttribute="leading" secondItem="BKv-iT-k1O" secondAttribute="leadingMargin" id="BhV-nE-Ynf"/>
-                                                <constraint firstAttribute="bottomMargin" secondItem="MzB-Z8-jER" secondAttribute="bottom" constant="6" id="DNv-Pd-dx3"/>
-                                                <constraint firstItem="MzB-Z8-jER" firstAttribute="centerX" secondItem="BKv-iT-k1O" secondAttribute="centerX" id="R7p-HE-Zim"/>
-                                                <constraint firstItem="2Xm-oD-bXn" firstAttribute="centerY" secondItem="MzB-Z8-jER" secondAttribute="centerY" id="rbU-Xm-ZAW"/>
-                                                <constraint firstItem="2Xm-oD-bXn" firstAttribute="centerX" secondItem="MzB-Z8-jER" secondAttribute="centerX" id="tHx-IS-Rmh"/>
-                                                <constraint firstItem="MzB-Z8-jER" firstAttribute="top" secondItem="BKv-iT-k1O" secondAttribute="topMargin" constant="7" id="urU-LY-Hcx"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                        <connections>
-                                            <outlet property="activityIndicator" destination="2Xm-oD-bXn" id="xLa-jF-fcG"/>
-                                            <outlet property="loadMoreButton" destination="MzB-Z8-jER" id="B6V-Ml-DVs"/>
-                                        </connections>
-                                    </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="MessageCell" rowHeight="107" id="l0H-gQ-1ug" customClass="MessageCell" customModule="MyReddit" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="146" width="600" height="107"/>
+                                        <rect key="frame" x="0.0" y="86" width="600" height="107"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="l0H-gQ-1ug" id="TRq-x4-wld">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="106"/>
@@ -1344,6 +1308,7 @@
                             <constraint firstAttribute="trailing" secondItem="WzC-zn-tpo" secondAttribute="trailing" id="Zuc-Hu-vKF"/>
                             <constraint firstItem="cYO-aZ-ouF" firstAttribute="top" secondItem="PH8-DJ-3w4" secondAttribute="top" id="apT-TQ-fxZ"/>
                             <constraint firstItem="WzC-zn-tpo" firstAttribute="leading" secondItem="cYO-aZ-ouF" secondAttribute="leading" id="ix3-L8-bRW"/>
+                            <constraint firstItem="cYO-aZ-ouF" firstAttribute="top" secondItem="flb-yr-kyK" secondAttribute="bottom" constant="-64" id="lWp-2z-xYx"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="rl6-tq-iEM">
@@ -1371,7 +1336,7 @@
                     </connections>
                 </searchDisplayController>
             </objects>
-            <point key="canvasLocation" x="-1304" y="377"/>
+            <point key="canvasLocation" x="-1304" y="-403"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="cgN-eu-xP3">
@@ -2992,7 +2957,7 @@
         <!--messages-->
         <scene sceneID="oSc-L4-tsp">
             <objects>
-                <tableViewController id="61g-Ot-H3B" customClass="InboxesTableViewController" customModule="MyReddit" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController hidesBottomBarWhenPushed="YES" id="61g-Ot-H3B" customClass="InboxesTableViewController" customModule="MyReddit" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="WKc-br-dds">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -3231,20 +3196,14 @@
                             <outlet property="delegate" destination="61g-Ot-H3B" id="kbc-y3-0GF"/>
                         </connections>
                     </tableView>
-                    <toolbarItems>
-                        <barButtonItem image="Compose" id="1Qr-Pi-udi">
+                    <toolbarItems/>
+                    <navigationItem key="navigationItem" title="messages" id="fdN-wl-idq">
+                        <barButtonItem key="rightBarButtonItem" image="Compose" id="1Qr-Pi-udi">
                             <connections>
                                 <segue destination="AvG-a7-lzS" kind="show" id="2S1-bb-L8b"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem style="plain" systemItem="flexibleSpace" id="hML-QX-cl3"/>
-                        <barButtonItem image="Cancel" id="cFz-lg-fC3">
-                            <connections>
-                                <action selector="cancelButtonTapped:" destination="61g-Ot-H3B" id="rsH-Vq-ut0"/>
-                            </connections>
-                        </barButtonItem>
-                    </toolbarItems>
-                    <navigationItem key="navigationItem" title="messages" id="fdN-wl-idq"/>
+                    </navigationItem>
                     <connections>
                         <outlet property="commentRepliesCell" destination="cAt-9T-pXV" id="HdF-NK-zSa"/>
                         <outlet property="inboxCell" destination="flY-OR-Vwl" id="1Ow-Ut-ipC"/>
@@ -3259,7 +3218,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="NSH-9z-BVt" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1304" y="-403"/>
+            <point key="canvasLocation" x="-1304" y="-1209"/>
         </scene>
         <!--Page View Controller-->
         <scene sceneID="yEK-0m-Bd6">
@@ -3447,28 +3406,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6lI-mA-jLd" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-480" y="-1203"/>
-        </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="EbH-8g-U66">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" toolbarHidden="NO" id="PTZ-wg-Lzy" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="d5C-yC-MXr">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="mtL-s5-eNx">
-                        <rect key="frame" x="0.0" y="556" width="600" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </toolbar>
-                    <connections>
-                        <segue destination="61g-Ot-H3B" kind="relationship" relationship="rootViewController" id="AFI-Bh-BIy"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="5n0-Me-vSA" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-1308" y="-1203"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="Hq3-nw-PxJ">
@@ -4208,19 +4145,19 @@
         <image name="Up" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="vMB-6P-NDX"/>
-        <segue reference="pqF-Zz-63s"/>
+        <segue reference="ykc-Jy-SLH"/>
         <segue reference="yNw-36-nQb"/>
         <segue reference="oqy-7E-8ml"/>
         <segue reference="pMg-rh-ZMv"/>
-        <segue reference="DoA-ah-cSI"/>
         <segue reference="s4Y-Y8-M2P"/>
-        <segue reference="ykc-Jy-SLH"/>
+        <segue reference="DoA-ah-cSI"/>
         <segue reference="zMo-OM-Z5J"/>
-        <segue reference="Udn-dz-6HG"/>
         <segue reference="2S1-bb-L8b"/>
+        <segue reference="cNt-ex-e8B"/>
+        <segue reference="szf-5S-enI"/>
+        <segue reference="Abo-Jz-JcR"/>
+        <segue reference="Udn-dz-6HG"/>
         <segue reference="Nhl-Ro-yfO"/>
         <segue reference="nEx-7L-vW5"/>
-        <segue reference="q6K-ip-lpO"/>
     </inferredMetricsTieBreakers>
 </document>
