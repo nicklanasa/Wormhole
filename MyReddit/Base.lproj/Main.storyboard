@@ -269,7 +269,6 @@
                         <barButtonItem image="Messages" id="r8k-Hp-EGO">
                             <connections>
                                 <action selector="messagesButtonTapped:" destination="yqo-vd-J8K" id="aNF-Wt-V64"/>
-                                <segue destination="61g-Ot-H3B" kind="show" identifier="MessagesSegue" id="MLl-Ms-bXG"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="Kh4-aD-h9u"/>
@@ -312,6 +311,7 @@
                         <segue destination="jZ6-4i-JFg" kind="show" identifier="CommentsSegue" id="pqF-Zz-63s"/>
                         <segue destination="jZ6-4i-JFg" kind="show" id="mak-u7-jsS"/>
                         <segue destination="a2h-mb-3Wm" kind="show" identifier="AccountsSegue" id="oqy-7E-8ml"/>
+                        <segue destination="61g-Ot-H3B" kind="show" identifier="MessagesSegue" id="OSf-KW-HC0"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="J3o-0W-bFH" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -609,7 +609,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QOH-Pl-XsT" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="332" y="1091"/>
+            <point key="canvasLocation" x="1106" y="1137"/>
         </scene>
         <!--unlock everything-->
         <scene sceneID="s62-b3-B7d">
@@ -1355,7 +1355,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qhI-iK-dH6" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1106" y="387"/>
+            <point key="canvasLocation" x="1106" y="377"/>
         </scene>
         <!--compose message-->
         <scene sceneID="Ili-gZ-paD">
@@ -3280,14 +3280,14 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" translatesAutoresizingMaskIntoConstraints="NO" id="mjp-MP-giA">
-                                <rect key="frame" x="0.0" y="64" width="600" height="492"/>
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="AccountCell" id="CLk-6Q-cq6" customClass="UserInfoCell" customModule="MyReddit" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="113.5" width="600" height="44"/>
+                                        <rect key="frame" x="0.0" y="114" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="CLk-6Q-cq6" id="Khm-xB-s5m">
-                                            <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="budakikickflip" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cQx-44-W6f">
@@ -3327,31 +3327,24 @@
                                     <outlet property="delegate" destination="a2h-mb-3Wm" id="DWd-17-7JB"/>
                                 </connections>
                             </tableView>
-                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tEd-JK-9tL">
-                                <rect key="frame" x="0.0" y="556" width="600" height="44"/>
-                                <items>
-                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="UDG-W2-wau"/>
-                                    <barButtonItem title="add account" id="m8L-gK-LPU">
-                                        <connections>
-                                            <segue destination="Cxf-Qd-xoU" kind="show" identifier="LoginSegue" id="zMo-OM-Z5J"/>
-                                        </connections>
-                                    </barButtonItem>
-                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="ZsT-oL-LMR"/>
-                                </items>
-                            </toolbar>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="tEd-JK-9tL" firstAttribute="top" secondItem="mjp-MP-giA" secondAttribute="bottom" id="1kH-F8-bcq"/>
-                            <constraint firstAttribute="trailing" secondItem="tEd-JK-9tL" secondAttribute="trailing" id="4W3-rV-qbn"/>
-                            <constraint firstItem="tEd-JK-9tL" firstAttribute="leading" secondItem="mjp-MP-giA" secondAttribute="leading" id="5zT-oY-i64"/>
-                            <constraint firstItem="tEd-JK-9tL" firstAttribute="trailing" secondItem="mjp-MP-giA" secondAttribute="trailing" id="ENv-P8-tM2"/>
-                            <constraint firstItem="mjp-MP-giA" firstAttribute="top" secondItem="lJ2-No-nsZ" secondAttribute="bottom" id="OkB-2c-yn2"/>
-                            <constraint firstItem="mjp-MP-giA" firstAttribute="leading" secondItem="dTD-27-b20" secondAttribute="leading" id="rSn-lk-8eh"/>
-                            <constraint firstItem="tEd-JK-9tL" firstAttribute="bottom" secondItem="tk8-uN-cVp" secondAttribute="top" id="s5F-Tq-HLE"/>
+                            <constraint firstItem="mjp-MP-giA" firstAttribute="top" secondItem="dTD-27-b20" secondAttribute="top" id="QGw-tr-mHL"/>
+                            <constraint firstAttribute="trailing" secondItem="mjp-MP-giA" secondAttribute="trailing" id="oVV-Nw-dpF"/>
+                            <constraint firstItem="mjp-MP-giA" firstAttribute="leading" secondItem="dTD-27-b20" secondAttribute="leading" id="uGe-mW-LXr"/>
+                            <constraint firstAttribute="bottom" secondItem="mjp-MP-giA" secondAttribute="bottom" id="wnJ-Xm-aqe"/>
                         </constraints>
                     </view>
-                    <toolbarItems/>
+                    <toolbarItems>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="qwt-gI-6dz"/>
+                        <barButtonItem title="add account" id="m8L-gK-LPU">
+                            <connections>
+                                <segue destination="Cxf-Qd-xoU" kind="show" identifier="LoginSegue" id="zMo-OM-Z5J"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="EAA-lZ-fuC"/>
+                    </toolbarItems>
                     <navigationItem key="navigationItem" title="accounts" id="Dx2-oh-pnr">
                         <barButtonItem key="rightBarButtonItem" title="edit" id="ii2-hS-uhN">
                             <connections>
@@ -3359,7 +3352,6 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
-                    <nil key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="editButton" destination="ii2-hS-uhN" id="3NP-pX-c27"/>
                         <outlet property="tableView" destination="mjp-MP-giA" id="z4u-3E-KQ0"/>
@@ -4149,16 +4141,16 @@
         <segue reference="ykc-Jy-SLH"/>
         <segue reference="yNw-36-nQb"/>
         <segue reference="oqy-7E-8ml"/>
-        <segue reference="pMg-rh-ZMv"/>
         <segue reference="s4Y-Y8-M2P"/>
         <segue reference="DoA-ah-cSI"/>
-        <segue reference="zMo-OM-Z5J"/>
-        <segue reference="2S1-bb-L8b"/>
-        <segue reference="cNt-ex-e8B"/>
-        <segue reference="szf-5S-enI"/>
-        <segue reference="Abo-Jz-JcR"/>
-        <segue reference="Udn-dz-6HG"/>
+        <segue reference="pMg-rh-ZMv"/>
+        <segue reference="pqF-Zz-63s"/>
         <segue reference="Nhl-Ro-yfO"/>
-        <segue reference="nEx-7L-vW5"/>
+        <segue reference="O8K-LF-8mj"/>
+        <segue reference="zMo-OM-Z5J"/>
+        <segue reference="Udn-dz-6HG"/>
+        <segue reference="2S1-bb-L8b"/>
+        <segue reference="Abo-Jz-JcR"/>
+        <segue reference="cNt-ex-e8B"/>
     </inferredMetricsTieBreakers>
 </document>
