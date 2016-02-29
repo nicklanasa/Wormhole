@@ -552,31 +552,49 @@ UISearchBarDelegate {
         
         alert.addAction(UIAlertAction(title: "Ok", style: .Default, handler: { (action) -> Void in
             if let textfield = alert.textFields?.first {
-                
-                let multiRedditName = textfield.text!.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet()).stringByTrimmingCharactersInSet(NSCharacterSet(charactersInString: " "))
+
+                let whiteCharacterSet = NSCharacterSet.whitespaceAndNewlineCharacterSet()
+                let characterSet = NSCharacterSet(charactersInString: " ")
+                let multiRedditName = textfield.text!.stringByTrimmingCharactersInSet(whiteCharacterSet).stringByTrimmingCharactersInSet(characterSet)
                 
                 if multiRedditName.characters.count == 0 || multiRedditName.componentsSeparatedByString(" ").count > 1 {
-                    UIAlertView(title: "Error!", message: "You must enter in a valid multireddit name! Make sure it doesn't have any spaces in it.", delegate: self, cancelButtonTitle: "Ok").show()
+                    UIAlertView(title: "Error!",
+                                message: "You must enter in a valid multireddit name! Make sure it doesn't have any spaces in it.",
+                                delegate: self,
+                                cancelButtonTitle: "Ok").show()
                     LocalyticsSession.shared().tagEvent("Invalid multireddit name")
                 } else {
                     
                     if multiRedditName.characters.count < 3 {
                         LocalyticsSession.shared().tagEvent("Invalid multireddit name")
-                        UIAlertView(title: "Error!", message: "Multireddit name must be greater than 3 characters!", delegate: self, cancelButtonTitle: "Ok").show()
+                        UIAlertView(title: "Error!",
+                                    message: "Multireddit name must be greater than 3 characters!",
+                                    delegate: self,
+                                    cancelButtonTitle: "Ok").show()
                     } else {
-                        let visibilityAlert = UIAlertController(title: "Visibility", message: "Please select the visibility for the multireddit.", preferredStyle: .Alert)
+                        let visibilityAlert = UIAlertController(title: "Visibility",
+                                                                message: "Please select the visibility for the multireddit.",
+                                                                preferredStyle: .Alert)
+                        
                         visibilityAlert.addAction(UIAlertAction(title: "Public", style: .Default, handler: { (a) -> Void in
                             LocalyticsSession.shared().tagEvent("Created public multireddit")
-                            RedditSession.sharedSession.createMultiReddit(multiRedditName, visibility: .Public, completion: { (error) -> () in
-                                self.syncMultiReddits()
-                            })
+                            RedditSession.sharedSession.createMultiReddit(
+                                multiRedditName,
+                                visibility: .Public,
+                                completion: { (error) -> () in
+                                    print(error)
+                                    self.syncMultiReddits()
+                                })
                         }))
                         
                         visibilityAlert.addAction(UIAlertAction(title: "Private", style: .Default, handler: { (a) -> Void in
                             LocalyticsSession.shared().tagEvent("Created private multireddit")
-                            RedditSession.sharedSession.createMultiReddit(multiRedditName, visibility: .Private, completion: { (error) -> () in
-                                self.syncMultiReddits()
-                            })
+                            RedditSession.sharedSession.createMultiReddit(
+                                multiRedditName,
+                                visibility: .Private,
+                                completion: { (error) -> () in
+                                    self.syncMultiReddits()
+                                })
                         }))
                         
                         self.presentViewController(visibilityAlert, animated: true, completion: nil)
