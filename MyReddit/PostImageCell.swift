@@ -46,6 +46,7 @@ class PostImageCell: PostCell {
                         self.postImageView.alpha = 1.0
                         if error != nil {
                             self.postImageView.image = UIImage(named: "Reddit")
+                            self.postImageView.contentMode = .ScaleAspectFit
                         } else {
                             self.postImageView.image = image
                         }
@@ -53,6 +54,7 @@ class PostImageCell: PostCell {
                 })
             } else {
                 self.postImageView.image = UIImage(named: "Reddit")
+                self.postImageView.contentMode = .ScaleAspectFit
             }
 
             if self.link.upvoted() {
