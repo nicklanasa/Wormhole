@@ -82,7 +82,9 @@ UISplitViewControllerDelegate {
     }
     
     override func viewWillDisappear(animated: Bool) {
-        self.navigationController?.setNavigationBarHidden(false, animated: true)
+        if let navigationController = self.navigationController as? ScrollingNavigationController {
+            navigationController.stopFollowingScrollView()
+        }
         self.navigationController?.setToolbarHidden(false, animated: true)
     }
     

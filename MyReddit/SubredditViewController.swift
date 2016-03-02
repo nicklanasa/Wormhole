@@ -282,11 +282,11 @@ PostCellDelegate {
                                             self.performSegueWithIdentifier("SubredditLink", sender: link)
                                         })
                                     } else {
-                                        self.performSegueWithIdentifier("GallerySegue", sender: [cell.postImageView?.image ?? link.URL])
+                                        self.performSegueWithIdentifier("GallerySegue", sender: [link.urlForLink() ?? ""])
                                     }
                                 }
                             } else {
-                                self.performSegueWithIdentifier("GallerySegue", sender: [cell.postImageView?.image ?? link.URL])
+                                self.performSegueWithIdentifier("GallerySegue", sender: [link.urlForLink() ?? ""])
                             }
                         }
                     } else {
