@@ -228,11 +228,11 @@ UISplitViewControllerDelegate {
     
     // MARK: Filtering
     
-    func filterLinks(filterSwtichType: FilterSwitchType) {
+    func filterLinks(category: RKSubredditCategory) {
         LocalyticsSession.shared().tagEvent("Filtered subreddit")
         self.pagination = nil
         self.links = nil
-        self.currentCategory = RKSubredditCategory(rawValue: UInt(filterSwtichType.rawValue))
+        self.currentCategory = category
         self.fetchLinks()
     }
     
