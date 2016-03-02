@@ -9,6 +9,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>AMScrollingNavbar.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Appirater-Appirater.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -91,92 +96,6 @@
 		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
-	<dict>
-		<key>11EBBF393724CBAC8830BA0FCB5F327A</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>283E2609D30F290501ACB967CF1DF357</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>2FC341D1F3A0762EBBF5154656EF8121</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>4878C70B21CA37D7CB8A476BF986741B</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>5045E2191A67C4A8710BF9412762866F</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>5FD330D6D5820C41380EABC9C888D271</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>79DBF677380E4EC4174E0C39D5AACFCC</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>7B70870D8B461DF43521B992C810D78B</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>7D98879F77A872DC32F02F57CD2DDEA8</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>86F7EF96CBDF6B406DCDE475FB9C4D63</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>871A7BA32C7B5C87DF08B9ECB4DFDC3C</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>AFEDA8059B169E4068B6DCC4D2F0B0E9</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>B0F43767E90828480EECBB12E62159D5</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>BEA652D99E0FD7F74EDD927960AFF5EE</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>C452019F0D7F36DCD5DB5E4CC47B6975</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>E61CE3B6DFA1FE6B3E296965C76C0E10</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>EF22642C98D54B4A51CF036D49BA8A01</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-	</dict>
+	<dict/>
 </dict>
 </plist>

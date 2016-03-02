@@ -20,6 +20,7 @@ PODS:
   - AFNetworking/UIKit (2.6.3):
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
+  - AMScrollingNavbar (2.0.11)
   - Appirater (2.0.5)
   - BDGInAppPurchase (0.0.2)
   - DateTools (1.7.0)
@@ -46,6 +47,7 @@ PODS:
   - XNGMarkdownParser (0.3.2)
 
 DEPENDENCIES:
+  - AMScrollingNavbar (~> 2.0.1)
   - Appirater
   - BDGInAppPurchase
   - DateTools
@@ -64,6 +66,7 @@ DEPENDENCIES:
 
 SPEC CHECKSUMS:
   AFNetworking: cb8d14a848e831097108418f5d49217339d4eb60
+  AMScrollingNavbar: a278fbd74870e9983bb6318ca3b64011f9571269
   Appirater: e7c0a47fb67ee5041ce8479e6ba960927fb40264
   BDGInAppPurchase: 9f466e82a4a3e1d8b744268280748c1d91ddda67
   DateTools: 53288ee8b905fdc75897a1e6b5cc0144b14cba60

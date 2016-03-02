@@ -85,6 +85,7 @@ strip_invalid_archs() {
 
 if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "Pods/AFNetworking.framework"
+  install_framework "Pods/AMScrollingNavbar.framework"
   install_framework "Pods/Appirater.framework"
   install_framework "Pods/BDGInAppPurchase.framework"
   install_framework "Pods/DateTools.framework"
@@ -102,6 +103,7 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "Pods/AFNetworking.framework"
+  install_framework "Pods/AMScrollingNavbar.framework"
   install_framework "Pods/Appirater.framework"
   install_framework "Pods/BDGInAppPurchase.framework"
   install_framework "Pods/DateTools.framework"

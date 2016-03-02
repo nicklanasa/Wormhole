@@ -8,8 +8,9 @@
 
 import Foundation
 import UIKit
+import AMScrollingNavbar
 
-class NavBarController: UINavigationController {
+class NavBarController: ScrollingNavigationController {
     override func viewDidLoad() {
         // Add transparency.
         let rect = CGRectMake(0, 0, 1, 1)

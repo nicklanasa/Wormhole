@@ -14,10 +14,10 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = '66A2C1B409F5002BE0243C77'
-               BlueprintName = 'SDWebImage'
+               BlueprintIdentifier = '0D1821D91613C62D9C6CF563'
+               BlueprintName = 'AMScrollingNavbar'
                ReferencedContainer = 'container:Pods.xcodeproj'
-               BuildableName = 'SDWebImage.framework'>
+               BuildableName = 'AMScrollingNavbar.framework'>
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>

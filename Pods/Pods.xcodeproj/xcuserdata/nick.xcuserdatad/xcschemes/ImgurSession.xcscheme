@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = '8A7C3711348CF08F997ADAD0'
+               BlueprintIdentifier = 'D0B90AD8B76E664D1F563D89'
                BlueprintName = 'ImgurSession'
                ReferencedContainer = 'container:Pods.xcodeproj'
                BuildableName = 'ImgurSession.framework'>

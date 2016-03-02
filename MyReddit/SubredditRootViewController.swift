@@ -8,6 +8,7 @@
 
 import UIKit
 import MBProgressHUD
+import AMScrollingNavbar
 
 enum FilterSwitchType: Int {
     case Hot
@@ -94,7 +95,7 @@ UISplitViewControllerDelegate {
             forControlEvents: .ValueChanged)
         self.tableView.addSubview(self.refreshControl)
         
-        self.tableView.tableFooterView = UIView()
+        self.tableView.tableFooterView = UIView()        
         
         switch UIDevice.currentDevice().userInterfaceIdiom {
         case .Pad:
@@ -287,7 +288,15 @@ UISplitViewControllerDelegate {
 
     func scrollViewWillBeginDecelerating(scrollView: UIScrollView){
         let hide = scrollView.contentOffset.y > self.lastOffsetY
-        self.navigationController?.setNavigationBarHidden(hide, animated: true)
+
+        if let navigationController = self.navigationController as? ScrollingNavigationController {
+            if hide {
+                navigationController.followScrollView(tableView, delay: 50.0)
+            } else {
+                navigationController.stopFollowingScrollView()
+            }
+        }
+       
         self.navigationController?.setToolbarHidden(hide, animated: true)
     }
     

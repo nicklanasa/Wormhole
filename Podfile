@@ -1,7 +1,5 @@
 platform :ios, '8.0'
 
-use_frameworks!
-
 link_with 'MyReddit', 'MyReddit-iPad', 'MyRedditTests', 'MyRedditUITests'
 
 pod 'Localytics-AMP', '~> 2.0'
@@ -19,3 +17,6 @@ pod 'DateTools'
 pod 'RATreeView'
 pod 'Google-Mobile-Ads-SDK'
 pod 'TTTAttributedLabel'
+pod 'AMScrollingNavbar', '~> 2.0.1'
+
+use_frameworks!
