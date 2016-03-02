@@ -80,8 +80,9 @@ TTTAttributedLabelDelegate {
     
     var currentTappedURL: NSURL! {
         didSet {
-            self.commentDelegate?.commentCell?(self,
-                didTapLink: self.currentTappedURL)
+            if let url = self.currentTappedURL {
+                self.commentDelegate?.commentCell?(self, didTapLink: url)
+            }
         }
     }
     
@@ -101,7 +102,7 @@ TTTAttributedLabelDelegate {
        
         self.selectionStyle = .Default
     }
-    
+
     var link: RKLink! {
         didSet {
             
