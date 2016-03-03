@@ -15,12 +15,21 @@ class NoDataCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        self.updateAppearance()
+    }
 
+    func updateAppearance() {
         self.titleLabel.font = UIFont(name: MyRedditTitleFont.fontName,
-                                         size: SettingsManager.defaultManager.titleFontSizeForDefaultTextSize)
+                                      size: SettingsManager.defaultManager.titleFontSizeForDefaultTextSize)
         
         self.titleLabel.textColor = MyRedditLabelColor
         self.contentView.backgroundColor = MyRedditBackgroundColor
+        self.backgroundColor = MyRedditBackgroundColor
         self.selectionStyle = .None
+    }
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        self.updateAppearance()
     }
 }

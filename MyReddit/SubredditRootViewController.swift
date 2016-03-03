@@ -76,7 +76,9 @@ UISplitViewControllerDelegate {
         LocalyticsSession.shared().tagScreen("Subreddit")
         super.viewWillAppear(animated)
         dispatch_async(dispatch_get_main_queue()) { () -> Void in
-            self.tableView.reloadData()
+            if let indexPaths = self.tableView.indexPathsForVisibleRows {
+                self.tableView.reloadRowsAtIndexPaths(indexPaths, withRowAnimation: .None)
+            }
         }
         self.preferredAppearance()
     }

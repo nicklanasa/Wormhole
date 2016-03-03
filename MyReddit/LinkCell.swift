@@ -31,17 +31,8 @@ class LinkCell: UITableViewCell {
     private func updateAppearance() {
         self.linkTextField.attributedPlaceholder = NSAttributedString(string: "enter link...",
             attributes: [NSForegroundColorAttributeName : UIColor.lightGrayColor()])
-        
-        if SettingsManager.defaultManager.valueForSetting(.NightMode) {
-            let image = UIImage(named: "CameraWhite")?.imageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal)
-            self.addImageButton.setImage(image, forState: .Normal)
-        } else {
-            let image = UIImage(named: "Camera")?.imageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal)
-            self.addImageButton.setImage(image, forState: .Normal)
-        }
-        
+               
         self.backgroundColor = MyRedditBackgroundColor
-
         self.linkTextField.textColor = MyRedditLabelColor
     }
     

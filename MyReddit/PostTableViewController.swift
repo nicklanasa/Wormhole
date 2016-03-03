@@ -106,8 +106,13 @@ UINavigationControllerDelegate {
                         forState: .Normal)
                     cell.linkTextField.enabled = false
                 } else {
-                    cell.addImageButton.setBackgroundImage(UIImage(named: "Camera"),
-                        forState: .Normal)
+                    if SettingsManager.defaultManager.valueForSetting(.NightMode) {
+                        let image = UIImage(named: "CameraWhite")?.imageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal)
+                        cell.addImageButton.setBackgroundImage(image, forState: .Normal)
+                    } else {
+                        let image = UIImage(named: "Camera")?.imageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal)
+                        cell.addImageButton.setBackgroundImage(image, forState: .Normal)
+                    }
                     cell.linkTextField.enabled = true
                 }
                 
