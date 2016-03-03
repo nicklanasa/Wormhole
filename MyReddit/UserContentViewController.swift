@@ -645,7 +645,7 @@ AddCommentViewControllerDelegate {
     
     func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
         let endScrolling = scrollView.contentOffset.y + scrollView.frame.size.height
-        if endScrolling >= scrollView.contentSize.height && !self.fetchingMore {
+        if endScrolling >= scrollView.contentSize.height && !self.fetchingMore && self.pagination != nil {
             self.hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
             self.fetchingMore = true
             self.syncContent()
