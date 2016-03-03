@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 import MBProgressHUD
+import SafariServices
 
 class LinkViewController: RootViewController, UITextViewDelegate {
     
@@ -306,7 +307,7 @@ class LinkViewController: RootViewController, UITextViewDelegate {
     
     @IBAction func shareButtonTapped(sender: AnyObject) {
         let alert = UIAlertController.swipeShareAlertControllerWithLink(self.link) { (url, action) -> () in
-            var objectsToShare = ["\(self.link.title) @myreddit", url]
+            let objectsToShare = ["\(self.link.title) @myreddit", url]
                         
             let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
             
@@ -335,7 +336,12 @@ class LinkViewController: RootViewController, UITextViewDelegate {
     }
     
     func textView(textView: UITextView, shouldInteractWithURL URL: NSURL, inRange characterRange: NSRange) -> Bool {
-        self.performSegueWithIdentifier("WebSegue", sender: URL)
+        if #available(iOS 9.0, *) {
+            let svc = SFSafariViewController(URL: URL, entersReaderIfAvailable: true)
+            self.presentViewController(svc, animated: true, completion: nil)
+        } else {
+            self.performSegueWithIdentifier("WebSegue", sender: URL)
+        }
         return false
     }
     

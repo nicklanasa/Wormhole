@@ -30,6 +30,7 @@ PODS:
   - ImgurSession (1.2):
     - AFNetworking
   - JZSwipeCell (1.1)
+  - KeychainAccess (2.3.3)
   - Localytics-AMP (2.71.0)
   - Mantle (1.5.6):
     - Mantle/extobjc (= 1.5.6)
@@ -55,6 +56,7 @@ DEPENDENCIES:
   - ImgurAnonymousAPIClient
   - ImgurSession
   - JZSwipeCell (~> 1.1)
+  - KeychainAccess
   - Localytics-AMP (~> 2.0)
   - MBProgressHUD
   - NSDate+Calendar
@@ -74,6 +76,7 @@ SPEC CHECKSUMS:
   ImgurAnonymousAPIClient: d1887ebe11b64a44ede12928b101d1f1c0099c2b
   ImgurSession: 3ded7eec93121fcf8d1e9f3f1783b8d764c846d3
   JZSwipeCell: 662d75e1ed6805abbd977dee70e7dac807853109
+  KeychainAccess: 9b7e49e48277e329b1b3195e54697ed313d30acf
   Localytics-AMP: 8cc9eba1d63fa50c5ec780451dfe00b4fbad4fb9
   Mantle: a197db93e0f1e36194b1fdbc078219a8492eaef2
   MBProgressHUD: 1569cf7ace17a8bac47aabfbb8580a49690386d1

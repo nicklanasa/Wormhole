@@ -135,6 +135,7 @@
         <attribute name="hasMail" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="hasModeratorMail" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="hasVerifiedEmailAddress" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="identifier" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="linkKarma" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="mod" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="modHash" optional="YES" attributeType="String" syncable="YES"/>
@@ -149,6 +150,6 @@
         <element name="Message" positionX="18" positionY="180" width="128" height="240"/>
         <element name="MultiReddit" positionX="0" positionY="135" width="128" height="163"/>
         <element name="Subreddit" positionX="-63" positionY="-18" width="128" height="495"/>
-        <element name="User" positionX="-36" positionY="153" width="128" height="240"/>
+        <element name="User" positionX="-36" positionY="153" width="128" height="255"/>
     </elements>
 </model>

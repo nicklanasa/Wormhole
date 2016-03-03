@@ -25,11 +25,7 @@ UITableViewDelegate {
     var user: RKUser?
     
     @IBAction func cancelButtonTapped(sender: AnyObject) {
-        if let _ = self.splitViewController {
-            self.navigationController?.popViewControllerAnimated(true)
-        } else {
-            self.dismissViewControllerAnimated(true, completion: nil)
-        }
+        self.navigationController?.popViewControllerAnimated(true)
     }
     
     @IBAction func logoutButtonTapped(sender: AnyObject) {
@@ -128,7 +124,7 @@ UITableViewDelegate {
                     if indexPath.row == 0 {
                         cell.infoLabel.text = user.username
                     } else {
-                        cell.infoLabel.text = user.created.timeAgoSinceNow()
+                        cell.infoLabel.text = user.created?.timeAgoSinceNow()
                     }
                     
                     cell.selectionStyle = .None

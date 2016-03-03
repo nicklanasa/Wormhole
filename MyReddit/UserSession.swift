@@ -18,7 +18,7 @@ class UserSession {
     typealias ErrorCompletion = (error: NSError?) -> ()
     
     init() {
-        
+        self.users = self.getUsers()
     }
     
     class var sharedSession : UserSession {
@@ -31,7 +31,50 @@ class UserSession {
         }
     }
     
-    var currentUser: User?
+    var currentUser: RKUser? {
+        didSet {
+            if let user = self.currentUser {
+                self.addUser(user)
+            }
+        }
+    }
+
+    var users: [RKUser]? {
+        didSet {
+            if let users = self.users {
+                let data = NSKeyedArchiver.archivedDataWithRootObject(users)
+                NSUserDefaults.standardUserDefaults().setObject(data, forKey: "users")
+            } else {
+                NSUserDefaults.standardUserDefaults().setObject(nil, forKey: "users")
+            }
+        }
+    }
+    
+    func deleteUser(user: RKUser) {
+        if let index = self.users?.indexOf(user) {
+            self.users?.removeAtIndex(index)
+        }
+    }
+    
+    func addUser(user: RKUser) {
+        if self.users == nil {
+            self.users = [user]
+        } else {
+            if self.users?.indexOf(user) == nil {
+                self.users?.append(user)
+            }
+        }
+    }
+    
+    func getUsers() -> [RKUser]? {
+        if let usersData = NSUserDefaults.standardUserDefaults().objectForKey("users") as? NSData {
+            if let users = NSKeyedUnarchiver.unarchiveObjectWithData(usersData) as? [RKUser] {
+                return users
+            }
+        }
+        
+        return nil
+    }
     
     func logout() {
         self.currentUser = nil
@@ -43,29 +86,43 @@ class UserSession {
     }
     
     func loginWithUsername(username: String, password: String, completion: ErrorCompletion) {
-        
         LocalyticsSession.shared().tagEvent("Logged in")
+                
+        let c: ErrorCompletion = {
+            error in
+            self.currentUser = RKClient.sharedClient().currentUser
+            
+            // TODO: Put in keychain
+            NSUserDefaults.standardUserDefaults().setObject(password, forKey: "password")
+            NSUserDefaults.standardUserDefaults().setObject(username, forKey: "username")
+            
+            completion(error: error)
+        }
         
-        self.logout()
-        
-        RKClient.sharedClient().signInWithUsername(username, password: password) { (error) -> Void in
-            if error != nil {
-                completion(error: error)
+        RKClient.sharedClient().signInWithUsername(username, password: password, completion: c)
+    }
+    
+    func openSessionWithCompletion(completion: ErrorCompletion) {
+        if !UserSession.sharedSession.isSignedIn {
+            if let username = NSUserDefaults.standardUserDefaults().objectForKey("username") as? String,
+                let password = NSUserDefaults.standardUserDefaults().objectForKey("password") as? String {
+                    let c: ErrorCompletion = {
+                        error in
+                        completion(error: error)
+                    }
+                    self.loginWithUsername(username, password: password, completion: c)
             } else {
-                let redditUser = RKClient.sharedClient().currentUser
-                DataManager.manager.datastore.addUser(redditUser, password: password, completion: { (user, error) -> () in
-                    self.currentUser = user
-                    
-                    NSUserDefaults.standardUserDefaults().setObject(password, forKey: "password")
-                    NSUserDefaults.standardUserDefaults().setObject(username, forKey: "username")
-                    
-                    completion(error: error)
-                })
+                completion(error: nil)
             }
+        } else {
+            completion(error: nil)
         }
     }
     
-    func userContent(user: RKUser, category: RKUserContentCategory, pagination: RKPagination?, completion: PaginationCompletion) {
+    func userContent(user: RKUser,
+                     category: RKUserContentCategory,
+                     pagination: RKPagination?,
+                     completion: PaginationCompletion) {
         RKClient.sharedClient().contentForUser(user,
             category: category,
             pagination: pagination) { (results, pagination, error) -> Void in

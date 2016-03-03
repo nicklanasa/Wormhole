@@ -18,5 +18,6 @@ pod 'RATreeView'
 pod 'Google-Mobile-Ads-SDK'
 pod 'TTTAttributedLabel'
 pod 'AMScrollingNavbar', '~> 2.0.1'
+pod 'KeychainAccess'
 
 use_frameworks!

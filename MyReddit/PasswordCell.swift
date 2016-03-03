@@ -13,16 +13,11 @@ protocol PasswordCellDelegate {
     func passwordCell(cell: PasswordCell, didTapReturnButton sender: AnyObject)
 }
 
-
 class PasswordCell: UITableViewCell, UITextFieldDelegate {
     
     var delegate: PasswordCellDelegate?
     
-    var user: User! {
-        didSet {
-            self.passwordTextField.text = user.password
-        }
-    }
+    var user: RKUser!
     
     override func awakeFromNib() {
         self.passwordTextField.delegate = self

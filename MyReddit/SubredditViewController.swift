@@ -31,16 +31,8 @@ PostCellDelegate {
         
         self.tableView.estimatedRowHeight = 80.0
         self.tableView.rowHeight = UITableViewAutomaticDimension
-        
-        if let username = NSUserDefaults.standardUserDefaults().objectForKey("username") as? String {
-            if let password = NSUserDefaults.standardUserDefaults().objectForKey("password") as? String {
-                UserSession.sharedSession.loginWithUsername(username, password: password, completion: { (error) -> () in
-                    self.fetchLinks()
-                })
-            } else {
-                self.fetchLinks()
-            }
-        } else {
+
+        UserSession.sharedSession.openSessionWithCompletion { (error) -> () in
             self.fetchLinks()
         }
         

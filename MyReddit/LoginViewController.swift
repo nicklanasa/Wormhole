@@ -27,13 +27,15 @@ PasswordCellDelegate {
         }
     }
     
-    var user: User?
+    var user: RKUser?
 
     @IBAction func loginButtonPressed(sender: AnyObject) {
         let emailCell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) as! EmailCell
         let passwordCell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 1, inSection: 0)) as! PasswordCell
         
         self.hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
+
+        UserSession.sharedSession.logout()
         
         if emailCell.usernameTextField.text?.characters.count > 0 && passwordCell.passwordTextField.text?.characters.count > 0 {
             UserSession.sharedSession.loginWithUsername(emailCell.usernameTextField.text!,

@@ -17,7 +17,7 @@ class EmailCell: UITableViewCell, UITextFieldDelegate {
     
     var delegate: EmailCellDelegate?
     
-    var user: User! {
+    var user: RKUser! {
         didSet {
             self.usernameTextField.text = user.username
         }

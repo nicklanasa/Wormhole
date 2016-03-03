@@ -40,7 +40,7 @@ class Datastore {
             self.persistentStoreCoordinator = NSPersistentStoreCoordinator(managedObjectModel: self.managedObjectModel)
             
             do {
-                try self.persistentStoreCoordinator.addPersistentStoreWithType(NSInMemoryStoreType,
+                try self.persistentStoreCoordinator.addPersistentStoreWithType(NSSQLiteStoreType,
                     configuration: nil,
                     URL: storeURL,
                     options: nil)
@@ -68,40 +68,42 @@ class Datastore {
     // MARK: User
     
     func addUser(user: AnyObject?, password: String, completion: (user: User, error: NSError?) -> ()) {
-        self.workerContext.performBlock { () -> Void in
+        var addedUser: User!
+
+        if let redditUser = user as? RKUser {
+            let request = NSFetchRequest(entityName: "User")
+            let predicate = NSPredicate(format: "identifier = %@", redditUser.identifier)
+            request.fetchLimit = 1
+            request.predicate = predicate
             
-            var addedUser: User!
-            
-            if let redditUser = user as? RKUser {
-                let request = NSFetchRequest(entityName: "User")
-                let predicate = NSPredicate(format: "username = %@", redditUser.username)
-                request.fetchLimit = 1
-                request.predicate = predicate
-                
-                let results: [AnyObject]?
-                do {
-                    results = try self.workerContext.executeFetchRequest(request)
-                } catch {
-                    results = nil
-                }
-                
-                var managedUser: User
-                if results?.count > 0 {
-                    managedUser = results?[0] as! User
-                } else {
-                    managedUser = NSEntityDescription.insertNewObjectForEntityForName("User",
-                        inManagedObjectContext: self.workerContext) as! User
-                }
-                
-                managedUser.parseUser(redditUser, password: password)
-                
-                addedUser = managedUser
+            let results: [AnyObject]?
+            do {
+                results = try self.workerContext.executeFetchRequest(request)
+            } catch {
+                results = nil
             }
             
-            self.saveDatastoreWithCompletion({ (error) -> () in
-                completion(user: addedUser, error: nil)
-            })
+            var managedUser: User!
+            if results?.count > 0 {
+                managedUser = results?[0] as! User
+            } else {
+                managedUser = NSEntityDescription.insertNewObjectForEntityForName("User",
+                                                                                  inManagedObjectContext: self.workerContext) as! User
+            }
+            
+            print(redditUser)
+            print(managedUser)
+            
+            managedUser.parseUser(redditUser, password: password)
+            addedUser = managedUser
         }
+
+        let c: ErrorCompletion = {
+		    error in
+		    completion(user: addedUser, error: nil)
+        }
+
+        self.saveDatastoreWithCompletion(c)
     }
     
     func deleteUser(user: User, completion: (error: NSError?) -> ()) {
@@ -131,7 +133,6 @@ class Datastore {
     }
     
     func saveDatastoreWithCompletion(completion: (error: NSError?) -> ()) {
-        
         let totalStartTime = NSDate()
         self.workerContext.performBlock { () -> Void in
             var error: NSError?
@@ -154,13 +155,7 @@ class Datastore {
                 
                 startTime = NSDate()
                 self.mainQueueContext.performBlockAndWait({ () -> Void in
-                    do {
-                        try self.mainQueueContext.save()
-                    } catch let error1 as NSError {
-                        error = error1
-                    } catch {
-                        fatalError()
-                    }
+                   
                 })
                 
                 if error == nil {
