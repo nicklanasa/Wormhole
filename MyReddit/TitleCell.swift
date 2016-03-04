@@ -24,6 +24,10 @@ class TitleCell: PostCell {
     
     override var link: RKLink! {
         didSet {
+            
+            self.titleLabel.backgroundColor = MyRedditBackgroundColor
+            self.titleLabel.textColor = MyRedditLabelColor
+            
             self.titleLabel.text = link.title
             self.scoreLabel.text = link.score.description
             
@@ -59,20 +63,23 @@ class TitleCell: PostCell {
             
             self.titleLabel.font = UIFont(name: self.titleLabel.font.fontName,
                 size: SettingsManager.defaultManager.titleFontSizeForDefaultTextSize)
-            
-            self.titleLabel.textColor = MyRedditLabelColor
-            self.contentView.backgroundColor = MyRedditBackgroundColor
-            
+         
             if link.viewed() {
                 self.titleLabel.textColor = UIColor.lightGrayColor()
             } else {
                 self.titleLabel.textColor = MyRedditLabelColor
             }
+            
+            super.updateAppearance()
         }
     }
     
     override var linkComment: RKComment! {
         didSet {
+            
+            self.titleLabel.backgroundColor = MyRedditBackgroundColor
+            self.titleLabel.textColor = MyRedditLabelColor
+            
             self.titleLabel.text = linkComment.body
             self.scoreLabel.text = linkComment.score.description
             
@@ -95,8 +102,7 @@ class TitleCell: PostCell {
             
             self.postInfoLabel.attributedText = infoString
             
-            self.titleLabel.textColor = MyRedditLabelColor
-            self.contentView.backgroundColor = MyRedditBackgroundColor
+            super.updateAppearance()
         }
     }
 }

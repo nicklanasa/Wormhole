@@ -74,11 +74,11 @@ UISplitViewControllerDelegate {
     
     override func viewWillAppear(animated: Bool) {
         LocalyticsSession.shared().tagScreen("Subreddit")
+        self.tableView.hidden = true
         super.viewWillAppear(animated)
-        dispatch_async(dispatch_get_main_queue()) { () -> Void in
-            self.tableView.reloadData()
-        }
+        self.tableView.reloadData()
         self.preferredAppearance()
+        self.tableView.hidden = false
     }
     
     override func viewWillDisappear(animated: Bool) {

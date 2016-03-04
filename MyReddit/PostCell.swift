@@ -60,8 +60,10 @@ class PostCell: SwipeCell, SwipeCellDelegate {
         }
     }
     
-    override func prepareForReuse() {
-        super.prepareForReuse()
+    func updateAppearance() {
         self.backgroundColor = MyRedditBackgroundColor
+        self.contentView.backgroundColor = MyRedditBackgroundColor
+        self.postInfoLabel.backgroundColor = MyRedditBackgroundColor
+        self.postInfoLabel.textColor = MyRedditLabelColor
     }
 }

@@ -91,19 +91,17 @@ class PostImageCell: PostCell {
             self.postInfoLabel.attributedText = infoString
             self.titleTextView.font = UIFont(name: MyRedditTitleFont.fontName,
                 size: SettingsManager.defaultManager.titleFontSizeForDefaultTextSize)
-            
-            self.titleTextView.textColor = MyRedditLabelColor
-            self.contentView.backgroundColor = MyRedditBackgroundColor
-            
+         
             if link.viewed() {
                 self.titleTextView.textColor = UIColor.lightGrayColor()
             } else {
                 self.titleTextView.textColor = MyRedditLabelColor
             }
+            
+            self.titleTextView.backgroundColor = MyRedditBackgroundColor
+            self.titleTextView.textColor = MyRedditLabelColor
+            
+            super.updateAppearance()
         }
-    }
-    
-    override func prepareForReuse() {
-        super.prepareForReuse()
     }
 }
