@@ -18,11 +18,14 @@ RATreeViewDelegate,
 RATreeViewDataSource,
 CommentCellDelegate,
 UITextFieldDelegate,
-AddCommentViewControllerDelegate {
+AddCommentViewControllerDelegate,
+GADBannerViewDelegate {
 
     @IBOutlet weak var treeView: RATreeView!
     @IBOutlet weak var filterButton: UIBarButtonItem!
     @IBOutlet weak var addButton: UIBarButtonItem!
+    
+    var bannerView: GADBannerView!
 
     var selectedItems = [String : AnyObject]()
     
@@ -36,14 +39,7 @@ AddCommentViewControllerDelegate {
         }
     }
     
-    var link: RKLink! {
-        didSet {
-            if let treeView = self.treeView {
-                treeView.reloadRowsForItems([self.link],
-                    withRowAnimation: RATreeViewRowAnimation.init(0))
-            }
-        }
-    }
+    var link: RKLink!
 
     var filter: RKCommentSort! {
         didSet {
@@ -58,12 +54,7 @@ AddCommentViewControllerDelegate {
         }
     }
     
-    var comments: [AnyObject]? {
-        didSet {
-            self.navigationItem.title =  "\(self.link.totalComments) comments"
-            self.treeView.reloadData()
-        }
-    }
+    var comments: [AnyObject]?
     
     let refreshControl = UIRefreshControl()
     
@@ -75,6 +66,11 @@ AddCommentViewControllerDelegate {
             } else {
                 if let link = results?.first as? RKLink {
                     self.link = link
+                    
+                    if let treeView = self.treeView {
+                        treeView.reloadRowsForItems([self.link],
+                            withRowAnimation: RATreeViewRowAnimation.init(0))
+                    }
                 }
             }
         })
@@ -90,9 +86,37 @@ AddCommentViewControllerDelegate {
     override func viewDidAppear(animated: Bool) {
         self.navigationItem.title = "\(self.link.totalComments) comments"
     }
+    
+    override func viewWillDisappear(animated: Bool) {
+        if !SettingsManager.defaultManager.purchased {
+            self.bannerView?.removeFromSuperview()
+            self.navigationController?.toolbar.frame.origin.y += 50
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        if !SettingsManager.defaultManager.purchased {
+            self.bannerView = GADBannerView(frame: CGRectMake(0, UIScreen.mainScreen().bounds.height - 50,
+                UIScreen.mainScreen().bounds.size.width, 50))
+            self.bannerView.adSize = kGADAdSizeSmartBannerPortrait
+            self.bannerView.adUnitID = "ca-app-pub-4512025392063519/5619854982"
+            self.bannerView.rootViewController = self
+            self.bannerView.delegate = self
+            
+            let priority = DISPATCH_QUEUE_PRIORITY_BACKGROUND
+            
+            dispatch_async(dispatch_get_global_queue(priority, 0)) {
+                let request = GADRequest()
+                request.testDevices = [kGADSimulatorID]
+                dispatch_async(dispatch_get_main_queue()) {
+                    self.bannerView.loadRequest(request)
+                }
+            }
+            
+            self.navigationController?.view.addSubview(self.bannerView)
+        }
         
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Action,
             target: self,
@@ -119,23 +143,20 @@ AddCommentViewControllerDelegate {
             completion: { (error) -> () in })
         
         self.preferredAppearance()
-        
-        if !SettingsManager.defaultManager.purchased {
-            let ad = GADBannerView(frame: CGRectMake(0, 0, self.view.frame.size.width, 50))
-            ad.adSize = kGADAdSizeSmartBannerPortrait
-            ad.rootViewController = self
-            ad.adUnitID = "ca-app-pub-4512025392063519/5619854982"
-            
-            let priority = DISPATCH_QUEUE_PRIORITY_BACKGROUND
-            
-            dispatch_async(dispatch_get_global_queue(priority, 0)) {
-                let request = GADRequest()
-                request.testDevices = [kGADSimulatorID]
-                dispatch_async(dispatch_get_main_queue()) {
-                    ad.loadRequest(request)
-                }
-            }
-            self.treeView.treeHeaderView = ad
+    }
+    
+    func adView(bannerView: GADBannerView!, didFailToReceiveAdWithError error: GADRequestError!) {
+        dispatch_async(dispatch_get_main_queue()) { () -> Void in
+            self.bannerView?.removeFromSuperview()
+            self.navigationController?.toolbar.frame.origin.y += 50
+            self.treeView.scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        }
+    }
+    
+    func adViewDidReceiveAd(bannerView: GADBannerView!) {
+        dispatch_async(dispatch_get_main_queue()) { () -> Void in
+            self.treeView.scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 50, right: 0)
+            self.navigationController?.toolbar.frame.origin.y -= 50
         }
     }
     
