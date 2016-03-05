@@ -25,7 +25,7 @@ class SubredditCell: UITableViewCell {
             self.nameLabel.text = rkSubreddit.name.capitalizedString
             
             if rkSubreddit.over18.boolValue {
-                self.nsfwLabel.hidden = false
+                self.nsfwLabel?.hidden = false
             }
             
             if !SettingsManager.defaultManager.valueForSetting(.SubredditLogos) {
@@ -66,7 +66,7 @@ class SubredditCell: UITableViewCell {
             
             if let over18 = subredditData["over18"] as? NSNumber {
                 if over18.boolValue {
-                    self.nsfwLabel.hidden = false
+                    self.nsfwLabel?.hidden = false
                 }
             }
             

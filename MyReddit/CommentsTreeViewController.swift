@@ -10,6 +10,7 @@ import UIKit
 import MBProgressHUD
 import RATreeView
 import SafariServices
+import GoogleMobileAds
 
 class CommentsTreeViewController: RootViewController,
 UIScrollViewDelegate,
@@ -24,6 +25,8 @@ AddCommentViewControllerDelegate {
     @IBOutlet weak var addButton: UIBarButtonItem!
 
     var selectedItems = [String : AnyObject]()
+    
+    var adTimer: NSTimer!
     
     var hud: MBProgressHUD! {
         didSet {
@@ -86,7 +89,6 @@ AddCommentViewControllerDelegate {
     
     override func viewDidAppear(animated: Bool) {
         self.navigationItem.title = "\(self.link.totalComments) comments"
-        self.navigationController?.setToolbarHidden(false, animated: false)
     }
 
     override func viewDidLoad() {
@@ -117,8 +119,26 @@ AddCommentViewControllerDelegate {
             completion: { (error) -> () in })
         
         self.preferredAppearance()
+        
+        if !SettingsManager.defaultManager.purchased {
+            let ad = GADBannerView(frame: CGRectMake(0, 0, self.view.frame.size.width, 50))
+            ad.adSize = kGADAdSizeSmartBannerPortrait
+            ad.rootViewController = self
+            ad.adUnitID = "ca-app-pub-4512025392063519/5619854982"
+            
+            let priority = DISPATCH_QUEUE_PRIORITY_BACKGROUND
+            
+            dispatch_async(dispatch_get_global_queue(priority, 0)) {
+                let request = GADRequest()
+                request.testDevices = [kGADSimulatorID]
+                dispatch_async(dispatch_get_main_queue()) {
+                    ad.loadRequest(request)
+                }
+            }
+            self.treeView.treeHeaderView = ad
+        }
     }
-
+    
     func reloadComments() {
         self.treeView.reloadData()
         for item in self.treeView.itemsForRowsInRect(self.treeView.frame) as! [AnyObject] {

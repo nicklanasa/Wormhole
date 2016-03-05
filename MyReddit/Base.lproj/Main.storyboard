@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9532" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="Wuv-iQ-z1V">
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
         <capability name="Alignment constraints to the first baseline" minToolsVersion="6.0"/>
         <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
@@ -1791,7 +1792,7 @@
         <!--Comments Tree View Controller-->
         <scene sceneID="ais-Wo-ESn">
             <objects>
-                <viewController hidesBottomBarWhenPushed="YES" id="jZ6-4i-JFg" customClass="CommentsTreeViewController" customModule="MyReddit" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="jZ6-4i-JFg" customClass="CommentsTreeViewController" customModule="MyReddit" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="BhM-KI-jLj"/>
                         <viewControllerLayoutGuide type="bottom" id="xkL-86-awR"/>
@@ -1807,11 +1808,10 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="vCb-fT-h06" firstAttribute="top" secondItem="BhM-KI-jLj" secondAttribute="bottom" id="9SY-Hb-FmO"/>
-                            <constraint firstItem="vCb-fT-h06" firstAttribute="bottom" secondItem="xkL-86-awR" secondAttribute="top" id="GZB-iP-s9H"/>
-                            <constraint firstItem="vCb-fT-h06" firstAttribute="leading" secondItem="aP9-lc-lLB" secondAttribute="leading" id="Wsw-Gb-o7X"/>
-                            <constraint firstItem="vCb-fT-h06" firstAttribute="top" secondItem="BhM-KI-jLj" secondAttribute="bottom" id="q56-58-BI7"/>
-                            <constraint firstAttribute="trailing" secondItem="vCb-fT-h06" secondAttribute="trailing" id="uIK-1F-vQv"/>
+                            <constraint firstItem="vCb-fT-h06" firstAttribute="bottom" secondItem="xkL-86-awR" secondAttribute="top" id="Lit-FC-9nD"/>
+                            <constraint firstAttribute="trailing" secondItem="vCb-fT-h06" secondAttribute="trailing" id="Rk8-i8-tT5"/>
+                            <constraint firstItem="vCb-fT-h06" firstAttribute="top" secondItem="BhM-KI-jLj" secondAttribute="bottom" id="Z7b-Se-oAC"/>
+                            <constraint firstItem="vCb-fT-h06" firstAttribute="leading" secondItem="aP9-lc-lLB" secondAttribute="leading" id="iXz-01-czU"/>
                         </constraints>
                     </view>
                     <toolbarItems>
@@ -1833,7 +1833,6 @@
                             </connections>
                         </barButtonItem>
                     </toolbarItems>
-                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="addButton" destination="40G-Am-f3t" id="ZbD-If-bb0"/>
                         <outlet property="filterButton" destination="MWG-Vk-Xqs" id="ppe-fe-2tD"/>
@@ -4137,19 +4136,19 @@
         <image name="Up" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="ykc-Jy-SLH"/>
-        <segue reference="yNw-36-nQb"/>
-        <segue reference="oqy-7E-8ml"/>
+        <segue reference="P0f-dc-Ltw"/>
+        <segue reference="pqF-Zz-63s"/>
+        <segue reference="4Rw-4P-Ibk"/>
+        <segue reference="lZ0-wc-aH0"/>
+        <segue reference="vMB-6P-NDX"/>
         <segue reference="s4Y-Y8-M2P"/>
         <segue reference="DoA-ah-cSI"/>
         <segue reference="pMg-rh-ZMv"/>
-        <segue reference="pqF-Zz-63s"/>
-        <segue reference="Nhl-Ro-yfO"/>
-        <segue reference="O8K-LF-8mj"/>
-        <segue reference="zMo-OM-Z5J"/>
+        <segue reference="oqy-7E-8ml"/>
         <segue reference="Udn-dz-6HG"/>
         <segue reference="2S1-bb-L8b"/>
-        <segue reference="Abo-Jz-JcR"/>
-        <segue reference="cNt-ex-e8B"/>
+        <segue reference="zMo-OM-Z5J"/>
+        <segue reference="O8K-LF-8mj"/>
+        <segue reference="Nhl-Ro-yfO"/>
     </inferredMetricsTieBreakers>
 </document>
