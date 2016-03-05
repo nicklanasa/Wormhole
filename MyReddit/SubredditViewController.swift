@@ -343,7 +343,7 @@ PostCellDelegate {
         let alert = UIAlertController.swipeShareAlertControllerWithLink(link) { (url, action) -> () in
             var objectsToShare = ["\(link.title) @myreddit", url]
             
-            if link.hasImage() {
+            if action.title == "share image" {
                 if let indexPath = self.tableView.indexPathForCell(cell) {
                     if let imageCell = self.tableView.cellForRowAtIndexPath(indexPath) as? PostImageCell {
                         if let image = imageCell.postImageView.image {
