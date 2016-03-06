@@ -46,12 +46,8 @@ class SettingsTableViewController: UITableViewController, BDGIAPDelegate {
         }
     }
     
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
-        LocalyticsSession.shared().tagScreen("Settings")
-    }
-    
     override func viewDidLoad() {
+        super.viewDidLoad()
         self.updateTable()
     }
     
@@ -101,9 +97,10 @@ class SettingsTableViewController: UITableViewController, BDGIAPDelegate {
             
             self.tableView.separatorColor = MyRedditTableSeparatorColor
             self.tableView.backgroundColor = MyRedditDarkBackgroundColor
+            
             self.navigationController?.navigationBar.barTintColor = MyRedditBackgroundColor
-            self.navigationController?.navigationBar.tintColor = MyRedditLabelColor
             self.navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName : MyRedditLabelColor]
+            self.navigationController?.navigationBar.tintColor = MyRedditLabelColor
         })
     }
     

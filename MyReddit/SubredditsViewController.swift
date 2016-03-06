@@ -91,6 +91,10 @@ UISearchBarDelegate {
             object: nil)
     }
     
+    override func viewWillDisappear(animated: Bool) {
+        self.title = ""
+    }
+    
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
@@ -112,6 +116,7 @@ UISearchBarDelegate {
         self.tableView.reloadData()
 
         self.navigationController?.setToolbarHidden(false, animated: false)
+        self.title = "subreddits"
     }
     
     func searchBarSearchButtonClicked(searchBar: UISearchBar) {

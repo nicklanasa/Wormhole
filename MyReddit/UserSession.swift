@@ -182,6 +182,7 @@ class UserSession {
             NSFontAttributeName: MyRedditTitleFont, NSForegroundColorAttributeName : MyRedditLabelColor],
             forState: UIControlState.Normal)
         UIBarButtonItem.appearance().tintColor = MyRedditLabelColor
+        UILabel.appearance().textColor = MyRedditLabelColor
         
         UITableView.appearance().backgroundColor = MyRedditDarkBackgroundColor
         UITableView.appearance().separatorColor = MyRedditTableSeparatorColor
@@ -205,6 +206,7 @@ class UserSession {
         UIRefreshControl.appearance().tintColor = MyRedditColor
         
         UIActivityIndicatorView.appearance().tintColor = UIColor.whiteColor()
+        
     }
     
     func dayMode() {
@@ -263,5 +265,8 @@ class UserSession {
         UIActivityIndicatorView.appearance().tintColor = MyRedditColor
         
         UIRefreshControl.appearance().tintColor = UIColor.lightGrayColor()
+        
+        UILabel.appearance().textColor = MyRedditLabelColor
+        
     }
 }
