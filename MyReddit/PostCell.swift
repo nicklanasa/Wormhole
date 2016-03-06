@@ -63,7 +63,7 @@ class PostCell: SwipeCell, SwipeCellDelegate {
     func updateAppearance() {
         self.backgroundColor = MyRedditBackgroundColor
         self.contentView.backgroundColor = MyRedditBackgroundColor
-        self.postInfoLabel.backgroundColor = MyRedditBackgroundColor
+        self.postInfoLabel.backgroundColor = UIColor.clearColor()
         self.postInfoLabel.textColor = MyRedditLabelColor
     }
 }

@@ -178,7 +178,6 @@ class UserSession {
         UIToolbar.appearance().backgroundColor = MyRedditBackgroundColor
         UIToolbar.appearance().translucent = false
         
-        UIBarButtonItem.appearance().setBackButtonTitlePositionAdjustment(UIOffset(horizontal: -9999, vertical: 0), forBarMetrics: .Default)
         UIBarButtonItem.appearance().setTitleTextAttributes([
             NSFontAttributeName: MyRedditTitleFont, NSForegroundColorAttributeName : MyRedditLabelColor],
             forState: UIControlState.Normal)
@@ -244,7 +243,6 @@ class UserSession {
         UIToolbar.appearance().backgroundColor = MyRedditBackgroundColor
         UITabBar.appearance().translucent = false
         
-        UIBarButtonItem.appearance().setBackButtonTitlePositionAdjustment(UIOffset(horizontal: -9999, vertical: 0), forBarMetrics: .Default)
         UIBarButtonItem.appearance().tintColor = MyRedditLabelColor
         
         UITableView.appearance().backgroundColor = MyRedditDarkBackgroundColor
