@@ -81,21 +81,6 @@ GADBannerViewDelegate {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         LocalyticsSession.shared().tagScreen("Comments")
-    }
-    
-    override func viewDidAppear(animated: Bool) {
-        self.navigationItem.title = "\(self.link.totalComments) comments"
-    }
-    
-    override func viewWillDisappear(animated: Bool) {
-        if !SettingsManager.defaultManager.purchased {
-            self.bannerView?.removeFromSuperview()
-            self.navigationController?.toolbar.frame.origin.y += 50
-        }
-    }
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
         
         if !SettingsManager.defaultManager.purchased {
             self.bannerView = GADBannerView(frame: CGRectMake(0, UIScreen.mainScreen().bounds.height - 50,
@@ -117,6 +102,21 @@ GADBannerViewDelegate {
             
             self.navigationController?.view.addSubview(self.bannerView)
         }
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        self.navigationItem.title = "\(self.link.totalComments) comments"
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        if !SettingsManager.defaultManager.purchased {
+            self.bannerView?.removeFromSuperview()
+            self.navigationController?.toolbar.frame.origin.y += 50
+        }
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
         
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Action,
             target: self,
@@ -156,7 +156,8 @@ GADBannerViewDelegate {
     func adViewDidReceiveAd(bannerView: GADBannerView!) {
         dispatch_async(dispatch_get_main_queue()) { () -> Void in
             self.treeView.scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 50, right: 0)
-            self.navigationController?.toolbar.frame.origin.y -= 50
+            self.navigationController?.toolbar.frame.origin.y = UIScreen.mainScreen().bounds.size.height -
+                self.bannerView.frame.size.height - 44
         }
     }
     

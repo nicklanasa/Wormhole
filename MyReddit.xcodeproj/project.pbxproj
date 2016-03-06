@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		010DB8751C8BEFAC00712B36 /* DownloadSessionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 010DB8741C8BEFAC00712B36 /* DownloadSessionDelegate.swift */; };
+		010DB8761C8BEFAC00712B36 /* DownloadSessionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 010DB8741C8BEFAC00712B36 /* DownloadSessionDelegate.swift */; };
+		010DB8771C8BEFAC00712B36 /* DownloadSessionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 010DB8741C8BEFAC00712B36 /* DownloadSessionDelegate.swift */; };
 		010F22271C7A31BA00B8E81D /* Markdown.swift in Sources */ = {isa = PBXBuildFile; fileRef = 010F22261C7A31BA00B8E81D /* Markdown.swift */; };
 		010F22281C7A31BA00B8E81D /* Markdown.swift in Sources */ = {isa = PBXBuildFile; fileRef = 010F22261C7A31BA00B8E81D /* Markdown.swift */; };
 		010F22291C7A31BA00B8E81D /* Markdown.swift in Sources */ = {isa = PBXBuildFile; fileRef = 010F22261C7A31BA00B8E81D /* Markdown.swift */; };
@@ -278,6 +281,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		010DB8741C8BEFAC00712B36 /* DownloadSessionDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DownloadSessionDelegate.swift; sourceTree = "<group>"; };
 		010F22261C7A31BA00B8E81D /* Markdown.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Markdown.swift; sourceTree = "<group>"; };
 		01115D401C77AF0E008B7D1E /* SwipeCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwipeCell.swift; sourceTree = "<group>"; };
 		01332D871AC37F4B0054E05C /* TitleCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TitleCell.swift; sourceTree = "<group>"; };
@@ -595,6 +599,7 @@
 				01A6230B1C76CACA00A8F857 /* MyReddit.xcdatamodeld */,
 				CE3588191AC305B200294684 /* MyReddit-Bridging-Header.h */,
 				CE712EE01AC2F1A20042B071 /* AppDelegate.swift */,
+				010DB8741C8BEFAC00712B36 /* DownloadSessionDelegate.swift */,
 				01A623261C76CAD500A8F857 /* Extensions */,
 				CE8C9EFE1B1CDA8400DD2235 /* Presentation */,
 				CE712F171AC302EE0042B071 /* Data */,
@@ -774,6 +779,9 @@
 						CreatedOnToolsVersion = 6.2;
 						DevelopmentTeam = 6Q4UNB2LAJ;
 						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
 							com.apple.InAppPurchase = {
 								enabled = 1;
 							};
@@ -989,6 +997,7 @@
 				01A623391C76CB3400A8F857 /* UIAlertController+Helpers.swift in Sources */,
 				013380C91C77BE4D00E8DA56 /* SubredditsByCategoryTableViewController.swift in Sources */,
 				0141070B1C782A7A00C4CCA0 /* SuggestedLink.swift in Sources */,
+				010DB8771C8BEFAC00712B36 /* DownloadSessionDelegate.swift in Sources */,
 				013380BB1C77BE4800E8DA56 /* PostTypeCell.swift in Sources */,
 				013380C01C77BE4D00E8DA56 /* RKLink+Helpers.swift in Sources */,
 				013380CD1C77BE5700E8DA56 /* MessagesViewController.swift in Sources */,
@@ -1077,6 +1086,7 @@
 				01A6232F1C76CB3400A8F857 /* UIAlert+Helpers.swift in Sources */,
 				01A6232C1C76CB3400A8F857 /* UIApplication+RootViewController.swift in Sources */,
 				0141070A1C782A7A00C4CCA0 /* SuggestedLink.swift in Sources */,
+				010DB8761C8BEFAC00712B36 /* DownloadSessionDelegate.swift in Sources */,
 				CE3AA4811B0549E9000DEDD2 /* UserInfoCell.swift in Sources */,
 				CE3AA4851B0549E9000DEDD2 /* WebViewController.swift in Sources */,
 				CE3AA4861B0549E9000DEDD2 /* ComposeTableViewController.swift in Sources */,
@@ -1165,6 +1175,7 @@
 				01A6231A1C76CACA00A8F857 /* MyReddit.xcdatamodeld in Sources */,
 				0195D6BC1AF31C5B004FA3EC /* UserInfoCell.swift in Sources */,
 				014107091C782A7A00C4CCA0 /* SuggestedLink.swift in Sources */,
+				010DB8751C8BEFAC00712B36 /* DownloadSessionDelegate.swift in Sources */,
 				CEB866121AF01FC200BE850F /* WebViewController.swift in Sources */,
 				CE25FBA01AF8438600A40C3B /* ComposeTableViewController.swift in Sources */,
 				01A623231C76CACA00A8F857 /* UILabel+Helpers.swift in Sources */,

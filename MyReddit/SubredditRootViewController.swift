@@ -79,6 +79,7 @@ UISplitViewControllerDelegate {
         self.tableView.reloadData()
         self.preferredAppearance()
         self.tableView.hidden = false
+        self.navigationController?.setToolbarHidden(false, animated: false)
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -108,8 +109,6 @@ UISplitViewControllerDelegate {
         case .Phone: break
         default: break
         }
-        
-        self.navigationController?.setToolbarHidden(false, animated: true)
         
         NSNotificationCenter.defaultCenter().addObserver(self,
             selector: "preferredAppearance",

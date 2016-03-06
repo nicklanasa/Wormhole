@@ -31,10 +31,12 @@ var MyRedditDarkBackgroundColor = UIColor.groupTableViewBackgroundColor()
 var MyRedditCommentLinesColor = UIColor.groupTableViewBackgroundColor().colorWithAlphaComponent(0.4)
 var MyRedditTableSeparatorColor = UIColor.groupTableViewBackgroundColor()
 
+
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate, IMGSessionDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, IMGSessionDelegate, NSURLSessionDelegate {
 
     var window: UIWindow?
+    var session:NSURLSession!
     
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
                 
@@ -63,8 +65,29 @@ class AppDelegate: UIResponder, UIApplicationDelegate, IMGSessionDelegate {
         Appirater.appLaunched(true)
         
         SDWebImageDownloader.sharedDownloader().shouldDecompressImages = false
-
+        
+        application.setMinimumBackgroundFetchInterval(
+            UIApplicationBackgroundFetchIntervalMinimum)
+        
         return true
+    }
+    
+    func application(application: UIApplication,
+        performFetchWithCompletionHandler completionHandler:
+        ((UIBackgroundFetchResult) -> Void)){
+        print("running in backgrounddddd!!!!!")
+            RedditSession.sharedSession.fetchMessages(nil, category: .Unread, read: false) { (pagination, results, error) -> () in
+                if results?.count > 0 {
+                    let notification = UILocalNotification()
+                    notification.alertBody = "New messages"
+                    notification.fireDate = NSDate()
+                    notification.soundName = UILocalNotificationDefaultSoundName
+                    UIApplication.sharedApplication().scheduleLocalNotification(notification)
+                    UIApplication.sharedApplication().applicationIconBadgeNumber = results!.count
+                }
+                
+                completionHandler(.NewData)
+            }
     }
 
     func applicationWillResignActive(application: UIApplication) {
@@ -88,4 +111,3 @@ class AppDelegate: UIResponder, UIApplicationDelegate, IMGSessionDelegate {
         SDImageCache.sharedImageCache().setValue(nil, forKey: "memCache")
     }
 }
-
