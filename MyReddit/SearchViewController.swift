@@ -496,7 +496,7 @@ PostCellDelegate {
         LocalyticsSession.shared().tagEvent("Swipe share")
         
         let alert = UIAlertController.swipeShareAlertControllerWithLink(link) { (url, action) -> () in
-            var objectsToShare = ["\(link.title) @myreddit", url]
+            var objectsToShare = ["\(link.title) #getmyreddit", url]
             
             if action.title == "share image" {
                 if let indexPath = self.tableView.indexPathForCell(cell) {
