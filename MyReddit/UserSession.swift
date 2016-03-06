@@ -160,53 +160,9 @@ class UserSession {
         MyRedditCommentLinesColor = UIColor.darkGrayColor().colorWithAlphaComponent(0.2)
         MyRedditTableSeparatorColor = UIColor.whiteColor().colorWithAlphaComponent(0.2)
         
-        UISwitch.appearance().onTintColor = MyRedditColor
-        UISegmentedControl.appearance().tintColor = MyRedditLabelColor
-        
-        UINavigationBar.appearance().translucent = false
-        UINavigationBar.appearance().tintColor = MyRedditLabelColor
-        UINavigationBar.appearance().backgroundColor = MyRedditBackgroundColor
-        UINavigationBar.appearance().barTintColor = MyRedditBackgroundColor
-        
-        UINavigationBar.appearance().titleTextAttributes = [NSFontAttributeName: MyRedditTitleFont,
-            NSForegroundColorAttributeName : MyRedditLabelColor]
-        
-        UISearchBar.appearance().backgroundColor = MyRedditBackgroundColor
-        
-        UIToolbar.appearance().barTintColor = MyRedditBackgroundColor
-        UIToolbar.appearance().tintColor = MyRedditLabelColor
-        UIToolbar.appearance().backgroundColor = MyRedditBackgroundColor
-        UIToolbar.appearance().translucent = false
-        
-        UIBarButtonItem.appearance().setTitleTextAttributes([
-            NSFontAttributeName: MyRedditTitleFont, NSForegroundColorAttributeName : MyRedditLabelColor],
-            forState: UIControlState.Normal)
-        UIBarButtonItem.appearance().tintColor = MyRedditLabelColor
-        UILabel.appearance().textColor = MyRedditLabelColor
-        
-        UITableView.appearance().backgroundColor = MyRedditDarkBackgroundColor
-        UITableView.appearance().separatorColor = MyRedditTableSeparatorColor
-        UITableView.appearance().backgroundView = nil
-        UITableView.appearance().sectionIndexBackgroundColor = UIColor.clearColor()
-        
-        let backgroundView = UIView()
-        backgroundView.backgroundColor = UIColor.lightGrayColor().colorWithAlphaComponent(0.7)
-        UITableViewCell.appearance().selectedBackgroundView = backgroundView
-        
-        UITableViewCell.appearance().backgroundColor = MyRedditBackgroundColor
-        
-        UIImageView.appearance().backgroundColor = UIColor.clearColor()
-        
-        UIWebView.appearance().backgroundColor = MyRedditBackgroundColor
-        
-        UITextField.appearance().font = MyRedditSelfTextFont
-        UITextField.appearance().tintColor = MyRedditLabelColor
         UITextField.appearance().keyboardAppearance = .Dark
         
-        UIRefreshControl.appearance().tintColor = MyRedditColor
-        
-        UIActivityIndicatorView.appearance().tintColor = UIColor.whiteColor()
-        
+        self.updateAppearance()
     }
     
     func dayMode() {
@@ -222,51 +178,52 @@ class UserSession {
         MyRedditDarkBackgroundColor = UIColor.groupTableViewBackgroundColor()
         MyRedditCommentLinesColor = UIColor.groupTableViewBackgroundColor().colorWithAlphaComponent(0.4)
         MyRedditTableSeparatorColor = UIColor.lightGrayColor()
+
+        UITextField.appearance().keyboardAppearance = .Light
         
-        UIBarButtonItem.appearance().setTitleTextAttributes([
-            NSFontAttributeName: MyRedditTitleFont, NSForegroundColorAttributeName : MyRedditLabelColor],
-            forState: UIControlState.Normal)
-        
-        UISwitch.appearance().onTintColor = MyRedditColor
-        UISegmentedControl.appearance().tintColor = MyRedditLabelColor
-                
-        UINavigationBar.appearance().translucent = false
-        UINavigationBar.appearance().tintColor = MyRedditLabelColor
-        UINavigationBar.appearance().backgroundColor = MyRedditBackgroundColor
-        UINavigationBar.appearance().barTintColor = MyRedditBackgroundColor
-        
-        UINavigationBar.appearance().titleTextAttributes = [NSFontAttributeName: MyRedditTitleFont,
-            NSForegroundColorAttributeName : MyRedditLabelColor]
-        
-        UISearchBar.appearance().backgroundColor = MyRedditBackgroundColor
-        
+        self.updateAppearance()
+    }
+    
+    func updateAppearance() {
         UIToolbar.appearance().barTintColor = MyRedditBackgroundColor
         UIToolbar.appearance().tintColor = MyRedditLabelColor
         UIToolbar.appearance().backgroundColor = MyRedditBackgroundColor
-        UITabBar.appearance().translucent = false
+        UIToolbar.appearance().translucent = false
         
-        UIBarButtonItem.appearance().tintColor = MyRedditLabelColor
+        UITabBar.appearance().translucent = false
+
+        UIWebView.appearance().backgroundColor = MyRedditBackgroundColor
+        
+        UITableViewCell.appearance().backgroundColor = MyRedditBackgroundColor
+        
+        UITextField.appearance().font = MyRedditSelfTextFont
+        UITextField.appearance().tintColor = MyRedditLabelColor
+        
+        UIImageView.appearance().backgroundColor = UIColor.clearColor()
+        UIActivityIndicatorView.appearance().tintColor = MyRedditColor
+        UIRefreshControl.appearance().tintColor = MyRedditColor
         
         UITableView.appearance().backgroundColor = MyRedditDarkBackgroundColor
         UITableView.appearance().separatorColor = MyRedditTableSeparatorColor
         UITableView.appearance().backgroundView = nil
         UITableView.appearance().sectionIndexBackgroundColor = UIColor.clearColor()
-             
-        UIImageView.appearance().backgroundColor = UIColor.clearColor()
         
-        UITableViewCell.appearance().backgroundColor = MyRedditBackgroundColor
+        UIBarButtonItem.appearance().setTitleTextAttributes([
+            NSFontAttributeName: MyRedditTitleFont, NSForegroundColorAttributeName : MyRedditLabelColor],
+            forState: UIControlState.Normal)
+        UIBarButtonItem.appearance().tintColor = MyRedditLabelColor
         
-        UIWebView.appearance().backgroundColor = MyRedditBackgroundColor
+        UINavigationBar.appearance().translucent = false
+        UINavigationBar.appearance().tintColor = MyRedditLabelColor
+        UINavigationBar.appearance().backgroundColor = MyRedditBackgroundColor
+        UINavigationBar.appearance().barTintColor = MyRedditBackgroundColor
+        UINavigationBar.appearance().titleTextAttributes = [NSFontAttributeName: MyRedditTitleFont,
+            NSForegroundColorAttributeName : MyRedditLabelColor]
         
-        UITextField.appearance().font = MyRedditSelfTextFont
-        UITextField.appearance().tintColor = MyRedditLabelColor
-        UITextField.appearance().keyboardAppearance = .Light
+        UISearchBar.appearance().backgroundColor = MyRedditBackgroundColor
         
-        UIActivityIndicatorView.appearance().tintColor = MyRedditColor
-        
-        UIRefreshControl.appearance().tintColor = UIColor.lightGrayColor()
-        
-        UILabel.appearance().textColor = MyRedditLabelColor
-        
+        UISwitch.appearance().onTintColor = MyRedditColor
+
+        UISegmentedControl.appearance().tintColor = MyRedditLabelColor
     }
 }

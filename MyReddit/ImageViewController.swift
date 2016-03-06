@@ -24,6 +24,18 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
     var imageURL: NSURL!
     var pageIndex: Int!
     var image: UIImage!
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.imageView.contentMode = .ScaleAspectFit
+        
+        let tap = UITapGestureRecognizer(target: self, action: "imageViewTapped:")
+        tap.numberOfTapsRequired = 1
+        
+        let longHold = UILongPressGestureRecognizer(target: self, action: "longHold")
+        self.imageView.gestureRecognizers = [tap, longHold]
+        self.view.gestureRecognizers = [tap]
+    }
 
     override func viewDidDisappear(animated: Bool) {
         self.imageView.backgroundColor = MyRedditBackgroundColor
@@ -36,29 +48,12 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
         LocalyticsSession.shared().tagScreen("GalleryImage")
         self.imageView.backgroundColor = MyRedditBackgroundColor
         self.view.backgroundColor = MyRedditBackgroundColor
-    }
-    
-    func longHold() {
-        if let selectedImage = self.imageView.image {
-            self.presentViewController(UIAlertController.saveImageAlertController(selectedImage),
-                animated: true,
-                completion: nil)
-        }
-    }
-    
-    override func viewDidAppear(animated: Bool) {
+        
         self.indicator.startAnimating()
-        self.imageView.contentMode = .ScaleAspectFit
-        
-        let tap = UITapGestureRecognizer(target: self, action: "imageViewTapped:")
-        tap.numberOfTapsRequired = 1
-        
-        let longHold = UILongPressGestureRecognizer(target: self, action: "longHold")
-        self.imageView.gestureRecognizers = [tap, longHold]
-        self.view.gestureRecognizers = [tap]
         
         if self.imageURL != nil {
             self.imageView.sd_setImageWithURL(self.imageURL, completed: { (i, e, c, u) -> Void in
+                self.indicator.stopAnimating()
                 if let resizedImage = i?.imageWithImage(i, toSize: self.imageView.frame.size) {
                     self.imageView.image = resizedImage
                 } else {
@@ -67,10 +62,18 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
             })
         } else if image != nil {
             self.imageView.image = image
+            self.indicator.stopAnimating()
         }
         
         self.scrollView.minimumZoomScale = 1.0
-        self.indicator.stopAnimating()
+    }
+    
+    func longHold() {
+        if let selectedImage = self.imageView.image {
+            self.presentViewController(UIAlertController.saveImageAlertController(selectedImage),
+                animated: true,
+                completion: nil)
+        }
     }
 
     func imageViewTapped(gesture: UIGestureRecognizer) {
