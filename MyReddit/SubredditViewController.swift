@@ -249,7 +249,7 @@ PostCellDelegate {
             if link.selfPost {
                 self.performSegueWithIdentifier("CommentsSegue", sender: link)
             } else {
-                if let cell = tableView.cellForRowAtIndexPath(indexPath) as? PostImageCell {
+                if let _ = tableView.cellForRowAtIndexPath(indexPath) as? PostImageCell {
                     if (link.domain == "imgur.com") {
                         if link.isGifLink() {
                             self.performSegueWithIdentifier("SubredditLink", sender: link)

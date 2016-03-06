@@ -36,7 +36,7 @@ class PostCell: SwipeCell, SwipeCellDelegate {
         
         self.images = [downVoteImage, UIImage(named: "ShareWhite")!, upVoteImage, UIImage(named: "moreWhite")!]
         self.colors = [MyRedditDownvoteColor, MyRedditColor, MyRedditUpvoteColor, MyRedditReplyColor]
-        
+
         super.awakeFromNib()
 
         let infoTapGesture = UITapGestureRecognizer(target: self, action: "infoTapped:")
@@ -44,7 +44,6 @@ class PostCell: SwipeCell, SwipeCellDelegate {
         self.postInfoLabel.gestureRecognizers = [infoTapGesture]
 
         self.swipeDelegate = self
-        self.selectionStyle = .Default
     }
 
     func infoTapped(sender: AnyObject) {
@@ -65,5 +64,9 @@ class PostCell: SwipeCell, SwipeCellDelegate {
         self.contentView.backgroundColor = MyRedditBackgroundColor
         self.postInfoLabel.backgroundColor = UIColor.clearColor()
         self.postInfoLabel.textColor = MyRedditLabelColor
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
     }
 }

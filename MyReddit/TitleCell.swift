@@ -105,4 +105,8 @@ class TitleCell: PostCell {
             super.updateAppearance()
         }
     }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+    }
 }

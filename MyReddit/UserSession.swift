@@ -162,6 +162,10 @@ class UserSession {
         
         UITextField.appearance().keyboardAppearance = .Dark
         
+        let v = UIView()
+        v.backgroundColor = UIColor(red: 0.0941, green: 0.1255, blue: 0.2588, alpha: 1.0)
+        UITableViewCell.appearance().selectedBackgroundView = v
+        
         self.updateAppearance()
     }
     
@@ -180,6 +184,10 @@ class UserSession {
         MyRedditTableSeparatorColor = UIColor.lightGrayColor()
 
         UITextField.appearance().keyboardAppearance = .Light
+        
+        let v = UIView()
+        v.backgroundColor = UIColor.lightGrayColor()
+        UITableViewCell.appearance().selectedBackgroundView = v
         
         self.updateAppearance()
     }

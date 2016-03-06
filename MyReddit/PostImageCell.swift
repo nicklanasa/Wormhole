@@ -99,9 +99,12 @@ class PostImageCell: PostCell {
             }
             
             self.titleTextView.backgroundColor = MyRedditBackgroundColor
-            self.titleTextView.textColor = MyRedditLabelColor
             
             super.updateAppearance()
         }
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
     }
 }

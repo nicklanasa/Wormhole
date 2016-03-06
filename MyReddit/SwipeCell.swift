@@ -45,6 +45,7 @@ class SwipeCell: JZSwipeCell, JZSwipeCellDelegate {
         self.colorSet = SwipeCellColorSetMake(self.colors[0], self.colors[1], self.colors[2], self.colors[3])
         
         self.delegate = self
+        self.selectionStyle = .Default
     }
     
     func swipeCell(cell: JZSwipeCell!, triggeredSwipeWithType swipeType: JZSwipeType) {
@@ -60,6 +61,18 @@ class SwipeCell: JZSwipeCell, JZSwipeCellDelegate {
             } else {
                 self.swipeDelegate?.swipeCell(self, didTriggerSwipeWithType: .LongRight)
             }
+        }
+    }
+    
+    override func prepareForReuse() {
+        if SettingsManager.defaultManager.valueForSetting(.NightMode) {
+            let v = UIView()
+            v.backgroundColor = UIColor(red: 0.0941, green: 0.1255, blue: 0.2588, alpha: 1.0)
+            self.selectedBackgroundView = v
+        } else {
+            let v = UIView()
+            v.backgroundColor = UIColor.lightGrayColor()
+            self.selectedBackgroundView = v
         }
     }
 }

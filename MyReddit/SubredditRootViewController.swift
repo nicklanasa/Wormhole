@@ -292,7 +292,7 @@ UISplitViewControllerDelegate {
 
         if let navigationController = self.navigationController as? ScrollingNavigationController {
             if hide {
-                navigationController.followScrollView(tableView, delay: 50.0)
+                navigationController.followScrollView(self.tableView, delay: 50.0)
             } else {
                 navigationController.stopFollowingScrollView()
             }

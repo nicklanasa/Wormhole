@@ -146,18 +146,22 @@ GADBannerViewDelegate {
     }
     
     func adView(bannerView: GADBannerView!, didFailToReceiveAdWithError error: GADRequestError!) {
-        dispatch_async(dispatch_get_main_queue()) { () -> Void in
-            self.bannerView?.removeFromSuperview()
-            self.navigationController?.toolbar.frame.origin.y += 50
-            self.treeView.scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        UIView.animateWithDuration(0.3) { () -> Void in
+            dispatch_async(dispatch_get_main_queue()) { () -> Void in
+                self.bannerView?.removeFromSuperview()
+                self.navigationController?.toolbar.frame.origin.y += 50
+                self.treeView.scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+            }
         }
     }
     
     func adViewDidReceiveAd(bannerView: GADBannerView!) {
-        dispatch_async(dispatch_get_main_queue()) { () -> Void in
-            self.treeView.scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 50, right: 0)
-            self.navigationController?.toolbar.frame.origin.y = UIScreen.mainScreen().bounds.size.height -
-                self.bannerView.frame.size.height - 44
+        UIView.animateWithDuration(0.3) { () -> Void in
+            dispatch_async(dispatch_get_main_queue()) { () -> Void in
+                self.treeView.scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 50, right: 0)
+                self.navigationController?.toolbar.frame.origin.y = UIScreen.mainScreen().bounds.size.height -
+                    self.bannerView.frame.size.height - 44
+            }
         }
     }
     
