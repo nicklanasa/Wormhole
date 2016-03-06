@@ -18,8 +18,6 @@ UITableViewDelegate,
 UIGestureRecognizerDelegate,
 PostCellDelegate {
     
-    let ad = GADBannerView(adSize: kGADAdSizeFluid)
-    
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
     }
@@ -215,7 +213,13 @@ PostCellDelegate {
             let cell = tableView.dequeueReusableCellWithIdentifier("AdCell") as! AdCell
             
             cell.bannerView.rootViewController = self
-            cell.bannerView.adSize = kGADAdSizeSmartBannerPortrait
+            cell.bannerView.autoresizingMask = .FlexibleWidth
+            
+            if !UIDevice.currentDevice().orientation.isLandscape {
+                cell.bannerView.adSize = kGADAdSizeSmartBannerPortrait
+            } else {
+                cell.bannerView.adSize = kGADAdSizeSmartBannerLandscape
+            }
             
             let priority = DISPATCH_QUEUE_PRIORITY_BACKGROUND
             
@@ -552,5 +556,9 @@ PostCellDelegate {
                 }
             }
         }
+    }
+    
+    override func willRotateToInterfaceOrientation(toInterfaceOrientation: UIInterfaceOrientation, duration: NSTimeInterval) {
+        self.tableView.reloadData()
     }
 }
