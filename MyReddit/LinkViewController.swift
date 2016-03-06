@@ -157,6 +157,7 @@ class LinkViewController: RootViewController, UITextViewDelegate {
         
         self.view.insertSubview(self.textView, belowSubview: self.webView)
         self.webView.hidden = false
+        self.webView.scalesPageToFit = true
         self.textView.hidden = true
         
         if let link = self.link {
