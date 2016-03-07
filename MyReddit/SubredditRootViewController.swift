@@ -133,7 +133,7 @@ UISplitViewControllerDelegate, GADBannerViewDelegate {
             self.bannerView.rootViewController = self
             self.bannerView.delegate = self
             
-            self.navigationController?.view.addSubview(self.bannerView)
+            UIApplication.sharedApplication().keyWindow?.addSubview(self.bannerView)
             
             self.refreshAd()
         } else {
@@ -145,6 +145,8 @@ UISplitViewControllerDelegate, GADBannerViewDelegate {
         if let navigationController = self.navigationController as? ScrollingNavigationController {
             navigationController.stopFollowingScrollView()
         }
+        
+        self.bannerView?.removeFromSuperview()
     }
     
     override func viewDidLoad() {
