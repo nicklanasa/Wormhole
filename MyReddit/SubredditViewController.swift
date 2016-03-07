@@ -20,10 +20,6 @@ PostCellDelegate {
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        
-        UserSession.sharedSession.openSessionWithCompletion { (error) -> () in
-            self.fetchLinks()
-        }
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -40,6 +36,10 @@ PostCellDelegate {
         
         let longPressRecognizer = UILongPressGestureRecognizer(target: self, action: "longPress:")
         self.view.addGestureRecognizer(longPressRecognizer)
+        
+        UserSession.sharedSession.openSessionWithCompletion { (error) -> () in
+            self.fetchLinks()
+        }
     }
     
     func longPress(longPressGestureRecognizer: UILongPressGestureRecognizer) {
