@@ -38,10 +38,7 @@ class EditMultiRedditTableViewController: RootTableViewController, EditMultiredd
             RedditSession.sharedSession.deleteMultiReddit(self.multireddit, completion: { (error) -> () in
                 if error != nil {
                     dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                        UIAlertView(title: "Error!",
-                            message: "Unable to delete multireddit.",
-                            delegate: self,
-                            cancelButtonTitle: "OK").show()
+                        self.presentViewController(UIAlertController.errorAlertControllerWithMessage(error!.localizedDescription), animated: true, completion: nil)
                     })
                 } else {
                     self.navigationController?.popViewControllerAnimated(true)
@@ -76,10 +73,7 @@ class EditMultiRedditTableViewController: RootTableViewController, EditMultiredd
             RedditSession.sharedSession.multiredditWithName(cell.nameTextField.text!, completion: { (pagination, results, error) -> () in
                 if error != nil {
                     dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                        UIAlertView(title: "Error!",
-                            message: "Unable to update multireddit.",
-                            delegate: self,
-                            cancelButtonTitle: "OK").show()
+                        self.presentViewController(UIAlertController.errorAlertControllerWithMessage(error!.localizedDescription), animated: true, completion: nil)
                     })
                 } else {
                     if let multireddit = results?.first as? RKMultireddit {
@@ -185,10 +179,7 @@ class EditMultiRedditTableViewController: RootTableViewController, EditMultiredd
                     
                     if foundSubreddit == nil {
                         dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                            UIAlertView(title: "Error!",
-                                message: "Unable to find subreddit by that name.",
-                                delegate: self,
-                                cancelButtonTitle: "OK").show()
+                        self.presentViewController(UIAlertController.errorAlertControllerWithMessage("Unable to find subreddit."), animated: true, completion: nil)
                         })
                     } else {
                         // Remove from Multireddit
@@ -198,10 +189,7 @@ class EditMultiRedditTableViewController: RootTableViewController, EditMultiredd
                     }
                 } else {
                     dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                        UIAlertView(title: "Error!",
-                            message: "Unable to find subreddit by that name.",
-                            delegate: self,
-                            cancelButtonTitle: "OK").show()
+                        self.presentViewController(UIAlertController.errorAlertControllerWithMessage("Unable to find subreddit"), animated: true, completion: nil)
                     })
                 }
             }
@@ -227,10 +215,7 @@ class EditMultiRedditTableViewController: RootTableViewController, EditMultiredd
                 let subredditName = textfield.text!.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
                 
                 if subredditName.characters.count == 0 {
-                    UIAlertView(title: "Error!",
-                        message: "You must enter in a subreddit name!",
-                        delegate: self,
-                        cancelButtonTitle: "Ok").show()
+                    self.presentViewController(UIAlertController.errorAlertControllerWithMessage("You must enter in a subreddit name."), animated: true, completion: nil)
                 } else {
                     RedditSession.sharedSession.searchForSubredditByName(subredditName, pagination: nil) { (pagination, results, error) -> () in
                         if let subreddits = results as? [RKSubreddit] {
@@ -246,10 +231,7 @@ class EditMultiRedditTableViewController: RootTableViewController, EditMultiredd
                             
                             if foundSubreddit == nil {
                                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                                    UIAlertView(title: "Error!",
-                                        message: "Unable to find subreddit by that name.",
-                                        delegate: self,
-                                        cancelButtonTitle: "OK").show()
+                                    self.presentViewController(UIAlertController.errorAlertControllerWithMessage("Unable to find subreddit"), animated: true, completion: nil)
                                 })
                             } else {
                                 // Add to Multireddit
@@ -259,10 +241,7 @@ class EditMultiRedditTableViewController: RootTableViewController, EditMultiredd
                             }
                         } else {
                             dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                                UIAlertView(title: "Error!",
-                                    message: "Unable to find subreddit by that name.",
-                                    delegate: self,
-                                    cancelButtonTitle: "OK").show()
+                                self.presentViewController(UIAlertController.errorAlertControllerWithMessage("Unable to find subreddit."), animated: true, completion: nil)
                             })
                         }
                     }
@@ -278,20 +257,14 @@ class EditMultiRedditTableViewController: RootTableViewController, EditMultiredd
         // Update Multireddit name
         if cell.nameTextField.text?.characters.count == 0 || cell.nameTextField.text?.characters.count <= 3 || cell.nameTextField.text?.componentsSeparatedByString(" ").count > 1 {
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                UIAlertView(title: "Error!",
-                    message: "You must enter in a valid multireddit name! Make sure it doesn't have any spaces in it and that it's greater than 3 characters.",
-                    delegate: self,
-                    cancelButtonTitle: "OK").show()
+                self.presentViewController(UIAlertController.errorAlertControllerWithMessage("You must enter in a valid multireddit name! Make sure it doesn't have any spaces in it and that it's greater than 3 characters."), animated: true, completion: nil)
             })
         } else {
             let name = cell.nameTextField.text!.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet()).stringByTrimmingCharactersInSet(NSCharacterSet(charactersInString: " "))
             RedditSession.sharedSession.renameMultiredditWithName(name, multiReddit: self.multireddit, completion: { (error) -> () in
                 if error != nil {
                     dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                        UIAlertView(title: "Error!",
-                            message: error?.localizedDescription,
-                            delegate: self,
-                            cancelButtonTitle: "OK").show()
+                        self.presentViewController(UIAlertController.errorAlertControllerWithMessage(error!.localizedDescription), animated: true, completion: nil)
                     })
                 } else {
                     self.reload()

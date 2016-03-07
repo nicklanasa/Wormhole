@@ -15,7 +15,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>145</string>
+	<string>146</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleURLTypes</key>
@@ -29,6 +29,29 @@
 	</array>
 	<key>CFBundleVersion</key>
 	<string>4.4</string>
+	<key>Fabric</key>
+	<dict>
+		<key>APIKey</key>
+		<string>1f81842eed4433a0abeb3e27bcbc1bc19479612e</string>
+		<key>Kits</key>
+		<array>
+			<dict>
+				<key>KitInfo</key>
+				<dict/>
+				<key>KitName</key>
+				<string>Crashlytics</string>
+			</dict>
+			<dict>
+				<key>KitInfo</key>
+				<dict>
+					<key>apikey</key>
+					<string>2ccfeb1942ba4f7da2f52ce621ae4a20</string>
+				</dict>
+				<key>KitName</key>
+				<string>Appsee</string>
+			</dict>
+		</array>
+	</dict>
 	<key>FacebookAppID</key>
 	<string>823280391098975</string>
 	<key>FacebookDisplayName</key>

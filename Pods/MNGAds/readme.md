@@ -303,6 +303,24 @@ HomeViewController *home =  [[HomeViewController alloc]init];
 }
 ```
 
+##### Disable auto-displaying 
+With v2.0.4 you can disable auto-displaying.
+
+```objc
+[interstitialAdsFactory createInterstitialWithPreferences:preferences autoDisplayed:NO];
+```
+To show the interstitial after succes you have call [displayInterstitial].
+
+To check if the interstitial is reday to be showen, you have to call [isInterstitialReady].
+
+```objc
+if ([interstitialAdsFactory isInterstitialReady]) {
+    [interstitialAdsFactory displayInterstitial];
+}
+```
+
+___info:___ To test auto-displayin disabled on demo, you have to go to the page interstitial. others interstitials (return background, when change from page to page...) are with auto-displaying.
+
 ### Native Ads
 Native ads give you the control to design the perfect ad units for your app. With our Native Ad API, you can determine the look and feel, size and location of your ads. Because you decide how the ads are formatted, ads can fit seamlessly in your application.
 #####Init factory

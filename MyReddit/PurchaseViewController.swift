@@ -51,7 +51,6 @@ class PurchaseViewController: UIViewController, BDGIAPDelegate {
         alert.addAction(UIAlertAction(title: "facebook", style: .Default, handler: { (action) -> Void in
             if SLComposeViewController.isAvailableForServiceType(SLServiceTypeFacebook) {
                 let socialVC = SLComposeViewController(forServiceType: SLServiceTypeFacebook)
-                socialVC.addImage(UIImage(named: "MyRedditShare"))
                 socialVC.setInitialText("Check out MyReddit - an iOS app for reddit available on iPhone and iPad #getmyreddit - http://myredditapp.com")
                 
                 let completion: SLComposeViewControllerCompletionHandler = { (result) -> Void in
@@ -67,10 +66,7 @@ class PurchaseViewController: UIViewController, BDGIAPDelegate {
                 
                 self.presentViewController(socialVC, animated: true, completion: nil)
             } else {
-                UIAlertView(title: "Error!",
-                    message: "Please make sure you are logged in to facebook in the Settings app on your device.",
-                    delegate: self,
-                    cancelButtonTitle: "Ok").show()
+                self.presentViewController(UIAlertController.errorAlertControllerWithMessage("Please make sure you are logged in to facebook in the Settings app on your device."), animated: true, completion: nil)
                 
                 LocalyticsSession.shared().tagEvent("Facebook unavailable")
             }
@@ -78,7 +74,6 @@ class PurchaseViewController: UIViewController, BDGIAPDelegate {
         alert.addAction(UIAlertAction(title: "twitter", style: .Default, handler: { (action) -> Void in
             if SLComposeViewController.isAvailableForServiceType(SLServiceTypeTwitter) {
                 let socialVC = SLComposeViewController(forServiceType: SLServiceTypeTwitter)
-                socialVC.addImage(UIImage(named: "MyRedditShare"))
                 socialVC.setInitialText("Check out MyReddit - an iOS app for reddit available on iPhone and iPad #getmyreddit - http://myredditapp.com")
                 
                 let completion: SLComposeViewControllerCompletionHandler = { (result) -> Void in
@@ -94,10 +89,7 @@ class PurchaseViewController: UIViewController, BDGIAPDelegate {
                 
                 self.presentViewController(socialVC, animated: true, completion: nil)
             } else {
-                UIAlertView(title: "Error!",
-                    message: "Please make sure you are logged in to twitter in the Settings app on your device.",
-                    delegate: self,
-                    cancelButtonTitle: "Ok").show()
+                self.presentViewController(UIAlertController.errorAlertControllerWithMessage("Please make sure you are logged in to twitter in the Settings app on your device."), animated: true, completion: nil)
                 LocalyticsSession.shared().tagEvent("Twitter unavailable")
             }
         }))
@@ -119,10 +111,7 @@ class PurchaseViewController: UIViewController, BDGIAPDelegate {
     
     func didFailIAP() {
         self.hud.hide(true)
-        UIAlertView(title: "Error!",
-            message: "Unable to purchase! Please make sure you have an internet connection.",
-            delegate: self,
-            cancelButtonTitle: "Ok").show()
+        self.presentViewController(UIAlertController.errorAlertControllerWithMessage("Unable to purchase! Please make sure you have an internet connection."), animated: true, completion: nil)
         LocalyticsSession.shared().tagEvent("Unable to purchase")
     }
     
@@ -133,10 +122,7 @@ class PurchaseViewController: UIViewController, BDGIAPDelegate {
     
     func didFailIAS() {
         self.hud.hide(true)
-        UIAlertView(title: "Error!",
-            message: "Unable to purchase! Please make sure you have an internet connection.",
-            delegate: self,
-            cancelButtonTitle: "Ok").show()
+        self.presentViewController(UIAlertController.errorAlertControllerWithMessage("Unable to purchase! Please make sure you have an internet connection."), animated: true, completion: nil)
         LocalyticsSession.shared().tagEvent("Unable to purchase")
     }
     

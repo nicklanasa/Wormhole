@@ -292,10 +292,7 @@ UICollectionViewDelegate {
     func saveLink() {
         RedditSession.sharedSession.saveLink(self.link, completion: { (error) -> () in
             if error != nil {
-                UIAlertView(title: "Error!",
-                    message: error!.localizedDescription,
-                    delegate: self,
-                    cancelButtonTitle: "Ok").show()
+                self.presentViewController(UIAlertController.errorAlertControllerWithMessage(error!.localizedDescription), animated: true, completion: nil)
             } else {
                 self.saveButtonItem = UIBarButtonItem(image: UIImage(named: "SavedSelected"), style: .Plain, target: self, action: "unSaveLink")
                 self.navigationItem.rightBarButtonItems = [self.photosBarButtonItem, self.saveButtonItem]
@@ -307,10 +304,7 @@ UICollectionViewDelegate {
         // unsave
         RedditSession.sharedSession.unSaveLink(self.link, completion: { (error) -> () in
             if error != nil {
-                UIAlertView(title: "Error!",
-                    message: error!.localizedDescription,
-                    delegate: self,
-                    cancelButtonTitle: "Ok").show()
+                self.presentViewController(UIAlertController.errorAlertControllerWithMessage(error!.localizedDescription), animated: true, completion: nil)
             } else {
                 self.saveButtonItem = UIBarButtonItem(image: UIImage(named: "Saved"), style: .Plain, target: self, action: "saveLink")
                 self.navigationItem.rightBarButtonItems = [self.photosBarButtonItem, self.saveButtonItem]
@@ -347,7 +341,7 @@ UICollectionViewDelegate {
 
     @IBAction func shareButtonTapped(sender: AnyObject) {
         let alert = UIAlertController.swipeShareAlertControllerWithLink(self.link) { (url, action) -> () in
-            var objectsToShare = ["\(self.link.title) @myreddit", url]
+            let objectsToShare = ["\(self.link.title) @myreddit", url]
             
             let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
             
@@ -367,10 +361,7 @@ UICollectionViewDelegate {
         LocalyticsSession.shared().tagEvent("Gallery downvote button tapped")
         RedditSession.sharedSession.downvote(self.link, completion: { (error) -> () in
             if error != nil {
-                UIAlertView(title: "Error!",
-                    message: error!.localizedDescription,
-                    delegate: self,
-                    cancelButtonTitle: "Ok").show()
+                self.presentViewController(UIAlertController.errorAlertControllerWithMessage(error!.localizedDescription), animated: true, completion: nil)
             } else {
                 self.refreshLink()
             }
@@ -381,10 +372,7 @@ UICollectionViewDelegate {
         LocalyticsSession.shared().tagEvent("Gallery upvote button tapped")
         RedditSession.sharedSession.upvote(self.link, completion: { (error) -> () in
             if error != nil {
-                UIAlertView(title: "Error!",
-                    message: error!.localizedDescription,
-                    delegate: self,
-                    cancelButtonTitle: "Ok").show()
+                self.presentViewController(UIAlertController.errorAlertControllerWithMessage(error!.localizedDescription), animated: true, completion: nil)
             } else {
                 self.refreshLink()
             }

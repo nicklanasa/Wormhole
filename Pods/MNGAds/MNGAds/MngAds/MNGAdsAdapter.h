@@ -93,15 +93,30 @@ extern MNGAdSize const kMNGAdSizeMediumRectangle; //Square Banner 300 x 250
  request a interstitial view from the SDK that will be returned in the delegate methods
  
  @param preferences user's preferences
+ @param autoDisplayed interstitial will be displayed automatically
+ 
+ @return success
+ */
+-(BOOL)createInterstitialWithPreferences:(MNGPreference*)preferences autoDisplayed:(BOOL)autoDisplayed;
+-(BOOL)createInterstitialAutoDisplayed:(BOOL)autoDisplayed;
+-(BOOL)createInterstitialWithPreferences:(MNGPreference*)preferences;
+-(BOOL)createInterstitial;
 
+/** Manual Displaying Methods
+ Display interstitial
  
  @return success
  */
 
--(BOOL)createInterstitialWithPreferences:(MNGPreference*)preferences;
--(BOOL)createInterstitial;
+-(BOOL)displayInterstitial;
 
+/** Manual Displaying Methods
+ check if interstitial is ready
+ 
+ @return can display interstitial
+ */
 
+-(BOOL)isInterstitialReady;
 
 /** Create a native Ads view
  request a native object from the SDK that will be returned in the delegate methods

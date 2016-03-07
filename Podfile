@@ -22,5 +22,8 @@ pod 'KeychainAccess'
 pod 'MNGAds', '~> 2.0'
 pod 'GoogleConversionTracking'
 pod 'AdMobMediationAdapterFB'
+pod 'Fabric'
+pod 'Crashlytics'
+pod 'Appsee'
 
 use_frameworks!
