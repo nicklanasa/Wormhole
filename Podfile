@@ -19,5 +19,8 @@ pod 'Google-Mobile-Ads-SDK'
 pod 'TTTAttributedLabel'
 pod 'AMScrollingNavbar', '~> 2.0.1'
 pod 'KeychainAccess'
+pod 'MNGAds', '~> 2.0'
+pod 'GoogleConversionTracking'
+pod 'AdMobMediationAdapterFB'
 
 use_frameworks!

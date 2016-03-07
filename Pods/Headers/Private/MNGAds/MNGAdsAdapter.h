@@ -1,0 +1,1 @@
+../../../MNGAds/MNGAds/MngAds/MNGAdsAdapter.h

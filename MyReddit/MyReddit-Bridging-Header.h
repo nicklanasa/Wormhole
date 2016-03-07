@@ -6,6 +6,10 @@
 @import Appirater;
 @import DateTools;
 
+#import "MNGAdsSDKFactory.h"
+#import "Protocols.h"
+#import "MNGNAtiveObject.h"
+#import "MNGPreference.h"
 #import <RATreeView/RATreeView.h>
 
 #import "LocalyticsSession.h"

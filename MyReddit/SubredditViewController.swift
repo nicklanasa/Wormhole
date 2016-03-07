@@ -209,29 +209,6 @@ PostCellDelegate {
             }
             
             cell.link = link
-        } else if let _ = self.links?[indexPath.row] as? SuggestedLink {
-            let cell = tableView.dequeueReusableCellWithIdentifier("AdCell") as! AdCell
-            
-            cell.bannerView.rootViewController = self
-            cell.bannerView.autoresizingMask = .FlexibleWidth
-            
-            if !UIDevice.currentDevice().orientation.isLandscape {
-                cell.bannerView.adSize = kGADAdSizeSmartBannerPortrait
-            } else {
-                cell.bannerView.adSize = kGADAdSizeSmartBannerLandscape
-            }
-            
-            let priority = DISPATCH_QUEUE_PRIORITY_BACKGROUND
-            
-            dispatch_async(dispatch_get_global_queue(priority, 0)) {
-                let request = GADRequest()
-                request.testDevices = [kGADSimulatorID]
-                dispatch_async(dispatch_get_main_queue()) {
-                    cell.bannerView.loadRequest(request)
-                }
-            }
-            
-            return cell
         }
         
         cell.postCellDelegate = self

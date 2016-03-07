@@ -76,18 +76,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate, IMGSessionDelegate, NSURL
         performFetchWithCompletionHandler completionHandler:
         ((UIBackgroundFetchResult) -> Void)){
         print("running in backgrounddddd!!!!!")
-            RedditSession.sharedSession.fetchMessages(nil, category: .Unread, read: false) { (pagination, results, error) -> () in
-                if results?.count > 0 {
-                    let notification = UILocalNotification()
-                    notification.alertBody = "New messages"
-                    notification.fireDate = NSDate()
-                    notification.soundName = UILocalNotificationDefaultSoundName
-                    UIApplication.sharedApplication().scheduleLocalNotification(notification)
-                    UIApplication.sharedApplication().applicationIconBadgeNumber = results!.count
-                }
-                
-                completionHandler(.NewData)
+        RedditSession.sharedSession.fetchMessages(nil, category: .Unread, read: false) { (pagination, results, error) -> () in
+            if results?.count > 0 {
+                let notification = UILocalNotification()
+                notification.alertBody = "New messages"
+                notification.fireDate = NSDate()
+                notification.soundName = UILocalNotificationDefaultSoundName
+                UIApplication.sharedApplication().scheduleLocalNotification(notification)
+                UIApplication.sharedApplication().applicationIconBadgeNumber = results!.count
             }
+            
+            completionHandler(.NewData)
+        }
     }
 
     func applicationWillResignActive(application: UIApplication) {

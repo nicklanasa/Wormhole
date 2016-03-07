@@ -31,7 +31,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="75"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Opps, we couldn't find anything here. Please check your internet connection or pull down to refresh." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ti9-CZ-0jB">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Oops, we couldn't find anything here. Please check your internet connection or pull down to refresh." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ti9-CZ-0jB">
                                                     <rect key="frame" x="87" y="8" width="505" height="54"/>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -74,9 +74,6 @@
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="67" id="fhH-oy-yx5"/>
                                                     </constraints>
-                                                    <userDefinedRuntimeAttributes>
-                                                        <userDefinedRuntimeAttribute type="string" keyPath="adUnitID" value="ca-app-pub-4512025392063519/5619854982"/>
-                                                    </userDefinedRuntimeAttributes>
                                                 </view>
                                             </subviews>
                                             <constraints>
@@ -1581,7 +1578,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="75"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Opps, we couldn't find anything here. Please check your internet connection or pull down to refresh." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="esY-BT-OXp">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Oops, we couldn't find anything here. Please check your internet connection or pull down to refresh." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="esY-BT-OXp">
                                                     <rect key="frame" x="87" y="8" width="505" height="54"/>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -1988,7 +1985,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="75"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Opps, we couldn't find anything here. Please check your internet connection or pull down to refresh." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PtA-iO-JY6">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Oops, we couldn't find anything here. Please check your internet connection or pull down to refresh." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PtA-iO-JY6">
                                                     <rect key="frame" x="87" y="8" width="505" height="54"/>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -4136,19 +4133,19 @@
         <image name="Up" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="bxZ-6W-PbQ"/>
-        <segue reference="ryX-hT-yj2"/>
-        <segue reference="s4Y-Y8-M2P"/>
+        <segue reference="yNw-36-nQb"/>
+        <segue reference="oqy-7E-8ml"/>
         <segue reference="pMg-rh-ZMv"/>
-        <segue reference="Lh7-pa-Rvm"/>
-        <segue reference="vMB-6P-NDX"/>
-        <segue reference="4Rw-4P-Ibk"/>
-        <segue reference="2S1-bb-L8b"/>
-        <segue reference="kaq-Nv-BbA"/>
-        <segue reference="SWo-82-5L3"/>
+        <segue reference="DoA-ah-cSI"/>
+        <segue reference="s4Y-Y8-M2P"/>
+        <segue reference="pqF-Zz-63s"/>
+        <segue reference="ykc-Jy-SLH"/>
+        <segue reference="zMo-OM-Z5J"/>
+        <segue reference="Udn-dz-6HG"/>
         <segue reference="Nhl-Ro-yfO"/>
         <segue reference="nEx-7L-vW5"/>
-        <segue reference="aJr-yO-hbO"/>
-        <segue reference="zMo-OM-Z5J"/>
+        <segue reference="2S1-bb-L8b"/>
+        <segue reference="vMB-6P-NDX"/>
+        <segue reference="4Rw-4P-Ibk"/>
     </inferredMetricsTieBreakers>
 </document>

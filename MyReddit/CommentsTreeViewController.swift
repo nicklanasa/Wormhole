@@ -79,78 +79,41 @@ GADBannerViewDelegate {
     }
     
     func refreshAd() {
-        if !SettingsManager.defaultManager.purchased {
-            
-            // HACK
-            if let _ = self.bannerView?.superview {
-                self.bannerView.removeFromSuperview()
-            }
-            
-            let height: CGFloat!
-            let adSize: GADAdSize!
-            
-            if UIDevice.currentDevice().orientation.isLandscape {
-                adSize = kGADAdSizeSmartBannerLandscape
-                height = 32
-            } else {
-                adSize = kGADAdSizeSmartBannerPortrait
-                height = 50
-            }
-            
-            self.bannerView = GADBannerView(frame: CGRectMake(0, UIScreen.mainScreen().bounds.size.height - height,
-                UIScreen.mainScreen().bounds.size.width, height))
-            self.bannerView.adSize = adSize
-            self.bannerView.adUnitID = "ca-app-pub-4512025392063519/5619854982"
-            self.bannerView.rootViewController = self
-            self.bannerView.delegate = self
-            
-            let priority = DISPATCH_QUEUE_PRIORITY_BACKGROUND
-            
-            dispatch_async(dispatch_get_global_queue(priority, 0)) {
-                let request = GADRequest()
-                request.testDevices = [kGADSimulatorID]
-                dispatch_async(dispatch_get_main_queue()) {
-                    self.bannerView.loadRequest(request)
-                }
-            }
-            
-            self.navigationController?.view.addSubview(self.bannerView)
-        }
-
-    }
-    
-    func resetViewsForAd() {
-        UIView.animateWithDuration(0.3) { () -> Void in
-            dispatch_async(dispatch_get_main_queue()) { () -> Void in
-                if !SettingsManager.defaultManager.purchased {
-                    self.bannerView?.removeFromSuperview()
-                    self.navigationController?.toolbar.frame.origin.y = UIScreen.mainScreen().bounds.size.height -
-                        (self.navigationController?.toolbar.frame.size.height ?? 0)
-                    self.treeView.scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-                }
+        let priority = DISPATCH_QUEUE_PRIORITY_BACKGROUND
+        
+        dispatch_async(dispatch_get_global_queue(priority, 0)) {
+            let request = GADRequest()
+            request.testDevices = [kGADSimulatorID]
+            dispatch_async(dispatch_get_main_queue()) {
+                self.bannerView.loadRequest(request)
             }
         }
     }
     
     func adView(bannerView: GADBannerView!, didFailToReceiveAdWithError error: GADRequestError!) {
-        self.resetViewsForAd()
+        dispatch_async(dispatch_get_main_queue()) { () -> Void in
+            UIView.animateWithDuration(0.3) { () -> Void in
+                self.bannerView?.removeFromSuperview()
+                self.navigationController?.view.frame = CGRectMake(0, 0, UIScreen.mainScreen().bounds.size.width, UIScreen.mainScreen().bounds.size.height)
+            }
+        }
     }
     
     func adViewDidReceiveAd(bannerView: GADBannerView!) {
-        UIView.animateWithDuration(0.3) { () -> Void in
-            dispatch_async(dispatch_get_main_queue()) { () -> Void in
-                self.treeView.scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: bannerView.frame.size.height, right: 0)
-                self.navigationController?.toolbar.frame.origin.y = UIScreen.mainScreen().bounds.size.height -
-                    bannerView.frame.size.height - (self.navigationController?.toolbar.frame.size.height ?? 0)
-            }
+        dispatch_async(dispatch_get_main_queue()) { () -> Void in
+            UIView.animateWithDuration(0.3, animations: { () -> Void in
+                let bannerHeight = (UIDevice.currentDevice().orientation.isLandscape == true ?
+                    32 : 50)
+                self.navigationController?.view.frame = CGRectMake(0, 0, UIScreen.mainScreen().bounds.size.width, UIScreen.mainScreen().bounds.size.height - CGFloat(bannerHeight))
+            }, completion: { (s) -> Void in
+                    self.bannerView.frame.origin.y = UIScreen.mainScreen().bounds.size.height - bannerView.frame.size.height
+            })
         }
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         LocalyticsSession.shared().tagScreen("Comments")
-        
-        self.refreshAd()
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -158,9 +121,9 @@ GADBannerViewDelegate {
     }
     
     override func viewWillDisappear(animated: Bool) {
-        self.resetViewsForAd()
+        self.bannerView?.removeFromSuperview()
     }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -189,6 +152,33 @@ GADBannerViewDelegate {
             completion: { (error) -> () in })
         
         self.preferredAppearance()
+        
+        if !SettingsManager.defaultManager.purchased {
+            let height: CGFloat!
+            let adSize: GADAdSize!
+            
+            if UIDevice.currentDevice().orientation.isLandscape {
+                adSize = kGADAdSizeSmartBannerLandscape
+                height = 32
+            } else {
+                adSize = kGADAdSizeSmartBannerPortrait
+                height = 50
+            }
+            
+            self.bannerView = GADBannerView(frame: CGRectMake(0, UIScreen.mainScreen().bounds.size.height,
+                UIScreen.mainScreen().bounds.size.width, height))
+            
+            self.bannerView.adSize = adSize
+            self.bannerView.adSize = UIDevice.currentDevice().orientation.isLandscape ?
+                kGADAdSizeSmartBannerLandscape : kGADAdSizeSmartBannerPortrait
+            self.bannerView.adUnitID = "ca-app-pub-4512025392063519/5619854982"
+            self.bannerView.rootViewController = self
+            self.bannerView.delegate = self
+            
+            self.navigationController?.view.addSubview(self.bannerView)
+            
+            self.refreshAd()
+        }
     }
     
     func reloadComments() {
@@ -726,11 +716,9 @@ GADBannerViewDelegate {
         self.treeView.reloadData()
     }
     
-    override func willRotateToInterfaceOrientation(toInterfaceOrientation: UIInterfaceOrientation, duration: NSTimeInterval) {
-        self.bannerView?.removeFromSuperview()
-    }
-    
     override func didRotateFromInterfaceOrientation(fromInterfaceOrientation: UIInterfaceOrientation) {
+        self.bannerView.adSize = UIDevice.currentDevice().orientation.isLandscape ?
+            kGADAdSizeSmartBannerLandscape : kGADAdSizeSmartBannerPortrait
         self.refreshAd()
     }
 }

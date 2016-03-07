@@ -9,6 +9,7 @@
 import UIKit
 import MBProgressHUD
 import AMScrollingNavbar
+import GoogleMobileAds
 
 enum FilterSwitchType: Int {
     case Hot
@@ -19,7 +20,7 @@ enum FilterSwitchType: Int {
 }
 
 class SubredditRootViewController: RootViewController,
-UISplitViewControllerDelegate {
+UISplitViewControllerDelegate, GADBannerViewDelegate {
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var subscribeButton: UIBarButtonItem!
@@ -29,6 +30,8 @@ UISplitViewControllerDelegate {
     @IBOutlet weak var searchButton: UIBarButtonItem!
     @IBOutlet weak var messages: UIBarButtonItem!
     
+    var bannerView: GADBannerView!
+        
     var links: [AnyObject]? {
         didSet {
             if !SettingsManager.defaultManager.valueForSetting(.NSFW) {
@@ -41,12 +44,6 @@ UISplitViewControllerDelegate {
                     
                     return true
                 })
-            }
-            
-            if !SettingsManager.defaultManager.purchased {
-                if self.links?.count != 0 {
-                    self.links?.append(SuggestedLink())
-                }
             }
         }
     }
@@ -72,6 +69,39 @@ UISplitViewControllerDelegate {
     var refreshControl: UIRefreshControl!
     var heightsCache = [String : AnyObject]()
     
+    func refreshAd() {
+        let priority = DISPATCH_QUEUE_PRIORITY_BACKGROUND
+        
+        dispatch_async(dispatch_get_global_queue(priority, 0)) {
+            let request = GADRequest()
+            request.testDevices = [kGADSimulatorID]
+            dispatch_async(dispatch_get_main_queue()) {
+                self.bannerView.loadRequest(request)
+            }
+        }
+    }
+    
+    func adView(bannerView: GADBannerView!, didFailToReceiveAdWithError error: GADRequestError!) {
+        dispatch_async(dispatch_get_main_queue()) { () -> Void in
+            UIView.animateWithDuration(0.3) { () -> Void in
+                self.bannerView?.removeFromSuperview()
+                self.navigationController?.view.frame = CGRectMake(0, 0, UIScreen.mainScreen().bounds.size.width, UIScreen.mainScreen().bounds.size.height)
+            }
+        }
+    }
+    
+    func adViewDidReceiveAd(bannerView: GADBannerView!) {
+        dispatch_async(dispatch_get_main_queue()) { () -> Void in
+            UIView.animateWithDuration(0.3, animations: { () -> Void in
+                let bannerHeight = (UIDevice.currentDevice().orientation.isLandscape == true ?
+                    32 : 50)
+                self.navigationController?.view.frame = CGRectMake(0, 0, UIScreen.mainScreen().bounds.size.width, UIScreen.mainScreen().bounds.size.height - CGFloat(bannerHeight))
+            }, completion: { (s) -> Void in
+                self.bannerView.frame.origin.y = UIScreen.mainScreen().bounds.size.height - bannerView.frame.size.height
+            })
+        }
+    }
+    
     override func viewWillAppear(animated: Bool) {
         LocalyticsSession.shared().tagScreen("Subreddit")
         self.tableView.hidden = true
@@ -80,13 +110,41 @@ UISplitViewControllerDelegate {
         self.preferredAppearance()
         self.tableView.hidden = false
         self.navigationController?.setToolbarHidden(false, animated: false)
+        
+        if !SettingsManager.defaultManager.purchased {
+            let height: CGFloat!
+            let adSize: GADAdSize!
+            
+            if UIDevice.currentDevice().orientation.isLandscape {
+                adSize = kGADAdSizeSmartBannerLandscape
+                height = 32
+            } else {
+                adSize = kGADAdSizeSmartBannerPortrait
+                height = 50
+            }
+            
+            self.bannerView = GADBannerView(frame: CGRectMake(0, UIScreen.mainScreen().bounds.size.height,
+                UIScreen.mainScreen().bounds.size.width, height))
+            
+            self.bannerView.adSize = adSize
+            self.bannerView.adSize = UIDevice.currentDevice().orientation.isLandscape ?
+                kGADAdSizeSmartBannerLandscape : kGADAdSizeSmartBannerPortrait
+            self.bannerView.adUnitID = "ca-app-pub-4512025392063519/5619854982"
+            self.bannerView.rootViewController = self
+            self.bannerView.delegate = self
+            
+            self.navigationController?.view.addSubview(self.bannerView)
+            
+            self.refreshAd()
+        } else {
+            self.bannerView?.removeFromSuperview()
+        }
     }
     
     override func viewWillDisappear(animated: Bool) {
         if let navigationController = self.navigationController as? ScrollingNavigationController {
             navigationController.stopFollowingScrollView()
         }
-        self.navigationController?.setToolbarHidden(false, animated: true)
     }
     
     override func viewDidLoad() {
@@ -289,7 +347,7 @@ UISplitViewControllerDelegate {
 
     func scrollViewWillBeginDecelerating(scrollView: UIScrollView){
         let hide = scrollView.contentOffset.y > self.lastOffsetY
-
+        
         if let navigationController = self.navigationController as? ScrollingNavigationController {
             if hide {
                 navigationController.followScrollView(self.tableView, delay: 50.0)
@@ -297,14 +355,16 @@ UISplitViewControllerDelegate {
                 navigationController.stopFollowingScrollView()
             }
         }
-       
+        
         self.navigationController?.setToolbarHidden(hide, animated: true)
     }
     
     override func didRotateFromInterfaceOrientation(fromInterfaceOrientation: UIInterfaceOrientation) {
         self.tableView.reloadData()
+        self.bannerView.adSize = UIDevice.currentDevice().orientation.isLandscape ?
+            kGADAdSizeSmartBannerLandscape : kGADAdSizeSmartBannerPortrait
+        self.refreshAd()
     }
-    
     override func preferredAppearance() {
 
         self.navigationController?.navigationBar.barTintColor = MyRedditBackgroundColor
