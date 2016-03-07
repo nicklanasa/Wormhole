@@ -301,7 +301,6 @@
                         <segue destination="oWg-TP-L9t" kind="show" identifier="SubredditLink" id="s4Y-Y8-M2P"/>
                         <segue destination="Hdo-ax-c9X" kind="presentation" identifier="PurchaseSegue" modalTransitionStyle="crossDissolve" id="FH5-lg-p4i"/>
                         <segue destination="Hdo-ax-c9X" kind="presentation" id="ykc-Jy-SLH"/>
-                        <segue destination="QDb-Kc-Q7i" kind="presentation" identifier="LoginSegue" modalTransitionStyle="crossDissolve" id="DoA-ah-cSI"/>
                         <segue destination="SEn-8E-jyR" kind="show" identifier="GallerySegue" id="pMg-rh-ZMv"/>
                         <segue destination="oc0-6V-RMu" kind="presentation" identifier="PostSegue" modalTransitionStyle="crossDissolve" id="ufm-OF-Ing"/>
                         <segue destination="Wuv-iQ-z1V" kind="show" identifier="PostSubredditSegue" customClass="DismissSegue" customModule="MyReddit" id="yNw-36-nQb"/>
@@ -4134,18 +4133,18 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="yNw-36-nQb"/>
-        <segue reference="oqy-7E-8ml"/>
-        <segue reference="pMg-rh-ZMv"/>
-        <segue reference="DoA-ah-cSI"/>
-        <segue reference="s4Y-Y8-M2P"/>
         <segue reference="pqF-Zz-63s"/>
+        <segue reference="pMg-rh-ZMv"/>
+        <segue reference="oqy-7E-8ml"/>
         <segue reference="ykc-Jy-SLH"/>
-        <segue reference="zMo-OM-Z5J"/>
-        <segue reference="Udn-dz-6HG"/>
+        <segue reference="s4Y-Y8-M2P"/>
+        <segue reference="2S1-bb-L8b"/>
+        <segue reference="4Rw-4P-Ibk"/>
+        <segue reference="vMB-6P-NDX"/>
         <segue reference="Nhl-Ro-yfO"/>
         <segue reference="nEx-7L-vW5"/>
-        <segue reference="2S1-bb-L8b"/>
-        <segue reference="vMB-6P-NDX"/>
-        <segue reference="4Rw-4P-Ibk"/>
+        <segue reference="zMo-OM-Z5J"/>
+        <segue reference="Udn-dz-6HG"/>
+        <segue reference="fLo-75-wzd"/>
     </inferredMetricsTieBreakers>
 </document>

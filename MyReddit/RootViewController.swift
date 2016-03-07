@@ -135,7 +135,7 @@ class RootViewController: UIViewController, GADBannerViewDelegate {
             self.bannerView.delegate = self
             
             UIApplication.sharedApplication().keyWindow?.insertSubview(self.bannerView,
-                aboveSubview: self.navigationController?.toolbar ?? nil)
+                belowSubview: self.navigationController?.view ?? nil)
         } else {
             self.removeAd()
         }

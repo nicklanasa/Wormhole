@@ -20,6 +20,14 @@ PostCellDelegate {
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        
+        UserSession.sharedSession.openSessionWithCompletion { (error) -> () in
+            self.fetchLinks()
+        }
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
     }
     
     override func viewDidLoad() {
@@ -29,10 +37,6 @@ PostCellDelegate {
         
         self.tableView.estimatedRowHeight = 80.0
         self.tableView.rowHeight = UITableViewAutomaticDimension
-
-        UserSession.sharedSession.openSessionWithCompletion { (error) -> () in
-            self.fetchLinks()
-        }
         
         let longPressRecognizer = UILongPressGestureRecognizer(target: self, action: "longPress:")
         self.view.addGestureRecognizer(longPressRecognizer)
@@ -145,7 +149,7 @@ PostCellDelegate {
                             }
                         })
                     } else {
-                        self.performSegueWithIdentifier("LoginSegue", sender: self)
+                        self.performSegueWithIdentifier("AccountsSegue", sender: self)
                     }
                 } else {
                     if UserSession.sharedSession.isSignedIn {
@@ -157,7 +161,7 @@ PostCellDelegate {
                             }
                         })
                     } else {
-                        self.performSegueWithIdentifier("LoginSegue", sender: self)
+                        self.performSegueWithIdentifier("AccountsSegue", sender: self)
                     }
                 }
             }
@@ -487,7 +491,7 @@ PostCellDelegate {
             if UserSession.sharedSession.isSignedIn {
                 return true
             } else {
-                self.performSegueWithIdentifier("LoginSegue", sender: self)
+                self.performSegueWithIdentifier("AccountsSegue", sender: self)
             }
             
             return false

@@ -303,7 +303,7 @@ UISplitViewControllerDelegate {
             }
         }
         
-        self.navigationController?.setToolbarHidden(hide, animated: true)
+        //self.navigationController?.setToolbarHidden(hide, animated: true)
     }
     
     override func willRotateToInterfaceOrientation(toInterfaceOrientation: UIInterfaceOrientation, duration: NSTimeInterval) {
