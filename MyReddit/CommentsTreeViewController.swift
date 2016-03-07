@@ -117,7 +117,7 @@ GADBannerViewDelegate {
     
     override func viewDidAppear(animated: Bool) {
         self.navigationItem.title = "\(self.link.totalComments) comments"
-        
+
         LocalyticsSession.shared().tagScreen("Comments")
         
         if !SettingsManager.defaultManager.purchased {
@@ -148,6 +148,10 @@ GADBannerViewDelegate {
         } else {
             self.removeAd()
         }
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        self.navigationController?.setToolbarHidden(false, animated: true)
     }
     
     override func viewWillDisappear(animated: Bool) {
