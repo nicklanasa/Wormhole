@@ -81,13 +81,17 @@ UISplitViewControllerDelegate, GADBannerViewDelegate {
         }
     }
     
-    func adView(bannerView: GADBannerView!, didFailToReceiveAdWithError error: GADRequestError!) {
+    func removeAd() {
         dispatch_async(dispatch_get_main_queue()) { () -> Void in
             UIView.animateWithDuration(0.3) { () -> Void in
                 self.bannerView?.removeFromSuperview()
                 self.navigationController?.view.frame = CGRectMake(0, 0, UIScreen.mainScreen().bounds.size.width, UIScreen.mainScreen().bounds.size.height)
             }
         }
+    }
+    
+    func adView(bannerView: GADBannerView!, didFailToReceiveAdWithError error: GADRequestError!) {
+        self.removeAd()
     }
     
     func adViewDidReceiveAd(bannerView: GADBannerView!) {
@@ -110,23 +114,21 @@ UISplitViewControllerDelegate, GADBannerViewDelegate {
         self.preferredAppearance()
         self.tableView.hidden = false
         self.navigationController?.setToolbarHidden(false, animated: false)
-        
+    }
+    
+    override func viewDidAppear(animated: Bool) {
         if !SettingsManager.defaultManager.purchased {
             let height: CGFloat!
-            let adSize: GADAdSize!
             
             if UIDevice.currentDevice().orientation.isLandscape {
-                adSize = kGADAdSizeSmartBannerLandscape
                 height = 32
             } else {
-                adSize = kGADAdSizeSmartBannerPortrait
                 height = 50
             }
             
             self.bannerView = GADBannerView(frame: CGRectMake(0, UIScreen.mainScreen().bounds.size.height,
                 UIScreen.mainScreen().bounds.size.width, height))
             
-            self.bannerView.adSize = adSize
             self.bannerView.adSize = UIDevice.currentDevice().orientation.isLandscape ?
                 kGADAdSizeSmartBannerLandscape : kGADAdSizeSmartBannerPortrait
             self.bannerView.adUnitID = "ca-app-pub-4512025392063519/5619854982"
@@ -137,7 +139,7 @@ UISplitViewControllerDelegate, GADBannerViewDelegate {
             
             self.refreshAd()
         } else {
-            self.bannerView?.removeFromSuperview()
+            self.removeAd()
         }
     }
     
@@ -147,6 +149,7 @@ UISplitViewControllerDelegate, GADBannerViewDelegate {
         }
         
         self.bannerView?.removeFromSuperview()
+        self.navigationController?.view.frame = CGRectMake(0, 0, UIScreen.mainScreen().bounds.size.width, UIScreen.mainScreen().bounds.size.height)
     }
     
     override func viewDidLoad() {
