@@ -54,10 +54,10 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
         if self.imageURL != nil {
             self.imageView.sd_setImageWithURL(self.imageURL, completed: { (i, e, c, u) -> Void in
                 self.indicator.stopAnimating()
-                if let resizedImage = i?.imageWithImage(i, toSize: self.imageView.frame.size) {
-                    self.imageView.image = resizedImage
-                } else {
+                if e != nil {
                     self.imageView.image = UIImage(named: "Reddit")
+                } else {
+                    self.imageView.image = i
                 }
             })
         } else if image != nil {

@@ -536,6 +536,10 @@ PostCellDelegate {
     }
     
     override func willRotateToInterfaceOrientation(toInterfaceOrientation: UIInterfaceOrientation, duration: NSTimeInterval) {
-        self.tableView.reloadData()
+        super.willRotateToInterfaceOrientation(toInterfaceOrientation, duration: duration)
+    }
+    
+    override func didRotateFromInterfaceOrientation(fromInterfaceOrientation: UIInterfaceOrientation) {
+        super.didRotateFromInterfaceOrientation(fromInterfaceOrientation)
     }
 }
