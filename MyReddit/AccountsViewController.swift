@@ -23,6 +23,8 @@ UITableViewDataSource {
         self.tableView.reloadData()
         LocalyticsSession.shared().tagScreen("Accounts")
         
+        self.navigationController?.setToolbarHidden(false, animated: true)
+        
         self.preferredAppearance()
     }
 

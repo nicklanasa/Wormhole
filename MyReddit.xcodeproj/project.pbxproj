@@ -88,6 +88,7 @@
 		015565E91C7A9C1D004E42BB /* Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 015565E71C7A9C1D004E42BB /* Comment.swift */; };
 		015565EA1C7A9C1D004E42BB /* Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 015565E71C7A9C1D004E42BB /* Comment.swift */; };
 		015E0D5D1AEF2B4000299B29 /* CommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 015E0D5C1AEF2B4000299B29 /* CommentCell.swift */; };
+		0183F63B1C8E371E00FCE715 /* MyRedditTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0183F63A1C8E371E00FCE715 /* MyRedditTests.swift */; };
 		018E40221AC38A060055384D /* LinkViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 018E40211AC38A060055384D /* LinkViewController.swift */; };
 		018E40241AC392700055384D /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 018E40231AC392700055384D /* LoginViewController.swift */; };
 		018E40261AC395D30055384D /* UserSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 018E40251AC395D30055384D /* UserSession.swift */; };
@@ -288,6 +289,7 @@
 		0153016F1C7BEE4B001FAF5C /* UIView+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Helpers.swift"; sourceTree = "<group>"; };
 		015565E71C7A9C1D004E42BB /* Comment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Comment.swift; sourceTree = "<group>"; };
 		015E0D5C1AEF2B4000299B29 /* CommentCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentCell.swift; sourceTree = "<group>"; };
+		0183F63A1C8E371E00FCE715 /* MyRedditTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyRedditTests.swift; sourceTree = "<group>"; };
 		018CC9C21BCDA8B500DBC967 /* Pods_MyReddit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Pods_MyReddit.framework; path = "Pods/../build/Debug-iphoneos/Pods_MyReddit.framework"; sourceTree = "<group>"; };
 		018E40211AC38A060055384D /* LinkViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LinkViewController.swift; sourceTree = "<group>"; };
 		018E40231AC392700055384D /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
@@ -434,6 +436,7 @@
 			children = (
 				01A623001C76C62700A8F857 /* Info.plist */,
 				01A623061C76C8CE00A8F857 /* PostsUITests.swift */,
+				0183F63A1C8E371E00FCE715 /* MyRedditTests.swift */,
 			);
 			path = MyRedditUITests;
 			sourceTree = "<group>";
@@ -1034,6 +1037,7 @@
 				0133808E1C77BE4100E8DA56 /* RootTableViewController.swift in Sources */,
 				013380B61C77BE4800E8DA56 /* FrontCell.swift in Sources */,
 				01A6233B1C76CB3400A8F857 /* UIAlert+Helpers.swift in Sources */,
+				0183F63B1C8E371E00FCE715 /* MyRedditTests.swift in Sources */,
 				013380B01C77BE4800E8DA56 /* TitleCell.swift in Sources */,
 				013380C71C77BE4D00E8DA56 /* MultiRedditsViewController.swift in Sources */,
 				013380B71C77BE4800E8DA56 /* LinkCell.swift in Sources */,
