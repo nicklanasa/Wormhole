@@ -115,8 +115,9 @@ GADBannerViewDelegate {
         }
     }
     
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
+    override func viewDidAppear(animated: Bool) {
+        self.navigationItem.title = "\(self.link.totalComments) comments"
+        
         LocalyticsSession.shared().tagScreen("Comments")
         
         if !SettingsManager.defaultManager.purchased {
@@ -149,12 +150,9 @@ GADBannerViewDelegate {
         }
     }
     
-    override func viewDidAppear(animated: Bool) {
-        self.navigationItem.title = "\(self.link.totalComments) comments"
-    }
-    
     override func viewWillDisappear(animated: Bool) {
         self.bannerView?.removeFromSuperview()
+        self.navigationController?.view.frame = CGRectMake(0, 0, UIScreen.mainScreen().bounds.size.width, UIScreen.mainScreen().bounds.size.height)
     }
     
     override func viewDidLoad() {
