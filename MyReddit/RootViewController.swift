@@ -27,7 +27,8 @@ class RootViewController: UIViewController, GADBannerViewDelegate {
     
     override func viewWillDisappear(animated: Bool) {
         self.bannerView?.removeFromSuperview()
-        self.navigationController?.view.frame = CGRectMake(0, 0, UIScreen.mainScreen().bounds.size.width, UIScreen.mainScreen().bounds.size.height)
+        self.navigationController?.view.frame = CGRectMake(0, 0, UIScreen.mainScreen().bounds.size.width,
+            UIScreen.mainScreen().bounds.size.height)
     }
     
     override func viewDidDisappear(animated: Bool) {
@@ -41,7 +42,6 @@ class RootViewController: UIViewController, GADBannerViewDelegate {
         super.viewDidAppear(animated)
         
         if self.showAd {
-            self.adSize = UIDevice.currentDevice().orientation.isPortrait ? kGADAdSizeSmartBannerPortrait : kGADAdSizeSmartBannerLandscape
             self.setupAd()
             self.refreshAd()
         }
@@ -118,13 +118,10 @@ class RootViewController: UIViewController, GADBannerViewDelegate {
     
     func setupAd() {
         if !SettingsManager.defaultManager.purchased {
-            let height: CGFloat!
+            let height: CGFloat = UIDevice.currentDevice().orientation.isLandscape ? 32 : 50
             
-            if UIDevice.currentDevice().orientation.isLandscape {
-                height = 32
-            } else {
-                height = 50
-            }
+            self.adSize = UIDevice.currentDevice().orientation.isLandscape ?
+                kGADAdSizeSmartBannerLandscape : kGADAdSizeSmartBannerPortrait
             
             self.bannerView = GADBannerView(frame: CGRectMake(0, UIScreen.mainScreen().bounds.size.height,
                 UIScreen.mainScreen().bounds.size.width, height))
@@ -146,7 +143,6 @@ class RootViewController: UIViewController, GADBannerViewDelegate {
     }
     
     override func didRotateFromInterfaceOrientation(fromInterfaceOrientation: UIInterfaceOrientation) {
-        self.adSize = fromInterfaceOrientation.isPortrait ? kGADAdSizeSmartBannerLandscape : kGADAdSizeSmartBannerPortrait
         self.setupAd()
         self.refreshAd()
     }

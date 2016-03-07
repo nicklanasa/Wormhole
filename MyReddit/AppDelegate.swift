@@ -7,6 +7,9 @@
 //
 
 import UIKit
+import Fabric
+import Appsee
+import Crashlytics
 
 let MyRedditColor = UIColor(red: 189.0/255.0, green: 102.0/255.0, blue: 68.0/255.0, alpha: 1.0)
 let MyRedditUpvoteColor = UIColor(red: 155.0/255.0, green: 189.0/255.0, blue: 68.0/255.0, alpha: 1.0)
@@ -68,6 +71,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, IMGSessionDelegate, NSURL
         
         application.setMinimumBackgroundFetchInterval(
             UIApplicationBackgroundFetchIntervalMinimum)
+        
+        Fabric.with([Crashlytics.self, Appsee.self])
         
         return true
     }
