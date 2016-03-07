@@ -63,10 +63,7 @@ class ComposeTableViewController: RootTableViewController, UITextViewDelegate {
                 completion: { (error) -> () in
                     dispatch_async(dispatch_get_main_queue(), { () -> Void in
                         if error != nil {
-                            UIAlertView(title: "Error!",
-                                message: error!.localizedDescription,
-                                delegate: self,
-                                cancelButtonTitle: "Ok").show()
+                            self.presentViewController(UIAlertController.errorAlertControllerWithMessage(error!.localizedDescription), animated: true, completion: nil)
                             self.hud.hide(true)
                             
                             LocalyticsSession.shared().tagEvent("Send message failed")

@@ -217,10 +217,7 @@ class IPadSettingsViewController: UITableViewController, BDGIAPDelegate {
                 
                 if foundSubreddit == nil {
                     dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                        UIAlertView(title: "Error!",
-                            message: "Unable to find subreddit by that name.",
-                            delegate: self,
-                            cancelButtonTitle: "OK").show()
+                        self.presentViewController(UIAlertController.errorAlertControllerWithMessage("Unable to find subreddit."), animated: true, completion: nil)
                     })
                 } else {
                     self.performSegueWithIdentifier("MyRedditSubredditSegue", sender: foundSubreddit)
@@ -228,10 +225,7 @@ class IPadSettingsViewController: UITableViewController, BDGIAPDelegate {
                 }
             } else {
                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                    UIAlertView(title: "Error!",
-                        message: "Unable to find subreddit by that name.",
-                        delegate: self,
-                        cancelButtonTitle: "OK").show()
+                    self.presentViewController(UIAlertController.errorAlertControllerWithMessage("Unable to find subreddit."), animated: true, completion: nil)
                 })
             }
         })

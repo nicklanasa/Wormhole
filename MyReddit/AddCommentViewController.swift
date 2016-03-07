@@ -105,10 +105,7 @@ class AddCommentViewController: UIViewController, UITextViewDelegate {
                     onThingWithFullName: replyMessage.fullName, completion: { (error) -> () in
                     self.hud.hide(true)
                     if error != nil {
-                        UIAlertView(title: "Error!",
-                            message: error?.localizedDescription,
-                            delegate: self,
-                            cancelButtonTitle: "Ok").show()
+                        self.presentViewController(UIAlertController.errorAlertControllerWithMessage(error!.localizedDescription), animated: true, completion: nil)
                     } else {
                         self.dismiss()
                     }
@@ -121,10 +118,7 @@ class AddCommentViewController: UIViewController, UITextViewDelegate {
                         newText: self.textView.text,
                         completion: { (error) -> () in
                         if error != nil {
-                            UIAlertView(title: "Error!",
-                                message: error?.localizedDescription,
-                                delegate: self,
-                                cancelButtonTitle: "Ok").show()
+                        self.presentViewController(UIAlertController.errorAlertControllerWithMessage(error!.localizedDescription), animated: true, completion: nil)
                         } else {
                             self.dismiss()
                         }
@@ -134,10 +128,7 @@ class AddCommentViewController: UIViewController, UITextViewDelegate {
                         link: self.link, comment: self.comment, completion: { (error) -> () in
                             self.hud.hide(true)
                             if error != nil {
-                                UIAlertView(title: "Error!",
-                                    message: error?.localizedDescription,
-                                    delegate: self,
-                                    cancelButtonTitle: "Ok").show()
+                                self.presentViewController(UIAlertController.errorAlertControllerWithMessage(error!.localizedDescription), animated: true, completion: nil)
                             } else {
                                 self.dismiss()
                             }
@@ -152,10 +143,7 @@ class AddCommentViewController: UIViewController, UITextViewDelegate {
                             newText: self.textView.text,
                             completion: { (error) -> () in
                             if error != nil {
-                                UIAlertView(title: "Error!",
-                                    message: error?.localizedDescription,
-                                    delegate: self,
-                                    cancelButtonTitle: "Ok").show()
+                                self.presentViewController(UIAlertController.errorAlertControllerWithMessage(error!.localizedDescription), animated: true, completion: nil)
                             } else {
                                 self.dismiss()
                             }
@@ -166,10 +154,7 @@ class AddCommentViewController: UIViewController, UITextViewDelegate {
                         link: self.link, comment: self.comment, completion: { (error) -> () in
                             self.hud.hide(true)
                             if error != nil {
-                                UIAlertView(title: "Error!",
-                                    message: error?.localizedDescription,
-                                    delegate: self,
-                                    cancelButtonTitle: "Ok").show()
+                                self.presentViewController(UIAlertController.errorAlertControllerWithMessage(error!.localizedDescription), animated: true, completion: nil)
                             } else {
                                 self.dismiss()
                             }
@@ -177,10 +162,7 @@ class AddCommentViewController: UIViewController, UITextViewDelegate {
                 }
             }
         } else {
-            UIAlertView(title: "Error!",
-                message: "Text cannot be empty!",
-                delegate: self,
-                cancelButtonTitle: "Ok").show()
+            self.presentViewController(UIAlertController.errorAlertControllerWithMessage("Text cannot be empty!"), animated: true, completion: nil)
         }
     }
     
