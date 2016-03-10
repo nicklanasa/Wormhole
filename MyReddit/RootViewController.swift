@@ -57,12 +57,15 @@ class RootViewController: UIViewController, GADBannerViewDelegate {
         self.navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: MyRedditLabelColor,
             NSFontAttributeName : MyRedditTitleFont]
         self.view.backgroundColor = MyRedditDarkBackgroundColor
+        self.navigationController?.view.backgroundColor = MyRedditDarkBackgroundColor
         
         if SettingsManager.defaultManager.valueForSetting(.NightMode) {
             UIApplication.sharedApplication().setStatusBarStyle(UIStatusBarStyle.LightContent, animated: true)
         } else {
             UIApplication.sharedApplication().setStatusBarStyle(UIStatusBarStyle.Default, animated: true)
         }
+        
+        self.bannerView?.backgroundColor = MyRedditBackgroundColor
     }
     
     override func didReceiveMemoryWarning() {
@@ -95,7 +98,10 @@ class RootViewController: UIViewController, GADBannerViewDelegate {
         dispatch_async(dispatch_get_main_queue()) { () -> Void in
             UIView.animateWithDuration(0.3) { () -> Void in
                 self.bannerView?.removeFromSuperview()
-                self.navigationController?.view.frame = CGRectMake(0, 0, UIScreen.mainScreen().bounds.size.width, UIScreen.mainScreen().bounds.size.height)
+                self.navigationController?.view.frame = CGRectMake(0,
+                    0,
+                    UIScreen.mainScreen().bounds.size.width,
+                    UIScreen.mainScreen().bounds.size.height)
             }
         }
     }
@@ -105,19 +111,27 @@ class RootViewController: UIViewController, GADBannerViewDelegate {
     }
     
     func adViewDidReceiveAd(bannerView: GADBannerView!) {
+        if self.bannerView?.superview == nil {
+            UIApplication.sharedApplication().keyWindow?.insertSubview(self.bannerView,
+                belowSubview: self.navigationController?.view ?? nil)
+        }
+        
         dispatch_async(dispatch_get_main_queue()) { () -> Void in
             UIView.animateWithDuration(0.3, animations: { () -> Void in
                 let bannerHeight = (UIDevice.currentDevice().orientation.isLandscape == true ?
                     32 : 50)
-                self.navigationController?.view.frame = CGRectMake(0, 0, UIScreen.mainScreen().bounds.size.width, UIScreen.mainScreen().bounds.size.height - CGFloat(bannerHeight))
-                }, completion: { (s) -> Void in
-                    self.bannerView.frame.origin.y = UIScreen.mainScreen().bounds.size.height - bannerView.frame.size.height
+                self.navigationController?.view.frame = CGRectMake(0,
+                    0,
+                    UIScreen.mainScreen().bounds.size.width,
+                    UIScreen.mainScreen().bounds.size.height - CGFloat(bannerHeight))
+                self.bannerView.frame.origin.y = UIScreen.mainScreen().bounds.size.height - bannerView.frame.size.height
             })
         }
     }
     
     func setupAd() {
         if !SettingsManager.defaultManager.purchased {
+            
             let height: CGFloat = UIDevice.currentDevice().orientation.isLandscape ? 32 : 50
             
             self.adSize = UIDevice.currentDevice().orientation.isLandscape ?
@@ -130,9 +144,7 @@ class RootViewController: UIViewController, GADBannerViewDelegate {
             self.bannerView.adUnitID = "ca-app-pub-4512025392063519/5619854982"
             self.bannerView.rootViewController = self
             self.bannerView.delegate = self
-            
-            UIApplication.sharedApplication().keyWindow?.insertSubview(self.bannerView,
-                belowSubview: self.navigationController?.view ?? nil)
+            self.bannerView.backgroundColor = MyRedditBackgroundColor
         } else {
             self.removeAd()
         }

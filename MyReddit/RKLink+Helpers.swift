@@ -70,8 +70,12 @@ extension RKLink {
         return self.isImageLink() || (self.domain == "imgur.com" && !self.URL.absoluteString.containsString("gallery")) || self.media != nil
     }
     
+    func isImgAlbum() -> Bool {
+        return (self.domain == "imgur.com" && self.URL.absoluteString.componentsSeparatedByString("/").count > 4)
+    }
+    
     func isImageOrGifLink() -> Bool {
-        let supportedFileTypeSuffixes = NSSet(array: ["tiff", "tif", "jpg", "jpeg", "gif", "png", "gifv"])
+        let supportedFileTypeSuffixes = NSSet(array: ["tiff", "tif", "jpg", "jpeg", "png"])
         
         
         if let urlExtension = self.URL.pathExtension {
