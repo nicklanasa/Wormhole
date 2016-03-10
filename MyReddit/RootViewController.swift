@@ -111,20 +111,15 @@ class RootViewController: UIViewController, GADBannerViewDelegate {
     }
     
     func adViewDidReceiveAd(bannerView: GADBannerView!) {
-        if self.bannerView?.superview == nil {
-            UIApplication.sharedApplication().keyWindow?.insertSubview(self.bannerView,
-                belowSubview: self.navigationController?.view ?? nil)
-        }
-        
         dispatch_async(dispatch_get_main_queue()) { () -> Void in
             UIView.animateWithDuration(0.3, animations: { () -> Void in
                 let bannerHeight = (UIDevice.currentDevice().orientation.isLandscape == true ?
                     32 : 50)
+                self.bannerView.frame.origin.y = UIScreen.mainScreen().bounds.size.height - bannerView.frame.size.height
                 self.navigationController?.view.frame = CGRectMake(0,
                     0,
                     UIScreen.mainScreen().bounds.size.width,
                     UIScreen.mainScreen().bounds.size.height - CGFloat(bannerHeight))
-                self.bannerView.frame.origin.y = UIScreen.mainScreen().bounds.size.height - bannerView.frame.size.height
             })
         }
     }
@@ -145,6 +140,11 @@ class RootViewController: UIViewController, GADBannerViewDelegate {
             self.bannerView.rootViewController = self
             self.bannerView.delegate = self
             self.bannerView.backgroundColor = MyRedditBackgroundColor
+            
+            if self.bannerView?.superview == nil {
+                UIApplication.sharedApplication().keyWindow?.insertSubview(self.bannerView,
+                                                                           belowSubview: self.navigationController?.view ?? nil)
+            }
         } else {
             self.removeAd()
         }
