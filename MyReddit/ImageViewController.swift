@@ -23,7 +23,6 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
     
     var imageURL: NSURL!
     var pageIndex: Int!
-    var image: UIImage!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -52,17 +51,20 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
         self.indicator.startAnimating()
         
         if self.imageURL != nil {
-            self.imageView.sd_setImageWithURL(self.imageURL, completed: { (i, e, c, u) -> Void in
-                self.indicator.stopAnimating()
-                if e != nil {
-                    self.imageView.image = UIImage(named: "Reddit")
-                } else {
-                    self.imageView.image = i
-                }
-            })
-        } else if image != nil {
-            self.imageView.image = image
-            self.indicator.stopAnimating()
+            NSURLSession.sharedSession().dataTaskWithURL(self.imageURL) { (data, response, error) in
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    self.indicator.stopAnimating()
+                    if error != nil {
+                        self.presentViewController(UIAlertController.errorAlertControllerWithMessage(error!.localizedDescription),
+                            animated: true,
+                            completion: nil)
+                    } else if let imageData = data {
+                        if let image = UIImage(data: imageData) {
+                            self.imageView.image = image
+                        }
+                    }
+                })
+            }.resume()
         }
         
         self.scrollView.minimumZoomScale = 1.0

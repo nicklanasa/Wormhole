@@ -1,0 +1,54 @@
+BUNDLE_ID									= "6Q4UNB2LAJ"
+APP_SCHEME                = "MyReddit"
+UI_TESTS_SCHEME           = "MyRedditUITests"
+TEST_DEVICE               = "iPhone 6 (9.2)"
+opt_out_usage
+fastlane_version "1.66"
+default_platform :ios
+
+
+platform :ios do
+
+  desc "Fetches the provisioning profiles so you can build locally and deploy to your device"
+  lane :certs do
+    match(app_identifier: BUNDLE_ID, type: "development")
+    match(app_identifier: BUNDLE_ID, type: "appstore")
+  end
+
+  desc "Runs tests"
+  lane :test do
+    # Run unit tests
+    # scan(scheme: APP_SCHEME, device: TEST_DEVICE)
+
+    # Run UI tests
+    scan(scheme: UI_TESTS_SCHEME, device: TEST_DEVICE)    
+  end
+
+  desc "Build the app and sign with distribution keys"
+  lane :release do
+    # Build and sign for distribution
+    gym(scheme: APP_SCHEME)
+  end
+
+  desc "Submit a new beta to Apple TestFlight"
+  lane :beta do
+    # Run unit tests
+    # scan(scheme: APP_SCHEME, device: TEST_DEVICE)
+
+    # Run UI tests
+    # scan(scheme: UI_TESTS_SCHEME, device: TEST_DEVICE)
+
+    # Build and sign for distribution
+		match(app_identifier: BUNDLE_ID, type: "appstore")
+    gym(scheme: APP_SCHEME)
+    
+    # Publish to TestFlight
+    pilot
+  end
+
+  desc "Generate screenshots"
+  lane :screenshots do
+    # Generate screenshots
+    snapshot
+  end
+end

@@ -1,0 +1,9 @@
+git_url "https://github.com/nicklanasa/certificates.git"
+
+type "development" # The default type, can be: appstore, adhoc or development
+
+app_identifier "6Q4UNB2LAJ" 
+username "nytek@mac.com" # Your Apple Developer Portal username
+
+# For all available options run `match --help`
+# Remove the # in the beginning of the line to enable the other options

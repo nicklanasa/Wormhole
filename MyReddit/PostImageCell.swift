@@ -44,12 +44,7 @@ class PostImageCell: PostCell {
                     completed: { (image, error, cacheType, url) -> Void in
                     UIView.animateWithDuration(0.3, animations: { () -> Void in
                         self.postImageView.alpha = 1.0
-                        if error != nil {
-                            self.postImageView.image = UIImage(named: "Reddit")
-                            self.postImageView.contentMode = .ScaleAspectFit
-                        } else {
-                            self.postImageView.image = image
-                        }
+                        self.postImageView.image = image
                     }, completion: nil)
                 })
             } else {

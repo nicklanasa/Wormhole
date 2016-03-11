@@ -266,10 +266,8 @@ UICollectionViewDelegate {
         controller.pageIndex = index
         if let imgImage = self.images?[index] as? IMGImage {
             controller.imageURL = imgImage.url
-        } else if let imageURL = self.images?[index] as? NSURL {
-            controller.imageURL = imageURL
-        } else if let image = self.images?[index] as? UIImage {
-            controller.image = image
+        } else if let imageURL = self.images?[index] as? String {
+            controller.imageURL = NSURL(string: imageURL)
         }
         
         controller.delegate = self
@@ -407,12 +405,11 @@ UICollectionViewDelegate {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("ImageCell",
             forIndexPath: indexPath) as! GalleryImageCollectionViewCell
         if let imgImage = self.images?[indexPath.row] as? IMGImage {
-            let thumbnailImageURL = imgImage.URLWithSize(IMGSize(rawValue: IMGSize.MediumThumbnailSize.rawValue)!)
-            cell.imageURL = thumbnailImageURL
-        } else if let imageURL = self.images?[indexPath.row] as? NSURL {
-            cell.imageURL = imageURL
-        } else if let image = self.images?[indexPath.row] as? UIImage {
-            cell.imageView.image = image
+            cell.imageURL = imgImage.url
+        } else if let imageURL = self.images?[indexPath.row] as? String {
+            cell.imageURL = NSURL(string: imageURL)
+        } else {
+            cell.imageView.image = UIImage(named: "Reddit")
         }
         
         return cell

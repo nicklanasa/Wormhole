@@ -67,6 +67,7 @@ UISplitViewControllerDelegate {
     var heightsCache = [String : AnyObject]()
     
     override func viewWillAppear(animated: Bool) {
+        self.showAd = !SettingsManager.defaultManager.purchased ? true : false
         LocalyticsSession.shared().tagScreen("Subreddit")
         self.tableView.hidden = true
         super.viewWillAppear(animated)
@@ -74,12 +75,6 @@ UISplitViewControllerDelegate {
         self.preferredAppearance()
         self.tableView.hidden = false
         self.navigationController?.setToolbarHidden(false, animated: false)
-        
-        if !SettingsManager.defaultManager.purchased {
-            self.showAd = true
-        } else {
-            self.showAd = false
-        }
     }
     
     override func viewDidAppear(animated: Bool) {
