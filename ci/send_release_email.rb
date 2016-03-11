@@ -7,7 +7,7 @@ unless ENV["TRAVIS"]
   exit(0)
 end
 
-unless ENV["TRAVIS_PULL_REQUEST"] == "false" && (ENV["TRAVIS_BRANCH"] == "master" || ENV["TRAVIS_BRANCH"] == "development")
+unless ENV["TRAVIS_PULL_REQUEST"] == "false" && ENV["TRAVIS_BRANCH"] == "master"
   puts "Only sending release notification emails for commits against development or master."
   exit(0)
 end
