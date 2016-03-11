@@ -2,5 +2,11 @@ language: objective-c
 install: ''
 osx_image: xcode7.2
 
+before_install:
+  # Reinstall Ruby to avoid SSL errors when publishing to iTunes
+  - rvm reinstall 2.0.0-p643 --disable-binary
+  - bundle install
+  - ./ci/start_simulator.sh
+
 script:
 - ./ci/test_and_publish.sh
