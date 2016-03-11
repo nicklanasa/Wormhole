@@ -18,10 +18,10 @@ platform :ios do
   desc "Runs tests"
   lane :test do
     # Run unit tests
-    # scan(scheme: APP_SCHEME, device: TEST_DEVICE)
+    scan(scheme: APP_SCHEME, device: TEST_DEVICE)
 
     # Run UI tests
-    # scan(scheme: UI_TESTS_SCHEME, device: TEST_DEVICE)
+    scan(scheme: UI_TESTS_SCHEME, device: TEST_DEVICE)
   end
 
   desc "Build the app and sign with distribution keys"
@@ -33,10 +33,10 @@ platform :ios do
   desc "Submit a new beta to Apple TestFlight"
   lane :beta do
     # Run unit tests
-    # scan(scheme: APP_SCHEME, device: TEST_DEVICE)
+    scan(scheme: APP_SCHEME, device: TEST_DEVICE)
 
     # Run UI tests
-    # scan(scheme: UI_TESTS_SCHEME, device: TEST_DEVICE)
+    scan(scheme: UI_TESTS_SCHEME, device: TEST_DEVICE)
 
     # Build and sign for distribution
 		match(app_identifier: BUNDLE_ID, type: "appstore")

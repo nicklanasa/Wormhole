@@ -88,6 +88,7 @@
 		015565E91C7A9C1D004E42BB /* Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 015565E71C7A9C1D004E42BB /* Comment.swift */; };
 		015565EA1C7A9C1D004E42BB /* Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 015565E71C7A9C1D004E42BB /* Comment.swift */; };
 		015E0D5D1AEF2B4000299B29 /* CommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 015E0D5C1AEF2B4000299B29 /* CommentCell.swift */; };
+		016A99F51C926D6300D756AF /* MyRedditTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 016A99F41C926D6300D756AF /* MyRedditTests.swift */; };
 		0183F63B1C8E371E00FCE715 /* MyRedditTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0183F63A1C8E371E00FCE715 /* MyRedditTests.swift */; };
 		0183F63D1C8E620A00FCE715 /* SnapshotHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0183F63C1C8E620A00FCE715 /* SnapshotHelper.swift */; };
 		018E40221AC38A060055384D /* LinkViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 018E40211AC38A060055384D /* LinkViewController.swift */; };
@@ -270,6 +271,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		016A99F71C926D6300D756AF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CE712ED31AC2F1A10042B071 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CE712EDA1AC2F1A20042B071;
+			remoteInfo = MyReddit;
+		};
 		01A623011C76C62700A8F857 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = CE712ED31AC2F1A10042B071 /* Project object */;
@@ -290,6 +298,9 @@
 		0153016F1C7BEE4B001FAF5C /* UIView+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Helpers.swift"; sourceTree = "<group>"; };
 		015565E71C7A9C1D004E42BB /* Comment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Comment.swift; sourceTree = "<group>"; };
 		015E0D5C1AEF2B4000299B29 /* CommentCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentCell.swift; sourceTree = "<group>"; };
+		016A99F21C926D6300D756AF /* MyRedditTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MyRedditTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		016A99F41C926D6300D756AF /* MyRedditTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyRedditTests.swift; sourceTree = "<group>"; };
+		016A99F61C926D6300D756AF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0183F63A1C8E371E00FCE715 /* MyRedditTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyRedditTests.swift; sourceTree = "<group>"; };
 		0183F63C1C8E620A00FCE715 /* SnapshotHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SnapshotHelper.swift; sourceTree = "<group>"; };
 		018CC9C21BCDA8B500DBC967 /* Pods_MyReddit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Pods_MyReddit.framework; path = "Pods/../build/Debug-iphoneos/Pods_MyReddit.framework"; sourceTree = "<group>"; };
@@ -395,6 +406,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		016A99EF1C926D6300D756AF /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		01A622F91C76C62700A8F857 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -431,6 +449,15 @@
 				0141070C1C782B6000C4CCA0 /* AdCell.swift */,
 			);
 			name = Ads;
+			sourceTree = "<group>";
+		};
+		016A99F31C926D6300D756AF /* MyRedditTests */ = {
+			isa = PBXGroup;
+			children = (
+				016A99F41C926D6300D756AF /* MyRedditTests.swift */,
+				016A99F61C926D6300D756AF /* Info.plist */,
+			);
+			path = MyRedditTests;
 			sourceTree = "<group>";
 		};
 		01A622FD1C76C62700A8F857 /* MyRedditUITests */ = {
@@ -576,6 +603,7 @@
 				CE712EDD1AC2F1A20042B071 /* MyReddit */,
 				CE712EF51AC2F1A20042B071 /* MyRedditTests */,
 				01A622FD1C76C62700A8F857 /* MyRedditUITests */,
+				016A99F31C926D6300D756AF /* MyRedditTests */,
 				CE712EDC1AC2F1A20042B071 /* Products */,
 				9A6694D0C6C71F06FFE52693 /* Pods */,
 				56F9729499FEB82D9F376BF0 /* Frameworks */,
@@ -588,6 +616,7 @@
 				CE712EDB1AC2F1A20042B071 /* MyReddit.app */,
 				CE3AA4BE1B0549E9000DEDD2 /* MyReddit.app */,
 				01A622FC1C76C62700A8F857 /* MyRedditUITests.xctest */,
+				016A99F21C926D6300D756AF /* MyRedditTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -696,6 +725,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		016A99F11C926D6300D756AF /* MyRedditTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 016A99FB1C926D6300D756AF /* Build configuration list for PBXNativeTarget "MyRedditTests" */;
+			buildPhases = (
+				016A99EE1C926D6300D756AF /* Sources */,
+				016A99EF1C926D6300D756AF /* Frameworks */,
+				016A99F01C926D6300D756AF /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				016A99F81C926D6300D756AF /* PBXTargetDependency */,
+			);
+			name = MyRedditTests;
+			productName = MyRedditTests;
+			productReference = 016A99F21C926D6300D756AF /* MyRedditTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		01A622FB1C76C62700A8F857 /* MyRedditUITests */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 01A623051C76C62700A8F857 /* Build configuration list for PBXNativeTarget "MyRedditUITests" */;
@@ -767,6 +814,10 @@
 				LastUpgradeCheck = 0720;
 				ORGANIZATIONNAME = "Nytek Production";
 				TargetAttributes = {
+					016A99F11C926D6300D756AF = {
+						CreatedOnToolsVersion = 7.2.1;
+						TestTargetID = CE712EDA1AC2F1A20042B071;
+					};
 					01A622FB1C76C62700A8F857 = {
 						CreatedOnToolsVersion = 7.2.1;
 						TestTargetID = CE712EDA1AC2F1A20042B071;
@@ -824,11 +875,19 @@
 				CE712EDA1AC2F1A20042B071 /* MyReddit */,
 				CE3AA4681B0549E9000DEDD2 /* MyReddit-iPad */,
 				01A622FB1C76C62700A8F857 /* MyRedditUITests */,
+				016A99F11C926D6300D756AF /* MyRedditTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		016A99F01C926D6300D756AF /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		01A622FA1C76C62700A8F857 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -999,6 +1058,14 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		016A99EE1C926D6300D756AF /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				016A99F51C926D6300D756AF /* MyRedditTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		01A622F81C76C62700A8F857 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1268,6 +1335,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		016A99F81C926D6300D756AF /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CE712EDA1AC2F1A20042B071 /* MyReddit */;
+			targetProxy = 016A99F71C926D6300D756AF /* PBXContainerItemProxy */;
+		};
 		01A623021C76C62700A8F857 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = CE712EDA1AC2F1A20042B071 /* MyReddit */;
@@ -1311,6 +1383,38 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		016A99F91C926D6300D756AF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = MyRedditTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = np.MyRedditTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MyReddit.app/MyReddit";
+			};
+			name = Debug;
+		};
+		016A99FA1C926D6300D756AF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = MyRedditTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = np.MyRedditTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MyReddit.app/MyReddit";
+			};
+			name = Release;
+		};
 		01A623031C76C62700A8F857 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = CB38B9FFF29557E07DBAC730 /* Pods.debug.xcconfig */;
@@ -1539,6 +1643,14 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		016A99FB1C926D6300D756AF /* Build configuration list for PBXNativeTarget "MyRedditTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				016A99F91C926D6300D756AF /* Debug */,
+				016A99FA1C926D6300D756AF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
 		01A623051C76C62700A8F857 /* Build configuration list for PBXNativeTarget "MyRedditUITests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
