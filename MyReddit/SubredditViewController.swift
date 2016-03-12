@@ -498,6 +498,7 @@ PostCellDelegate {
         } else if segue.identifier == "GallerySegue" {
             if let controller = segue.destinationViewController as? GalleryController {
                 if let images = sender as? [AnyObject] {
+                    print(self.selectedLink)
                     controller.images = images
                     controller.link = self.selectedLink
                 }

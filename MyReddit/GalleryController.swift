@@ -268,6 +268,8 @@ UICollectionViewDelegate {
             controller.imageURL = imgImage.url
         } else if let imageURL = self.images?[index] as? String {
             controller.imageURL = NSURL(string: imageURL)
+        } else if let imageURL = self.images?[index] as? NSURL {
+            controller.imageURL = imageURL
         }
         
         controller.delegate = self

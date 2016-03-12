@@ -89,7 +89,7 @@ class RootViewController: UIViewController, GADBannerViewDelegate {
             let request = GADRequest()
             request.testDevices = [kGADSimulatorID]
             dispatch_async(dispatch_get_main_queue()) {
-                self.bannerView.loadRequest(request)
+                self.bannerView?.loadRequest(request)
             }
         }
     }

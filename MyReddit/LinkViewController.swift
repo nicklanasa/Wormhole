@@ -337,12 +337,22 @@ class LinkViewController: RootViewController, UITextViewDelegate {
     }
     
     func textView(textView: UITextView, shouldInteractWithURL URL: NSURL, inRange characterRange: NSRange) -> Bool {
-        if #available(iOS 9.0, *) {
-            let svc = SFSafariViewController(URL: URL, entersReaderIfAvailable: true)
-            self.presentViewController(svc, animated: true, completion: nil)
-        } else {
-            self.performSegueWithIdentifier("WebSegue", sender: URL)
+        guard let url = NSURL(string: URL.absoluteString) else {
+            // not a valid URL
+            return false
         }
+        
+        if ["http", "https"].contains(url.scheme.lowercaseString) {
+            if #available(iOS 9.0, *) {
+                let svc = SFSafariViewController(URL: url, entersReaderIfAvailable: true)
+                self.presentViewController(svc, animated: true, completion: nil)
+            } else {
+                self.performSegueWithIdentifier("WebSegue", sender: url)
+            }
+        } else {
+            self.performSegueWithIdentifier("WebSegue", sender: url)
+        }
+        
         return false
     }
     

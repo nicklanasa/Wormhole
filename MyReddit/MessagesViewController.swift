@@ -154,11 +154,20 @@ JZSwipeCellDelegate {
     }
     
     func messageCell(cell: MessageCell, didTapLink link: NSURL) {
-        if #available(iOS 9.0, *) {
-            let svc = SFSafariViewController(URL: link, entersReaderIfAvailable: true)
-            self.navigationController?.presentViewController(svc, animated: true, completion: nil)
+        guard let url = NSURL(string: link.absoluteString) else {
+            // not a valid URL
+            return
+        }
+        
+        if ["http", "https"].contains(url.scheme.lowercaseString) {
+            if #available(iOS 9.0, *) {
+                let svc = SFSafariViewController(URL: url, entersReaderIfAvailable: true)
+                self.presentViewController(svc, animated: true, completion: nil)
+            } else {
+                self.performSegueWithIdentifier("MessageLinkSegue", sender: url)
+            }
         } else {
-            self.performSegueWithIdentifier("MessageLinkSegue", sender: link)
+            self.performSegueWithIdentifier("MessageLinkSegue", sender: url)
         }
     }
     

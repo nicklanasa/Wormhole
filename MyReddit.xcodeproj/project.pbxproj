@@ -1650,6 +1650,7 @@
 				016A99FA1C926D6300D756AF /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		01A623051C76C62700A8F857 /* Build configuration list for PBXNativeTarget "MyRedditUITests" */ = {
 			isa = XCConfigurationList;

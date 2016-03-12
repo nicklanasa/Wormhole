@@ -61,6 +61,8 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
                     } else if let imageData = data {
                         if let image = UIImage(data: imageData) {
                             self.imageView.image = image
+                        } else {
+                            self.imageView.image = UIImage(named: "Reddit")
                         }
                     }
                 })
