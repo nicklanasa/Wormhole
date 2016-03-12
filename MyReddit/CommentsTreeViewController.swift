@@ -10,6 +10,7 @@ import UIKit
 import MBProgressHUD
 import RATreeView
 import SafariServices
+import MessageUI
 
 class CommentsTreeViewController: RootViewController,
 UIScrollViewDelegate,
@@ -17,7 +18,8 @@ RATreeViewDelegate,
 RATreeViewDataSource,
 CommentCellDelegate,
 UITextFieldDelegate,
-AddCommentViewControllerDelegate {
+AddCommentViewControllerDelegate,
+MFMailComposeViewControllerDelegate {
 
     @IBOutlet weak var treeView: RATreeView!
     @IBOutlet weak var filterButton: UIBarButtonItem!
@@ -405,20 +407,32 @@ AddCommentViewControllerDelegate {
     }
     
     func commentCell(cell: CommentCell, didTapLink link: NSURL) {
-        guard let url = NSURL(string: link.absoluteString) else {
-            // not a valid URL
-            return
-        }
-        
-        if ["http", "https"].contains(url.scheme.lowercaseString) {
-            if #available(iOS 9.0, *) {
-                let svc = SFSafariViewController(URL: url, entersReaderIfAvailable: false)
-                self.presentViewController(svc, animated: true, completion: nil)
+        if link.absoluteString.isEmail {
+            if MFMailComposeViewController.canSendMail() {
+                let mail = MFMailComposeViewController()
+                mail.mailComposeDelegate = self
+                mail.setToRecipients([link.absoluteString])
+                presentViewController(mail, animated: true, completion: nil)
+            } else {
+                // give feedback to the user
+            }
+
+        } else {
+            guard let url = NSURL(string: link.absoluteString) else {
+                // not a valid URL
+                return
+            }
+            
+            if ["http", "https"].contains(url.scheme.lowercaseString) {
+                if #available(iOS 9.0, *) {
+                    let svc = SFSafariViewController(URL: url, entersReaderIfAvailable: false)
+                    self.presentViewController(svc, animated: true, completion: nil)
+                } else {
+                    self.performSegueWithIdentifier("CommentLinkSegue", sender: url)
+                }
             } else {
                 self.performSegueWithIdentifier("CommentLinkSegue", sender: url)
             }
-        } else {
-            self.performSegueWithIdentifier("CommentLinkSegue", sender: url)
         }
     }
     
@@ -641,6 +655,24 @@ AddCommentViewControllerDelegate {
         }
         
         self.presentViewController(alert, animated: true, completion: nil)
+    }
+    
+    // MARK: - MFMailComposeViewControllerDelegate
+    
+    func mailComposeController(controller: MFMailComposeViewController, didFinishWithResult result: MFMailComposeResult, error: NSError?) {
+        switch result.rawValue {
+        case MFMailComposeResultCancelled.rawValue:
+            print("Cancelled")
+        case MFMailComposeResultSaved.rawValue:
+            print("Saved")
+        case MFMailComposeResultSent.rawValue:
+            print("Sent")
+        case MFMailComposeResultFailed.rawValue:
+            print("Error: \(error?.localizedDescription)")
+        default:
+            break
+        }
+        controller.dismissViewControllerAnimated(true, completion: nil)
     }
     
     override func preferredAppearance() {
