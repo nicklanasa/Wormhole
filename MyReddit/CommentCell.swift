@@ -180,7 +180,7 @@ TTTAttributedLabelDelegate {
             value: MyRedditLabelColor,
             range: NSMakeRange(0, parsedString.string.characters.count))
         parsedString.addAttribute(NSFontAttributeName,
-            value: UIFont(name: MyRedditCommentInfoFont.fontName, size: SettingsManager.defaultManager.commentFontSizeForDefaultTextSize)!,
+            value: UIFont(name: MyRedditCommentInfoMediumFont.fontName, size: SettingsManager.defaultManager.commentFontSizeForDefaultTextSize)!,
             range: NSMakeRange(0, parsedString.string.characters.count))
         
         if parsedString.string.localizedCaseInsensitiveContainsString(">") {
