@@ -44,6 +44,10 @@ class PostCell: SwipeCell, SwipeCellDelegate {
         self.postInfoLabel.gestureRecognizers = [infoTapGesture]
 
         self.swipeDelegate = self
+        
+        self.postInfoLabel.font = MyRedditCommentInfoFont
+        self.scoreLabel.font = MyRedditFont
+        self.subredditButton.titleLabel?.font = MyRedditFont
     }
 
     func infoTapped(sender: AnyObject) {

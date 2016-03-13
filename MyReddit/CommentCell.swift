@@ -101,6 +101,8 @@ TTTAttributedLabelDelegate {
         self.bodyLabel.enabledTextCheckingTypes = NSTextCheckingType.Link.rawValue
        
         self.selectionStyle = .Default
+        
+        self.infoLabel.font = MyRedditCommentInfoFont
     }
 
     var link: RKLink! {
@@ -176,6 +178,9 @@ TTTAttributedLabelDelegate {
         let parsedString = NSMutableAttributedString(attributedString: self.commentParser.attributedStringFromMarkdownString("\(body)"))
         parsedString.addAttribute(NSForegroundColorAttributeName,
             value: MyRedditLabelColor,
+            range: NSMakeRange(0, parsedString.string.characters.count))
+        parsedString.addAttribute(NSFontAttributeName,
+            value: UIFont(name: MyRedditCommentInfoFont.fontName, size: SettingsManager.defaultManager.commentFontSizeForDefaultTextSize)!,
             range: NSMakeRange(0, parsedString.string.characters.count))
         
         if parsedString.string.localizedCaseInsensitiveContainsString(">") {
