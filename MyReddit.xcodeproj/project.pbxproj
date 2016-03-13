@@ -87,6 +87,10 @@
 		015565E81C7A9C1D004E42BB /* Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 015565E71C7A9C1D004E42BB /* Comment.swift */; };
 		015565E91C7A9C1D004E42BB /* Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 015565E71C7A9C1D004E42BB /* Comment.swift */; };
 		015565EA1C7A9C1D004E42BB /* Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 015565E71C7A9C1D004E42BB /* Comment.swift */; };
+		0155B10E1C94F429002FAD0D /* SF-UI in Resources */ = {isa = PBXBuildFile; fileRef = 0155B10D1C94F429002FAD0D /* SF-UI */; };
+		0155B10F1C94F429002FAD0D /* SF-UI in Resources */ = {isa = PBXBuildFile; fileRef = 0155B10D1C94F429002FAD0D /* SF-UI */; };
+		0155B1101C94F429002FAD0D /* SF-UI in Resources */ = {isa = PBXBuildFile; fileRef = 0155B10D1C94F429002FAD0D /* SF-UI */; };
+		0155B1111C94F429002FAD0D /* SF-UI in Resources */ = {isa = PBXBuildFile; fileRef = 0155B10D1C94F429002FAD0D /* SF-UI */; };
 		015E0D5D1AEF2B4000299B29 /* CommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 015E0D5C1AEF2B4000299B29 /* CommentCell.swift */; };
 		016A99F51C926D6300D756AF /* MyRedditTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 016A99F41C926D6300D756AF /* MyRedditTests.swift */; };
 		0183F63B1C8E371E00FCE715 /* MyRedditTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0183F63A1C8E371E00FCE715 /* MyRedditTests.swift */; };
@@ -297,6 +301,7 @@
 		014107101C79088200C4CCA0 /* SubredditRootViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubredditRootViewController.swift; sourceTree = "<group>"; };
 		0153016F1C7BEE4B001FAF5C /* UIView+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Helpers.swift"; sourceTree = "<group>"; };
 		015565E71C7A9C1D004E42BB /* Comment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Comment.swift; sourceTree = "<group>"; };
+		0155B10D1C94F429002FAD0D /* SF-UI */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "SF-UI"; sourceTree = "<group>"; };
 		015E0D5C1AEF2B4000299B29 /* CommentCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentCell.swift; sourceTree = "<group>"; };
 		016A99F21C926D6300D756AF /* MyRedditTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MyRedditTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		016A99F41C926D6300D756AF /* MyRedditTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyRedditTests.swift; sourceTree = "<group>"; };
@@ -643,6 +648,7 @@
 		CE712EDE1AC2F1A20042B071 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				0155B10D1C94F429002FAD0D /* SF-UI */,
 				CE712EDF1AC2F1A20042B071 /* Info.plist */,
 			);
 			name = "Supporting Files";
@@ -885,6 +891,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0155B1111C94F429002FAD0D /* SF-UI in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -892,6 +899,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0155B1101C94F429002FAD0D /* SF-UI in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -902,6 +910,7 @@
 				CE3AA4C31B0549EA000DEDD2 /* LaunchScreen.xib in Resources */,
 				793163BA1BD9258900E474EF /* Main.storyboard in Resources */,
 				79BCC75A1BF7D23100458A91 /* CommentCell.xib in Resources */,
+				0155B10F1C94F429002FAD0D /* SF-UI in Resources */,
 				CE3AA4B91B0549E9000DEDD2 /* Images.xcassets in Resources */,
 				CE3AA4C71B054A49000DEDD2 /* Main-iPad.storyboard in Resources */,
 			);
@@ -914,6 +923,7 @@
 				CE712EE81AC2F1A20042B071 /* Main.storyboard in Resources */,
 				793163BB1BD9259100E474EF /* Main-iPad.storyboard in Resources */,
 				79BCC7591BF7D23100458A91 /* CommentCell.xib in Resources */,
+				0155B10E1C94F429002FAD0D /* SF-UI in Resources */,
 				CE712EED1AC2F1A20042B071 /* LaunchScreen.xib in Resources */,
 				CE712EEA1AC2F1A20042B071 /* Images.xcassets in Resources */,
 			);
