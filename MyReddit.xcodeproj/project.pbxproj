@@ -1289,6 +1289,7 @@
 				CODE_SIGN_ENTITLEMENTS = MyReddit/MyReddit.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = MyReddit/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
@@ -1313,6 +1314,7 @@
 				CODE_SIGN_ENTITLEMENTS = MyReddit/MyReddit.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = MyReddit/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
