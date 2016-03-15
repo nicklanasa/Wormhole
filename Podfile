@@ -24,5 +24,6 @@ pod 'GoogleConversionTracking'
 pod 'AdMobMediationAdapterFB'
 pod 'Fabric'
 pod 'Crashlytics'
+pod 'Kingfisher', '~> 2.1'
 
 use_frameworks!

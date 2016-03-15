@@ -39,6 +39,7 @@ PODS:
     - AFNetworking
   - JZSwipeCell (1.1)
   - KeychainAccess (2.3.3)
+  - Kingfisher (2.1.0)
   - Localytics-AMP (2.71.0)
   - Mantle (1.5.7):
     - Mantle/extobjc (= 1.5.7)
@@ -72,6 +73,7 @@ DEPENDENCIES:
   - ImgurSession
   - JZSwipeCell (~> 1.1)
   - KeychainAccess
+  - Kingfisher (~> 2.1)
   - Localytics-AMP (~> 2.0)
   - MBProgressHUD
   - MNGAds (~> 2.0)
@@ -98,6 +100,7 @@ SPEC CHECKSUMS:
   ImgurSession: 3ded7eec93121fcf8d1e9f3f1783b8d764c846d3
   JZSwipeCell: 662d75e1ed6805abbd977dee70e7dac807853109
   KeychainAccess: 9b7e49e48277e329b1b3195e54697ed313d30acf
+  Kingfisher: 3ac09acad75a25ab22f6d7cef3de10d61dd4792d
   Localytics-AMP: 8cc9eba1d63fa50c5ec780451dfe00b4fbad4fb9
   Mantle: 4af47cf9547a4d0ad145a48cd0be3b411a5ae2b8
   MBProgressHUD: 1569cf7ace17a8bac47aabfbb8580a49690386d1
