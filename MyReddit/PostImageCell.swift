@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import Kingfisher
 
 @objc protocol PostImageCellDelegate {
     optional func postImageCell(cell: PostImageCell,
@@ -19,6 +20,7 @@ class PostImageCell: PostCell {
     
     @IBOutlet weak var postImageView: UIImageView!
     @IBOutlet weak var titleTextView: UITextView!
+    @IBOutlet weak var postImageViewHeightConstraint: NSLayoutConstraint!
     
     var postImageDelegate: PostImageCellDelegate?
     
@@ -36,22 +38,31 @@ class PostImageCell: PostCell {
         super.layoutSubviews()
     }
     
+    var resource: Resource! {
+        didSet {
+            KingfisherManager.sharedManager.retrieveImageWithResource(resource,
+                optionsInfo: nil,
+                progressBlock: { (receivedSize, totalSize) -> () in
+                
+            }) { (image, error, cacheType, imageURL) -> () in
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    self.postImageView.alpha = 0.0
+                    if error == nil {
+                        UIView.animateWithDuration(0.3, animations: { () -> Void in
+                            self.postImageView.alpha = 1.0
+                            self.postImageView.image = image
+                        }, completion: nil)
+                    } else {
+                        self.postImageView.image = UIImage(named: "Reddit")
+                        self.postImageView.contentMode = .ScaleAspectFit
+                    }
+                })
+            }
+        }
+    }
+    
     override var link: RKLink! {
         didSet {
-            self.postImageView.alpha = 0.0
-            if let url = link.urlForLink() {
-                self.postImageView.sd_setImageWithURL(NSURL(string: url),
-                    completed: { (image, error, cacheType, url) -> Void in
-                    UIView.animateWithDuration(0.3, animations: { () -> Void in
-                        self.postImageView.alpha = 1.0
-                        self.postImageView.image = image
-                    }, completion: nil)
-                })
-            } else {
-                self.postImageView.image = UIImage(named: "Reddit")
-                self.postImageView.contentMode = .ScaleAspectFit
-            }
-
             if self.link.upvoted() {
                 self.scoreLabel.textColor = MyRedditUpvoteColor
             } else if self.link.downvoted() {

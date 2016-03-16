@@ -9,6 +9,7 @@
 import UIKit
 import MBProgressHUD
 import AMScrollingNavbar
+import Kingfisher
 
 enum FilterSwitchType: Int {
     case Hot
@@ -64,7 +65,7 @@ UISplitViewControllerDelegate {
     var currentCategory: RKSubredditCategory?
     
     var refreshControl: UIRefreshControl!
-    var heightsCache = [String : AnyObject]()
+    var resources = [String : Resource]()
     
     override func viewWillAppear(animated: Bool) {
         self.showAd = !SettingsManager.defaultManager.purchased ? true : false
@@ -130,6 +131,20 @@ UISplitViewControllerDelegate {
         }
     }
     
+    func reload() {
+        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            self.refreshControl.endRefreshing()
+            self.hud?.hide(true)
+            self.updateUI()
+            
+            if self.links?.count == 25 || self.links?.count == 0 {
+                self.tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: .Fade)
+            } else {
+                self.tableView.reloadData()
+            }
+        })
+    }
+    
     func fetchLinks() {
         self.fetchingMore = true
         let c: PaginationCompletion = {
@@ -137,27 +152,38 @@ UISplitViewControllerDelegate {
             results,
             error in
             self.pagination = pagination
+            self.fetchingMore = false
 
             if let moreLinks = results {
                 if self.links == nil {
                     self.links = []
                 }
                 self.links?.appendContentsOf(moreLinks)
-            }
-
-            self.fetchingMore = false
-            
-            dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                self.refreshControl.endRefreshing()
-                self.hud?.hide(true)
-                self.updateUI()
-
-                if self.links?.count == 25 || self.links?.count == 0 {
-                    self.tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: .Fade)
-                } else {
-                    self.tableView.reloadData()
+                
+                // Prefetch urls
+                var urls = Array<NSURL>()
+                
+                for link in moreLinks as! [RKLink] {
+                    if link.hasImage() {
+                        if let urlStr = link.urlForLink() {
+                            if let url = NSURL(string: urlStr) {
+                                urls.append(url)
+                            }
+                        }
+                    }
                 }
-            })
+                
+                let prefetcher = ImagePrefetcher(urls: urls, optionsInfo: nil, progressBlock: nil, completionHandler: {
+                    (skippedResources, failedResources, completedResources) -> () in
+                    for resource in completedResources {
+                        self.resources[resource.downloadURL.absoluteString] = resource
+                    }
+                    self.reload()
+                })
+                prefetcher.start()
+            } else {
+                self.reload()
+            }
         }
         
         if self.front {

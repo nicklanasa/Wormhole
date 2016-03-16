@@ -205,6 +205,11 @@ PostCellDelegate {
                     let imageCell = tableView.dequeueReusableCellWithIdentifier("PostImageCell") as! PostImageCell
                     imageCell.postCellDelegate = self
                     imageCell.link = link
+                    if let url = link.urlForLink() {
+                        if let resource = self.resources[url] {
+                            imageCell.resource = resource
+                        }
+                    }
                     return imageCell
                 }
             } else {

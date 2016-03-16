@@ -157,6 +157,7 @@
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="postImageView" destination="gHD-KG-wcY" id="yWu-He-Xqe"/>
+                                            <outlet property="postImageViewHeightConstraint" destination="frw-6J-REZ" id="btc-L6-i21"/>
                                             <outlet property="postInfoLabel" destination="lp1-76-hIu" id="MHb-nz-mkr"/>
                                             <outlet property="scoreLabel" destination="7Ab-Ja-Prp" id="qgS-tv-aLf"/>
                                             <outlet property="subredditButton" destination="dr9-o8-G3p" id="ymY-QI-O9F"/>
