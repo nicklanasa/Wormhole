@@ -11,6 +11,7 @@ import UIKit
 import MBProgressHUD
 import GoogleMobileAds
 import SafariServices
+import Kingfisher
 
 class SubredditViewController: SubredditRootViewController,
 UITableViewDataSource,
@@ -40,6 +41,10 @@ PostCellDelegate {
         UserSession.sharedSession.openSessionWithCompletion { (error) -> () in
             self.fetchLinks()
         }
+        
+        KingfisherManager.sharedManager.cache.clearDiskCache()
+        KingfisherManager.sharedManager.cache.clearMemoryCache()
+        KingfisherManager.sharedManager.cache.cleanExpiredDiskCache()
     }
     
     func longPress(longPressGestureRecognizer: UILongPressGestureRecognizer) {
@@ -207,7 +212,13 @@ PostCellDelegate {
                     imageCell.link = link
                     if let url = link.urlForLink() {
                         if let resource = self.resources[url] {
-                            imageCell.resource = resource
+                            if let image = KingfisherManager.sharedManager.cache.retrieveImageInDiskCacheForKey(resource.cacheKey) {
+                                if let resizedImage = image.imageWithImage(image,
+                                    toSize: CGSizeMake(UIScreen.mainScreen().bounds.size.width, CGFloat.max)) {
+                                    imageCell.postImageViewHeightConstraint.constant = resizedImage.size.height
+                                    imageCell.postImageView.image = resizedImage
+                                }
+                            }
                         }
                     }
                     return imageCell

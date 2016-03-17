@@ -34,33 +34,6 @@ class PostImageCell: PostCell {
         self.titleTextView.userInteractionEnabled = false
     }
     
-    override func layoutSubviews() {
-        super.layoutSubviews()
-    }
-    
-    var resource: Resource! {
-        didSet {
-            KingfisherManager.sharedManager.retrieveImageWithResource(resource,
-                optionsInfo: nil,
-                progressBlock: { (receivedSize, totalSize) -> () in
-                
-            }) { (image, error, cacheType, imageURL) -> () in
-                dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                    self.postImageView.alpha = 0.0
-                    if error == nil {
-                        UIView.animateWithDuration(0.3, animations: { () -> Void in
-                            self.postImageView.alpha = 1.0
-                            self.postImageView.image = image
-                        }, completion: nil)
-                    } else {
-                        self.postImageView.image = UIImage(named: "Reddit")
-                        self.postImageView.contentMode = .ScaleAspectFit
-                    }
-                })
-            }
-        }
-    }
-    
     override var link: RKLink! {
         didSet {
             if self.link.upvoted() {

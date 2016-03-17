@@ -31,8 +31,8 @@ extension UIImage {
         return scaledImage
     }
     
-    func imageWithImage(image: UIImage, toSize size: CGSize) -> UIImage {
-        var newHeight = self.size.height / self.size.width * size.width
+    func imageWithImage(image: UIImage, toSize size: CGSize) -> UIImage? {
+        var newHeight = image.size.height / image.size.width * size.width
         newHeight = (newHeight * self.scale) / self.scale
         UIGraphicsBeginImageContextWithOptions(CGSizeMake(size.width, newHeight), false, self.scale)
         self.drawInRect(CGRectMake(0, 0, size.width, newHeight))

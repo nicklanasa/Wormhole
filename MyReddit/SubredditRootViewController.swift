@@ -99,17 +99,7 @@ UISplitViewControllerDelegate {
             forControlEvents: .ValueChanged)
         self.tableView.addSubview(self.refreshControl)
         
-        self.tableView.tableFooterView = UIView()        
-        
-//        switch UIDevice.currentDevice().userInterfaceIdiom {
-//        case .Pad:
-//            self.preferredContentSize = CGSizeMake(500, 350)
-//            self.listButton.action = self.splitViewController!.displayModeButtonItem().action
-//            self.splitViewController?.presentsWithGesture = false
-//            self.splitViewController?.delegate = self
-//        case .Phone: break
-//        default: break
-//        }
+        self.tableView.tableFooterView = UIView()
         
         NSNotificationCenter.defaultCenter().addObserver(self,
             selector: "preferredAppearance",
