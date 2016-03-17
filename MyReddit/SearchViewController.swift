@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 import MBProgressHUD
 import SafariServices
+import Kingfisher
 
 class SearchViewController: RootViewController,
 UITableViewDelegate,
@@ -70,6 +71,8 @@ PostCellDelegate {
         }
     }
 
+    var resources = [String : Resource]()
+    
     var searchText = ""
     
     lazy var searchController: UISearchController = {
@@ -199,8 +202,29 @@ PostCellDelegate {
                     self.links = []
                 }
                 self.links?.appendContentsOf(links)
-                self.sortLinks()
-                self.pagination = pagination
+                
+                // Prefetch urls
+                var urls = Array<NSURL>()
+                
+                for link in links as! [RKLink] {
+                    if link.hasImage() {
+                        if let urlStr = link.urlForLink() {
+                            if let url = NSURL(string: urlStr) {
+                                urls.append(url)
+                            }
+                        }
+                    }
+                }
+                
+                let prefetcher = ImagePrefetcher(urls: urls, optionsInfo: nil, progressBlock: nil, completionHandler: {
+                    (skippedResources, failedResources, completedResources) -> () in
+                    for resource in completedResources {
+                        self.resources[resource.downloadURL.absoluteString] = resource
+                    }
+                    self.sortLinks()
+                    self.pagination = pagination
+                })
+                prefetcher.start()
             }
         }
 
@@ -322,6 +346,17 @@ PostCellDelegate {
                     let imageCell = tableView.dequeueReusableCellWithIdentifier("PostImageCell") as! PostImageCell
                     imageCell.link = link
                     imageCell.postCellDelegate = self
+                    if let url = link.urlForLink() {
+                        if let resource = self.resources[url] {
+                            if let image = KingfisherManager.sharedManager.cache.retrieveImageInDiskCacheForKey(resource.cacheKey) {
+                                if let resizedImage = image.imageWithImage(image,
+                                                                           toSize: CGSizeMake(UIScreen.mainScreen().bounds.size.width, CGFloat.max)) {
+                                    imageCell.postImageViewHeightConstraint.constant = resizedImage.size.height
+                                    imageCell.postImageView.image = resizedImage
+                                }
+                            }
+                        }
+                    }
                     return imageCell
                 }
                 

@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 import MBProgressHUD
 import SafariServices
+import Kingfisher
 
 class UserContentViewController: RootViewController,
 UITableViewDelegate,
@@ -36,6 +37,7 @@ AddCommentViewControllerDelegate {
     var user: RKUser!
     var fetchingMore = true
     
+    var resources = [String : Resource]()
     var hud: MBProgressHUD!
     
     @IBOutlet weak var tableView: UITableView!
@@ -75,18 +77,42 @@ AddCommentViewControllerDelegate {
             completion: { (pagination, results, error) -> () in
                 
             self.pagination = pagination
-            
+                
             if let moreContent = results {
                 if self.content == nil {
                     self.content = []
                 }
-                self.content?.appendContentsOf(moreContent)
-            }
-            
-            if self.content?.count == 25 || self.content?.count == 0 {
-                self.tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: .Fade)
-            } else {
-                self.tableView.reloadData()
+                
+                // Prefetch urls
+                var urls = Array<NSURL>()
+                
+                for obj in moreContent {
+                    if let link = obj as? RKLink {
+                        if link.hasImage() {
+                            if let urlStr = link.urlForLink() {
+                                if let url = NSURL(string: urlStr) {
+                                    urls.append(url)
+                                }
+                            }
+                        }
+                    }
+                }
+                
+                let prefetcher = ImagePrefetcher(urls: urls, optionsInfo: nil, progressBlock: nil, completionHandler: {
+                    (skippedResources, failedResources, completedResources) -> () in
+                    for resource in completedResources {
+                        self.resources[resource.downloadURL.absoluteString] = resource
+                    }
+                    
+                    self.content?.appendContentsOf(moreContent)
+                    
+                    if self.content?.count == 25 || self.content?.count == 0 {
+                        self.tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: .Fade)
+                    } else {
+                        self.tableView.reloadData()
+                    }
+                })
+                prefetcher.start()
             }
         })
     }
@@ -122,6 +148,17 @@ AddCommentViewControllerDelegate {
                     imageCell.postImageDelegate = self
                     imageCell.postCellDelegate = self
                     imageCell.link = link
+                    if let url = link.urlForLink() {
+                        if let resource = self.resources[url] {
+                            if let image = KingfisherManager.sharedManager.cache.retrieveImageInDiskCacheForKey(resource.cacheKey) {
+                                if let resizedImage = image.imageWithImage(image,
+                                                                           toSize: CGSizeMake(UIScreen.mainScreen().bounds.size.width, CGFloat.max)) {
+                                    imageCell.postImageViewHeightConstraint.constant = resizedImage.size.height
+                                    imageCell.postImageView.image = resizedImage
+                                }
+                            }
+                        }
+                    }
                     return imageCell
                 }
                 
