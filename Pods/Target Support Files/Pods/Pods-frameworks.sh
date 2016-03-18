@@ -102,6 +102,7 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "Pods/SDWebImage.framework"
   install_framework "Pods/TTTAttributedLabel.framework"
   install_framework "Pods/XNGMarkdownParser.framework"
+  install_framework "Pods/mopub_ios_sdk.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "Pods/AFNetworking.framework"
@@ -122,4 +123,5 @@ if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "Pods/SDWebImage.framework"
   install_framework "Pods/TTTAttributedLabel.framework"
   install_framework "Pods/XNGMarkdownParser.framework"
+  install_framework "Pods/mopub_ios_sdk.framework"
 fi

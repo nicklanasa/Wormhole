@@ -13,6 +13,7 @@ class RootViewController: UIViewController, GADBannerViewDelegate {
     
     var bannerView: GADBannerView!
     var showAd = false
+    var keywords: [AnyObject] = []
     var adSize = kGADAdSizeSmartBannerPortrait
     
     override func viewWillAppear(animated: Bool) {
@@ -88,6 +89,7 @@ class RootViewController: UIViewController, GADBannerViewDelegate {
         dispatch_async(dispatch_get_global_queue(priority, 0)) {
             let request = GADRequest()
             request.testDevices = [kGADSimulatorID]
+            request.keywords = self.keywords
             dispatch_async(dispatch_get_main_queue()) {
                 self.bannerView?.loadRequest(request)
             }
@@ -113,13 +115,11 @@ class RootViewController: UIViewController, GADBannerViewDelegate {
     func adViewDidReceiveAd(bannerView: GADBannerView!) {
         dispatch_async(dispatch_get_main_queue()) { () -> Void in
             UIView.animateWithDuration(0.3, animations: { () -> Void in
-                let bannerHeight = (UIDevice.currentDevice().orientation.isLandscape == true ?
-                    32 : 50)
                 self.bannerView.frame.origin.y = UIScreen.mainScreen().bounds.size.height - bannerView.frame.size.height
                 self.navigationController?.view.frame = CGRectMake(0,
                     0,
                     UIScreen.mainScreen().bounds.size.width,
-                    UIScreen.mainScreen().bounds.size.height - CGFloat(bannerHeight))
+                    UIScreen.mainScreen().bounds.size.height - CGSizeFromGADAdSize(self.adSize).height)
             })
         }
     }
@@ -127,15 +127,16 @@ class RootViewController: UIViewController, GADBannerViewDelegate {
     func setupAd() {
         if !SettingsManager.defaultManager.purchased {
             
-            let height: CGFloat = UIDevice.currentDevice().orientation.isLandscape ? 32 : 50
-            
             self.adSize = UIDevice.currentDevice().orientation.isLandscape ?
                 kGADAdSizeSmartBannerLandscape : kGADAdSizeSmartBannerPortrait
             
+            print(CGSizeFromGADAdSize(self.adSize).height)
+            
             self.bannerView = GADBannerView(frame: CGRectMake(0, UIScreen.mainScreen().bounds.size.height,
-                UIScreen.mainScreen().bounds.size.width, height))
+                UIScreen.mainScreen().bounds.size.width, CGSizeFromGADAdSize(self.adSize).height))
             
             self.bannerView.adSize = self.adSize
+            
             self.bannerView.adUnitID = "ca-app-pub-4512025392063519/5619854982"
             self.bannerView.rootViewController = self
             self.bannerView.delegate = self

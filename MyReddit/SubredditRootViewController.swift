@@ -58,8 +58,18 @@ UISplitViewControllerDelegate {
     var front = true
     var all = false
     
-    var subreddit: RKSubreddit!
-    var multiReddit: RKMultireddit!
+    var subreddit: RKSubreddit! {
+        didSet {
+            self.keywords = [self.subreddit.name]
+        }
+    }
+    
+    var multiReddit: RKMultireddit! {
+        didSet {
+            self.keywords = [self.multiReddit.name]
+        }
+    }
+    
     var pagination: RKPagination?
     var selectedLink: RKLink!
     var currentCategory: RKSubredditCategory?
@@ -171,6 +181,8 @@ UISplitViewControllerDelegate {
                     self.reload()
                 })
                 prefetcher.start()
+                
+                self.reload()
             } else {
                 self.reload()
             }

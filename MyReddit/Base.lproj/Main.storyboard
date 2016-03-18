@@ -463,6 +463,7 @@
                         <outlet property="postTitleView" destination="qHT-Oo-Tty" id="2uW-b7-HsB"/>
                         <outlet property="seeLessButton" destination="Ttg-BO-9t8" id="7Qm-Od-gAU"/>
                         <outlet property="seeMoreButton" destination="IWy-eu-rrp" id="mLH-Z2-xXj"/>
+                        <outlet property="shareButton" destination="0BL-eW-H6W" id="8qV-rw-xOt"/>
                         <outlet property="textView" destination="ST2-e2-98P" id="yoz-65-tAu"/>
                         <outlet property="toolbar" destination="LAb-tP-3gA" id="jc0-cz-ykg"/>
                         <outlet property="upvoteButton" destination="MhD-B3-eMK" id="jUD-P4-f5r"/>
@@ -3884,6 +3885,7 @@
                         <outlet property="postTitleView" destination="slD-GI-JOD" id="eHT-Kg-zbx"/>
                         <outlet property="seeLessButton" destination="ba4-Gy-SlK" id="dnm-0p-bJW"/>
                         <outlet property="seeMoreButton" destination="n2k-z0-ZDs" id="5c2-Ht-R0g"/>
+                        <outlet property="shareButton" destination="Khg-Bo-m5B" id="nQ7-Ib-3h0"/>
                         <outlet property="toolbar" destination="GiM-bi-91X" id="gU0-ZQ-ehY"/>
                         <outlet property="upvoteButton" destination="jm6-6P-LCE" id="4aF-is-ah3"/>
                         <segue destination="Hdo-ax-c9X" kind="presentation" identifier="PurchaseSegue" modalTransitionStyle="crossDissolve" id="IKJ-Uc-imU"/>
@@ -4164,19 +4166,19 @@
         <image name="Up" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="zMo-OM-Z5J"/>
-        <segue reference="oqy-7E-8ml"/>
+        <segue reference="6WJ-xS-zTe"/>
+        <segue reference="aev-Tk-Wb5"/>
+        <segue reference="Nhl-Ro-yfO"/>
         <segue reference="eWX-LR-CuE"/>
         <segue reference="Udn-dz-6HG"/>
-        <segue reference="2S1-bb-L8b"/>
-        <segue reference="Nhl-Ro-yfO"/>
-        <segue reference="FIC-cf-s2T"/>
-        <segue reference="aev-Tk-Wb5"/>
-        <segue reference="xgG-eu-NoT"/>
-        <segue reference="Z8S-DA-q4b"/>
-        <segue reference="vMB-6P-NDX"/>
-        <segue reference="6WJ-xS-zTe"/>
-        <segue reference="fLo-75-wzd"/>
+        <segue reference="oqy-7E-8ml"/>
         <segue reference="O8K-LF-8mj"/>
+        <segue reference="zMo-OM-Z5J"/>
+        <segue reference="2S1-bb-L8b"/>
+        <segue reference="xgG-eu-NoT"/>
+        <segue reference="4Ru-UI-2gn"/>
+        <segue reference="IKJ-Uc-imU"/>
+        <segue reference="vMB-6P-NDX"/>
+        <segue reference="fLo-75-wzd"/>
     </inferredMetricsTieBreakers>
 </document>

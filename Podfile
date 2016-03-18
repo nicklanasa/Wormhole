@@ -25,5 +25,6 @@ pod 'AdMobMediationAdapterFB'
 pod 'Fabric'
 pod 'Crashlytics'
 pod 'Kingfisher', '~> 2.1'
+pod 'mopub-ios-sdk'
 
 use_frameworks!

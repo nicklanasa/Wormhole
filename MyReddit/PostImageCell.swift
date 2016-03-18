@@ -32,6 +32,7 @@ class PostImageCell: PostCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         self.titleTextView.userInteractionEnabled = false
+        self.postImageView.setShowActivityIndicatorView(true)
     }
     
     override var link: RKLink! {

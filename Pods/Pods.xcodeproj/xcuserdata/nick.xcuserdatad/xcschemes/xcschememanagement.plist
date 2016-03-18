@@ -104,6 +104,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>mopub-ios-sdk.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
@@ -112,12 +117,12 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>2F1D7D7F09ED73E39E479198800587D8</key>
+		<key>2FC341D1F3A0762EBBF5154656EF8121</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>2FC341D1F3A0762EBBF5154656EF8121</key>
+		<key>330AC7F7D020EFF53EA6974BDC2651D8</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -137,7 +142,7 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>65616966402CFF70171A238AA3484FCA</key>
+		<key>70BD5C650C62DE7D126FC4110243266A</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -152,6 +157,16 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>7F2875461E914D4953B8419940A20291</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>8329DB7F94E33A3B927DFAF96B1C0DAE</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>838A2C6DA366DE138E5FDF1AF19D94C0</key>
 		<dict>
 			<key>primary</key>
@@ -162,7 +177,12 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>A40D8DA0447D1732675F584FA8C6B55D</key>
+		<key>9C083319E21B0C916F728CF1DFF84FE8</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>A36EB515023D5B5B3E5D545365FF6DAF</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -177,22 +197,12 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>B6FAFCE41C32A327A4E00AA0F4EBD0BF</key>
+		<key>C1A813CE7CDF250F6B02EF2F78D0A79F</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
 		<key>C452019F0D7F36DCD5DB5E4CC47B6975</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>C824DDB92741ACC84FAEFCBC20AD67E7</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>D3E50858C9FCCE456729EC8045C282F2</key>
 		<dict>
 			<key>primary</key>
 			<true/>

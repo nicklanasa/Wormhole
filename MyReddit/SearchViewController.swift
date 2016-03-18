@@ -348,13 +348,20 @@ PostCellDelegate {
                     imageCell.postCellDelegate = self
                     if let url = link.urlForLink() {
                         if let resource = self.resources[url] {
-                            if let image = KingfisherManager.sharedManager.cache.retrieveImageInDiskCacheForKey(resource.cacheKey) {
-                                if let resizedImage = image.imageWithImage(image,
-                                                                           toSize: CGSizeMake(UIScreen.mainScreen().bounds.size.width, CGFloat.max)) {
-                                    imageCell.postImageViewHeightConstraint.constant = resizedImage.size.height
-                                    imageCell.postImageView.image = resizedImage
+                            KingfisherManager.sharedManager.retrieveImageWithResource(resource, optionsInfo: nil, progressBlock: nil, completionHandler: { (image, error, cacheType, imageURL) in
+                                if image != nil {
+                                    if let resizedImage = image!.imageWithImage(image!,
+                                        toSize: CGSizeMake(UIScreen.mainScreen().bounds.size.width, CGFloat.max)) {
+                                        imageCell.postImageView.alpha = 0
+                                        UIView.animateWithDuration(0.3, animations: {
+                                            // update some UI
+                                            imageCell.postImageView.alpha = 1
+                                            imageCell.postImageViewHeightConstraint.constant = resizedImage.size.height
+                                            imageCell.postImageView.image = resizedImage
+                                        })
+                                    }
                                 }
-                            }
+                            })
                         }
                     }
                     return imageCell
@@ -592,7 +599,7 @@ PostCellDelegate {
                             if let indexPath = self.tableView.indexPathForCell(cell) {
                                 self.links?.removeAtIndex(indexPath.row)
                                 self.tableView.beginUpdates()
-                                self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+                                self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
                                 self.tableView.endUpdates()
                                 sh()
                             }
