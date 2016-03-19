@@ -8,154 +8,121 @@
 		<dict>
 			<key>isShown</key>
 			<false/>
-			<key>orderHint</key>
-			<integer>4</integer>
 		</dict>
 		<key>AMScrollingNavbar.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
-			<key>orderHint</key>
-			<integer>5</integer>
 		</dict>
 		<key>Appirater-Appirater.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
-			<key>orderHint</key>
-			<integer>7</integer>
 		</dict>
 		<key>Appirater.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
-			<key>orderHint</key>
-			<integer>6</integer>
 		</dict>
 		<key>BDGInAppPurchase.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
-			<key>orderHint</key>
-			<integer>8</integer>
 		</dict>
 		<key>DateTools.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
-			<key>orderHint</key>
-			<integer>9</integer>
 		</dict>
 		<key>ImgurAnonymousAPIClient.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
-			<key>orderHint</key>
-			<integer>10</integer>
 		</dict>
 		<key>ImgurSession.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
-			<key>orderHint</key>
-			<integer>11</integer>
 		</dict>
 		<key>JZSwipeCell.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
-			<key>orderHint</key>
-			<integer>12</integer>
 		</dict>
 		<key>KeychainAccess.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
-			<key>orderHint</key>
-			<integer>13</integer>
+		</dict>
+		<key>Kingfisher.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
 		</dict>
 		<key>MBProgressHUD.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
-			<key>orderHint</key>
-			<integer>15</integer>
 		</dict>
 		<key>Mantle.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
-			<key>orderHint</key>
-			<integer>14</integer>
 		</dict>
 		<key>NSDate+Calendar.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
-			<key>orderHint</key>
-			<integer>16</integer>
 		</dict>
 		<key>Pods.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
-			<key>orderHint</key>
-			<integer>17</integer>
 		</dict>
 		<key>RATreeView.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
-			<key>orderHint</key>
-			<integer>18</integer>
 		</dict>
 		<key>RedditKit.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
-			<key>orderHint</key>
-			<integer>19</integer>
 		</dict>
 		<key>SDWebImage.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
-			<key>orderHint</key>
-			<integer>20</integer>
 		</dict>
 		<key>TTTAttributedLabel.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
-			<key>orderHint</key>
-			<integer>21</integer>
 		</dict>
 		<key>XNGMarkdownParser.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
-			<key>orderHint</key>
-			<integer>22</integer>
+		</dict>
+		<key>mopub-ios-sdk.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
 		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>161F90755E9D26A4C4B539325F177E00</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>25CE44E0753B3E8DCAE3086830DF8D2B</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
 		<key>283E2609D30F290501ACB967CF1DF357</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
 		<key>2FC341D1F3A0762EBBF5154656EF8121</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>330AC7F7D020EFF53EA6974BDC2651D8</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -175,12 +142,27 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>70BD5C650C62DE7D126FC4110243266A</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>79DBF677380E4EC4174E0C39D5AACFCC</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
 		<key>7B70870D8B461DF43521B992C810D78B</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>7F2875461E914D4953B8419940A20291</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>8329DB7F94E33A3B927DFAF96B1C0DAE</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -195,6 +177,16 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>9C083319E21B0C916F728CF1DFF84FE8</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>A36EB515023D5B5B3E5D545365FF6DAF</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>AFEDA8059B169E4068B6DCC4D2F0B0E9</key>
 		<dict>
 			<key>primary</key>
@@ -205,7 +197,7 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>BE9B595D7F9A154DF66DA493CAD4C271</key>
+		<key>C1A813CE7CDF250F6B02EF2F78D0A79F</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -215,22 +207,12 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>CF28B8E458BC0E4A34506B3DDD17D3B5</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>DE8603012A0A20F395BA1E0F0BE4CE44</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
 		<key>E61CE3B6DFA1FE6B3E296965C76C0E10</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>F7BAC2EA9356B3ADE51213ADAC452702</key>
+		<key>F91226101ECE8FCFD221A3EC54481F82</key>
 		<dict>
 			<key>primary</key>
 			<true/>

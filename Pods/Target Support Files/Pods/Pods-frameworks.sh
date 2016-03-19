@@ -93,6 +93,7 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "Pods/ImgurSession.framework"
   install_framework "Pods/JZSwipeCell.framework"
   install_framework "Pods/KeychainAccess.framework"
+  install_framework "Pods/Kingfisher.framework"
   install_framework "Pods/MBProgressHUD.framework"
   install_framework "Pods/Mantle.framework"
   install_framework "Pods/NSDate_Calendar.framework"
@@ -101,6 +102,7 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "Pods/SDWebImage.framework"
   install_framework "Pods/TTTAttributedLabel.framework"
   install_framework "Pods/XNGMarkdownParser.framework"
+  install_framework "Pods/mopub_ios_sdk.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "Pods/AFNetworking.framework"
@@ -112,6 +114,7 @@ if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "Pods/ImgurSession.framework"
   install_framework "Pods/JZSwipeCell.framework"
   install_framework "Pods/KeychainAccess.framework"
+  install_framework "Pods/Kingfisher.framework"
   install_framework "Pods/MBProgressHUD.framework"
   install_framework "Pods/Mantle.framework"
   install_framework "Pods/NSDate_Calendar.framework"
@@ -120,4 +123,5 @@ if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "Pods/SDWebImage.framework"
   install_framework "Pods/TTTAttributedLabel.framework"
   install_framework "Pods/XNGMarkdownParser.framework"
+  install_framework "Pods/mopub_ios_sdk.framework"
 fi

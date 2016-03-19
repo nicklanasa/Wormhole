@@ -1,6 +1,6 @@
 platform :ios, '8.0'
 
-link_with 'MyReddit', 'MyReddit-iPad', 'MyRedditTests', 'MyRedditUITests'
+link_with 'MyReddit', 'MyRedditTests', 'MyRedditUITests'
 
 pod 'Localytics-AMP', '~> 2.0'
 pod 'RedditKit'
@@ -24,6 +24,7 @@ pod 'GoogleConversionTracking'
 pod 'AdMobMediationAdapterFB'
 pod 'Fabric'
 pod 'Crashlytics'
-pod 'Appsee'
+pod 'Kingfisher', '~> 2.1'
+pod 'mopub-ios-sdk'
 
 use_frameworks!

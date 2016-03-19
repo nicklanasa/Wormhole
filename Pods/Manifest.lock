@@ -25,7 +25,6 @@ PODS:
     - AFNetworking/NSURLSession
   - AMScrollingNavbar (2.0.12)
   - Appirater (2.0.5)
-  - Appsee (2.2)
   - BDGInAppPurchase (0.0.2)
   - Crashlytics (3.7.0):
     - Fabric (~> 1.6.3)
@@ -40,6 +39,7 @@ PODS:
     - AFNetworking
   - JZSwipeCell (1.1)
   - KeychainAccess (2.3.3)
+  - Kingfisher (2.1.0)
   - Localytics-AMP (2.71.0)
   - Mantle (1.5.7):
     - Mantle/extobjc (= 1.5.7)
@@ -48,6 +48,9 @@ PODS:
   - MNGAds (2.0.4):
     - MNGAds/MNGAds (= 2.0.4)
   - MNGAds/MNGAds (2.0.4)
+  - mopub-ios-sdk (4.4.0):
+    - mopub-ios-sdk/MoPubSDK (= 4.4.0)
+  - mopub-ios-sdk/MoPubSDK (4.4.0)
   - NSDate+Calendar (0.0.8)
   - RATreeView (2.1.0)
   - RedditKit (1.3.0):
@@ -63,7 +66,6 @@ DEPENDENCIES:
   - AdMobMediationAdapterFB
   - AMScrollingNavbar (~> 2.0.1)
   - Appirater
-  - Appsee
   - BDGInAppPurchase
   - Crashlytics
   - DateTools
@@ -74,9 +76,11 @@ DEPENDENCIES:
   - ImgurSession
   - JZSwipeCell (~> 1.1)
   - KeychainAccess
+  - Kingfisher (~> 2.1)
   - Localytics-AMP (~> 2.0)
   - MBProgressHUD
   - MNGAds (~> 2.0)
+  - mopub-ios-sdk
   - NSDate+Calendar
   - RATreeView
   - RedditKit
@@ -89,7 +93,6 @@ SPEC CHECKSUMS:
   AFNetworking: cb8d14a848e831097108418f5d49217339d4eb60
   AMScrollingNavbar: 1d7cb90458d99c426632419f02568db1b22044a2
   Appirater: e7c0a47fb67ee5041ce8479e6ba960927fb40264
-  Appsee: c95173e65acaab0ffc8a082c70633c9f5f45d5f0
   BDGInAppPurchase: 9f466e82a4a3e1d8b744268280748c1d91ddda67
   Crashlytics: c3a2333dea9e2733d2777f730910321fc9e25c0d
   DateTools: 53288ee8b905fdc75897a1e6b5cc0144b14cba60
@@ -101,10 +104,12 @@ SPEC CHECKSUMS:
   ImgurSession: 3ded7eec93121fcf8d1e9f3f1783b8d764c846d3
   JZSwipeCell: 662d75e1ed6805abbd977dee70e7dac807853109
   KeychainAccess: 9b7e49e48277e329b1b3195e54697ed313d30acf
+  Kingfisher: 3ac09acad75a25ab22f6d7cef3de10d61dd4792d
   Localytics-AMP: 8cc9eba1d63fa50c5ec780451dfe00b4fbad4fb9
   Mantle: 4af47cf9547a4d0ad145a48cd0be3b411a5ae2b8
   MBProgressHUD: 1569cf7ace17a8bac47aabfbb8580a49690386d1
   MNGAds: 281903fb164d0bdd6a6d7671e4cd4731d207bf37
+  mopub-ios-sdk: 89e57bd4c0d4ba8159781e11961c5afce7c19efe
   NSDate+Calendar: 4aa9f6eb520bdbe7cfd82fbf6c7d35b9725c8188
   RATreeView: fc82ec26b8be18cfa0f5f99a5abbe6be68edb21f
   RedditKit: b6bccd8f65cc9b4a79befa177e21432d03d946a8

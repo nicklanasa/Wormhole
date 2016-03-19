@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import Kingfisher
 
 protocol ImageViewControllerDelegate {
     func imageViewController(controller: ImageViewController, didTapImage image: UIImage?)
@@ -51,22 +52,10 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
         self.indicator.startAnimating()
         
         if self.imageURL != nil {
-            NSURLSession.sharedSession().dataTaskWithURL(self.imageURL) { (data, response, error) in
-                dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                    self.indicator.stopAnimating()
-                    if error != nil {
-                        self.presentViewController(UIAlertController.errorAlertControllerWithMessage(error!.localizedDescription),
-                            animated: true,
-                            completion: nil)
-                    } else if let imageData = data {
-                        if let image = UIImage(data: imageData) {
-                            self.imageView.image = image
-                        } else {
-                            self.imageView.image = UIImage(named: "Reddit")
-                        }
-                    }
-                })
-            }.resume()
+            self.imageView.kf_setImageWithURL(self.imageURL!, placeholderImage: nil, optionsInfo: [.Transition(ImageTransition.Fade(1))], completionHandler: { (image, error, cacheType, imageURL) in
+                self.imageView.image = image
+                self.indicator.stopAnimating()
+            })
         }
         
         self.scrollView.minimumZoomScale = 1.0
