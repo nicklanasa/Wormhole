@@ -349,10 +349,13 @@ UICollectionViewDelegate {
                 popoverController.barButtonItem = self.shareButton
             }
             
+            activityVC.popoverPresentationController?.barButtonItem = self.shareButton
             activityVC.present(animated: true, completion: nil)
             
             LocalyticsSession.shared().tagEvent("Share tapped")
         }
+        
+        alert.popoverPresentationController?.barButtonItem = self.shareButton
         
         self.presentViewController(alert, animated: true, completion: nil)
     }

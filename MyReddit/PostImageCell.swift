@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import Kingfisher
 
 @objc protocol PostImageCellDelegate {
     optional func postImageCell(cell: PostImageCell,
@@ -19,6 +20,7 @@ class PostImageCell: PostCell {
     
     @IBOutlet weak var postImageView: UIImageView!
     @IBOutlet weak var titleTextView: UITextView!
+    @IBOutlet weak var postImageViewHeightConstraint: NSLayoutConstraint!
     
     var postImageDelegate: PostImageCellDelegate?
     
@@ -30,28 +32,11 @@ class PostImageCell: PostCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         self.titleTextView.userInteractionEnabled = false
-    }
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
+        self.postImageView.setShowActivityIndicatorView(true)
     }
     
     override var link: RKLink! {
         didSet {
-            self.postImageView.alpha = 0.0
-            if let url = link.urlForLink() {
-                self.postImageView.sd_setImageWithURL(NSURL(string: url),
-                    completed: { (image, error, cacheType, url) -> Void in
-                    UIView.animateWithDuration(0.3, animations: { () -> Void in
-                        self.postImageView.alpha = 1.0
-                        self.postImageView.image = image
-                    }, completion: nil)
-                })
-            } else {
-                self.postImageView.image = UIImage(named: "Reddit")
-                self.postImageView.contentMode = .ScaleAspectFit
-            }
-
             if self.link.upvoted() {
                 self.scoreLabel.textColor = MyRedditUpvoteColor
             } else if self.link.downvoted() {

@@ -642,17 +642,14 @@ MFMailComposeViewControllerDelegate {
             }
             
             let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
-            
-            if let popoverController = activityVC.popoverPresentationController {
-                if let button = sender as? UIBarButtonItem {
-                    popoverController.barButtonItem = button
-                }
-            }
+            activityVC.popoverPresentationController?.barButtonItem = self.navigationItem.rightBarButtonItem
             
             activityVC.present(animated: true, completion: nil)
             
             LocalyticsSession.shared().tagEvent("Share tapped")
         }
+        
+        alert.popoverPresentationController?.barButtonItem = self.navigationItem.rightBarButtonItem
         
         self.presentViewController(alert, animated: true, completion: nil)
     }
