@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = 'B595547DFF51FB4C58F51FEF'
+               BlueprintIdentifier = 'FED5B3490478C5C4EAD5F06A'
                BlueprintName = 'XNGMarkdownParser'
                ReferencedContainer = 'container:Pods.xcodeproj'
                BuildableName = 'XNGMarkdownParser.framework'>

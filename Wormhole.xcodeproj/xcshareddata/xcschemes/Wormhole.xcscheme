@@ -15,9 +15,23 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "CE712EDA1AC2F1A20042B071"
-               BuildableName = "MyReddit.app"
-               BlueprintName = "MyReddit"
-               ReferencedContainer = "container:MyReddit.xcodeproj">
+               BuildableName = "Wormhole.app"
+               BlueprintName = "Wormhole"
+               ReferencedContainer = "container:Wormhole.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "NO"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "01A622FB1C76C62700A8F857"
+               BuildableName = "Wormhole.xctest"
+               BlueprintName = "WormholeUITests"
+               ReferencedContainer = "container:Wormhole.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,17 +47,36 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "01A622FB1C76C62700A8F857"
-               BuildableName = "MyRedditUITests.xctest"
-               BlueprintName = "MyRedditUITests"
-               ReferencedContainer = "container:MyReddit.xcodeproj">
+               BuildableName = "Wormhole.xctest"
+               BlueprintName = "WormholeUITests"
+               ReferencedContainer = "container:Wormhole.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "016A99F11C926D6300D756AF"
+               BuildableName = "Wormhole.xctest"
+               BlueprintName = "WormholeTests"
+               ReferencedContainer = "container:Wormhole.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "CE712EDA1AC2F1A20042B071"
+            BuildableName = "Wormhole.app"
+            BlueprintName = "Wormhole"
+            ReferencedContainer = "container:Wormhole.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </TestAction>
    <LaunchAction
-      buildConfiguration = "Debug"
+      buildConfiguration = "Release"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       launchStyle = "0"
@@ -52,15 +85,16 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
-      <MacroExpansion>
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "CE712EDA1AC2F1A20042B071"
-            BuildableName = "MyReddit.app"
-            BlueprintName = "MyReddit"
-            ReferencedContainer = "container:MyReddit.xcodeproj">
+            BuildableName = "Wormhole.app"
+            BlueprintName = "Wormhole"
+            ReferencedContainer = "container:Wormhole.xcodeproj">
          </BuildableReference>
-      </MacroExpansion>
+      </BuildableProductRunnable>
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>
@@ -70,15 +104,16 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <MacroExpansion>
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "CE712EDA1AC2F1A20042B071"
-            BuildableName = "MyReddit.app"
-            BlueprintName = "MyReddit"
-            ReferencedContainer = "container:MyReddit.xcodeproj">
+            BuildableName = "Wormhole.app"
+            BlueprintName = "Wormhole"
+            ReferencedContainer = "container:Wormhole.xcodeproj">
          </BuildableReference>
-      </MacroExpansion>
+      </BuildableProductRunnable>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">

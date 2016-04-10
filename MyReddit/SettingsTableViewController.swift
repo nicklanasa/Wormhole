@@ -183,7 +183,7 @@ class SettingsTableViewController: UITableViewController, BDGIAPDelegate {
                 LocalyticsSession.shared().tagEvent("Rate app button tapped")
                 UIApplication.sharedApplication().openURL(NSURL(string: "itms://itunes.apple.com/us/app/apple-store/id544533053?mt=8")!)
             case 1:
-                LocalyticsSession.shared().tagEvent("MyReddit Facebook button tapped")
+                LocalyticsSession.shared().tagEvent("Wormhole Facebook button tapped")
                 let url = NSURL(string: "https://www.facebook.com/pages/MyReddit/442141645823510?ref=hl")
                 if #available(iOS 9.0, *) {
                     let svc = SFSafariViewController(URL: url!, entersReaderIfAvailable: true)

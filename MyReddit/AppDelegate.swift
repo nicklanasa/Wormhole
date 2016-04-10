@@ -59,38 +59,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate, IMGSessionDelegate, NSURL
             Appirater.setAppId("544533053")
         }
         
-        Appirater.setCustomAlertTitle("Rate MyReddit")
-        Appirater.setCustomAlertMessage("If you enjoy using MyReddit, would you mind taking a moment to rate it? It won't take more than a minute. Thanks for your support!")
-        Appirater.setCustomAlertRateButtonTitle("Rate MyReddit")
+        Appirater.setCustomAlertTitle("Rate Wormhole")
+        Appirater.setCustomAlertMessage("If you enjoy using Wormhole, would you mind taking a moment to rate it? It won't take more than a minute. Thanks for your support!")
+        Appirater.setCustomAlertRateButtonTitle("Rate Wormhole")
         Appirater.setDaysUntilPrompt(2)
         Appirater.setUsesUntilPrompt(5)
         Appirater.appLaunched(true)
         
         SDWebImageDownloader.sharedDownloader().shouldDecompressImages = false
         
-        application.setMinimumBackgroundFetchInterval(
-            UIApplicationBackgroundFetchIntervalMinimum)
-        
         Fabric.with([Crashlytics.self, MoPub.self])
         
         return true
-    }
-    
-    func application(application: UIApplication,
-        performFetchWithCompletionHandler completionHandler:
-        ((UIBackgroundFetchResult) -> Void)){
-        RedditSession.sharedSession.fetchMessages(nil, category: .Unread, read: false) { (pagination, results, error) -> () in
-            if results?.count > 0 {
-                let notification = UILocalNotification()
-                notification.alertBody = "New messages"
-                notification.fireDate = NSDate()
-                notification.soundName = UILocalNotificationDefaultSoundName
-                UIApplication.sharedApplication().scheduleLocalNotification(notification)
-                UIApplication.sharedApplication().applicationIconBadgeNumber = results!.count
-            }
-            
-            completionHandler(.NewData)
-        }
     }
     
     func applicationDidReceiveMemoryWarning(application: UIApplication) {

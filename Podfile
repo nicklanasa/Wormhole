@@ -1,6 +1,6 @@
 platform :ios, '8.0'
 
-link_with 'MyReddit', 'MyRedditTests', 'MyRedditUITests'
+link_with 'Wormhole', 'WormholeTests', 'WormholeUITests'
 
 pod 'Localytics-AMP', '~> 2.0'
 pod 'RedditKit'

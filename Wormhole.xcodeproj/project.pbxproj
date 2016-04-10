@@ -214,7 +214,7 @@
 		015565E71C7A9C1D004E42BB /* Comment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Comment.swift; sourceTree = "<group>"; };
 		0155B10D1C94F429002FAD0D /* SF-UI */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "SF-UI"; sourceTree = "<group>"; };
 		015E0D5C1AEF2B4000299B29 /* CommentCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentCell.swift; sourceTree = "<group>"; };
-		016A99F21C926D6300D756AF /* MyRedditTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MyRedditTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		016A99F21C926D6300D756AF /* Wormhole.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Wormhole.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		016A99F41C926D6300D756AF /* MyRedditTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyRedditTests.swift; sourceTree = "<group>"; };
 		016A99F61C926D6300D756AF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0183F63A1C8E371E00FCE715 /* MyRedditTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyRedditTests.swift; sourceTree = "<group>"; };
@@ -225,7 +225,7 @@
 		018E40251AC395D30055384D /* UserSession.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserSession.swift; sourceTree = "<group>"; };
 		0195D6BB1AF31C5B004FA3EC /* UserInfoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserInfoCell.swift; sourceTree = "<group>"; };
 		0195D6BD1AF31CE1004FA3EC /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
-		01A622FC1C76C62700A8F857 /* MyRedditUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MyRedditUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		01A622FC1C76C62700A8F857 /* Wormhole.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Wormhole.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		01A623001C76C62700A8F857 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		01A623061C76C8CE00A8F857 /* PostsUITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostsUITests.swift; sourceTree = "<group>"; };
 		01A623091C76CACA00A8F857 /* AttributedString+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AttributedString+Helpers.swift"; sourceTree = "<group>"; };
@@ -289,7 +289,7 @@
 		CE538FA91AF3B02E008050B6 /* UserContentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserContentViewController.swift; sourceTree = "<group>"; };
 		CE538FAB1AF3E850008050B6 /* SearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		CE538FAD1AF3F19B008050B6 /* RKClient+Search.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "RKClient+Search.swift"; sourceTree = "<group>"; };
-		CE712EDB1AC2F1A20042B071 /* MyReddit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyReddit.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		CE712EDB1AC2F1A20042B071 /* Wormhole.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Wormhole.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE712EDF1AC2F1A20042B071 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CE712EE01AC2F1A20042B071 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CE712EE71AC2F1A20042B071 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -493,7 +493,7 @@
 		CE712ED21AC2F1A10042B071 = {
 			isa = PBXGroup;
 			children = (
-				CE712EDD1AC2F1A20042B071 /* MyReddit */,
+				CE712EDD1AC2F1A20042B071 /* Wormhole */,
 				CE712EF51AC2F1A20042B071 /* MyRedditTests */,
 				01A622FD1C76C62700A8F857 /* MyRedditUITests */,
 				016A99F31C926D6300D756AF /* MyRedditTests */,
@@ -506,14 +506,14 @@
 		CE712EDC1AC2F1A20042B071 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				CE712EDB1AC2F1A20042B071 /* MyReddit.app */,
-				01A622FC1C76C62700A8F857 /* MyRedditUITests.xctest */,
-				016A99F21C926D6300D756AF /* MyRedditTests.xctest */,
+				CE712EDB1AC2F1A20042B071 /* Wormhole.app */,
+				01A622FC1C76C62700A8F857 /* Wormhole.xctest */,
+				016A99F21C926D6300D756AF /* Wormhole.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		CE712EDD1AC2F1A20042B071 /* MyReddit */ = {
+		CE712EDD1AC2F1A20042B071 /* Wormhole */ = {
 			isa = PBXGroup;
 			children = (
 				010DB8781C8CB87F00712B36 /* MyReddit.entitlements */,
@@ -529,6 +529,7 @@
 				CE712F171AC302EE0042B071 /* Data */,
 				CE712EDE1AC2F1A20042B071 /* Supporting Files */,
 			);
+			name = Wormhole;
 			path = MyReddit;
 			sourceTree = "<group>";
 		};
@@ -618,9 +619,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		016A99F11C926D6300D756AF /* MyRedditTests */ = {
+		016A99F11C926D6300D756AF /* WormholeTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 016A99FB1C926D6300D756AF /* Build configuration list for PBXNativeTarget "MyRedditTests" */;
+			buildConfigurationList = 016A99FB1C926D6300D756AF /* Build configuration list for PBXNativeTarget "WormholeTests" */;
 			buildPhases = (
 				DC07A006C5A4D32C46270989 /* Check Pods Manifest.lock */,
 				016A99EE1C926D6300D756AF /* Sources */,
@@ -634,14 +635,14 @@
 			dependencies = (
 				016A99F81C926D6300D756AF /* PBXTargetDependency */,
 			);
-			name = MyRedditTests;
+			name = WormholeTests;
 			productName = MyRedditTests;
-			productReference = 016A99F21C926D6300D756AF /* MyRedditTests.xctest */;
+			productReference = 016A99F21C926D6300D756AF /* Wormhole.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		01A622FB1C76C62700A8F857 /* MyRedditUITests */ = {
+		01A622FB1C76C62700A8F857 /* WormholeUITests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 01A623051C76C62700A8F857 /* Build configuration list for PBXNativeTarget "MyRedditUITests" */;
+			buildConfigurationList = 01A623051C76C62700A8F857 /* Build configuration list for PBXNativeTarget "WormholeUITests" */;
 			buildPhases = (
 				E0EE2612BE41AA03B1BF3EF3 /* Check Pods Manifest.lock */,
 				01A622F81C76C62700A8F857 /* Sources */,
@@ -654,14 +655,14 @@
 			dependencies = (
 				01A623021C76C62700A8F857 /* PBXTargetDependency */,
 			);
-			name = MyRedditUITests;
+			name = WormholeUITests;
 			productName = MyRedditUITests;
-			productReference = 01A622FC1C76C62700A8F857 /* MyRedditUITests.xctest */;
+			productReference = 01A622FC1C76C62700A8F857 /* Wormhole.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
-		CE712EDA1AC2F1A20042B071 /* MyReddit */ = {
+		CE712EDA1AC2F1A20042B071 /* Wormhole */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = CE712EFC1AC2F1A20042B071 /* Build configuration list for PBXNativeTarget "MyReddit" */;
+			buildConfigurationList = CE712EFC1AC2F1A20042B071 /* Build configuration list for PBXNativeTarget "Wormhole" */;
 			buildPhases = (
 				9CAC9D4526B3F8D91D4AEE33 /* Check Pods Manifest.lock */,
 				CE712ED71AC2F1A20042B071 /* Sources */,
@@ -675,9 +676,9 @@
 			);
 			dependencies = (
 			);
-			name = MyReddit;
+			name = Wormhole;
 			productName = MyReddit;
-			productReference = CE712EDB1AC2F1A20042B071 /* MyReddit.app */;
+			productReference = CE712EDB1AC2F1A20042B071 /* Wormhole.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -703,7 +704,7 @@
 						DevelopmentTeam = 6Q4UNB2LAJ;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
-								enabled = 1;
+								enabled = 0;
 							};
 							com.apple.InAppPurchase = {
 								enabled = 1;
@@ -718,7 +719,7 @@
 					};
 				};
 			};
-			buildConfigurationList = CE712ED61AC2F1A10042B071 /* Build configuration list for PBXProject "MyReddit" */;
+			buildConfigurationList = CE712ED61AC2F1A10042B071 /* Build configuration list for PBXProject "Wormhole" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -731,9 +732,9 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				CE712EDA1AC2F1A20042B071 /* MyReddit */,
-				01A622FB1C76C62700A8F857 /* MyRedditUITests */,
-				016A99F11C926D6300D756AF /* MyRedditTests */,
+				CE712EDA1AC2F1A20042B071 /* Wormhole */,
+				01A622FB1C76C62700A8F857 /* WormholeUITests */,
+				016A99F11C926D6300D756AF /* WormholeTests */,
 			);
 		};
 /* End PBXProject section */
@@ -1097,12 +1098,12 @@
 /* Begin PBXTargetDependency section */
 		016A99F81C926D6300D756AF /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = CE712EDA1AC2F1A20042B071 /* MyReddit */;
+			target = CE712EDA1AC2F1A20042B071 /* Wormhole */;
 			targetProxy = 016A99F71C926D6300D756AF /* PBXContainerItemProxy */;
 		};
 		01A623021C76C62700A8F857 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = CE712EDA1AC2F1A20042B071 /* MyReddit */;
+			target = CE712EDA1AC2F1A20042B071 /* Wormhole */;
 			targetProxy = 01A623011C76C62700A8F857 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -1139,8 +1140,8 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = np.MyRedditTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MyReddit.app/MyReddit";
+				PRODUCT_NAME = Wormhole;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Wormhole.app/Wormhole";
 			};
 			name = Debug;
 		};
@@ -1156,8 +1157,8 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = np.MyRedditTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MyReddit.app/MyReddit";
+				PRODUCT_NAME = Wormhole;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Wormhole.app/Wormhole";
 			};
 			name = Release;
 		};
@@ -1172,7 +1173,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = np.MyRedditUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Wormhole;
 				TEST_TARGET_NAME = MyReddit;
 				USES_XCTRUNNER = YES;
 			};
@@ -1189,7 +1190,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = np.MyRedditUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Wormhole;
 				TEST_TARGET_NAME = MyReddit;
 				USES_XCTRUNNER = YES;
 			};
@@ -1284,7 +1285,6 @@
 			baseConfigurationReference = CB38B9FFF29557E07DBAC730 /* Pods.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = MyReddit/MyReddit.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -1297,7 +1297,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = 6Q4UNB2LAJ;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Wormhole;
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "MyReddit/MyReddit-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -1310,7 +1310,6 @@
 			baseConfigurationReference = 1550E4C632DA217C2AFF77DB /* Pods.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = MyReddit/MyReddit.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -1322,7 +1321,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = 6Q4UNB2LAJ;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Wormhole;
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "MyReddit/MyReddit-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -1333,7 +1332,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		016A99FB1C926D6300D756AF /* Build configuration list for PBXNativeTarget "MyRedditTests" */ = {
+		016A99FB1C926D6300D756AF /* Build configuration list for PBXNativeTarget "WormholeTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				016A99F91C926D6300D756AF /* Debug */,
@@ -1342,7 +1341,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
 		};
-		01A623051C76C62700A8F857 /* Build configuration list for PBXNativeTarget "MyRedditUITests" */ = {
+		01A623051C76C62700A8F857 /* Build configuration list for PBXNativeTarget "WormholeUITests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				01A623031C76C62700A8F857 /* Debug */,
@@ -1351,7 +1350,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
 		};
-		CE712ED61AC2F1A10042B071 /* Build configuration list for PBXProject "MyReddit" */ = {
+		CE712ED61AC2F1A10042B071 /* Build configuration list for PBXProject "Wormhole" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				CE712EFA1AC2F1A20042B071 /* Debug */,
@@ -1360,7 +1359,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
 		};
-		CE712EFC1AC2F1A20042B071 /* Build configuration list for PBXNativeTarget "MyReddit" */ = {
+		CE712EFC1AC2F1A20042B071 /* Build configuration list for PBXNativeTarget "Wormhole" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				CE712EFD1AC2F1A20042B071 /* Debug */,

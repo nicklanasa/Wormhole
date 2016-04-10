@@ -51,7 +51,7 @@ class PurchaseViewController: UIViewController, BDGIAPDelegate {
         alert.addAction(UIAlertAction(title: "facebook", style: .Default, handler: { (action) -> Void in
             if SLComposeViewController.isAvailableForServiceType(SLServiceTypeFacebook) {
                 let socialVC = SLComposeViewController(forServiceType: SLServiceTypeFacebook)
-                socialVC.setInitialText("Check out MyReddit - an iOS app for reddit available on iPhone and iPad #getmyreddit - http://myredditapp.com")
+                socialVC.setInitialText("Check out Wormhole - an iOS app for reddit available on iPhone and iPad #getmyreddit - http://myredditapp.com")
                 
                 let completion: SLComposeViewControllerCompletionHandler = { (result) -> Void in
                     if result == .Done {
@@ -74,7 +74,7 @@ class PurchaseViewController: UIViewController, BDGIAPDelegate {
         alert.addAction(UIAlertAction(title: "twitter", style: .Default, handler: { (action) -> Void in
             if SLComposeViewController.isAvailableForServiceType(SLServiceTypeTwitter) {
                 let socialVC = SLComposeViewController(forServiceType: SLServiceTypeTwitter)
-                socialVC.setInitialText("Check out MyReddit - an iOS app for reddit available on iPhone and iPad #getmyreddit - http://myredditapp.com")
+                socialVC.setInitialText("Check out Wormhole - an iOS app for reddit available on iPhone and iPad #getmyreddit - http://myredditapp.com")
                 
                 let completion: SLComposeViewControllerCompletionHandler = { (result) -> Void in
                     if result == .Done {

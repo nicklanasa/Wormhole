@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = '14547B3130A71BCE836383EA'
+               BlueprintIdentifier = '1972A9CD9D0DEC816617F955'
                BlueprintName = 'RedditKit'
                ReferencedContainer = 'container:Pods.xcodeproj'
                BuildableName = 'RedditKit.framework'>

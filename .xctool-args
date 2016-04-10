@@ -1,6 +1,6 @@
 [
-  "-workspace", "/Users/nick/Developer/myreddit2015/MyReddit.xcworkspace/",
-	"-scheme", "MyReddit",
+  "-workspace", "/Users/nick/Developer/nytekproductions/MyReddit/Wormhole.xcworkspace/",
+	"-scheme", "Wormhole",
   "-configuration", "Debug",
-  "-sdk", "iphonesimulator9.2"
+  "-sdk", "iphonesimulator9.3"
 ]

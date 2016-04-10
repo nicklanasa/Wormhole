@@ -178,6 +178,7 @@ UISplitViewControllerDelegate {
                     for resource in completedResources {
                         self.resources[resource.downloadURL.absoluteString] = resource
                     }
+                    
                     self.reload()
                 })
                 prefetcher.start()

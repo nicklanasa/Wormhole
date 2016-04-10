@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10115" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="Wuv-iQ-z1V">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="Wuv-iQ-z1V">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10084"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
         <capability name="Alignment constraints to the first baseline" minToolsVersion="6.0"/>
         <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
@@ -11,7 +11,7 @@
         <!--Subreddit ViewController-->
         <scene sceneID="atc-AJ-8d4">
             <objects>
-                <viewController storyboardIdentifier="SubredditViewController" title="Subreddit ViewController" id="yqo-vd-J8K" customClass="SubredditViewController" customModule="MyReddit" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SubredditViewController" title="Subreddit ViewController" id="yqo-vd-J8K" customClass="SubredditViewController" customModule="Wormhole" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="wg4-vp-5tp"/>
                         <viewControllerLayoutGuide type="bottom" id="Uzs-Ft-64O"/>
@@ -24,7 +24,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="NoDataCell" rowHeight="76" id="KGe-Uf-bdx" customClass="NoDataCell" customModule="MyReddit" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="NoDataCell" rowHeight="76" id="KGe-Uf-bdx" customClass="NoDataCell" customModule="Wormhole" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="113.5" width="600" height="76"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGe-Uf-bdx" id="TUU-0Q-zul">
@@ -61,7 +61,7 @@
                                             <outlet property="titleLabel" destination="Ti9-CZ-0jB" id="dZz-LM-wrz"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="AdCell" rowHeight="68" id="Sas-rs-ugH" customClass="AdCell" customModule="MyReddit" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="AdCell" rowHeight="68" id="Sas-rs-ugH" customClass="AdCell" customModule="Wormhole" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="189.5" width="600" height="68"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Sas-rs-ugH" id="RFO-Uq-cAT">
@@ -87,7 +87,7 @@
                                             <outlet property="bannerView" destination="Zqv-GQ-QCb" id="zY9-Vr-jVH"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="PostImageCell" rowHeight="392" id="bCD-Aj-NFZ" customClass="PostImageCell" customModule="MyReddit" customModuleProvider="target">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="PostImageCell" rowHeight="392" id="bCD-Aj-NFZ" customClass="PostImageCell" customModule="Wormhole" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="257.5" width="600" height="392"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="bCD-Aj-NFZ" id="fQy-ma-bHq">
@@ -164,7 +164,7 @@
                                             <outlet property="titleTextView" destination="XeC-ih-bwZ" id="niL-De-aQp"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TitleCell" rowHeight="122" id="oFJ-dT-Uxj" customClass="TitleCell" customModule="MyReddit" customModuleProvider="target">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TitleCell" rowHeight="122" id="oFJ-dT-Uxj" customClass="TitleCell" customModule="Wormhole" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="649.5" width="600" height="122"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="oFJ-dT-Uxj" id="VqA-vq-ha0">
@@ -318,7 +318,7 @@
         <!--Link View Controller-->
         <scene sceneID="sbQ-IA-Mog">
             <objects>
-                <viewController storyboardIdentifier="LinkViewController" id="oWg-TP-L9t" customClass="LinkViewController" customModule="MyReddit" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="LinkViewController" id="oWg-TP-L9t" customClass="LinkViewController" customModule="Wormhole" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="jm1-xP-tTI"/>
                         <viewControllerLayoutGuide type="bottom" id="TiA-LT-D0m"/>
@@ -479,7 +479,7 @@
         <!--Login ViewController-->
         <scene sceneID="LVs-9w-lsR">
             <objects>
-                <viewController title="Login ViewController" hidesBottomBarWhenPushed="YES" id="Cxf-Qd-xoU" customClass="LoginViewController" customModule="MyReddit" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Login ViewController" hidesBottomBarWhenPushed="YES" id="Cxf-Qd-xoU" customClass="LoginViewController" customModule="Wormhole" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="iJD-QX-aQN"/>
                         <viewControllerLayoutGuide type="bottom" id="Lp7-1e-V41"/>
@@ -492,7 +492,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
                                 <prototypes>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="EmailCell" id="aoH-FF-Hbg" customClass="EmailCell" customModule="MyReddit" customModuleProvider="target">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="EmailCell" id="aoH-FF-Hbg" customClass="EmailCell" customModule="Wormhole" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="113.5" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="aoH-FF-Hbg" id="3X3-wu-QYC">
@@ -537,7 +537,7 @@
                                             <outlet property="usernameTextField" destination="9EY-rZ-N42" id="4Hf-sb-FEA"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="PasswordCell" id="Qsm-lL-wuW" customClass="PasswordCell" customModule="MyReddit" customModuleProvider="target">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="PasswordCell" id="Qsm-lL-wuW" customClass="PasswordCell" customModule="Wormhole" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="157.5" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Qsm-lL-wuW" id="v0k-de-mL3">
@@ -619,7 +619,7 @@
         <!--unlock everything-->
         <scene sceneID="s62-b3-B7d">
             <objects>
-                <viewController id="Zov-bH-lU9" customClass="PurchaseViewController" customModule="MyReddit" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="Zov-bH-lU9" customClass="PurchaseViewController" customModule="Wormhole" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="4U6-0s-9UA"/>
                         <viewControllerLayoutGuide type="bottom" id="gc8-Y3-EIA"/>
@@ -636,7 +636,7 @@
                                 </constraints>
                                 <items>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="qZ4-8r-FQD"/>
-                                    <barButtonItem title="purchase MyReddit for $1.99" id="95q-UJ-jED">
+                                    <barButtonItem title="purchase Wormhole for $1.99" id="95q-UJ-jED">
                                         <color key="tintColor" red="0.60784313729999995" green="0.74117647060000003" blue="0.2666666667" alpha="1" colorSpace="calibratedRGB"/>
                                         <connections>
                                             <action selector="purchaseButtonTapped:" destination="Zov-bH-lU9" id="ptU-EC-35s"/>
@@ -696,7 +696,7 @@
                                         </attributes>
                                     </fragment>
                                     <fragment>
-                                        <string key="content"> Many hours go into building and maintaining an app. For the price of one cup of coffee you can contribute to the future of MyReddit.</string>
+                                        <string key="content"> Many hours go into building and maintaining an app. For the price of one cup of coffee you can contribute to the future of Wormhole.</string>
                                         <attributes>
                                             <font key="NSFont" size="16" name="AvenirNext-Regular"/>
                                             <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="truncatingTail" baseWritingDirection="leftToRight" paragraphSpacing="6" defaultTabInterval="36" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO">
@@ -762,7 +762,7 @@
         <!--multireddits-->
         <scene sceneID="0ar-2L-ITP">
             <objects>
-                <viewController id="Ifq-bj-txp" customClass="MultiRedditsViewController" customModule="MyReddit" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="Ifq-bj-txp" customClass="MultiRedditsViewController" customModule="Wormhole" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="olI-I8-lBG"/>
                         <viewControllerLayoutGuide type="bottom" id="F4N-xH-K5J"/>
@@ -775,7 +775,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
                                 <prototypes>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="NewMultiRedditCell" id="SpD-Xi-L6E" customClass="UserInfoCell" customModule="MyReddit" customModuleProvider="target">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="NewMultiRedditCell" id="SpD-Xi-L6E" customClass="UserInfoCell" customModule="Wormhole" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="113.5" width="600" height="55"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="SpD-Xi-L6E" id="M8X-AZ-tN5">
@@ -801,7 +801,7 @@
                                             <outlet property="titleLabel" destination="CH2-om-ADd" id="Fsa-k0-btc"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="SubredditCell" rowHeight="55" id="uxl-OU-p1P" customClass="SubredditCell" customModule="MyReddit" customModuleProvider="target">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="SubredditCell" rowHeight="55" id="uxl-OU-p1P" customClass="SubredditCell" customModule="Wormhole" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="168.5" width="600" height="55"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="uxl-OU-p1P" id="tdz-rY-gy6">
@@ -910,7 +910,7 @@
         <!--Subreddits-->
         <scene sceneID="RrG-Kg-SRP">
             <objects>
-                <viewController title="Subreddits" id="AYg-o0-LaT" customClass="SubredditsViewController" customModule="MyReddit" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Subreddits" id="AYg-o0-LaT" customClass="SubredditsViewController" customModule="Wormhole" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="A3n-24-DnV"/>
                         <viewControllerLayoutGuide type="bottom" id="AQ6-AW-GcF"/>
@@ -925,7 +925,7 @@
                                 <color key="sectionIndexColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="sectionIndexBackgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ExploreCell" rowHeight="55" id="Ajg-EO-ioE" customClass="ExploreCell" customModule="MyReddit" customModuleProvider="target">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ExploreCell" rowHeight="55" id="Ajg-EO-ioE" customClass="ExploreCell" customModule="Wormhole" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="113.5" width="600" height="55"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Ajg-EO-ioE" id="RX1-4k-QYG">
@@ -950,7 +950,7 @@
                                             <outlet property="contentLabel" destination="Iys-oF-iwI" id="3cR-Hz-TDg"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="NewMultiRedditCell" id="Ppe-Pf-1mz" customClass="UserInfoCell" customModule="MyReddit" customModuleProvider="target">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="NewMultiRedditCell" id="Ppe-Pf-1mz" customClass="UserInfoCell" customModule="Wormhole" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="168.5" width="600" height="55"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Ppe-Pf-1mz" id="vcE-uc-wew">
@@ -976,7 +976,7 @@
                                             <outlet property="titleLabel" destination="ql5-5f-C45" id="RST-zV-rFt"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="SubredditCell" rowHeight="55" id="zXc-1e-kGW" customClass="SubredditCell" customModule="MyReddit" customModuleProvider="target">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="SubredditCell" rowHeight="55" id="zXc-1e-kGW" customClass="SubredditCell" customModule="Wormhole" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="223.5" width="600" height="55"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="zXc-1e-kGW" id="DZi-bC-uoU">
@@ -1015,10 +1015,10 @@
                                         <connections>
                                             <outlet property="nameLabel" destination="UWT-aA-cn6" id="USa-d8-LMT"/>
                                             <outlet property="subredditImageView" destination="BOr-rb-lYe" id="6lU-2Y-Pnz"/>
-                                            <segue destination="Wuv-iQ-z1V" kind="custom" identifier="SubredditPosts" customClass="DismissSegue" customModule="MyReddit" customModuleProvider="target" id="cxw-0o-NAI"/>
+                                            <segue destination="Wuv-iQ-z1V" kind="custom" identifier="SubredditPosts" customClass="DismissSegue" customModule="Wormhole" customModuleProvider="target" id="cxw-0o-NAI"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="FrontCell" rowHeight="55" id="5kl-Dv-IDE" customClass="FrontCell" customModule="MyReddit" customModuleProvider="target">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="FrontCell" rowHeight="55" id="5kl-Dv-IDE" customClass="FrontCell" customModule="Wormhole" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="278.5" width="600" height="55"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="5kl-Dv-IDE" id="7Oo-3e-SIs">
@@ -1056,7 +1056,7 @@
                                             <segue destination="Wuv-iQ-z1V" kind="presentation" identifier="SubredditPosts" modalTransitionStyle="crossDissolve" id="DlP-4C-Gw2"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="AllCell" rowHeight="55" id="Z5a-9o-oKW" customClass="FrontCell" customModule="MyReddit" customModuleProvider="target">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="AllCell" rowHeight="55" id="Z5a-9o-oKW" customClass="FrontCell" customModule="Wormhole" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="333.5" width="600" height="55"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Z5a-9o-oKW" id="1dv-8E-9Bf">
@@ -1166,13 +1166,13 @@
         <!--categories-->
         <scene sceneID="YSr-Yq-EA7">
             <objects>
-                <tableViewController title="categories" hidesBottomBarWhenPushed="YES" id="gyN-2w-rHo" customClass="SubredditCategoriesTableViewController" customModule="MyReddit" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController title="categories" hidesBottomBarWhenPushed="YES" id="gyN-2w-rHo" customClass="SubredditCategoriesTableViewController" customModule="Wormhole" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="KSQ-rE-67N">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="SubredditCategoryCell" id="pBf-ee-SOV" customClass="SubredditCell" customModule="MyReddit" customModuleProvider="target">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="SubredditCategoryCell" id="pBf-ee-SOV" customClass="SubredditCell" customModule="Wormhole" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="113.5" width="600" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="pBf-ee-SOV" id="n6x-Bf-Xmx">
@@ -1212,7 +1212,7 @@
         <!--Messages ViewController-->
         <scene sceneID="ieU-a7-RXs">
             <objects>
-                <viewController title="Messages ViewController" hidesBottomBarWhenPushed="YES" id="EL8-G3-WsF" customClass="MessagesViewController" customModule="MyReddit" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Messages ViewController" hidesBottomBarWhenPushed="YES" id="EL8-G3-WsF" customClass="MessagesViewController" customModule="Wormhole" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="flb-yr-kyK"/>
                         <viewControllerLayoutGuide type="bottom" id="i8Z-cA-YhE"/>
@@ -1225,7 +1225,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="556"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="MessageCell" rowHeight="107" id="l0H-gQ-1ug" customClass="MessageCell" customModule="MyReddit" customModuleProvider="target">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="MessageCell" rowHeight="107" id="l0H-gQ-1ug" customClass="MessageCell" customModule="Wormhole" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="86" width="600" height="107"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="l0H-gQ-1ug" id="TRq-x4-wld">
@@ -1368,7 +1368,7 @@
         <!--compose message-->
         <scene sceneID="Ili-gZ-paD">
             <objects>
-                <tableViewController title="compose message" hidesBottomBarWhenPushed="YES" id="AvG-a7-lzS" customClass="ComposeTableViewController" customModule="MyReddit" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController title="compose message" hidesBottomBarWhenPushed="YES" id="AvG-a7-lzS" customClass="ComposeTableViewController" customModule="Wormhole" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="lrV-OR-d0d">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1464,7 +1464,7 @@
         <!--profile-->
         <scene sceneID="0YS-5C-Lvi">
             <objects>
-                <viewController hidesBottomBarWhenPushed="YES" id="Kaz-dN-C7r" customClass="ProfileViewController" customModule="MyReddit" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController hidesBottomBarWhenPushed="YES" id="Kaz-dN-C7r" customClass="ProfileViewController" customModule="Wormhole" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="UJN-rZ-g58"/>
                         <viewControllerLayoutGuide type="bottom" id="LRp-Qn-FTz"/>
@@ -1483,7 +1483,7 @@
                                 <color key="sectionIndexBackgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <color key="sectionIndexTrackingBackgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="UserInfoCell" id="8l4-Uo-dZV" customClass="UserInfoCell" customModule="MyReddit" customModuleProvider="target">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="UserInfoCell" id="8l4-Uo-dZV" customClass="UserInfoCell" customModule="Wormhole" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="49.5" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="8l4-Uo-dZV" id="voe-U5-u67">
@@ -1569,7 +1569,7 @@
         <!--User Content View Controller-->
         <scene sceneID="pol-Z6-PEw">
             <objects>
-                <viewController hidesBottomBarWhenPushed="YES" id="mxz-U6-d5C" customClass="UserContentViewController" customModule="MyReddit" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController hidesBottomBarWhenPushed="YES" id="mxz-U6-d5C" customClass="UserContentViewController" customModule="Wormhole" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="vgL-id-KgS"/>
                         <viewControllerLayoutGuide type="bottom" id="VBp-ke-dQX"/>
@@ -1582,7 +1582,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                                 <prototypes>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="PostImageCell" rowHeight="392" id="b8g-ZO-q7S" customClass="PostImageCell" customModule="MyReddit" customModuleProvider="target">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="PostImageCell" rowHeight="392" id="b8g-ZO-q7S" customClass="PostImageCell" customModule="Wormhole" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="113.5" width="600" height="392"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="b8g-ZO-q7S" id="ufk-qb-dHw">
@@ -1659,7 +1659,7 @@
                                             <outlet property="titleTextView" destination="Wcc-mh-H9I" id="eTT-JG-mRP"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="NoDataCell" rowHeight="76" id="TSc-eI-AFD" customClass="NoDataCell" customModule="MyReddit" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="NoDataCell" rowHeight="76" id="TSc-eI-AFD" customClass="NoDataCell" customModule="Wormhole" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="505.5" width="600" height="76"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="TSc-eI-AFD" id="p4N-xr-sxX">
@@ -1696,7 +1696,7 @@
                                             <outlet property="titleLabel" destination="esY-BT-OXp" id="Gme-B2-iB2"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TitleCell" rowHeight="122" id="JfH-XB-24S" customClass="TitleCell" customModule="MyReddit" customModuleProvider="target">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TitleCell" rowHeight="122" id="JfH-XB-24S" customClass="TitleCell" customModule="Wormhole" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="581.5" width="600" height="122"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="JfH-XB-24S" id="axI-6M-Gyr">
@@ -1801,7 +1801,7 @@
         <!--Comments Tree View Controller-->
         <scene sceneID="ais-Wo-ESn">
             <objects>
-                <viewController id="jZ6-4i-JFg" customClass="CommentsTreeViewController" customModule="MyReddit" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="jZ6-4i-JFg" customClass="CommentsTreeViewController" customModule="Wormhole" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="BhM-KI-jLj"/>
                         <viewControllerLayoutGuide type="bottom" id="xkL-86-awR"/>
@@ -1848,7 +1848,7 @@
                         <outlet property="treeView" destination="vCb-fT-h06" id="ooC-2n-YTL"/>
                         <segue destination="BuP-V6-G2K" kind="presentation" identifier="CommentLinkSegue" modalTransitionStyle="crossDissolve" id="4Rw-4P-Ibk"/>
                         <segue destination="Hdo-ax-c9X" kind="presentation" identifier="PurchaseSegue" modalTransitionStyle="crossDissolve" id="lZ0-wc-aH0"/>
-                        <segue destination="Wuv-iQ-z1V" kind="custom" identifier="DeletePostSegue" customClass="DismissSegue" customModule="MyReddit" customModuleProvider="target" id="P0f-dc-Ltw"/>
+                        <segue destination="Wuv-iQ-z1V" kind="custom" identifier="DeletePostSegue" customClass="DismissSegue" customModule="Wormhole" customModuleProvider="target" id="P0f-dc-Ltw"/>
                         <segue destination="S2c-Ji-cZD" kind="show" identifier="AddCommentSegue" id="bhr-2o-TYK"/>
                         <segue destination="S2c-Ji-cZD" kind="show" identifier="EditCommentSegue" id="vMB-6P-NDX"/>
                     </connections>
@@ -1860,7 +1860,7 @@
         <!--Add Comment View Controller-->
         <scene sceneID="EIv-EM-tfT">
             <objects>
-                <viewController id="S2c-Ji-cZD" customClass="AddCommentViewController" customModule="MyReddit" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="S2c-Ji-cZD" customClass="AddCommentViewController" customModule="Wormhole" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="EyW-xy-kuf"/>
                         <viewControllerLayoutGuide type="bottom" id="Sw6-0V-Obd"/>
@@ -1904,7 +1904,7 @@
         <!--Web View Controller-->
         <scene sceneID="ePa-YU-F9g">
             <objects>
-                <viewController storyboardIdentifier="WebViewController" id="qj1-J1-q7z" customClass="WebViewController" customModule="MyReddit" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="WebViewController" id="qj1-J1-q7z" customClass="WebViewController" customModule="Wormhole" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="3UL-Eu-g1k"/>
                         <viewControllerLayoutGuide type="bottom" id="gjV-Lb-Zwy"/>
@@ -1977,7 +1977,7 @@
         <!--search-->
         <scene sceneID="VhL-uT-cvd">
             <objects>
-                <viewController id="jpB-u1-7lM" customClass="SearchViewController" customModule="MyReddit" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="jpB-u1-7lM" customClass="SearchViewController" customModule="Wormhole" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="qBp-Sd-Kqm"/>
                         <viewControllerLayoutGuide type="bottom" id="ipZ-f6-zuK"/>
@@ -1990,7 +1990,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="556"/>
                                 <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                                 <prototypes>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="PostImageCell" rowHeight="392" id="VYJ-Pm-6ZX" customClass="PostImageCell" customModule="MyReddit" customModuleProvider="target">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="PostImageCell" rowHeight="392" id="VYJ-Pm-6ZX" customClass="PostImageCell" customModule="Wormhole" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="113.5" width="600" height="392"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="VYJ-Pm-6ZX" id="imS-wv-C14">
@@ -2067,7 +2067,7 @@
                                             <outlet property="titleTextView" destination="Kf1-d2-2AK" id="GeC-iH-Y21"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="NoDataCell" rowHeight="76" id="gkV-0k-FMz" customClass="NoDataCell" customModule="MyReddit" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="NoDataCell" rowHeight="76" id="gkV-0k-FMz" customClass="NoDataCell" customModule="Wormhole" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="505.5" width="600" height="76"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="gkV-0k-FMz" id="zFb-1I-kqq">
@@ -2104,7 +2104,7 @@
                                             <outlet property="titleLabel" destination="PtA-iO-JY6" id="mtl-AT-148"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TitleCell" rowHeight="122" id="O8E-7y-9pG" customClass="TitleCell" customModule="MyReddit" customModuleProvider="target">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TitleCell" rowHeight="122" id="O8E-7y-9pG" customClass="TitleCell" customModule="Wormhole" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="581.5" width="600" height="122"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="O8E-7y-9pG" id="kYj-ww-wfS">
@@ -2176,7 +2176,7 @@
                                             <outlet property="titleLabel" destination="6p8-Cx-CXL" id="TaG-Dn-ZaU"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="SubredditCell" rowHeight="55" id="kVR-kU-b0V" customClass="SubredditCell" customModule="MyReddit" customModuleProvider="target">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="SubredditCell" rowHeight="55" id="kVR-kU-b0V" customClass="SubredditCell" customModule="Wormhole" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="703.5" width="600" height="55"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="kVR-kU-b0V" id="Uft-Ge-Qof">
@@ -2295,8 +2295,8 @@
                         <segue destination="oWg-TP-L9t" kind="show" identifier="SubredditLink" id="aPe-Za-FV1"/>
                         <segue destination="7sL-pi-tiS" kind="show" identifier="UserSegue" id="Udn-dz-6HG"/>
                         <segue destination="Hdo-ax-c9X" kind="show" identifier="PurchaseSegue" id="lWs-ak-HDh"/>
-                        <segue destination="Wuv-iQ-z1V" kind="custom" identifier="SubredditSegue" customClass="DismissSegue" customModule="MyReddit" customModuleProvider="target" id="eWX-LR-CuE"/>
-                        <segue destination="Wuv-iQ-z1V" kind="custom" identifier="PostSubredditSegue" customClass="DismissSegue" customModule="MyReddit" customModuleProvider="target" id="2Uy-Da-x1t"/>
+                        <segue destination="Wuv-iQ-z1V" kind="custom" identifier="SubredditSegue" customClass="DismissSegue" customModule="Wormhole" customModuleProvider="target" id="eWX-LR-CuE"/>
+                        <segue destination="Wuv-iQ-z1V" kind="custom" identifier="PostSubredditSegue" customClass="DismissSegue" customModule="Wormhole" customModuleProvider="target" id="2Uy-Da-x1t"/>
                         <segue destination="jZ6-4i-JFg" kind="show" identifier="CommentsSegue" id="ybH-Av-VF3"/>
                         <segue destination="SEn-8E-jyR" kind="show" identifier="GallerySegue" id="zax-B6-Rbn"/>
                     </connections>
@@ -2317,7 +2317,7 @@
         <!--settings-->
         <scene sceneID="XpE-gC-LoF">
             <objects>
-                <tableViewController title="settings" hidesBottomBarWhenPushed="YES" id="dzw-7J-5Ff" customClass="SettingsTableViewController" customModule="MyReddit" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController title="settings" hidesBottomBarWhenPushed="YES" id="dzw-7J-5Ff" customClass="SettingsTableViewController" customModule="Wormhole" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="se0-C6-l0D">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -2325,7 +2325,7 @@
                         <sections>
                             <tableViewSection id="t2s-hd-vRa">
                                 <cells>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="upY-42-zCz" customClass="UserInfoCell" customModule="MyReddit" customModuleProvider="target">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="upY-42-zCz" customClass="UserInfoCell" customModule="Wormhole" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="99" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="upY-42-zCz" id="prB-P1-J4s">
@@ -2361,7 +2361,7 @@
                                             <outlet property="titleLabel" destination="cEQ-dp-uss" id="lUf-O7-2Qd"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="c4X-6y-LjI" customClass="UserInfoCell" customModule="MyReddit" customModuleProvider="target">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="c4X-6y-LjI" customClass="UserInfoCell" customModule="Wormhole" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="143" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="c4X-6y-LjI" id="jvZ-wg-kIu">
@@ -2396,7 +2396,7 @@
                                             <outlet property="titleLabel" destination="I01-cK-CYO" id="X4Z-xE-Za7"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="QmW-dV-7d1" customClass="UserInfoCell" customModule="MyReddit" customModuleProvider="target">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="QmW-dV-7d1" customClass="UserInfoCell" customModule="Wormhole" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="187" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="QmW-dV-7d1" id="YYc-j6-tNu">
@@ -2431,7 +2431,7 @@
                                             <outlet property="titleLabel" destination="9k6-f6-OxO" id="5fm-3y-Bkx"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="2QW-cs-ExR" customClass="UserInfoCell" customModule="MyReddit" customModuleProvider="target">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="2QW-cs-ExR" customClass="UserInfoCell" customModule="Wormhole" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="231" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="2QW-cs-ExR" id="szS-MN-vw5">
@@ -2471,7 +2471,7 @@
                             </tableViewSection>
                             <tableViewSection id="Azh-hF-SNs">
                                 <cells>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="2tW-DD-fVf" customClass="UserInfoCell" customModule="MyReddit" customModuleProvider="target">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="2tW-DD-fVf" customClass="UserInfoCell" customModule="Wormhole" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="295" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="2tW-DD-fVf" id="93f-MW-xbr">
@@ -2507,7 +2507,7 @@
                                             <segue destination="BuP-V6-G2K" kind="presentation" identifier="WebViewSegue" modalTransitionStyle="crossDissolve" id="q6K-ip-lpO"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="yts-UR-InG" customClass="UserInfoCell" customModule="MyReddit" customModuleProvider="target">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="yts-UR-InG" customClass="UserInfoCell" customModule="Wormhole" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="339" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="yts-UR-InG" id="QP3-XF-gY8">
@@ -2542,7 +2542,7 @@
                                             <outlet property="titleLabel" destination="x62-zN-oaT" id="jpO-wf-rbA"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="mbg-AU-7yY" customClass="UserInfoCell" customModule="MyReddit" customModuleProvider="target">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="mbg-AU-7yY" customClass="UserInfoCell" customModule="Wormhole" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="383" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="mbg-AU-7yY" id="7pN-8y-olW">
@@ -2587,7 +2587,7 @@
                                             <outlet property="titleLabel" destination="Aji-uk-Hlo" id="xvQ-g2-Xy2"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="vK1-TA-yx9" customClass="UserInfoCell" customModule="MyReddit" customModuleProvider="target">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="vK1-TA-yx9" customClass="UserInfoCell" customModule="Wormhole" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="427" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="vK1-TA-yx9" id="N1v-8V-6GZ">
@@ -2636,7 +2636,7 @@
                             </tableViewSection>
                             <tableViewSection id="j9r-pV-54K">
                                 <cells>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="fKF-VS-hJF" customClass="UserInfoCell" customModule="MyReddit" customModuleProvider="target">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="fKF-VS-hJF" customClass="UserInfoCell" customModule="Wormhole" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="491" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="fKF-VS-hJF" id="nOf-k3-OBa">
@@ -2663,7 +2663,7 @@
                                             <outlet property="titleLabel" destination="HuQ-MQ-7IM" id="sog-bj-wQH"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="twe-Rs-mcc" customClass="UserInfoCell" customModule="MyReddit" customModuleProvider="target">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="twe-Rs-mcc" customClass="UserInfoCell" customModule="Wormhole" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="535" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="twe-Rs-mcc" id="l05-gL-kXE">
@@ -2690,7 +2690,7 @@
                                             <outlet property="titleLabel" destination="Gwl-jv-Fv0" id="crb-lV-u72"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="nVn-BA-Ug3" customClass="UserInfoCell" customModule="MyReddit" customModuleProvider="target">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="nVn-BA-Ug3" customClass="UserInfoCell" customModule="Wormhole" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="579" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="nVn-BA-Ug3" id="KLf-Jf-v7n">
@@ -2717,7 +2717,7 @@
                                             <outlet property="titleLabel" destination="eE4-Tx-NRc" id="QBL-9e-dIa"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="sDi-eD-WOi" customClass="UserInfoCell" customModule="MyReddit" customModuleProvider="target">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="sDi-eD-WOi" customClass="UserInfoCell" customModule="Wormhole" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="623" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="sDi-eD-WOi" id="yfZ-lc-Tyy">
@@ -2744,7 +2744,7 @@
                                             <outlet property="titleLabel" destination="oC2-o2-WNi" id="rGc-dP-4j9"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="2Tz-7Y-tx4" customClass="UserInfoCell" customModule="MyReddit" customModuleProvider="target">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="2Tz-7Y-tx4" customClass="UserInfoCell" customModule="Wormhole" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="667" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="2Tz-7Y-tx4" id="xa9-dX-ZKh">
@@ -2775,7 +2775,7 @@
                             </tableViewSection>
                             <tableViewSection headerTitle="Creators" id="COZ-zW-OQs">
                                 <cells>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="Z0X-gH-QdM" customClass="UserInfoCell" customModule="MyReddit" customModuleProvider="target">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="Z0X-gH-QdM" customClass="UserInfoCell" customModule="Wormhole" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="753" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Z0X-gH-QdM" id="Vjn-kQ-K6E">
@@ -2806,7 +2806,7 @@
                             </tableViewSection>
                             <tableViewSection headerTitle="Other Apps" id="ce0-Df-ofw">
                                 <cells>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="tJZ-lD-bgb" customClass="UserInfoCell" customModule="MyReddit" customModuleProvider="target">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="tJZ-lD-bgb" customClass="UserInfoCell" customModule="Wormhole" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="839" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="tJZ-lD-bgb" id="uw7-ib-9Ux">
@@ -2877,7 +2877,7 @@
         <!--Nav Bar Controller-->
         <scene sceneID="vvg-Ai-v6Z">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" toolbarHidden="NO" id="tv5-Ge-XzH" customClass="NavBarController" customModule="MyReddit" customModuleProvider="target" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" toolbarHidden="NO" id="tv5-Ge-XzH" customClass="NavBarController" customModule="Wormhole" customModuleProvider="target" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="8W0-oV-IID">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -2901,7 +2901,7 @@
         <!--Nav Bar Controller-->
         <scene sceneID="dve-v0-0pQ">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Wuv-iQ-z1V" customClass="NavBarController" customModule="MyReddit" customModuleProvider="target" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Wuv-iQ-z1V" customClass="NavBarController" customModule="Wormhole" customModuleProvider="target" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="x7D-8d-zT7">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -2937,7 +2937,7 @@
         <!--Subreddits Page View Controller-->
         <scene sceneID="wC6-69-oxo">
             <objects>
-                <viewController id="f3g-9Q-T5z" customClass="SubredditsPageViewController" customModule="MyReddit" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="f3g-9Q-T5z" customClass="SubredditsPageViewController" customModule="Wormhole" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="WfT-Go-p89"/>
                         <viewControllerLayoutGuide type="bottom" id="ewN-hr-ZKJ"/>
@@ -2969,7 +2969,7 @@
         <!--messages-->
         <scene sceneID="oSc-L4-tsp">
             <objects>
-                <tableViewController hidesBottomBarWhenPushed="YES" id="61g-Ot-H3B" customClass="InboxesTableViewController" customModule="MyReddit" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController hidesBottomBarWhenPushed="YES" id="61g-Ot-H3B" customClass="InboxesTableViewController" customModule="Wormhole" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="WKc-br-dds">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -2977,7 +2977,7 @@
                         <sections>
                             <tableViewSection id="2wL-0H-j3o">
                                 <cells>
-                                    <tableViewCell tag="1" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="UserInfoCell" id="6Hg-WU-BEm" customClass="UserInfoCell" customModule="MyReddit" customModuleProvider="target">
+                                    <tableViewCell tag="1" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="UserInfoCell" id="6Hg-WU-BEm" customClass="UserInfoCell" customModule="Wormhole" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="99" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="6Hg-WU-BEm" id="9kd-y0-kbW">
@@ -3018,7 +3018,7 @@
                             </tableViewSection>
                             <tableViewSection id="32l-7d-Dw9">
                                 <cells>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="UserInfoCell" id="flY-OR-Vwl" customClass="UserInfoCell" customModule="MyReddit" customModuleProvider="target">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="UserInfoCell" id="flY-OR-Vwl" customClass="UserInfoCell" customModule="Wormhole" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="163" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="flY-OR-Vwl" id="E2p-R9-lWf">
@@ -3044,7 +3044,7 @@
                                             <outlet property="titleLabel" destination="glC-PL-Chj" id="OvX-Jq-ZyK"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell tag="2" contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="UserInfoCell" id="CYN-b6-oqh" customClass="UserInfoCell" customModule="MyReddit" customModuleProvider="target">
+                                    <tableViewCell tag="2" contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="UserInfoCell" id="CYN-b6-oqh" customClass="UserInfoCell" customModule="Wormhole" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="207" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="CYN-b6-oqh" id="usj-NN-oxl">
@@ -3070,7 +3070,7 @@
                                             <outlet property="titleLabel" destination="R3j-GW-zcD" id="bpZ-eh-8fC"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell tag="3" contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="UserInfoCell" id="ZN8-UH-fZ9" customClass="UserInfoCell" customModule="MyReddit" customModuleProvider="target">
+                                    <tableViewCell tag="3" contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="UserInfoCell" id="ZN8-UH-fZ9" customClass="UserInfoCell" customModule="Wormhole" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="251" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ZN8-UH-fZ9" id="Cia-r5-OKB">
@@ -3096,7 +3096,7 @@
                                             <outlet property="titleLabel" destination="7hD-m7-7I0" id="F3h-y9-PiT"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell tag="4" contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="UserInfoCell" id="jza-UU-Fy6" customClass="UserInfoCell" customModule="MyReddit" customModuleProvider="target">
+                                    <tableViewCell tag="4" contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="UserInfoCell" id="jza-UU-Fy6" customClass="UserInfoCell" customModule="Wormhole" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="295" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="jza-UU-Fy6" id="27j-Fo-nWt">
@@ -3122,7 +3122,7 @@
                                             <outlet property="titleLabel" destination="QbT-h2-vRS" id="yoU-hf-y3X"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell tag="5" contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="UserInfoCell" id="cAt-9T-pXV" customClass="UserInfoCell" customModule="MyReddit" customModuleProvider="target">
+                                    <tableViewCell tag="5" contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="UserInfoCell" id="cAt-9T-pXV" customClass="UserInfoCell" customModule="Wormhole" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="339" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="cAt-9T-pXV" id="1pS-qF-Nap">
@@ -3148,7 +3148,7 @@
                                             <outlet property="titleLabel" destination="5G1-k2-Hy0" id="h0I-Vw-Sro"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell tag="6" contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="UserInfoCell" id="Nqn-yJ-3hK" customClass="UserInfoCell" customModule="MyReddit" customModuleProvider="target">
+                                    <tableViewCell tag="6" contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="UserInfoCell" id="Nqn-yJ-3hK" customClass="UserInfoCell" customModule="Wormhole" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="383" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Nqn-yJ-3hK" id="hEK-Q8-gMP">
@@ -3174,7 +3174,7 @@
                                             <outlet property="titleLabel" destination="2CT-Sq-C4S" id="WbQ-1T-Ggd"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell tag="7" contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="UserInfoCell" id="wWY-nZ-fXk" customClass="UserInfoCell" customModule="MyReddit" customModuleProvider="target">
+                                    <tableViewCell tag="7" contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="UserInfoCell" id="wWY-nZ-fXk" customClass="UserInfoCell" customModule="Wormhole" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="427" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="wWY-nZ-fXk" id="PXv-a9-2bJ">
@@ -3281,7 +3281,7 @@
         <!--accounts-->
         <scene sceneID="FWh-Ho-pAc">
             <objects>
-                <viewController id="a2h-mb-3Wm" customClass="AccountsViewController" customModule="MyReddit" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="a2h-mb-3Wm" customClass="AccountsViewController" customModule="Wormhole" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="lJ2-No-nsZ"/>
                         <viewControllerLayoutGuide type="bottom" id="tk8-uN-cVp"/>
@@ -3294,7 +3294,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
                                 <prototypes>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="AccountCell" id="CLk-6Q-cq6" customClass="UserInfoCell" customModule="MyReddit" customModuleProvider="target">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="AccountCell" id="CLk-6Q-cq6" customClass="UserInfoCell" customModule="Wormhole" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="113.5" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="CLk-6Q-cq6" id="Khm-xB-s5m">
@@ -3457,13 +3457,13 @@
         <!--new post-->
         <scene sceneID="EoG-CM-Zv9">
             <objects>
-                <tableViewController title="new post" id="fIZ-dE-5RV" customClass="PostTableViewController" customModule="MyReddit" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController title="new post" id="fIZ-dE-5RV" customClass="PostTableViewController" customModule="Wormhole" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="lcg-bD-c7c">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="PostTypeCell" id="aTU-Yp-hDZ" customClass="PostTypeCell" customModule="MyReddit" customModuleProvider="target">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="PostTypeCell" id="aTU-Yp-hDZ" customClass="PostTypeCell" customModule="Wormhole" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="86" width="600" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="aTU-Yp-hDZ" id="DcH-g5-Riq">
@@ -3494,7 +3494,7 @@
                                     <outlet property="segmentationControl" destination="2p9-lj-jWq" id="kp1-8k-y5x"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="PostSubredditCell" id="X2A-OR-T2a" customClass="PostSubredditCell" customModule="MyReddit" customModuleProvider="target">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="PostSubredditCell" id="X2A-OR-T2a" customClass="PostSubredditCell" customModule="Wormhole" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="130" width="600" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="X2A-OR-T2a" id="XNv-IN-GxM">
@@ -3545,7 +3545,7 @@
                                     <outlet property="subredditTextField" destination="TgW-gp-qge" id="jEP-YC-ag2"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="PostTitleCell" id="GbX-1w-RWa" customClass="PostTitleCell" customModule="MyReddit" customModuleProvider="target">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="PostTitleCell" id="GbX-1w-RWa" customClass="PostTitleCell" customModule="Wormhole" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="174" width="600" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="GbX-1w-RWa" id="Lr7-fz-yZc">
@@ -3577,7 +3577,7 @@
                                     <outlet property="titleTextField" destination="kdz-qH-ccd" id="uzo-vX-iXR"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="LinkCell" id="Bm1-Vu-nfY" customClass="LinkCell" customModule="MyReddit" customModuleProvider="target">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="LinkCell" id="Bm1-Vu-nfY" customClass="LinkCell" customModule="Wormhole" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="218" width="600" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Bm1-Vu-nfY" id="yHz-dV-BpS">
@@ -3620,7 +3620,7 @@
                                     <outlet property="linkTextField" destination="X3I-F2-Bwg" id="n3B-51-YWT"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="PostTextCell" rowHeight="400" id="7Vc-fC-OYC" customClass="PostTextCell" customModule="MyReddit" customModuleProvider="target">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="PostTextCell" rowHeight="400" id="7Vc-fC-OYC" customClass="PostTextCell" customModule="Wormhole" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="262" width="600" height="400"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="7Vc-fC-OYC" id="EYR-M8-WWg">
@@ -3708,7 +3708,7 @@
         <!--Gallery Controller-->
         <scene sceneID="h7h-UE-1Pm">
             <objects>
-                <viewController id="SEn-8E-jyR" customClass="GalleryController" customModule="MyReddit" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="SEn-8E-jyR" customClass="GalleryController" customModule="Wormhole" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="GHH-8a-Brz"/>
                         <viewControllerLayoutGuide type="bottom" id="NK4-og-pqM"/>
@@ -3738,7 +3738,7 @@
                                     <inset key="sectionInset" minX="5" minY="5" maxX="5" maxY="5"/>
                                 </collectionViewFlowLayout>
                                 <cells>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ImageCell" id="t0T-zY-PDI" customClass="GalleryImageCollectionViewCell" customModule="MyReddit" customModuleProvider="target">
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ImageCell" id="t0T-zY-PDI" customClass="GalleryImageCollectionViewCell" customModule="Wormhole" customModuleProvider="target">
                                         <rect key="frame" x="5" y="5" width="87" height="87"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -3906,7 +3906,7 @@
         <!--Image View Controller-->
         <scene sceneID="s1c-fg-InK">
             <objects>
-                <viewController storyboardIdentifier="ImageViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="4EN-eS-jpX" customClass="ImageViewController" customModule="MyReddit" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ImageViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="4EN-eS-jpX" customClass="ImageViewController" customModule="Wormhole" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="g17-wt-g6D"/>
                         <viewControllerLayoutGuide type="bottom" id="t4w-8L-uEE"/>
@@ -3915,7 +3915,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <scrollView multipleTouchEnabled="YES" contentMode="scaleAspectFit" maximumZoomScale="5" translatesAutoresizingMaskIntoConstraints="NO" id="25k-Kp-oFF" customClass="CenteringScrollView" customModule="MyReddit" customModuleProvider="target">
+                            <scrollView multipleTouchEnabled="YES" contentMode="scaleAspectFit" maximumZoomScale="5" translatesAutoresizingMaskIntoConstraints="NO" id="25k-Kp-oFF" customClass="CenteringScrollView" customModule="Wormhole" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="640"/>
                                 <subviews>
                                     <imageView contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="U3k-rs-51T">
@@ -3969,13 +3969,13 @@
         <!--edit multireddit-->
         <scene sceneID="AQO-ku-Ndk">
             <objects>
-                <tableViewController title="edit multireddit" id="RWX-Go-8QZ" customClass="EditMultiRedditTableViewController" customModule="MyReddit" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController title="edit multireddit" id="RWX-Go-8QZ" customClass="EditMultiRedditTableViewController" customModule="Wormhole" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="nhA-yU-H3z">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="AddSubredditCell" id="2j3-Yb-BHs" customClass="UserInfoCell" customModule="MyReddit" customModuleProvider="target">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="AddSubredditCell" id="2j3-Yb-BHs" customClass="UserInfoCell" customModule="Wormhole" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="113.5" width="600" height="44"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="2j3-Yb-BHs" id="4VD-dl-T9y">
@@ -4010,7 +4010,7 @@
                                     <outlet property="titleLabel" destination="KGO-KR-2RD" id="kuE-Eq-Glk"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="EditMultiredditNameCell" id="zy9-fY-D4O" customClass="EditMultiredditNameCell" customModule="MyReddit" customModuleProvider="target">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="EditMultiredditNameCell" id="zy9-fY-D4O" customClass="EditMultiredditNameCell" customModule="Wormhole" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="157.5" width="600" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="zy9-fY-D4O" id="4cN-mj-V2E">
@@ -4042,7 +4042,7 @@
                                     <outlet property="nameTextField" destination="Voi-Gd-HD7" id="YsQ-Rk-599"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="SubredditCell" rowHeight="55" id="h3u-OV-3dd" customClass="SubredditCell" customModule="MyReddit" customModuleProvider="target">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="SubredditCell" rowHeight="55" id="h3u-OV-3dd" customClass="SubredditCell" customModule="Wormhole" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="201.5" width="600" height="55"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="h3u-OV-3dd" id="dTd-KJ-Bc7">
@@ -4096,13 +4096,13 @@
         <!--subreddits-->
         <scene sceneID="tkQ-tA-fdI">
             <objects>
-                <tableViewController title="subreddits" hidesBottomBarWhenPushed="YES" id="HET-TP-qE9" customClass="SubredditsByCategoryTableViewController" customModule="MyReddit" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController title="subreddits" hidesBottomBarWhenPushed="YES" id="HET-TP-qE9" customClass="SubredditsByCategoryTableViewController" customModule="Wormhole" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="wPZ-LN-5bY">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="SubredditCategoryCell" id="Hr7-x5-7Il" customClass="SubredditCell" customModule="MyReddit" customModuleProvider="target">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="SubredditCategoryCell" id="Hr7-x5-7Il" customClass="SubredditCell" customModule="Wormhole" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="113.5" width="600" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Hr7-x5-7Il" id="baR-O0-n8b">
@@ -4134,7 +4134,7 @@
                         </connections>
                     </tableView>
                     <connections>
-                        <segue destination="Wuv-iQ-z1V" kind="custom" identifier="SubredditPostsSegue" customClass="DismissSegue" customModule="MyReddit" customModuleProvider="target" id="3dc-57-LvS"/>
+                        <segue destination="Wuv-iQ-z1V" kind="custom" identifier="SubredditPostsSegue" customClass="DismissSegue" customModule="Wormhole" customModuleProvider="target" id="3dc-57-LvS"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4Sj-W6-wcQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -4166,19 +4166,19 @@
         <image name="Up" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="6WJ-xS-zTe"/>
-        <segue reference="aev-Tk-Wb5"/>
-        <segue reference="Nhl-Ro-yfO"/>
         <segue reference="eWX-LR-CuE"/>
+        <segue reference="lWs-ak-HDh"/>
+        <segue reference="aPe-Za-FV1"/>
+        <segue reference="ybH-Av-VF3"/>
+        <segue reference="zax-B6-Rbn"/>
         <segue reference="Udn-dz-6HG"/>
+        <segue reference="fLo-75-wzd"/>
+        <segue reference="6WJ-xS-zTe"/>
+        <segue reference="vMB-6P-NDX"/>
         <segue reference="oqy-7E-8ml"/>
         <segue reference="O8K-LF-8mj"/>
         <segue reference="zMo-OM-Z5J"/>
         <segue reference="2S1-bb-L8b"/>
-        <segue reference="xgG-eu-NoT"/>
-        <segue reference="4Ru-UI-2gn"/>
-        <segue reference="IKJ-Uc-imU"/>
-        <segue reference="vMB-6P-NDX"/>
-        <segue reference="fLo-75-wzd"/>
+        <segue reference="Nhl-Ro-yfO"/>
     </inferredMetricsTieBreakers>
 </document>
