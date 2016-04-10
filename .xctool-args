@@ -1,5 +1,5 @@
 [
-  "-workspace", "/Users/nick/Developer/nytekproductions/MyReddit/Wormhole.xcworkspace/",
+  "-workspace", "/Users/nick/Developer/nytekproductions/Wormhole/Wormhole.xcworkspace/",
 	"-scheme", "Wormhole",
   "-configuration", "Debug",
   "-sdk", "iphonesimulator9.3"

@@ -11,4 +11,4 @@ languages([
   "en-US"
 ])
 
-scheme "MyRedditUITests"
+scheme "WormholeUITests"

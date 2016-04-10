@@ -1,7 +1,7 @@
 BUNDLE_ID									= "6Q4UNB2LAJ"
-APP_SCHEME                = "MyReddit"
-UI_TESTS_SCHEME           = "MyRedditUITests"
-TEST_DEVICE               = "iPhone 6 (9.2)"
+APP_SCHEME                = "Wormhole"
+UI_TESTS_SCHEME           = "WormholeUITests"
+TEST_DEVICE               = "iPhone 6 (9.3)"
 opt_out_usage
 fastlane_version "1.66"
 default_platform :ios
